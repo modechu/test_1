@@ -1,0 +1,516 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ OFFER working sheet ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript">
+var $old ="";
+function cfm_img() {
+		var $old ="";
+		$old = document.pic.src;
+		document.pic.src = document.adding.PHP_pic.value;
+	if ( !confirm ("confirm if the picture is correct?")){
+		document.pic.src = $old;
+	} else {
+		document.adding.PHP_pic_upload.value ="1";
+	}
+}
+
+function wait(){
+	alert ("It take little longer time, if you have picture uploading !\r\rplease <b>do not</b> click any before the page changed。 \rthe best way is to format your picture size exact same as system required !  ");
+}
+
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$picture}{literal}?'+ Math.random();
+}
+
+function fabric(i)
+{
+	//	var cost = 0;
+		var tmp = 0;
+		var gm=0;
+		var org_cost = 0;
+		gm=count_gm();
+		price = eval("window.document.forms['adding'].elements['PHP_fp'+i].value");
+		if (price == '')price = 0;
+		if( isNaN(parseFloat(price)) )
+		{
+			alert("Please input number on U/Price！");  
+		    return;
+		 }
+		 
+		qty = eval("window.document.forms['adding'].elements['PHP_fq'+i].value");
+		if (qty == '')qty = 0;
+		if(isNaN(parseFloat(qty)) )
+		{
+			alert("Please input number on YY/Q'ty！");  
+		    return;
+		 }
+		  
+		 cost=parseFloat(price)*parseFloat(qty);
+		 cost=roundAmount(cost);
+		 window.document.forms['adding'].elements['PHP_fc'+i].value = cost;
+		
+		 
+		 org_cost=count_cost();
+		 total=parseFloat(org_cost)/parseFloat(gm);
+		 total=roundAmount(total);
+
+		 window.document.forms['adding'].elements['PHP_cost'].value = total;
+}
+
+function acc(i)
+{
+	//	var cost = 0;
+		var tmp = 0;
+		var gm=0;
+		var org_cost = 0;
+		gm=count_gm();
+		price = eval("window.document.forms['adding'].elements['PHP_ap'+i].value");
+		if (price == '')price = 0;
+		if(isNaN(parseFloat(price)))  
+		{
+			alert("Please input number on U/Price！");  
+		    return;
+		 }
+		 
+		qty = eval("window.document.forms['adding'].elements['PHP_aq'+i].value");
+		if (qty == '')qty = 0;
+		if(isNaN(parseFloat(qty)))  
+		{
+			alert("Please input number on YY/Q'ty！");  
+		    return;
+		 }
+		  
+		 cost=parseFloat(price)*parseFloat(qty);
+		 cost=roundAmount(cost);
+		 window.document.forms['adding'].elements['PHP_ac'+i].value = cost;
+
+		 org_cost=count_cost();
+		 total=parseFloat(org_cost)/parseFloat(gm);
+		 total=roundAmount(total);
+		 window.document.forms['adding'].elements['PHP_cost'].value = total;
+}
+
+function other(i)
+{
+	//	var cost = 0;
+		var tmp = 0;
+		var gm=0;
+		var org_cost = 0;
+		gm=count_gm();
+
+		price = eval("window.document.forms['adding'].elements['PHP_op'+i].value");
+		if (price == '')price = 0;
+		if(isNaN(parseFloat(price)))  
+		{
+			alert("Please input number on U/Price！");  
+		    return;
+		 }
+		 
+		qty = eval("window.document.forms['adding'].elements['PHP_oq'+i].value");
+		 if (qty == '')qty = 0;
+		if(isNaN(parseFloat(qty)))  
+		{
+			alert("Please input number on YY/Q'ty！");  
+		    return;
+		 }
+		 
+		 cost=parseFloat(price)*parseFloat(qty);
+		 cost=roundAmount(cost);
+		 window.document.forms['adding'].elements['PHP_oc'+i].value = cost;
+
+		 org_cost=count_cost();
+		 total=parseFloat(org_cost)/parseFloat(gm);
+		 total=roundAmount(total);
+		 window.document.forms['adding'].elements['PHP_cost'].value = total;
+}
+
+function cm_c(i)
+{
+		var tmp = 0;
+		var gm=0;
+		var org_cost = 0;
+		gm=count_gm();
+		org_cost=count_cost();
+		s_total = window.document.forms['adding'].elements['PHP_cm'].value;
+		if (s_total == '')s_total = 0;		
+		if(isNaN(parseFloat(s_total)))  
+		{
+			alert("Please input number on C.M！");  
+		    return;
+		 }
+		 
+		 total=parseFloat(org_cost)/parseFloat(gm);
+		 total=roundAmount(total);
+		 window.document.forms['adding'].elements['PHP_old_cm'].value = s_total;
+		 window.document.forms['adding'].elements['PHP_cost'].value = total;
+}
+
+function gm(i)
+{
+		var tmp = 0;
+		var org_cost = 0;
+		org_cost=count_cost();
+		new_gm = window.document.forms['adding'].elements['PHP_gm'].value;
+		if (new_gm == '')new_gm = 0;		
+		if(isNaN(parseFloat(new_gm)))  
+		{
+			alert("Please input percent rate of Mark-Up！");  
+		    return;
+		 }
+		 total = org_cost / (1-((parseFloat(new_gm))/100));
+		 total=roundAmount(total);
+
+		 window.document.forms['adding'].elements['PHP_old_gm'].value = new_gm;
+		 window.document.forms['adding'].elements['PHP_cost'].value = total;
+}
+
+function count_gm()
+{
+		var gm=0;
+		tmp_gm = window.document.forms['adding'].elements['PHP_gm'].value;
+		if (tmp_gm == '')tmp_gm = 0;
+		gm=	1-((parseFloat(tmp_gm))/100)	
+		return gm;		 
+}
+function count_cost()
+{
+		var org_cost = 0;
+		var tmp_f=0;
+		var tmp_a=0
+		var tmp_o=0;
+		for (i=1; i< 4; i++)
+		{
+			f = eval(window.document.forms['adding'].elements['PHP_fc'+i].value);
+			if (f == '')f = 0;
+			
+			tmp_f=parseFloat(tmp_f) + parseFloat(f);
+			
+			o = eval(window.document.forms['adding'].elements['PHP_oc'+i].value);
+			if (o == '')o = 0;
+			
+			tmp_o=parseFloat(tmp_o) + parseFloat(o);
+		}
+		for (i=1; i< 11; i++)
+		{
+			a = eval(window.document.forms['adding'].elements['PHP_ac'+i].value);
+			if (a == '')a = 0;
+			tmp_a=parseFloat(tmp_a) + parseFloat(a);
+		}
+		cm = window.document.forms['adding'].elements['PHP_cm'].value;
+		if (cm == '')cm = 0;		
+
+		org_cost = parseFloat(tmp_a) + parseFloat(tmp_f) + parseFloat(tmp_o)+ parseFloat(cm);
+		return org_cost;
+
+}
+</script>
+{/literal}
+</head>
+{if $re_adding}
+<body onLoad="refreshIt();">
+{else}
+<body onLoad="refreshIt();">
+{/if}
+<form method=POST name=adding enctype="multipart/form-data">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28> [ <span class=ylw10><b>REVISE</b></span> OFFER working sheet ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+   <tr height=30>
+    <td class=b10 align=right nowrap><b>DATE :</b></td>
+    <td class=snvy align=left><b>{$of.k_date}</b></td>
+    <td class=b10 align=right nowrap><b>Buyer :</b></td>
+    <td class=snvy align=left><b>{$of.buyer}</b></td>
+    <td class=b10 align=right nowrap><b>Merchandiser :</b></td>
+    <td class=snvy align=left><b>{$of.merchan}</b></td>
+    <td class=b10 align=right nowrap><b>currency :</b></td>
+    <td class=snvy align=left nowrap><b>$ USD</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=edit_offer >
+		<input type="hidden" name="PHP_id" value="{$of.id}">
+		<input type="hidden" name="PHP_my_dept" value="{$my_dept}">
+		<input type="hidden" name="PHP_cust" value="{$of.buyer}">
+		<input type="hidden" name="PHP_merchan" value="{$of.merchan}">
+		<input type="hidden" name="PHP_k_date" value="{$of.k_date}">
+		<input type="hidden" name="PHP_num" value="{$of.num}">
+		<input type="hidden" name="PHP_ver" value="{$of.ver}">
+    <td class=snvy align=right nowrap><b>OFFER # :</b></td>
+    <td class=bgdy align=left nowrap><b>{$of.num}</b></td>
+    <td class=snvy align=right nowrap><b>Style #: </b></td>
+	<td class=b9 align=left>
+		<input type='text' name="PHP_style" size=12 value="{$of.style}" class=select></td>
+    <td class=snvy align=right nowrap><b>SPT(sec.) :</b></td>
+	<td class=b9 align=left><b>{$of.spt}</b></td>
+    <td class=snvy align=right nowrap><b>IE :</b></td>
+    <td class=bgdy align=left><b>{$of.ie}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap valign=top><b> Description :</b></td>
+    <td class=gry9 align=left colspan=7>
+	      <textarea name="PHP_des" rows=2 cols=105 class=select>{$of.des}</textarea></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap valign=top><b> Fabrication :</b></td>
+    <td class=gry9 align=left colspan=7>
+	      <textarea name="PHP_fab" rows=2 cols=105 class=select>{$of.fab}</textarea></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap valign=top><b> Consumption :</b></td>
+    <td class=bgdy align=left colspan=7><i>&nbsp;{$of.cons}</i></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap valign=top><b> Technical / Eqpmt. <br>Advisements:</b></td>
+    <td class=bgdy align=left colspan=7><i>&nbsp;{$of.tech}</i></td>
+ </tr>
+
+ <tr>
+	<td class=bgdy align=center colspan=3 nowrap width=33%>----------------- 
+		<i><b>picture</b></i> -----------------</td>
+	<td class=bgdy align=center colspan=5 nowrap width=33%>--------------------------------------------- 
+		<i><b>unit cost :</b></i> ---------------------------------------------</td>
+ </tr>
+ <tr>
+    <td align=center class=head valign=top rowspan=9 colspan=3>
+		<table width=220 border=1 cellspacing=0 cellpadding=1>
+		  <tr><td align=center><img src="{$of.pic}" name="pic" width=220></td></tr>
+		  <tr><td align=center valign=top class=head>
+			<input name="PHP_pic" type="file" onChange="cfm_img()" value="{$of.pic}" size=14 class=select>
+			</td>
+			<input type="hidden" name="PHP_pic_upload" value="">
+		  </tr>
+		</table>
+	</td>
+
+	<td colspan=5>
+
+		  <table width=270 border=0 cellspacing=0 cellpadding=1>
+		  <tr>
+		  <td align=center><b>&nbsp;</b></td>
+		  <td align=center><b>Item</b></td>
+		  <td align=center><b>U/Price</b></td>
+		  <td align=center><b>&nbsp;</b></td>
+		  <td align=center><b>YY/Q'ty</b></td>
+		  <td align=center><b>&nbsp;</b></td>
+		  <td align=center><b>Cost</b></td>
+		  </tr>
+		  
+		  <tr>
+		  <td align=center><b>C.M.</b></td>
+		  <td align=center colspan=5>---------------------------------------------------------></td>
+		  <td align=center><input name="PHP_cm" type="text" value={$of.cm} size=5 class=select onChange="cm_c('1')" style=text-align:right ></td>
+		  <input name="PHP_old_cm" type="hidden" value={$of.cm}>
+		  </tr>
+		  
+		  
+		  <tr>
+		  <td align=center><b>Fabric</b></td>
+		  <td align=center><input name="PHP_fi1" type="text"  value="{$of.fab_cat.0.fi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_fp1" type="text"  value="{$of.fab_cat.0.fp}" size=4 class=select onChange="fabric('1')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_fq1" type="text"  value="{$of.fab_cat.0.fq}" size=4 class=select onChange="fabric('1')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_fc1" type="label" value="{$of.fab_cat.0.fc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_fi2" type="text"  value="{$of.fab_cat.1.fi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_fp2" type="text"  value="{$of.fab_cat.1.fp}" size=4 class=select onChange="fabric('2')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_fq2" type="text"  value="{$of.fab_cat.1.fq}" size=4 class=select onChange="fabric('2')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_fc2" type="label" value="{$of.fab_cat.1.fc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		 </tr>
+		 <tr>
+		 <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_fi3" type="text"  value="{$of.fab_cat.2.fi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_fp3" type="text"  value="{$of.fab_cat.2.fp}" size=4 class=select onChange="fabric('3')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_fq3" type="text"  value="{$of.fab_cat.2.fq}" size=4 class=select onChange="fabric('3')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_fc3" type="label" value="{$of.fab_cat.2.fc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>	
+		  </tr>
+		  <tr height=3 bgcolor=black><td colspan=7></td></tr>
+		  <tr>
+		  <td align=center><b>Accessory</b></td>
+		  <td align=center><input name="PHP_ai1" type="text"  value="{$of.acc_cat.0.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap1" type="text"  value="{$of.acc_cat.0.ap}" size=4 class=select onChange="acc('1')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq1" type="text"  value="{$of.acc_cat.0.aq}" size=4 class=select onChange="acc('1')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac1" type="label" value="{$of.acc_cat.0.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai2" type="text"  value="{$of.acc_cat.1.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap2" type="text"  value="{$of.acc_cat.1.ap}" size=4 class=select onChange="acc('2')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq2" type="text"  value="{$of.acc_cat.1.aq}" size=4 class=select onChange="acc('2')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac2" type="label" value="{$of.acc_cat.1.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai3" type="text"  value="{$of.acc_cat.2.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap3" type="text"  value="{$of.acc_cat.2.ap}" size=4 class=select onChange="acc('3')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq3" type="text"  value="{$of.acc_cat.2.aq}" size=4 class=select onChange="acc('3')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac3" type="label" value="{$of.acc_cat.2.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai4" type="text"  value="{$of.acc_cat.3.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap4" type="text"  value="{$of.acc_cat.3.ap}" size=4 class=select onChange="acc('4')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq4" type="text"  value="{$of.acc_cat.3.aq}" size=4 class=select onChange="acc('4')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac4" type="label" value="{$of.acc_cat.3.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai5" type="text"  value="{$of.acc_cat.4.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap5" type="text"  value="{$of.acc_cat.4.ap}" size=4 class=select onChange="acc('5')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq5" type="text"  value="{$of.acc_cat.4.aq}" size=4 class=select onChange="acc('5')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac5" type="label" value="{$of.acc_cat.4.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai6" type="text"  value="{$of.acc_cat.5.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap6" type="text"  value="{$of.acc_cat.5.ap}" size=4 class=select onChange="acc('6')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq6" type="text"  value="{$of.acc_cat.5.aq}" size=4 class=select onChange="acc('6')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac6" type="label" value="{$of.acc_cat.5.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai7" type="text"  value="{$of.acc_cat.6.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap7" type="text"  value="{$of.acc_cat.6.ap}" size=4 class=select onChange="acc('7')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq7" type="text"  value="{$of.acc_cat.6.aq}" size=4 class=select onChange="acc('7')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac7" type="label" value="{$of.acc_cat.6.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai8" type="text"  value="{$of.acc_cat.7.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap8" type="text"  value="{$of.acc_cat.7.ap}" size=4 class=select onChange="acc('8')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq8" type="text"  value="{$of.acc_cat.7.aq}" size=4 class=select onChange="acc('8')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac8" type="label" value="{$of.acc_cat.7.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai9" type="text"  value="{$of.acc_cat.8.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap9" type="text"  value="{$of.acc_cat.8.ap}" size=4 class=select onChange="acc('9')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq9" type="text"  value="{$of.acc_cat.8.aq|string_format:"%.2f"}" size=4 class=select onChange="acc('9')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac9" type="label" value="{$of.acc_cat.8.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_ai10" type="text"  value="{$of.acc_cat.9.ai}" size=22 class=select></td>
+		  <td align=center><input name="PHP_ap10" type="text"  value="{$of.acc_cat.9.ap}" size=4 class=select onChange="acc('10')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_aq10" type="text"  value="{$of.acc_cat.9.aq}" size=4 class=select onChange="acc('10')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_ac10" type="label" value="{$of.acc_cat.9.ac|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr height=3 bgcolor=black><td colspan=7></td></tr>
+		  <tr>
+		  <td align=center><b>Other</b></td>
+		  <td align=center><input name="PHP_oi1" type="text"  value="{$of.oth_cat.0.oi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_op1" type="text"  value="{$of.oth_cat.0.op}" size=4 class=select onChange="other('1')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_oq1" type="text"  value="{$of.oth_cat.0.oq}" size=4 class=select onChange="other('1')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_oc1" type="label" value="{$of.oth_cat.0.oc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_oi2" type="text"  value="{$of.oth_cat.1.oi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_op2" type="text"  value="{$of.oth_cat.1.op}" size=4 class=select onChange="other('2')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_oq2" type="text"  value="{$of.oth_cat.1.oq}" size=4 class=select onChange="other('2')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_oc2" type="label" value="{$of.oth_cat.1.oc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr>
+		  <td align=center>&nbsp;</td>
+		  <td align=center><input name="PHP_oi3" type="text"  value="{$of.oth_cat.2.oi}" size=22 class=select></td>
+		  <td align=center><input name="PHP_op3" type="text"  value="{$of.oth_cat.2.op}" size=4 class=select onChange="other('3')" style=text-align:center></td>
+		  <td align=center>X</td>
+		  <td align=center><input name="PHP_oq3" type="text"  value="{$of.oth_cat.2.oq}" size=4 class=select onChange="other('3')" style=text-align:center></td>
+		  <td align=center>=</td>
+		  <td align=center><input name="PHP_oc3" type="label" value="{$of.oth_cat.2.oc|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+		  <tr height=3 bgcolor=black><td colspan=7></td></tr>
+
+		  <tr>
+		  <td align=center><b>Mark-Up</b></td>
+		  <td align=center colspan=5>---------------------------------------------------------</td>
+		  <td align=center><input name="PHP_gm" type="text" value="{$of.gm_rate|string_format:"%.2f"}" size=4 class=select onChange="gm('1')" style=text-align:right >%</td>
+		  <input name="PHP_old_gm" type="hidden" value={$of.gm_rate|string_format:"%.2f"}>
+		  </tr>
+
+
+		  <tr>
+		  <td align=Left colspan=6><b>Total costing:</b></td>
+		  <td align=center><input name="PHP_cost" type="label" value="{$of.tt_cost|string_format:"%.2f"}" size=5 readonly style=text-align:right></td>
+		  </tr>		
+
+		</table>
+
+	</td>
+ </tr>
+
+ <tr>
+    <td colspan=2><BR>&nbsp;<BR>&nbsp;</td>
+ </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+ <tr>
+    <td class=frnt align=center colspan=2><hr size=2 width=98%></td>
+ </tr>
+
+ <tr>
+    <td class=snvy align=right nowrap valign=top width=200><b> remark:</b></td>
+    <td class=bgdy align=left><i> {$of.remark}</i></td>
+ </tr>
+ <tr>
+    <td class=frnt align=center colspan=2><hr size=2 width=98%></td>
+ </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+  <tr>
+  <td colspan=7>
+	<input type="hidden" name="PHP_action" value="do_offer_revise">
+	<input type="hidden" name="PHP_back_str" value="{$back_str}">
+	<input type=submit value="[ CFM to REVISE above OFFER record ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;></form>
+  </tr>
+
+
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

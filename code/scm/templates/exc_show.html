@@ -1,0 +1,327 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+ function file_del(id,file_name,r)
+ {
+	if ( confirm("Are you shure to delete this file  ??")) {
+	  var i=r.parentNode.parentNode.rowIndex;
+	  document.getElementById('exc_file_list').deleteRow(i);	  
+ 	  sUrl = "exception.php?PHP_action=exc_file_del&PHP_id="+id+"&PHP_file_name="+file_name;
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	} 
+ 
+ }
+ 
+  var delback = {
+    success: function(o) {
+    	document.getElementById("tbl_msg").style.display='block';    
+    	var response = o.responseText.split("|");    	
+    	msg1.innerText  = response[0];     	
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };   
+</script>
+{/literal}
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=750 bgcolor=#333333>
+	<tr>
+	   <td align=left class="des">
+			{if $exc.status == 0} Wait for Submit {/if}
+			{if $exc.status == 1} <b>reject</b> {/if}
+			{if $exc.status == 2} Wait for CFM {/if}
+			{if $exc.status == 3} Wait for APV {/if}
+			{if $exc.status == 4} <b>APVD</b> {/if}
+			{if $exc.status == 5} <b>REJECT</b> {/if}
+		</td>
+		<td class="des" align=center height=28> [ <span class=ylw10><b>{$SYS_DEPT} 異常報告  -- {$exc.ex_num}</b></span> ] </td>
+	   <td align=right>
+	   {if $exc.status == 4}
+    	<a href="exception.php?PHP_action=exc_print&PHP_id={$exc.id}">
+				<img src="./images/print9.jpg" border=0 alt="PDF: SAVE/PRINT"></a>
+			{/if}
+		</td>
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=750 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+<br>
+<table border=0 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+  <tr>	   
+  	<td class=frnt align=right><b>客戶 :</b></td>
+  	<td class=b9 align=left><b>{$exc.cust_iname}</b></td> 
+
+     <td class=snvy align=right nowrap><b>部門 :</b></td>			
+     <td class=b9 align=left><b>{$exc.dept}</b></td>
+		 	
+     <td  class=frnt align=right><b>報告日期 : {$exc.exc_date}</b></td>
+     <td class=b9 align=right><b>報告人 : </b></td>
+     <td class=b9 align=left ><b><a href="javascript:message_out('{$exc.exc_user_id}')" style="cursor:pointer">{$exc.exc_user}</a></b></td> 
+
+
+ 	</tr>
+  <tr>	
+    <td class=snvy align=right nowrap><b>訂單編號 :</b></td>
+    <td class=b9 align=left  colspan=6><b>
+    	{section name=SEC loop=$exc.ord_nums}
+  			<a href="javascript:show_order_rec('','{$exc.ord_nums[SEC]}')" style='cursor:pointer'>
+				{$exc.ord_nums[SEC]}</a> 
+			{/section}
+    	
+    </b></td>
+ 	</tr>     
+  <tr>	
+    <td class=snvy align=right nowrap><b>採購單編號 :</b></td>
+    <td class=b9 align=left  colspan=6><b>
+ 	   <a href="javascript:po_show('{$exc.pa_num}')">{$exc.po_num}</a>
+    	
+    </b></td>
+ 	</tr>
+   <tr>	
+    <td class=snvy align=right nowrap><b>異常來源:</b></td>
+    <td class=b9 align=left  colspan=4>&nbsp;&nbsp;
+    	<b>{if $exc.exc_from == 1 }組織內需求所造成{/if}
+    		 {if $exc.exc_from == 2 }組織外要求所造成{/if}&nbsp;</b>
+    </td>
+ 	</tr>	 	
+ </table>
+ {if $ord_rec}
+<table border=0 cellspacing=2 cellpadding=1 width=750 bgcolor=#FFFFFF>
+	<tr><td colspan=8><hr size=2 width=98%></td></tr>  
+	
+  <tr>	
+    <td class=snvy align=right nowrap><b>QTY :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.qty}</b></td>
+    
+  	<td class=snvy align=right><b>ETD :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee ><b>{$ord_rec.etd}</b></td> 
+
+     <td class=snvy align=right nowrap><b>Smpl CFM :</b></td>			
+     <td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.smpl_apv}</b></td>
+ 	</tr>
+  <tr>	
+    <td class=snvy align=right nowrap width=80><b>FAB ETA :</b></td>
+    <td class=b9 align=left  width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_etd}</b></td>
+    
+  	<td class=snvy align=right width=80><b>FAB RCVD. :</b></td>
+  	<td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_shp}</b></td> 
+
+     <td class=snvy align=right nowrap width=80><b>ACC ETA :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_etd}</b></td>
+
+     <td class=snvy align=right nowrap width=80><b>ACC RCVD :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_shp}</b></td>
+ 	</tr>      
+  <tr>	
+    <td class=snvy align=right nowrap><b>SHIP Date :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.shp_date}</b></td>
+    
+  	<td class=snvy align=right><b>SHIP QTY. :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.qty_shp}</b></td> 
+    <td class=snvy align=right nowrap width=80><b>IE :</b></td>			
+    <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.ie1}</b></td>
+ 	</tr> 
+ </table> 
+  {/if}
+<br>
+<table border=0 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#eeeeee height=28>
+    <td class=bgdy align=center nowrap colspan=5><b>異常狀態</b></td>
+ </tr>
+{section name=SEC loop=$state}	
+ <tr>
+    <td class=snvy align=left nowrap>&nbsp;&nbsp;<b>{$state[SEC].sta_name}</b></td>
+    <td class=b9 align=left><b>{if $state[SEC].org_name}{$state[SEC].org_name}:</b>&nbsp;&nbsp; <b>{$state[SEC].org_rec}</b>{/if}</td>
+    <td class=b9 align=left><b>{if $state[SEC].new_name}{$state[SEC].new_name}:{/if}</b> &nbsp;&nbsp;<b>{$state[SEC].new_rec}</b></td>
+</tr>
+{/section}
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>  
+
+<table border=0 cellspacing=7 cellpadding=7 width=750 bgcolor=#FFFFFF>
+
+ <tr height=28>
+    <td width=340 bgcolor=#eeeeee class=bgdy align=center nowrap><b>發生原因及預估損失</b></td>
+    <td width=360 bgcolor=#eeeeee class=bgdy align=center nowrap><b>會辦單位</b></td>
+ </tr>
+ <tr>
+   <td class=frnt align=left rowspan=8 valign=top>
+   	{if $exc.sys_des}
+   	{$exc.sys_des}<BR>
+   	<hr size=2 width=98%><BR>
+   	{/if}   
+   	{$exc.exc_des}
+   </td>
+ </tr>
+	{section name=SEC loop=$comm}	   
+  <tr height=20>
+  	<td valign=top><b>{$comm[SEC].dept_name}</b> {if $comm[SEC].comm_user}-- [<a href="javascript:message_out('{$comm[SEC].comm_user_id}')" style="cursor:pointer">{$comm[SEC].comm_user}</a> / {$comm[SEC].comm_date}]{/if}
+			<BR>
+  	{$comm[SEC].Comm}&nbsp;</td>
+  </tr>
+	{/section}
+
+ 
+</table>
+	 {if $done[0].id}
+<form method=POST name=file_list> 	 
+	 <table width=750 border=1 cellspacing=1 cellpadding=1 id=exc_file_list>
+	 <tr bgcolor=#EACEBE height=25>	 
+	    <td width=70 align=center><b>Download</b></td>	
+	 	<td width=330 align=center><b>File name</b></td>
+	 	<td width=320 align=center><b>Descript</b></td>
+		<td width=30 align=center><b>DEL</b></td>  
+	 </tr>
+
+		 {section name=SEC loop=$done}
+	 <tr>	
+		<td align=center valign=top>
+		<a href="download.php?fname={$done[SEC].file_name}&fdir=exc_file" title="{$done[SEC].file_name}" ><img src='./images/file2.gif' border=0 ALT="download pattern"></a>
+		</td>  	
+		<td class=snvy >{$done[SEC].file_name}</td>
+		<td class=snvy>{$done[SEC].file_des}</td>
+	
+		<td class=snvy>&nbsp;
+			{if $add_flag && ($exc.status == 0 || $exc.status == 5)}
+		   	<input type='image' src="images/del.png"   onclick=file_del('{$done[SEC].id}','{$done[SEC].file_name}',this)>	
+			{/if}&nbsp;
+			</td>
+  
+     </tr>
+       {/section}   
+    </table>
+  </form>
+  {/if}
+{if $add_flag && ($exc.status == 0 || $exc.status == 5)}
+        <form method=POST name=pattn enctype="multipart/form-data"> 
+<table width=750 border=1 cellspacing=1 cellpadding=1>
+	 <tr bgcolor=#EACEBE height=25>	 
+	  <td align=center><b>Attach File</b></td>	
+	 </tr>
+     <tr>
+   		<td align=center>   
+	  		<input type="hidden" name="PHP_action" value="upload_exc_file">
+				<input type="hidden" name="PHP_id" value="{$exc.id}">
+				<!--<input type="hidden" name="PHP_num" value="{$exc.id}">-->
+				<input type="hidden" name="PHP_back_str" value="{$back_str}">
+				<input type = "hidden" name = "max_size" value="100000">	
+				<input type='file' name='PHP_pttn' size=30 class=select>&nbsp;&nbsp;
+				Descript : &nbsp;
+				<input type='text' name='PHP_desp' size=40 class=select >&nbsp;&nbsp;
+				<input type='submit' value='upload'>				
+		</td>
+	 </tr>
+</table>
+</form>
+{/if}
+
+<hr size=2 width=740>
+<br>
+{if $logs.0.id}
+	<table border=1 cellspacing=1 cellpadding=1 width=750 align=center>
+
+	  <tr bgcolor=#666666 >
+	   <td width=120 class=w10 align=center>DateTime</td>
+	   <td width=400 class=w10 align=center>History Comments</td>
+	   <td width=80 class=w10 align=center>by</td>
+	  </tr>
+	 {section name=SEC loop=$logs}
+	  <tr bgcolor=#eeeeee >
+	   <td class=gry9 align=center><small>{$logs[SEC].k_date}</small></td>
+	   <td class=gry9 align=left>{$logs[SEC].des}</td>
+	   <td class=gry9 align=center>{$logs[SEC].user}</td>
+	  </tr>
+	{/section}
+	</table>
+{/if}
+
+<table border=0 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#333333 height=28>
+   
+ </tr>
+ 
+</table>
+{if $add_flag && $com_mk == 1 && ($exc.status == 0 || $exc.status == 5)}
+<form method=POST name=log>
+<table border=0 cellspacing=2 cellpadding=2 cols=2 width=740>
+	<tr>
+	<td class=gry10 align=right valign=middle width=65>comments:</td>
+	<td class=gry10 valign=top >
+	    <textarea name="PHP_detail" rows=2 cols=100 class=select></textarea>
+	</td>		
+	<td align=left width=100>
+		<input type="hidden" name="PHP_action" value="exc_log_add">
+		<input type="hidden" name="PHP_to" value="exc_show">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type=submit value="[ ADD ]" class=select_e style="cursor:pointer; width=100%; height=40" >
+	</td>
+	</tr>
+  <tr>
+    <td  colspan=3 class=frnt align=center><hr size=2 width=98%></td>
+  </tr> 	
+</table>
+</form>
+{/if}
+<table border=0 cellspacing=0 cellpadding=2 width=740 bgcolor=#ffffff align=center>
+  <tr>
+	<td><form method=POST name=back>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%"></form>
+{else}&nbsp;
+{/if}
+	</td>
+{if $add_flag && (($exc.status == 0 && $com_e_mk <> 1 ) || $exc.status == 5 || $exc.status == 1) }	
+  <td>
+	<form method=POST name=edit>
+		<input type="hidden" name="PHP_action" value="exc_edit">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type=submit value="[ 修改 ]" class=select_e style="cursor:pointer; width=100%" ></form>
+  </td>
+{/if}
+  {if $add_flag && $com_mk == 1 && ($exc.status == 0 || $exc.status == 5)}
+  <td>
+	<form method=POST name=edit>
+		<input type="hidden" name="PHP_action" value="exc_submit">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type=submit value="[ SUBMIT ]" class=select_e style="cursor:pointer; width=100%" ></form>
+  </td>  
+	{/if}  
+{if $edit_flag && ($exc.status == 0 || $exc.status == 5)}
+  <td>
+	<form method=POST name=adding>
+		<input type="hidden" name="PHP_action" value="exc_comm_edit">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type=submit value="[ 加入/ 修改 意見 ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;></form>
+  </td>  
+{/if}  
+  </tr>
+
+
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

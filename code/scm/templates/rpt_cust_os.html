@@ -1,0 +1,133 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77">
+<br><br>
+
+
+ <table width=750 border=0 cellspacing=0 cellpadding=2>
+  <tr class="top16bg">  
+    <td width=30>&nbsp;</td>  
+	<td  width=690  align=center class="top16bg">Monthly <font color=yellow><b> Sample and Order comparison</b></font> by Customer LIST<b>&nbsp;</b></td>
+	<td width=60 align=center class="txt_B_y_16t"><b> &nbsp;FY:{$year}&nbsp;&nbsp;</b></td>
+  </tr>
+{if $msg}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+ </table>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=b9 width=50 align=center bgcolor=#ffffff><b>&nbsp;</b></td>
+    <td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+    <td class=ylw9 width=70 align=center bgcolor=#004262><b>Total</b></td>
+  </tr>
+  <tr> 
+    <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Order(s)</b></td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right >{if $rpt_tal[SEC].order > 0}{$rpt_tal[SEC].order|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right><b>{$ord_total|number_format}</b></td>
+  </tr>
+  <tr> 
+    <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Order Q'ty</b></td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right>{if $rpt_tal[SEC].ord_qty > 0}{$rpt_tal[SEC].ord_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right><b>{$ord_qty_tal|number_format}</b></td>
+  </tr>
+  <tr bgcolor="#E6F4E8"> 
+    <td class=b9 width=100 align=center bgcolor="#ddddd1"><b>Sample(s)</b></td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right >{if $rpt_tal[SEC].smpl > 0}{$rpt_tal[SEC].smpl|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right><b>{$smpl_total|number_format}</b></td>
+  </tr>
+  <tr bgcolor="#E6F4E8"> 
+    <td class=b9 width=100 align=center bgcolor="#ddddd1"><b>Sample Q'ty</b></td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right>{if $rpt_tal[SEC].smpl_qty > 0}{$rpt_tal[SEC].smpl_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right ><b>{$smpl_qty_tal|number_format}</b></td>
+  </tr>
+  
+  {section name=SEC loop=$rpt}
+  {if $rpt[SEC].ord_total > 0 || $rpt[SEC].smpl_total > 0}
+  <tr><td colspan=14 >&nbsp;</td></tr>
+  <tr bgcolor="#dddddd">
+  <td colspan=14>
+  <table width=100% border=0 cellspacing=0 cellpadding=2>  
+  <td width=370 align=right class=b12><b>CUST : <span class=bgdy>{$rpt[SEC].cust}</span></b> </td>
+  <td align=center width=10>&nbsp;</td>
+  <td width=270 align=left class=b12><b>[{$rpt[SEC].cust_iname}]</b></td> 
+  <td width=100 align=left class=b12><b>@FOB : {$rpt[SEC].ord_a_fob|number_format:"2f"}</b></td> 
+  
+  </table>
+  </td>
+  
+  </tr>
+  <tr>
+  <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Order(s)</b></td>
+  {section name=SEC2 loop=$rpt[SEC].order}
+   <td align=right class=b9>{if $rpt[SEC].order[SEC2] > 0}{$rpt[SEC].order[SEC2]|number_format}{else}&nbsp;{/if}</td>
+  {/section}
+  <td class=b9 align=right><b>{$rpt[SEC].ord_total|number_format}</b></td>
+  </tr>
+  
+  <tr>
+  <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Order Q'ty</b></td>
+  {section name=SEC2 loop=$rpt[SEC].ord_qty}
+   <td align=right class=b9>{if $rpt[SEC].ord_qty[SEC2] > 0}{$rpt[SEC].ord_qty[SEC2]|number_format}{else}&nbsp;{/if}</td>
+  {/section}
+  <td class=b9 align=right><b>{$rpt[SEC].ord_qty_tal|number_format}</b></td>
+  </tr>
+  
+  <tr bgcolor="#E6F4E8">
+  <td class=b9 width=100 align=center bgcolor="#ddddd1"><b>Sample(s)</b></td>
+  {section name=SEC2 loop=$rpt[SEC].smpl}
+   <td align=right class=b9>{if $rpt[SEC].smpl[SEC2] > 0}{$rpt[SEC].smpl[SEC2]|number_format}{else}&nbsp;{/if}</td>
+  {/section}
+  <td class=b9 align=right><b>{$rpt[SEC].smpl_total|number_format}</b></td>
+  </tr>
+  
+  <tr bgcolor="#E6F4E8">
+  <td class=b9 width=100 align=center bgcolor="#ddddd1"><b>Sample Q'ty</b></td>
+  {section name=SEC2 loop=$rpt[SEC].smpl_qty}
+   <td align=right class=b9>{if $rpt[SEC].smpl_qty[SEC2] > 0}{$rpt[SEC].smpl_qty[SEC2]|number_format}{else}&nbsp;{/if}</td>
+  {/section}
+  <td class=b9 align=right><b>{$rpt[SEC].smpl_qty_tal|number_format}</b></td>
+  </tr>
+  {/if}
+  {/section}
+</table>
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

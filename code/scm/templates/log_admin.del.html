@@ -1,0 +1,39 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== :::::::::: 查看 / 刪除 管理員動態記錄 :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm() {
+	if ( confirm("Are you sure to delete by these rule ??")) {
+	location.href=" ";
+	} else {
+	location.href=" ";
+	}
+ }
+ function tp(url) { parent.top.location.href=url }
+</script>
+<script language="javascript" src="./js/col.js"></script>
+{/literal}</head>
+<form method=POST name=do_edit>
+<body bgcolor="#003C77" bottommargin=0>
+<table border=1 cellspacing=1 cellpadding=4 cols=1 width=650 bgcolor=#FFFFFF>
+
+		<tr>
+	<td align='right' width=200 bgcolor="#E8ECFF"><b>Delete before point date :</b></td>
+	<td>&nbsp;
+	<input type='text' name='PHP_date' size='15'>
+	<img align='top' onmousedown="javascript:Cal(document.do_edit.PHP_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+	&nbsp;&nbsp;&nbsp;
+	<input type=submit value="[ Delete Job record by date ]" class=select_e style="cursor:pointer; width=50%" onClick=this.width=0;>
+	
+	</td>
+	</tr>
+	<input type='hidden' name='PHP_action' value='log_dump'>
+</table>
+</form>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

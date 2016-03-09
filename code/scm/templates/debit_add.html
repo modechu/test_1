@@ -1,0 +1,173 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+        
+<Script language="javascript">
+var $old ="";
+var transaction;
+var sUrl;
+function search_ord(cust,dept,check){
+
+	if(check == 0)cust = '';
+	if(check == 2)
+	{
+		dept = cust;
+		cust = '';
+	}
+	if(dept != 'HJ' && dept != 'LY' && dept != 'KA' && dept != 'KB') dept = '';
+	var gofile ='exception.php?PHP_action=order_search&PHP_cust='+cust+'&PHP_dept='+dept;
+	style=window.open(gofile,'styleord','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=650, top=100, left=150');
+
+}
+
+function writeToOrdList(order,style,ie,qty,saw_qty) {
+	var ord_num = window.document.forms['adding'].elements['PHP_order'].value;
+	ord_num = ord_num+order+',';
+	window.document.forms['adding'].elements['PHP_order'].value = ord_num;
+	
+}
+
+function del_ord(){
+window.document.forms['adding'].elements['PHP_order'].value = '';
+}
+
+function search_po(cust,dept){
+	var gofile ='exception.php?PHP_action=po_search&PHP_cust='+cust+'&PHP_dept='+dept;
+	style=window.open(gofile,'styleord','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=650, top=100, left=150');
+
+}
+
+function writeToPOList(po_num, ap_num) {
+	window.document.forms['adding'].elements['PHP_po'].value = po_num;	
+}
+
+</script>
+{/literal}
+</head>
+<body>
+<form method=POST name=adding enctype="multipart/form-data" >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28> [ <span class=ylw10><b>APPEND</b></span> Debit Note ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=b9>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<br>
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+	  
+	
+  <tr>	    
+  	<td class=snvy align=right><b>索賠對向 :</b></td>
+  	<td class=b9 align=left><b>{$dn_to_name}</b></td> 
+  	<input type="hidden" name="PHP_dn_to" value="{$dn_to}">
+  	<input type="hidden" name="PHP_chk_to" value="{$check_to}">
+
+     <td class=snvy align=right nowrap><b>部門 :</b></td>			
+     <td class=b9 align=left><b>{$dept_id}</b></td>
+		 <input type="hidden" name="PHP_dept" value="{$dept_id}">
+		 	
+    <td class=frnt align=right><b>報告日期 : {$date}</b></td>
+ 	</tr>
+ 	<tr>
+    <td class=snvy align=right nowrap><b>訂單編號 :</b></td>
+    <td class=b9 align=left colspan=4 >
+    	<input type='text' name="PHP_order" size=60 class=select value="{$dn.ord_num}" readonly >
+	  	<img src="./images/icoSearch.gif" alt="Order" onClick="search_ord('{$dn_to}','{$dept_id}','{$check_to}');" style="cursor:pointer" width=15  > 
+	  	<img src="./images/del.gif" alt="Order" onClick="del_ord();" style="cursor:pointer" width=15  >	       
+    </td>	
+	</tr>
+   <tr>	
+    <td class=snvy align=right nowrap><b>Customer P.O.:</b></td>
+    <td class=b9 align=left >
+    	<input type='text' name="PHP_cust_po" size=25 class=select value="{$exc.cust_po}">
+    </td>
+    <td class=snvy align=right nowrap><b>採購單編號:</b></td>
+    <td class=b9 align=left  colspan=2>
+    	<input type='text' name="PHP_po" size=20 class=select value="{$exc.po_num}" readonly >
+	  	<img src="./images/icoSearch.gif" alt="Order" onClick="search_po('{$cust_id}','{$dept_id}');" style="cursor:pointer" width=15  >        
+    </td>
+    
+ 	</tr>		
+ </table>
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#eeeeee height=28>
+    <td class=bgdy align=center nowrap colspan=5><b>索賠</b></td>
+ </tr>
+	
+ <tr>
+    <td class=b9 align=right width=100><b>索賠金額 : </b></td>
+    <td class=b9 align=left><b>{$CURRENCY_select} $ <input type='text' name="PHP_price" size=8 value="" class=select> </td>
+</tr>
+
+
+</table>  
+
+<table border=0 cellspacing=2 cellpadding=2 width=700 bgcolor=#FFFFFF>
+
+ <tr height=28>
+    <td bgcolor=#eeeeee class=bgdy align=center nowrap><b>索賠事由</b></td>
+    <td bgcolor=#eeeeee class=bgdy align=center nowrap><b>會辦單位</b></td>
+ </tr>
+ <tr>
+   <td class=frnt align=center rowspan=7> <textarea rows=12 cols=120 name="PHP_dn_des">{$rec.reason}</textarea></td>
+ </tr>   
+  <tr>
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[0]" value="1"> 立元廠</td>
+  </tr>
+  <tr>
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[1]" value="2"> 湖嘉廠</td>
+  </tr>
+  <tr>
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[2]" value="4"> 嘉菲廠</td>
+  </tr>
+  <tr>	
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[3]" value="8"> 生產企劃室</td>
+ </tr>
+  <tr>	
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[4]" value="16"> 貿易事業處A</td>
+ </tr> 
+  <tr>	
+  	<td>&nbsp;&nbsp;<input type="checkbox" name="PHP_team[5]" value="32"> 貿易事業處B</td>
+ </tr> 
+  <tr>
+    <td  colspan=2 class=frnt align=center><hr size=2 width=98%></td>
+  </tr> 
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#333333 height=28>
+    
+ </tr>
+ 
+</table>
+
+<table border=0 cellspacing=0 cellpadding=2 width=690 bgcolor=#ffffff align=center>
+  <tr>
+  <td colspan=7>
+	<input type="hidden" name="PHP_action" value="do_dn_add">
+	<input type="hidden" name="PHP_back_str" value="{$back_str}">
+	<input type=submit value="[ 新增索賠報告 ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;></form>
+  </tr>
+
+
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

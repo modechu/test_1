@@ -1,0 +1,191 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+
+
+{literal}
+<script language="javascript">
+function show_det(yy,fty,mon) {
+	 var gofile ="expense.php?PHP_action=sales_compare_det&PHP_fty="+fty+"&PHP_month="+mon+"&PHP_year="+yy;
+	 var nm = fty+"compare";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=620 top=30, left=150');
+}
+
+function show_det_fob(yy,fty,mon) {
+	 var gofile ="expense.php?PHP_action=sales_compare_det_fob&PHP_fty="+fty+"&PHP_month="+mon+"&PHP_year="+yy;
+	 var nm = fty+"compare";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=620 top=30, left=150');
+}
+
+function show_det_exp(yy,fty,mon) {
+
+	 var gofile ="expense.php?PHP_action=expense_view_mm&PHP_fty="+fty+"&PHP_month="+mon+"&PHP_year="+yy;
+	 var nm = fty+"compare";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=500,height=620 top=30, left=150');
+}
+
+function show_full_exp(yy,fty) {
+
+	 var gofile ="expense.php?PHP_action=do_expense_search&PHP_fty="+fty+"&PHP_month=&PHP_dept=&PHP_year="+yy;
+	 var nm = fty+"compare";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=900,height=620 top=30, left=150');
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10 ><form>
+
+ <table width=1160 border=1 cellspacing=0 cellpadding=2 bgcolor="#303030">
+  <tr bgcolor="#ffffff">   
+		<td class="des" align=center >
+    	<a href="expense.php?PHP_action=sales_analysis_print&PHP_year={$now_yy}&PHP_month={$mm_mk}" >
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>					
+		</td>
+	<td colspan=13 align=center class=gry><b> +++++++++ SALES ANALYSIS  +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=800 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+
+  <tr bgcolor="#225176"> 
+    <td class=b9 width=120 align=center bgcolor=#ffffff><b>FY-{$now_yy}&nbsp;</b></td>
+    <td class=w9 width=80 align=center>UPTODAY({$mm})</td>
+    <td class=w9 width=80 align=center><b>JAN</b></td>
+    <td class=w9 width=80 align=center><b>FEB</b></td>
+    <td class=w9 width=80 align=center><b>MAR</b></td>
+    <td class=w9 width=80 align=center><b>APR</b></td>
+    <td class=w9 width=80 align=center><b>MAY</b></td>
+    <td class=w9 width=80 align=center><b>JUN</b></td>
+    <td class=w9 width=80 align=center><b>JUL</b></td>
+    <td class=w9 width=80 align=center><b>AUG</b></td>
+    <td class=w9 width=80 align=center><b>SEP</b></td>
+    <td class=w9 width=80 align=center><b>OCT</b></td>
+    <td class=w9 width=80 align=center><b>NOV</b></td>
+    <td class=w9 width=80 align=center><b>DEC</a></td>
+    <td class=ylw9 width=80 align=center bgcolor=#999999><b>Total</b></td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$bfr_yy}訂單(PC)</small></td>
+    {section name=SEC loop=$bfr_ord}
+    <td  class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$bfr_ord[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$bfr_ord_ttl|number_format}&nbsp;</b></td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$now_yy}訂單(PC)</small></td>
+    {section name=SEC loop=$now_ord}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$now_ord[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$now_ord_ttl|number_format}&nbsp;</b></td>
+  </tr> 
+  <tr bgcolor="#E7F3E2"> 
+    <td class=bgdy9 align=center bgcolor=#CAECBB>&nbsp;<small>{$now_yy}預算(PC)</small></td>
+    {section name=SEC loop=$fcst_q}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$fcst_q[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$fcst_q_ttl|number_format}&nbsp;</b></td>
+  </tr>   
+  <tr bgcolor="#FDF8AD"> 
+    <td class=bgdy9 align=center bgcolor=#EFE76E>&nbsp;<small>{$now_yy}差異(PC)</small></td>
+    {section name=SEC loop=$diff_q}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>
+    	<a href="javascript:show_det({$now_yy},'LY','{if $mm_ary[SEC] == 'uptoday'}01-{$mm_mk}{else}{$mm_ary[SEC]}{/if}')" style='cursor:pointer'>{$diff_q[SEC]|number_format}&nbsp;</a>    	
+    </td>
+    {/section}
+    <td class=bgdy9 align=right>
+    	<a href="javascript:show_det({$now_yy},'LY','01-12')" style='cursor:pointer'><b>{$diff_q_ttl|number_format}&nbsp;</b>&nbsp;</a>
+    	
+    </td>
+  </tr>   
+  <tr bgcolor="#dddddd"> 
+    <td class=bgdy9 align=center colspan=14></td>
+  </tr> 
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$bfr_yy}FOB(US$)</small></td>
+    {section name=SEC loop=$bfr_ord_p}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$bfr_ord_p[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$bfr_ord_p_ttl|number_format}&nbsp;</b></td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$now_yy}FOB(US$)</small></td>
+    {section name=SEC loop=$now_ord_p}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$now_ord_p[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$now_ord_p_ttl|number_format}&nbsp;</b></td>
+  </tr>  
+  <tr bgcolor="#E7F3E2"> 
+    <td class=bgdy9 align=center bgcolor=#CAECBB>&nbsp;<small>{$now_yy}預算(US$)</small></td>
+    {section name=SEC loop=$fcst_f}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$fcst_f[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$fcst_f_ttl|number_format}&nbsp;</b></td>
+  </tr>  
+  <tr bgcolor="#FDF8AD"> 
+    <td class=bgdy9 align=center bgcolor=#EFE76E>&nbsp;<small>{$now_yy}差異(US$)</small></td>
+    {section name=SEC loop=$diff_f}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>
+    	<a href="javascript:show_det_fob({$now_yy},'LY','{if $mm_ary[SEC] == 'uptoday'}01-{$mm_mk}{else}{$mm_ary[SEC]}{/if}')" style='cursor:pointer'>{$diff_f[SEC]|number_format}&nbsp;</a>
+    </td>
+    {/section}
+    <td class=bgdy9 align=right>
+	   	<a href="javascript:show_det_fob({$now_yy},'LY','01-12')" style='cursor:pointer'><b>{$diff_f_ttl|number_format}&nbsp;</b>&nbsp;</a>
+    	
+    </td>
+  </tr>    
+  <tr bgcolor="#dddddd"> 
+    <td class=bgdy9 align=center colspan=14></td>
+  </tr>      
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$bfr_yy}費用(US$)</small></td>
+    {section name=SEC loop=$bfr.E}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$bfr.E[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$bfr_ttl.E|number_format}&nbsp;</b></td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=bgdy9 align=center bgcolor=#dddddd>&nbsp;<small>{$now_yy}費用(US$)</small></td>
+    {section name=SEC loop=$now.E}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$now.E[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$now_ttl.E|number_format}&nbsp;</b></td>
+  </tr> 
+  <tr bgcolor="#E7F3E2"> 
+    <td class=bgdy9 align=center bgcolor=#CAECBB>&nbsp;<small>{$now_yy}費用預算</small></td>
+    {section name=SEC loop=$now.F}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>{$now.F[SEC]|number_format}&nbsp;</td>
+    {/section}
+    <td class=bgdy9 align=right><b>{$now_ttl.F|number_format}&nbsp;</b></td>
+  </tr>  
+  <tr bgcolor="#FDF8AD"> 
+    <td class=bgdy9 align=center bgcolor=#EFE76E>&nbsp;<small>{$now_yy}費用差異</small></td>
+    {section name=SEC loop=$diff_e}
+    <td class=bgdy9 align=right {if $mm_ary[SEC] == 'uptoday'}bgcolor="#FDF8AD"{/if} {if $mm_ary[SEC] <= $mm_mk}bgcolor="#FDE5FF"{/if}>
+			{if $mm_ary[SEC] <> 'uptoday'}
+				<a href="javascript:show_det_exp({$now_yy},'LY','{$mm_ary[SEC]}')" style='cursor:pointer'>{$diff_e[SEC]|number_format}&nbsp;</a>    
+    	{else}
+    		{$diff_e[SEC]|number_format}&nbsp;
+    	{/if}
+    </td>
+    {/section}
+    <td class=bgdy9 align=right>    	
+    	<a href="javascript:show_full_exp({$now_yy},'LY')" style='cursor:pointer'><b>{$diff_e_ttl|number_format}&nbsp;</b></a>
+    </td>
+  </tr> 
+  </table>
+
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

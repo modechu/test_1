@@ -1,0 +1,121 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: Size ADD  ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+{literal}
+<Script language="javascript">
+
+function cfm( ) {
+	var i=0;
+	var j=0;
+	var sizes='';
+	for (i=0;i < 18;i++)
+	{
+		if (window.document.forms['size_add'].elements['s'+i].value)
+		{
+			
+			j++;
+		}
+	}
+	j--;
+	for (i=0; i<j; i++)
+	{
+		sizes=sizes+window.document.forms['size_add'].elements['s'+i].value+',';
+	}
+	sizes=sizes+window.document.forms['size_add'].elements['s'+j].value
+//	self.opener.updateAddList(size);
+	self.opener.writeToSizeAddList(sizes);
+//	var size[0]=window.document.forms['size_add'].elements['s0'].value;
+//	var size[1]window.document.forms['size_add'].elements['s1'].value;
+	window.close();
+}
+
+
+
+</script>
+{/literal}
+
+</head>
+<body ><form METHOD="POST" name="size_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <span class=sign>APPEND</span>&nbsp;SIZE RECORD ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+   <tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>1</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>2</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>3</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>4</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>5</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>6</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s0" size=10 class=select value="{$size_des.size.0}" style=text-align:center ></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s1" size=10 class=select value="{$size_des.size.1}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s2" size=10 class=select value="{$size_des.size.2}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s3" size=10 class=select value="{$size_des.size.3}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s4" size=10 class=select value="{$size_des.size.4}" style=text-align:center></td>
+     <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s5" size=10 class=select value="{$size_des.size.5}" style=text-align:center></td>
+ </tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666><b>7</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>8</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>9</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>10</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>11</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>12</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s6" size=10 class=select value="{$size_des.size.6}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s7" size=10 class=select value="{$size_des.size.7}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s8" size=10 class=select value="{$size_des.size.8}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s9" size=10 class=select value="{$size_des.size.9}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s10" size=10 class=select value="{$size_des.size.10}" style=text-align:center></td>
+     <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s11" size=10 class=select value="{$size_des.size.11}" style=text-align:center></td>
+ </tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666><b>13</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>14</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>15</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>16</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>17</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>18</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s12" size=10 class=select value="{$size_des.size.12}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s13" size=10 class=select value="{$size_des.size.13}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s14" size=10 class=select value="{$size_des.size.14}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s15" size=10 class=select value="{$size_des.size.15}" style=text-align:center></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s16" size=10 class=select value="{$size_des.size.16}" style=text-align:center></td>
+     <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="s17" size=10 class=select value="{$size_des.size.17}" style=text-align:center></td>
+ </tr>
+
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+            <tr> 
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="do_size_des_add">
+				<input type="button" onClick="javascript:cfm( );" value=" ADD " class=select_e  style="width:100%; cursor:pointer; width:95%" >
+</form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

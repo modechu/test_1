@@ -1,0 +1,346 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+
+
+{literal}
+<script language="javascript">
+
+function mon_ord_p(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="pdt_static.php?PHP_action=etp_ord_prc&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function mon_out(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_out(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_unout_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"unout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=950,height=620 top=30, left=150');
+}
+function mon_sub_out(fty,year,mon,su) {
+	var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_subout=1";
+	var nm = fty+year+mon+"monsubout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function etp_out(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"etpout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_apv(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_unapv_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"unapv";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function unetp_out(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=un_etp_monthy&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"unetpout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=fty_etp_monthy&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"ftyschld";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule2(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_shp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"ftyschld2";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule3(fty,year,mon,su) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_unshp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	var nm = fty+year+mon+"ftyschld3";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp(fty,year,mon,qty,amt) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt;
+	var nm = fty+year+mon+"shp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_shp(fty,year,mon,qty,amt) {
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="index2.php?PHP_action=etp_un_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt;
+	var nm = fty+year+mon+"unshp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function forcast_out(fty,year,mon,qty) {
+	var gofile ="index2.php?PHP_action=mm_forcast_show&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty;
+	var nm = fty+year+mon+"fcst";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function pre_order_out(fty,year,mon,qty) {
+	var gofile ="pre_order.php?PHP_action=mm_per_order_show&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty;
+	var nm = fty+year+mon+"preorderout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10 ><form>
+
+ <table width=820 border=1 cellspacing=0 cellpadding=2 bgcolor="#303030">
+  <tr bgcolor="#ffffff">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ ORDER PRODUCTION STATUS SUMMARY ( by ETD base ) +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=800 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#225176"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#CCCCCC"> 
+    <td class=bgdy9 width=100 align=center bgcolor=#dddddd>&nbsp;CAPACITY</td>
+    <td class=bgdy9 width=60 align=right>{$c1.0|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.1|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.2|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.3|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.4|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.5|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.6|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.7|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.8|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.9|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.10|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.11|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.12|number_format}&nbsp;</td>
+  </tr>
+ 
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORDER</td>
+    {section name=SEC loop=$ord}
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$ord[SEC]}')" value='etp_out' style='cursor:pointer'>{$ord[SEC]|number_format}</a>&nbsp;</td>
+		{/section}
+  </tr>
+ 
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;SCHDL</td>
+		{section name=SEC loop=$schd}
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$schd[SEC]})" value='fty_schedule' style='cursor:pointer'>{$schd[SEC]|number_format}&nbsp;</a></td>
+		{/section}
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd>&nbsp;OUT-PUT</td>
+		{section name=SEC loop=$output}    
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$output[SEC]})" value='mon_out' style='cursor:pointer'>{$output[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  
+  <tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd><small>order amt.($)</small></td>
+		{section name=SEC loop=$ord_p}    
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ord_p[SEC]})" value='mon_out' style='cursor:pointer'>{$ord_p[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}   
+  </tr>  
+  
+<tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>sub out-put</td>
+		{section name=SEC loop=$sub_out} 
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sub_out[SEC]})" value='mon_sub_out' style='cursor:pointer'>{$sub_out[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr><td></td></tr>
+  
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd><b>SHIP</b></td>
+		{section name=SEC loop=$ship}
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ship[SEC]})" value='shp' style='cursor:pointer'>{$ship[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>SHIP(fob$)</td>
+		{section name=SEC loop=$ship_p}
+    <td class=snvy width=60 align=right>{$ship_p[SEC]|number_format}&nbsp;</td>
+ 		{/section}   
+  </tr>  
+  <tr><td></td></tr>
+  
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>UN SCHDL</b></td>
+		{section name=SEC loop=$un_sch}
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$un_sch[SEC]})" value='fty_schedule3' style='cursor:pointer'>{$un_sch[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>      
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>Un FINSHED</b></td>
+		{section name=SEC loop=$un_out}
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_out[SEC]}')" value='un_out' style='cursor:pointer'>{$un_out[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr><td></td></tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>Un APV</b></td>
+		{section name=SEC loop=$un_ord}
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_ord[SEC]}')" value='un_apv' style='cursor:pointer'>{$un_ord[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>Pre-Order</td>
+		{section name=SEC loop=$forcast}   
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}','{$yy[SEC]}','{$i[SEC]}','{$forcast[SEC]}')" value='forcast_out' style='cursor:pointer'>{$forcast[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}      
+  </tr>  
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>Sumry.</td>
+    {section name=SEC loop=$sumy}
+    <td class=snvy8 align=right>{$sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>  
+ <!-- 
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>Pre-Order</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'01',{$pre_order.01})" value='pre_order_out' style='cursor:pointer'>{$pre_order.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'02',{$pre_order.02})" value='pre_order_out' style='cursor:pointer'>{$pre_order.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'03',{$pre_order.03})" value='pre_order_out' style='cursor:pointer'>{$pre_order.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'04',{$pre_order.04})" value='pre_order_out' style='cursor:pointer'>{$pre_order.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'05',{$pre_order.05})" value='pre_order_out' style='cursor:pointer'>{$pre_order.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'06',{$pre_order.06})" value='pre_order_out' style='cursor:pointer'>{$pre_order.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'07',{$pre_order.07})" value='pre_order_out' style='cursor:pointer'>{$pre_order.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'08',{$pre_order.08})" value='pre_order_out' style='cursor:pointer'>{$pre_order.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'09',{$pre_order.09})" value='pre_order_out' style='cursor:pointer'>{$pre_order.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'10',{$pre_order.10})" value='pre_order_out' style='cursor:pointer'>{$pre_order.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'11',{$pre_order.11})" value='pre_order_out' style='cursor:pointer'>{$pre_order.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'12',{$pre_order.12})" value='pre_order_out' style='cursor:pointer'>{$pre_order.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$pre_order.13|number_format}&nbsp;</b></td>
+  </tr>  
+ --> 
+</table>
+
+
+<table width=800 border=0 cellspacing=0 cellpadding=2>
+	<tr>
+    <td align=right class=gry><a href="pdt_static.php?PHP_action=sf_ord_qty&PHP_fty={$fty}&PHP_year1={$year1}&PHP_month={$month}" style='cursor:pointer'>Detail</a></td>
+	</tr>
+</table>
+
+<p>
+
+<table width=820 border=1 cellspacing=0 cellpadding=2 bgcolor="#303030">
+	<tr bgcolor="#ffffff">
+		<td colspan=13 align=center class=gry><b> +++++++++ TOP STYLE SUMMARY ( by ETD base ) +++++++++  </b></td>
+		<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+	<tr bgcolor="#225176"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORDER</td>
+    {section name=SEC loop=$tp.ord}
+    <td class=snvy width=60 align=right><!--<a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$ord[SEC]}')" value='etp_out' style='cursor:pointer'>-->{$tp.ord[SEC]|number_format}</a>&nbsp;</td>
+		{/section}
+  </tr>
+	<tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd><b>OUT-PUT</b></td>
+		{section name=SEC loop=$tp.output}
+    <td class=grn9 width=60 align=right><!--<a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_ord[SEC]}')" value='un_apv' style='cursor:pointer'>-->{$tp.output[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>Un APV</b></td>
+		{section name=SEC loop=$tp.un_ord}
+    <td class=snvy width=60 align=right><!--<a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_ord[SEC]}')" value='un_apv' style='cursor:pointer'>-->{$tp.un_ord[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>Pre-Order</td>
+		{section name=SEC loop=$tp.forcast}   
+    <td class=grn9 width=60 align=right><!--<a href="javascript:forcast_out('{$fty}','{$yy[SEC]}','{$i[SEC]}','{$forcast[SEC]}')" value='forcast_out' style='cursor:pointer'>-->{$tp.forcast[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}      
+  </tr>
+	<tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>Sumry.</td>
+    {section name=SEC loop=$tp.sumy}
+    <td class=snvy8 align=right>{$tp.sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+	<tr><td></td></tr>
+	<tr bgcolor="#ffffff">
+		<td colspan=13 align=center class=gry><b> +++++++++ BOTTOM STYLE SUMMARY ( by ETD base ) +++++++++  </b></td>
+		<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+<tr bgcolor="#225176"> 
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORDER</td>
+    {section name=SEC loop=$bt.ord}
+    <td class=snvy width=60 align=right><!--<a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$ord[SEC]}')" value='etp_out' style='cursor:pointer'>-->{$bt.ord[SEC]|number_format}</a>&nbsp;</td>
+		{/section}
+  </tr>
+	<tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd><b>OUT-PUT</b></td>
+		{section name=SEC loop=$bt.output}
+    <td class=grn9 width=60 align=right><!--<a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_ord[SEC]}')" value='un_apv' style='cursor:pointer'>-->{$bt.output[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>Un APV</b></td>
+		{section name=SEC loop=$bt.un_ord}
+    <td class=snvy width=60 align=right><!--<a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}','{$un_ord[SEC]}')" value='un_apv' style='cursor:pointer'>-->{$bt.un_ord[SEC]|number_format}</a>&nbsp;</td>
+ 		{/section}   
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>Pre-Order</td>
+		{section name=SEC loop=$bt.forcast}   
+    <td class=grn9 width=60 align=right><!--<a href="javascript:forcast_out('{$fty}','{$yy[SEC]}','{$i[SEC]}','{$forcast[SEC]}')" value='forcast_out' style='cursor:pointer'>-->{$bt.forcast[SEC]|number_format}<a>&nbsp;</td>
+ 		{/section}      
+  </tr>
+	<tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>Sumry.</td>
+    {section name=SEC loop=$bt.sumy}
+    <td class=snvy8 align=right>{$bt.sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+	<tr><td></td></tr>
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

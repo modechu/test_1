@@ -1,0 +1,356 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">
+
+<!--
+#l1 {
+background: #eeeeee;
+opacity:0.8;
+filter: alpha(opacity=95);
+position:absolute;
+
+height:200;
+width:500;
+z-index: 1000;
+
+}
+
+.l2{ 
+    position: relative;
+    }
+
+-->
+
+</style>
+
+<script language="javascript" src="./js/col.js"></script>
+
+
+<Script language="javascript">
+function chg_month(chg)
+{
+	location.href="schedule.php?PHP_action=chg_month&PHP_chg="+chg+"&PHP_action_to=schedule_view";
+}
+function sch_ord_show(num,init)
+{
+	 init = init.replace(/\-/,'');
+	 var url ="smpl_sch.php?PHP_action=sch_ord_view&PHP_ord_num="+num;
+	 var nm = 'schedule_ord_'+init;
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=700 top=50, left=100');
+
+}
+function ord_line(line,date,fty) {
+	 var time_set = new Date();
+	 alert(time_set.getYear());
+	 
+	 var url ="monitor.php?PHP_action=saw_line_pic&PHP_line="+line+"&PHP_date="+date+"&PHP_fty="+fty;
+	 var nm = 'line';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function FabBox(ord_num,style,etd,qty,ord_qty,ie1){
+
+//	var ord_num 	= unescape(ord_num);
+	orders_num.innerHTML = ord_num;
+	
+	var style 	= unescape(style);
+	ord_style.innerHTML = style;
+
+	var etd 	= unescape(etd);
+	ord_etd.innerHTML = etd;
+
+	var qty 	= unescape(qty);
+	sch_qty.innerHTML = qty;
+
+	var ord_qty 	= unescape(ord_qty);
+	ords_qty.innerHTML = ord_qty;
+
+	var ie1 	= unescape(ie1);
+	ords_ie.innerHTML = ie1;
+	
+}
+
+
+function overTip(boxObj) { 
+	boxObj.style.visibility = "visible";
+	if(event.clientX + boxObj.offsetWidth > document.body.offsetWidth - 40 ){
+		boxObj.style.left = event.clientX + document.body.scrollLeft - boxObj.offsetWidth - 26 + 'px';
+	} else {
+		boxObj.style.left = event.clientX + document.body.scrollLeft + 26 + 'px';
+	}
+	if(event.clientY + boxObj.offsetHeight > document.body.offsetHeight - 20 ){
+		boxObj.style.top = event.clientY + document.body.scrollTop - boxObj.offsetHeight - 20 + 'px';
+	} else {
+		boxObj.style.top = event.clientY + document.body.scrollTop + 20 + 'px';
+	}	
+}
+
+function outTip(boxObj) { 
+	boxObj.style.visibility = "hidden"; 
+}
+
+function do_sch_edit() {
+	 var url ="smpl_sch.php?PHP_action=schedule_add";
+	 var nm = 'schadd';
+	 window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=1000,height=600 top=50, left=60');
+}
+
+function smpl_out2(smpl_num) {
+	 var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num;
+	 var nm = 'sample';
+	 window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+</script>
+
+
+{/literal}
+</head>
+<body >
+
+<div id="preview1" style="position:absolute; z-index:1;width:10; filter:revealTrans(duration=0.3); visibility:hidden;"> 
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td width="9" height="9"><img src="images/t_l.png" width="9" height="9"></td>
+    <td width="5" height="9" align="left" background="images/t_m.png"><img src="images/t_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/t_m.png"></td>
+    <td width="5" height="9" align="right" background="images/t_m.png"><img src="images/t_mr.png" width="5" height="9"></td>
+    <td><img src="images/t_r.png" width="9" height="9"></td>
+  </tr>
+  <tr>
+    <td width="9" valign="top" background="images/m_l.png"><img src="images/m_lt.png" width="9" height="5"></td>
+    <td colspan="3" rowspan="3" bgcolor="#FFFFFF"><table border="0" cellpadding="3" cellspacing="1">
+      <tr>
+        <td ><table width="100%" border="0" cellpadding="1" cellspacing="1">
+            <tr>
+              <td align="right" class="B" nowrap>SAMPLE #：</td>
+              <td nowrap>&nbsp;<span id="orders_num" ></span></td>
+            </tr>
+            <tr>
+              <td align="right" class="B" nowrap> QTY：</td>
+              <td nowrap>&nbsp;<span id="ords_qty" ></span></td>
+            </tr>
+            <tr>
+              <td align="right" class="B" nowrap>ORD. LINK：</td>
+              <td nowrap>&nbsp;<span id="ords_ie" ></span></td>
+            </tr>            
+            <tr>
+              <td align="right" class="B" nowrap>Style：</td>
+              <td nowrap>&nbsp;<span id="ord_style" ></span></td>
+            </tr>
+            <tr>
+              <td align="right" class="B" nowrap>ETD：</td>
+              <td nowrap>&nbsp;<span id="ord_etd" ></span></td>
+            </tr>     
+            <tr>
+              <td align="right" class="B" nowrap>SCHD QTY：</td>
+              <td nowrap>&nbsp;<span id="sch_qty" ></span></td>
+            </tr>                   
+        </table></td>
+      </tr>
+    </table></td>
+    <td width="9" valign="top" background="images/m_r.png"><img src="images/m_rt.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td height="99%" background="images/m_l.png"></td>
+    <td height="99%" background="images/m_r.png"></td>
+  </tr>
+  <tr>
+    <td width="9" height="5" valign="bottom" background="images/m_l.png"><img src="images/m_lb.png" width="9" height="5"></td>
+    <td width="9" valign="bottom" background="images/m_r.png"><img src="images/m_rb.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td width="9" height="9"><img src="images/b_l.png" width="9" height="9"></td>
+    <td height="9" align="left" background="images/b_m.png"><img src="images/b_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/b_m.png"></td>
+    <td height="9" align="right" background="images/b_m.png"><img src="images/b_mr.png" width="5" height="9"></td>
+    <td width="9" height="9"><img src="images/b_r.png" width="9" height="9"></td>
+  </tr>
+</table>
+</div>
+
+
+<br>
+
+<div id="sd" style="position:absolute; overflow: hidden;width:830px;">
+</div>
+<table cellspacing=1 cellpadding=4 cols=1 width=830 bgcolor=#003300>
+	<tr>
+		<td class="ylw10" align=left width=200 height=28><b>FTY : {$fty}</b> </td>
+		<td class="ylw10" align=center width=200 height=28><b>Schedule VIEW</b> </td>
+	</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=840 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+
+<hr SIZE=2 WIDTH=980>
+<table border="0" cellspacing=0 cellpadding=2 width=830>	
+<!--	
+	<tr >		
+<form method=POST name=month_print >
+			<td class="ylw10" align=right>
+				{$year_select}{$month_select}    
+				<input type=submit value="MONTH PRINT" class=select_e style="cursor:pointer; width=40%">
+				<input type="hidden" name="PHP_action" value="schedule_print">
+		</td>	
+</form>			
+<form method=POST name=excel_print >
+			<td class="ylw10" align=right>
+				{$year_select}{$month_select}    
+				<input type=submit value="EXCEL PRINT" class=select_e style="cursor:pointer; width=40%">
+				<input type="hidden" name="PHP_action" value="schedule_excel">
+		</td>	
+</form>	
+-->	
+<form method=POST name=print >	
+		<td align="right" widht=880 valign=top>
+		  <img align='top' onmousedown="javascript:Cal(document.print.PHP_pt_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>		
+		  <input type="text" name="PHP_pt_date" size="15" class=select value="{$today}" readonly> 
+		</td>		
+		<td class=snvy align="left" width=100 valign=top> 
+			<input type="hidden" name="PHP_action" value="schedule_small_print">
+			<input type=submit value="PRINT" class=select_e style="cursor:pointer; width=80%">
+		</td>
+</form>
+	</tr>	
+</table>
+
+<hr SIZE=2 WIDTH=980>
+<table border="1" cellspacing=0 cellpadding=2 width=830>	
+  <tr>
+		<td align="center" bgcolor=#D7D7FF>&nbsp;</td>		
+		<td class=snvy align="left"> : SAMPLE FINISHED</td>
+		<td align="center" bgcolor=#FD1838>&nbsp;</td>		
+		<td class=snvy align="left"> : 排產ETF超過需求日</td>
+		<td align="center" bgcolor=#D0FDCD>&nbsp;</td>		
+		<td class=snvy align="left"> : 生產中</td>
+		<td align="center" bgcolor=#96DDA3>&nbsp;</td>		
+		<td class=snvy align="left"> : 生產中,超過需求日</td>
+		<td align="center" bgcolor=#FD66DF>&nbsp;</td>		
+		<td class=snvy align="left"> : PENDING</td>		
+	</tr>	
+</table>
+<hr SIZE=2 WIDTH=830>
+<table border="0" cellspacing=0 cellpadding=0 width=830>	
+<tr>
+<form method=POST name=change_date >	
+		<td align="left"  valign=top >
+		  <img align='top' onmousedown="javascript:Cal(document.change_date.PHP_pt_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>		
+		  <input type="text" name="PHP_pt_date" size="15" class=select value="{$today}" readonly> 
+			<input type="hidden" name="PHP_action" value="schedule_view_small">
+				<input type="hidden" name="SCH_fty" value="{$fty}">
+			<input type=submit value="CHANGE start Date" class=select_e style="cursor:pointer; width=22%">
+		</td>		
+</form>
+{if $add_flag}
+	<form METHOD="POST" name="sch_edit" action="smpl_sch.php">	
+		<td align=right valign=top>
+			<input type=button value="[ EDIT ]" class=select_e style="cursor:pointer; width=52%" onclick="do_sch_edit()">
+		</td>
+		<input type=hidden name="PHP_action" value="schedule_add">
+</form>
+{/if}
+</tr>
+</table>
+
+
+
+
+<div id="hh" style="overflow:hidden;width:980px;">
+<table border="0" cellspacing=0 cellpadding=0 width="100%">	
+	<tr>
+		<td width=28 valign="top">
+			<table border="1" cellspacing=0 cellpadding=2 width=28 id="mat_table" bgcolor="#eeeeee">	
+				<tr bgcolor="#003333" height=28>		
+					<td class=back align="center"><b>LN.</b>&nbsp;&nbsp;(avg/p.)</td>
+				</tr>
+				<tr bgcolor="#003333" height=0>
+					<td class=back align="center"></td>
+				</tr>
+				<tr bgcolor="#003333" >
+					<td class=back align="center">&nbsp;</td>
+				</tr>				
+				{section name=SEC loop=$ln_rec} 
+				<tr height=25>
+					<td nowrap class=snvy align="center" nowrap bgcolor="#FFFFFF" width=100 >
+						{$ln_rec[SEC].line}({$ln_rec[SEC].style})
+					</td>
+				</tr>	
+				{/section}
+	
+			</table>
+		</td>
+		
+		<td>
+			<div id="md{php} echo $md++;{/php}" style="overflow: scroll;width:900px;">
+			<table border="1" cellspacing=0 cellpadding=2 width=900 id="mat_table" bgcolor="#eeeeee">	
+				<tr bgcolor="#003333" height=28>		
+					{section name=SEC loop=$span_mm}
+					<td class=back align="center" colspan={$span_mm[SEC]} nowrap><b>{$yy_mm[SEC]}</b></td>
+					{/section}
+				</tr>
+				<tr bgcolor="#003333" height=0>
+					{section name=SEC loop=$days_hr} 
+					<td  width=5%></td>
+					{/section}
+				</tr>				
+				<tr bgcolor="#003333" >
+					{section name=SEC loop=$days} 
+					<td  colspan=2 class={if $week_day[SEC] == 0 || $week_day[SEC] == 6}ssign{else}back{/if} align="center" bgcolor="{$days_color[SEC]}"><b>{$days[SEC]}</b></td>
+					{/section}
+				</tr>
+				{section name=SEC loop=$ln_rec} 
+				<tr height=25>
+					{if $ln_rec[SEC].sch_rec.0 == ''}<td bgcolor='#eeeeee'>&nbsp;</td>{/if}
+					{section name=DET loop=$ln_rec[SEC].sch_rec} 
+					<td nowrap class=snvy align="center" colspan={$ln_rec[SEC].sch_rec[DET].day_range} bgcolor="{$ln_rec[SEC].sch_rec[DET].flag_color}"} onMouseOver="overTip(preview1);FabBox('{$ln_rec[SEC].sch_rec[DET].ord_num}','{$ln_rec[SEC].sch_rec[DET].style}','{$ln_rec[SEC].sch_rec[DET].etd}','{$ln_rec[SEC].sch_rec[DET].qty|NUMBER_FORMAT}','{$ln_rec[SEC].sch_rec[DET].ord_qty|NUMBER_FORMAT}','{$ln_rec[SEC].sch_rec[DET].ord_link}');" onMouseOut="outTip (preview1)">	
+						{if $ln_rec[SEC].sch_rec[DET].ord_num}					
+							<a href="javascript:sch_ord_show('{$ln_rec[SEC].sch_rec[DET].ord_num}','{$ln_rec[SEC].sch_rec[DET].ord_init}')" style='cursor:pointer'>
+	  						<small>{$ln_rec[SEC].sch_rec[DET].ord_init}</small></a>							
+						{/if}
+					</td>
+					{/section}
+				</tr>	
+				{/section}
+
+
+			</table>
+		</div>
+		</td>
+	</tr>
+</table>
+</div>
+
+<table border="1" cellspacing=0 cellpadding=2 width=800 id="mat_table">	
+	<tr bgcolor="#003333" height=28>
+		<td class=back align="center" colspan=10><B>未排{literal}程{/literal}訂單列表</B></td>
+	</tr>
+	<tr bgcolor="#003333" height=28>
+		<td class=back align="center"><B>SAMPLE#</B></td>
+		<td class=back align="center"><B>style</B></td>
+		<td class=back align="center"><B>SMPL. type</B></td>
+		<td class=back align="center"><B>SMPL. QTY</B></td>
+		<td class=back align="center"><B>REM. QTY</B></td>
+		<td class=back align="center" width=80><B>ETD</B></td>
+	</tr>		
+ {section name=SEC loop=$ord_rec} 
+	<tr  >
+		<td  class=snvy align="center"><a href="javascript:smpl_out2('{$ord_rec[SEC].num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$ord_rec[SEC].num}</b></a></td>
+		<td  class=snvy align="center">{$ord_rec[SEC].style}</td>
+		<td  class=snvy align="left">{$ord_rec[SEC].smpl_type}</td>
+		<td  class=snvy align="right">{$ord_rec[SEC].qty|NUMBER_FORMAT}</td>
+		<td  class=snvy align="right">{$ord_rec[SEC].rem_qty|NUMBER_FORMAT}</td>
+		<td  class=snvy align="center">&nbsp;{$ord_rec[SEC].etd}</td>
+	</tr> 
+ {/section} 
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

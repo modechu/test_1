@@ -1,0 +1,78 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body bgcolor="#003C77" topmargin=10>
+<table width="800" border=1 cellspacing=0 cellpadding=2>
+	<tr><td colspan=10 align=center class=gry><b>Purchase Order LIST</b></td></tr>
+	<tr bgcolor="#003333"> 
+		<td class=w9 align=center><b>PO. #</b></td>
+		<td class=w9 align=center><b>dept.</b></td>
+		<td class=w9 align=center><b>supplier</b></td>
+		<td class=w9 align=center><b>source area</b></td>
+		<td class=w9 align=center colspan=2 ><b>Currency/Amt.</b></td>
+		<td class=w9 align=center colspan=2 ><b>Deal</b></td>
+		<td class=w9 align=center><b>ETD</b></td>
+		<td class=w9 align=center><b>status</b></td>
+	</tr>
+	{section name=SEC loop=$apply}
+	{if $apply[SEC].status == 12}
+	<tr bgColor='#dddddd'>
+	{elseif $apply[SEC].status == -1}
+	<tr bgColor='#B6ADA0'>
+	{else}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+	{/if}
+		<td class=gry9 align=center nowrap><small>
+			{if $add_flag}
+				<img height="15px" width="15px" src="images/excel_icon.gif" onClick="javascript:location.href='supplier_ship.php?PHP_action=export_po_csv&PHP_po_num={$apply[SEC].po_num}'" style="cursor:pointer" alt="匯出物料"></img>&nbsp;
+			{/if}
+			<a href="{$PHP_SELF}?PHP_action={if $apply[SEC].special > 2}po_pp_view{elseif $apply[SEC].special == 1}po_ex_view{else}po_view{/if}&PHP_aply_num={$apply[SEC].ap_num}{$back_str}">{$apply[SEC].po_num}</a></small></td>
+		<td class=gry9 align=center><small>{if $apply[SEC].dept <> $apply[SEC].open_dept && $apply[SEC].open_dept <> ''}{$apply[SEC].open_dept}{else}{$apply[SEC].dept}{/if}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].s_name}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].country}&nbsp;</small></td>
+		<td class=gry9 align=right><b>{$apply[SEC].currency}&nbsp;</b></td>
+		<td class=gry9 align=right><b>${$apply[SEC].po_total|number_format:"2f"}&nbsp;</b></td>
+		<td class=gry9 align=right><b>{$apply[SEC].currency}&nbsp;</b></td>		
+		<td class=gry9 align=right><b>${$apply[SEC].dear|number_format:"2f"}&nbsp;</b></td>		
+		<td class=gry9 align=center><small>{$apply[SEC].eta}&nbsp;</small></td>
+		<td class=gry9 align=lefr>&nbsp;<small>{$apply[SEC].statuss}
+		{if $apply[SEC].special == 1} , <font color="green">Extra</font> {/if}
+		{if $apply[SEC].special >= 2 } , <font color="green">P.P.</font> {/if}		
+		</small></td>
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;Purchase Order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,105 @@
+{include file="header_utf8.html"}
+<table cellpadding="0" cellspacing="0" cols="0" class="title_bg">
+	<tr>
+		<td class="title_l"> BOM ( Factory ) : VIEW ( Order # <a href="javascript:Show_ord('{$id}','{$order_num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order_num}</b></a> ) </td>
+		<td class="title_m">[ {if $pdc_status == 4}{literal}Submit{/literal}{elseif $pdc_status == 2}{literal}UN Submit{/literal}{/if} ]</b></td>
+		<td class="title_r">Version : <b>{$pdc_version}</b></td>
+        <td class="title_r">{if $pdc_status == 4}<img id="revise_bom_of_materials" name="submit_ajax" src='./images/revise21.jpg?' border=0 title="REVISE">{/if}</td>
+	</tr>
+</table>
+<table cellpadding="0" cellspacing="0" cols="0" class="txt_item">
+	<tr>
+		<td>
+            <table>
+                <tr>
+                    <td valign="top">{$pic_url}</td>
+                    <td valign="top">
+                        <table>
+                            <tr>
+                                <td class="txt_item_r">Cust. : </td>
+                                <td class="txt_item_l">{$cust_iname}</td>
+                                <td class="txt_item_r">Dept. : </td>
+                                <td class="txt_item_l">{$dept}</td>
+                                <td class="txt_item_r">ETD : </td>
+                                <td class="txt_item_l">{$etd}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">Style : </td>
+                                <td class="txt_item_l">{$style}</td>
+                                <td class="txt_item_r">SIZE RANGE : </td>
+                                <td class="txt_item_l">{$size_scale}</td>
+                                <td class="txt_item_r">Q'ty / Unit :</td>
+                                <td class="txt_item_l">{$qty|NUMBER_FORMAT} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"><hr></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <table>
+                                        <tr>
+                                            <td valign="top">{$PHTML}</td>
+                                            <td valign="top">{$CHTML}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <input id="search_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="List">
+                                    {if $pdc_status == 2}<input id="confirm_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="[ Submit ]">
+                                    <input id="edit_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="Edit">{/if}
+                                </td>
+                            </tr>	
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+	</tr>
+    <tr>
+		<td><hr></td>
+	</tr>
+	<tr>
+		<td>{$BHTML}</td>
+	</tr>
+	<tr>
+		<td align="right" class="txt_status">{if $pdc_bom_sub_user}Submit：{$pdc_bom_sub_user} / {$pdc_bom_sub_date|date_format:"%Y-%m-%d"}{/if}</td>
+	</tr>
+	<tr>
+		<td><hr></td>
+	</tr>
+    <tr>
+        <td>
+            <input id="search_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="List">
+            {if $pdc_status == 2}<input id="confirm_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="[ Submit ]">
+            <input id="edit_bom_of_materials" type="button" class="submit_ajax" style="width:32%;" value="Edit">{/if}
+        </td>
+    </tr>	
+</table>
+<form METHOD="POST" id="edit_bom_of_materials" action="{$PHP_SELF}?PHP_action=edit_bom_of_materials">
+<input type="hidden" name="PHP_factory" value="{$factory}"/>
+<input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+<input type="hidden" name="PHP_id" value="{$wi_id}"/>
+</form>
+<form METHOD="POST" id="confirm_bom_of_materials" action="{$PHP_SELF}?PHP_action=confirm_bom_of_materials">
+<input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+<input type="hidden" name="PHP_id" value="{$wi_id}"/>
+</form>
+<form METHOD="POST" id="search_bom_of_materials" action="{$PHP_SELF}?PHP_action=search_bom_of_materials">
+<input type="hidden" name="PHP_goback" value="{$order_num}"/>
+</form>
+<form METHOD="POST" id="view_bom_of_materials" action="{$PHP_SELF}?PHP_action=view_bom_of_materials">
+<input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+<input type="hidden" name="PHP_id" value="{$wi_id}"/>
+<input type="hidden" name="PHP_action" name="PHP_action" value="view_bom_of_materials"/>
+</form>
+<form METHOD="POST" id="revise_bom_of_materials" action="{$PHP_SELF}?PHP_action=revise_bom_of_materials">
+<input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+<input type="hidden" name="PHP_id" value="{$wi_id}"/>
+</form>
+{include file="footer_utf8.html"}

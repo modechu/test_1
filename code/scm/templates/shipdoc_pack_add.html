@@ -1,0 +1,1041 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<script language="javascript" src="./js/col.js"></script>        
+<Script language="javascript"> 
+var transaction;
+var sUrl;	
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+}
+function edit_count_sum(f_name)
+{
+	var i; var j; var k;
+	var ttl =0;
+	o_cnt = window.document.forms[f_name].elements['PHP_o_cnt'].value;
+	for(i = 0; i< o_cnt; i++)
+	{
+	 ord_id = window.document.forms[f_name].elements['PHP_ord_id['+i+']'].value;
+	 x_ln = window.document.forms[f_name].elements['PHP_x_ln['+i+']'].value;
+	 y_ln = window.document.forms[f_name].elements['PHP_y_ln['+i+']'].value;
+	 var sub_ary = new Array();
+	 var ord_ttl = 0;
+	 for(k = 0; k < y_ln; k++) sub_ary[k] = 0;
+	 for(j = 0; j < x_ln; j++)
+	 {
+	  ln_ttl =0;
+	  for(k = 0; k < y_ln; k++)
+	  {
+	  	qty = eval("window.document.forms[f_name].elements['PHP_qty['+ord_id+']['+j+']['+k+']'].value");
+			if(qty == '')qty = 0;
+			ln_ttl  += parseInt(qty) ;
+			sub_ary[k] += parseInt(qty) ;	
+			ttl += parseInt(qty) ;
+			ord_ttl += parseInt(qty) ;
+	  }
+	  window.document.forms[f_name].elements['PHP_qty['+ord_id+']['+j+'][s_ttl]'].value = ln_ttl;
+	 }
+	 for(k = 0; k < y_ln; k++)window.document.forms[f_name].elements['PHP_sub_qty['+ord_id+']['+k+']'].value = sub_ary[k];
+	 window.document.forms[f_name].elements['PHP_sub_qty['+ord_id+'][s_ttl]'].value = ord_ttl;
+	}
+	window.document.forms[f_name].elements['PHP_ctn_qty'].value = ttl;
+}
+ function count_sum(f_name)
+ {
+/*	
+	var qty = 0
+	var s_qty = 0
+{/literal}	
+	{section name=SEC loop=$size}
+		s_qty = eval("window.document.forms[f_name].elements['PHP_qty[{$size[SEC]}]'].value");
+		if(s_qty == '')s_qty = 0;
+		qty += parseInt(s_qty);
+	{/section}
+{literal}
+	window.document.forms[f_name].elements['PHP_ctn_qty'].value = qty;
+*/
+		
+	g_ttl = 0;	
+{/literal}	
+	{section name=ORD loop=$ord}
+		{section name=SEC loop=$size[ORD]}
+			sqty_{$ord[ORD].id}_{$size[ORD][SEC]} = 0;
+		{/section}
+		 sqty_{$ord[ORD].id}_sttl = 0;	
+	{/section}	
+
+	{section name=ORD loop=$ord}
+	  {section name=CPO loop=$cust_po[ORD]}
+			{section name=CLR loop=$color_f[ORD]}
+			  lqty = 0;
+				{section name=SEC loop=$size[ORD]}
+				 	qty = eval("window.document.forms[f_name].elements['PHP_qty[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}][{$size[ORD][SEC]}]'].value");
+					if(qty == '')qty = 0;
+					lqty  += parseInt(qty) ;
+					sqty_{$ord[ORD].id}_{$size[ORD][SEC]} += parseInt(qty) ;
+					g_ttl += parseInt(qty) ;
+				{/section}
+					window.document.forms[f_name].elements['PHP_qty[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}][s_ttl]'].value = lqty;
+					sqty_{$ord[ORD].id}_sttl += parseInt(lqty) ;
+			{/section}
+		{/section}
+	{/section}	
+
+	{section name=ORD loop=$ord}
+		{section name=SEC loop=$size[ORD]}
+			window.document.forms[f_name].elements['PHP_sub_qty[{$ord[ORD].id}][{$size[ORD][SEC]}]'].value = sqty_{$ord[ORD].id}_{$size[ORD][SEC]};
+		{/section}	
+		 window.document.forms[f_name].elements['PHP_sub_qty[{$ord[ORD].id}][s_ttl]'].value = sqty_{$ord[ORD].id}_sttl;			
+	{/section}		
+	window.document.forms[f_name].elements['PHP_ctn_qty'].value = g_ttl;
+	 
+{literal}	
+ }
+ 
+function del_ajx(id,ord_num,ctn,ord_id,r){
+	if ( confirm("This record will forever delete and can't reversion anymore  !\r\rPlease check again\r\rAre you sure delet ??")) {
+		location.href= "shipdoc.php?PHP_action=ship_pack_del_ajx&PHP_id="+id+"&PHP_ord_num="+ord_num+"&PHP_ctn="+ctn+"&PHP_from=add";
+/*		
+	  var i=r.parentNode.parentNode.rowIndex;
+	  document.getElementById('ship_table_'+ord_id).deleteRow(i);	  
+
+ 	  sUrl = "shipdoc.php?PHP_action=ship_pack_del_ajx&PHP_id="+id+"&PHP_ord_num="+ord_num+"&PHP_ctn="+ctn;
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+*/	  
+
+	} 
+} 
+  
+  var delback = {
+    success: function(o) {
+    	document.getElementById("tbl_msg").style.display='block';    
+    	var response = o.responseText.split("|");    	
+    	msg1.innerText  = response[1]; 
+    	if(response[0] == 'del_full')
+    	{
+			 	location.href="shipdoc.php?PHP_action=shipdoc&PHP_msg="+response[1];   	
+    	}
+    	    	
+    	{/literal}var ord_num = '{$ord.order_num}';{literal}
+    	var j = 4;
+    	
+    
+    	if(ord_num == response[2])
+    	{
+    		{/literal}
+    		{section name=SEC loop=$size}
+    			var size_name = response[3]+'_{$size[SEC]}';
+    //			alert(size_name);
+    			var tmp = window.document.forms['ord_size'].elements[size_name].value;
+    //			alert(tmp);
+    			tmp = parseInt(tmp) +parseInt(response[j]);
+    //			alert(tmp);
+    			window.document.forms['ord_size'].elements[size_name].value = tmp;
+    			j++;
+    		{/section}
+    		{literal}
+   			var tmp = window.document.forms['ord_size'].elements[response[2]+'_sum'].value;
+   			tmp = parseInt(tmp) +parseInt(response[j]);
+   			window.document.forms['ord_size'].elements[response[2]+'_sum'].value = tmp;
+    		
+    	}
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };  
+ 
+function search_ord(cust,fty) {
+
+	var url ='shipdoc.php?PHP_action=other_order_search&PHP_cust='+cust+'&PHP_fty='+fty; 	
+	var nm = 'ordsearch';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=700 top=50, left=100');
+
+}
+/*
+function writeToOrdChange(ord_id)
+{
+	{/literal}var id = {$shp.id};{literal}
+	location.href="shipdoc.php?PHP_action=packet_order_chg&PHP_ord_id="+ord_id+"&PHP_id="+id;
+}
+*/
+function get_inv(f_name)
+{
+	var inv = window.document.forms['main_ctxt'].elements['PHP_inv'].value;
+
+	window.document.forms[f_name].elements['PHP_inv'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_unit'].value;
+
+	window.document.forms[f_name].elements['PHP_unit'].value = inv;
+
+/*
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ship_date'].value;
+	window.document.forms[f_name].elements['PHP_ship_date'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_cust'].value;
+	window.document.forms[f_name].elements['PHP_cust'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ship_term'].value;
+	window.document.forms[f_name].elements['PHP_ship_term'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ship_via'].value;
+	window.document.forms[f_name].elements['PHP_ship_via'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ship_from'].value;
+	window.document.forms[f_name].elements['PHP_ship_from'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ship_to'].value;
+	window.document.forms[f_name].elements['PHP_ship_to'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_des'].value;
+	window.document.forms[f_name].elements['PHP_des'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_pack'].value;
+	window.document.forms[f_name].elements['PHP_pack'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_vendor'].value;
+	window.document.forms[f_name].elements['PHP_vendor'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_consignee'].value;
+	window.document.forms[f_name].elements['PHP_consignee'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_vendor2'].value;
+	window.document.forms[f_name].elements['PHP_vendor2'].value = inv;
+
+	var csg2 = window.document.forms['main_ctxt'].elements['PHP_consignee2'].value;
+	if(csg2)window.document.forms[f_name].elements['PHP_consignee'].value = csg2;
+	
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_name'].value;
+	window.document.forms[f_name].elements['PHP_fnl_name'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_addr'].value;
+	window.document.forms[f_name].elements['PHP_fnl_addr'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_style'].value;
+	window.document.forms[f_name].elements['PHP_fnl_style'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_po'].value;
+	window.document.forms[f_name].elements['PHP_fnl_po'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_del_due'].value;
+	window.document.forms[f_name].elements['PHP_del_due'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_des'].value;
+	window.document.forms[f_name].elements['PHP_fnl_des'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_fnl_dept'].value;
+	window.document.forms[f_name].elements['PHP_fnl_dept'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_dept_des'].value;
+	window.document.forms[f_name].elements['PHP_dept_des'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_ctn_num'].value;
+	window.document.forms[f_name].elements['PHP_ctn_num'].value = inv;
+
+	var inv = window.document.forms['main_ctxt'].elements['PHP_seal'].value;
+	window.document.forms[f_name].elements['PHP_seal'].value = inv;
+
+	if(window.document.forms['main_ctxt'].elements['PHP_que1'].checked)
+	{
+		window.document.forms[f_name].elements['PHP_que1'].value = 1;
+	}else{
+		window.document.forms[f_name].elements['PHP_que1'].value = 0;
+	}
+
+	if(window.document.forms['main_ctxt'].elements['PHP_que2'].checked)
+	{
+		window.document.forms[f_name].elements['PHP_que2'].value = 1;
+	}else{
+		window.document.forms[f_name].elements['PHP_que2'].value = 0;		
+	}
+	
+	if(window.document.forms['main_ctxt'].elements['PHP_que3'].checked)
+	{
+		window.document.forms[f_name].elements['PHP_que3'].value = 1;
+	}else{
+		window.document.forms[f_name].elements['PHP_que3'].value = 0;
+	}	
+
+	if(window.document.forms['main_ctxt'].elements['PHP_que4'].checked)
+	{
+		window.document.forms[f_name].elements['PHP_que4'].value = 1;
+	}else{
+		window.document.forms[f_name].elements['PHP_que4'].value = 0;
+	}	
+
+	if(window.document.forms['main_ctxt'].elements['PHP_que5'].checked)
+	{
+		window.document.forms[f_name].elements['PHP_que5'].value = 1;
+	}else{
+		window.document.forms[f_name].elements['PHP_que5'].value = 0;
+	}	
+		
+*/
+
+
+}
+
+
+
+ function add_consignee(cust,dept)
+{
+	var url ='consignee.php?PHP_action=consignee_add_sub&PHP_cust='+cust+'&PHP_dept='+dept; 	
+	var nm = 'consignee';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500 top=50, left=100');
+}
+
+function writeToConsignee(s_name)
+{
+	window.document.forms['main_ctxt'].elements['PHP_consignee2'].value = s_name;
+}
+
+ function inner_box(id)
+{
+	window.location='shipdoc.php?PHP_action=packet_inbox_add&PHP_id='+id; 	
+}
+</script>
+{/literal}
+
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=800 bgcolor=#333333>
+	<tr>
+	  <td class="des" align=center width=250><b> PACKET / WEIGHT APPEND </b></td>
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=805 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+     <br>
+  <table border=0 cellspacing=1 cellpadding=1 width=800 bgcolor=#FFFFFF> 	
+  <form method=POST name=main_ctxt> 
+ 	<tr>	
+    <td  class=snvy align=right  nowrap><b>Invoice# :</b></td>
+    <td	 class=bgdy align=left bgcolor=#dddddd><input type=text name='PHP_inv' value='{$shp.inv_num}' size=15 readonly ></td> 
+    <td  class=snvy align=right  nowrap><b>CTN. unit:</b></td>
+    <td	 class=bgdy align=left bgcolor=#dddddd><input type=text class=select name='PHP_unit' value='{$shp.unit}' size=10 ></td> 
+    <td  class=snvy align=right width=600 ><b>INNER BOX :</b><input type=checkbox name='PHP_inner_box' value='1' onclick="inner_box({$ord.id})" {if $shp.id != 'x'}disabled{/if}></td>
+
+ </tr> 
+<!-- 
+ 	<tr>	
+   
+    <td class=snvy align=right  nowrap><b>ship date : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd ><b>
+    	<input type=text name='PHP_ship_date' value='{$shp.ship_date}' size=12 class=select >
+    	<img align='top' onMouseDown="javascript:Cal(document.main_ctxt.PHP_ship_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16" style='cursor:hand'>
+    </b></td>       
+    <td class=snvy align=right nowrap><b>Customer : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3><input type=text name='PHP_cust' value='{$shp.cust}' size=32 class=select ></td>
+
+ </tr>  
+
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>SHIP TERM :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><input type=text name='PHP_ship_term' value='{$shp.ship_term}' size=15 class=select ></td> 
+    <td class=snvy align=right ><b>SHIP VIA : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>
+    	<input type=text name='PHP_ship_via' value='{$shp.ship_via}' size=12 class=select >
+    </b></td>   
+    <td class=snvy align=right nowrap><b>FROM : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><input type=text name='PHP_ship_from' value='{$shp.ship_from}' size=12 class=select ></td>
+    <td class=snvy align=right nowrap><b>TO : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><input type=text name='PHP_ship_to' value='{$shp.ship_to}' size=12 class=select ></td>
+ </tr> 
+
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Description :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3><input type=text name='PHP_des' value='{$shp.des}' size=69 class=select ></td> 
+    <td class=snvy align=right ><b>PACKAGING : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3><b>
+    	<input type=text name='PHP_pack' value='{$shp.pack}' size=35 class=select >
+    </b></td>   
+ </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>VENDOR :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=2><input type=text name='PHP_vendor' value='{$shp.vendor_name}' size=31 class=select ></td>    
+    <td class=snvy align=right  nowrap><b>ADDRESS :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=4><input type=text name='PHP_vendor2' value='{$shp.vendor_addr}' size=66 class=select ></td>    
+ </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>CONSIGNEE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7>
+    	{$csgn_select}OR
+    	<input type=text name='PHP_consignee2' value='' size=50 class=select >
+			<img src="./images/Add.gif" border=0 alt="add" onclick=add_consignee('{$ord.cust}','{$ord.dept}') style="cursor:pointer">		
+   	
+    	<input type=text name='PHP_consignee' value='{$shp.consignee}' size=131 class=select ></td>    
+ </tr>
+ 
+ <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Final TO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=2>
+    	<input type=text name='PHP_fnl_name' value='{$shp.fnl_name}' size=30 class=select >
+    </td>    
+    <td class=snvy align=right  nowrap><b>ADDRESS : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7>
+    	<input type=text name='PHP_fnl_addr' value='{$shp.fnl_addr}' size=65 class=select >
+    </td>  
+  </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Style# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_fnl_style' value='{$shp.fnl_style}' size=60 class=select >
+    </td> 
+    <td class=snvy align=right  nowrap><b>P/O :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_fnl_po' value='{$shp.fnl_po}' size=50 class=select >
+    </td>       
+  </tr>    
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Description :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_fnl_des' value='{$shp.fnl_des}' size=60 class=select >
+    </td>       
+    <td class=snvy align=right  nowrap><b>DEL.DUE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_del_due' value='{$shp.del_due}' size=50 class=select >
+    </td> 
+  </tr>  
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>DEPT # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_fnl_dept' value='{$shp.fnl_dept}' size=60 class=select >
+    </td> 
+    <td class=snvy align=right  nowrap><b>DEPT des.:</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_dept_des' value='{$shp.dept_des}' size=50 class=select >
+    </td>       
+  </tr>       
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>CONTAINER # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_ctn_num' value='{$shp.ctn_num}' size=60 class=select >
+    </td> 
+    <td class=snvy align=right  nowrap><b>SEAL # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>
+    	<input type=text name='PHP_seal' value='{$shp.seal}' size=50 class=select >
+    </td>       
+  </tr>
+ 	<tr>	
+    <td class=snvy align=right  colspan=3><b>HANGING GARMENTS</b></td>
+    <td class=bgdy align=left>
+    	<input type=checkbox name='PHP_que1' value=1 class=select {if $shp.que1}checked{/if}>
+    </td> 
+    <td class=snvy align=right  colspan=3><b>BOXED GARMENT ON HANGER</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que2' value=1 class=select {if $shp.que2}checked{/if}>
+    </td>       
+  </tr>     
+  <tr>
+    <td class=snvy align=right  colspan=3><b>LOOSE CARTONS</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que3' value=1 class=select {if $shp.que3}checked{/if}>
+    </td>       
+    <td class=snvy align=right  colspan=3><b>PALLETISD CARTONS</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que4' value=1 class=select {if $shp.que4}checked{/if}>
+    </td>       
+  </tr>    
+  <tr>
+    <td class=snvy align=right  colspan=3><b>ACCESSORIES</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que5' value=1 class=select {if $shp.que5}checked{/if}>
+    </td>             
+  </tr> 
+ -->
+ <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</form>
+</table>  
+<!--
+<table border=0 cellspacing=1 cellpadding=1 width=800 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=6 class=grn10 align=right>					
+    	<input type ='button'  value ="ADD another Order (same customer)" class=select_e2 onClick="search_ord('{$ord.cust}','{$ord.factory}');" style="cursor:pointer;">
+		</td>    
+  </tr>
+   <tr>
+    <td colspan=6 class=grn10 align=right>&nbsp;</td>    
+  </tr>    
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>ORDER# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd width=150><b>&nbsp;{$ord.order_num}</b></td> 
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$ord.cust_name}</b></td>
+    <td class=snvy align=right  nowrap><b>Factory :</b></td>
+    <td class=bgdy align=left  bgcolor=#dddddd><b>&nbsp;{$ord.factory}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>Cust. PO# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$ord.cust_po}</b></td> 
+    <td class=snvy align=right  nowrap><b>style# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$ord.style_num}</b></td>   
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$ord.qty}&nbsp;PCS</b></td>
+  </tr>
+  <tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>    
+  </tr>   
+</table>
+-->
+
+{section name=ORD loop=$ord}
+<form method=POST name=ord_size_{$ord[ORD].id}> 
+<table border=1 cellspacing=1 cellpadding=1 width=800 bgcolor=#FFFFFF>
+	<tr class=bgdy bgcolor='#eeeeee' height=25><td colspan=6><B>{$ord[ORD].order_num}</B></td></tr>
+	<tr>
+		<td class=bgdy align=center bgcolor='#eeeeee'>COLOR</td>
+		<td class=bgdy align=center bgcolor='#eeeeee'>item</td>
+		<td class=bgdy align=center bgcolor='#eeeeee'>&nbsp;</td>
+		<td>
+			<table border=1 cellspacing=0 cellpadding=1 bgcolor=#FFFFFF width=100%>
+				<tr>
+					{section name=SEC loop=$size[ORD]}
+						<td class=bgdy align=center bgcolor='#eeeeee' width=5% >{$size[ORD][SEC]}</td>
+					{/section}	
+				</tr>
+			</table>
+		</td>
+		<td class=bgdy align=center bgcolor='#dddddd'><B>SUM</B></td>	
+	</tr>
+	
+	{section name=CLR loop=$assort[ORD]}
+	<tr>
+		<td class=bgdy align=center rowspan=2>
+			<input type=text name='PHP_new_color[{$assort[ORD][CLR].id}]' value='{$assort[ORD][CLR].colorway}' size=15 class=select>
+			<input type=hidden name='PHP_old_color[{$assort[ORD][CLR].id}]' value='{$assort[ORD][CLR].colorway}'>						
+		</td>
+		
+		<td class=bgdy align=center rowspan=2>
+			<input type=text name='PHP_item[{$assort[ORD][CLR].id}]' value='{$assort[ORD][CLR].item}' size=5 class=select>
+		</td>		
+		<td class=bgdy align=center >QTY</td>	
+		<td>
+			<table border=1 cellspacing=0 cellpadding=1  bgcolor=#FFFFFF  width=100%>
+				<tr>
+					{section name=SEC loop=$assort[ORD][CLR].qty}
+						<td class=bgdy align=center width=5%><input type=text name='{$assort[ORD][CLR].colorway}_{$size[ORD][SEC]}' value='{$assort[ORD][CLR].qty[SEC]}' size=1 style="text-align:right; {if $assort[ORD][CLR].qty[SEC] < 0}color=red;{/if}"></td>		
+					{/section}	
+				</tr>
+			</table>
+		</td>		
+		<td class=bgdy align=center><input type=text name='{$assort[ORD][CLR].colorway}_sum' value='{$assort[ORD][CLR].sum}' size=1 ></td>	
+	</tr>
+	
+	<tr>	
+		<td class=bgdy align=center >NNW/pc.</td>				
+		<td>
+			<table border=1 cellspacing=0 cellpadding=1  bgcolor=#FFFFFF  width=100%>
+				<tr>
+					{section name=SEC loop=$assort[ORD][CLR].qty}
+						<td class=bgdy align=center width=5%><input type=text name='PHP_nnw[{$assort[ORD][CLR].id}][{$size[ORD][SEC]}]' value='{$assort[ORD][CLR].nnw[SEC]}' size=1 style="text-align:right;"></td>		
+					{/section}	
+				</tr>
+			</table>
+		</td>	
+		
+			<td class=bgdy align=center>(Kg.)</td>			
+	</tr>	
+	{/section}
+	{if $assort[ORD].0.qty}
+	<tr>
+		<td align=center colspan=3><input type=submit value='Rename colorway / item / nnw'></td>
+			<td class=bgdy align=center colspan=2>&nbsp;</td>	
+	</tr>
+	{/if}	
+</table>
+ <input type=hidden name='PHP_ord_num' value='{$ord[ORD].order_num}'>	
+ <input type=hidden name='PHP_from' value='add'>	
+ <input type=hidden name='PHP_id' value='{$shp.id}'>	 	
+ <input type=hidden name='PHP_action' value='shipdoc_colorway_edit'>
+ <input type=hidden name='PHP_inbox' value=0>
+</form>
+{/section}
+
+
+<!--新增 -->
+<form method=POST name=ship_add> 
+<hr size=2 width=900>	
+<table border=1 cellspacing=1 cellpadding=1 width=900 id='ship_table'>
+{section name=ORD loop=$ord}	
+	{if $ord[ORD].order_num == $ord.0.order_num}
+  <tr bgcolor=#C4C3AE >
+  <td class=snvy align=center nowrap width=50 rowspan=2><b>C/NO.</b></td>
+  <td class=snvy align=center nowrap width=80 rowspan=2><b>UCC128#</b></td>
+  <td class=snvy align=center nowrap width=80 rowspan=2><b>CTN. ID</b></td>
+  <td class=snvy align=center nowrap width=30 rowspan=2><b>PPK</b></td>
+  <td class=snvy align=center nowrap width=30 rowspan=2><b>FIT</b></td>
+  <td class=snvy align=center nowrap width=80 rowspan=2><b>po#</b></td>
+<!--  <td class=snvy align=center nowrap width=50 rowspan=2><b>TTL<BR>CTN</b></td> -->
+  <td class=snvy align=center nowrap width=80 rowspan=2><b>COLOR</b></td>
+  <td rowspan=2>
+  	<table border=1 cellspacing=0 cellpadding=1 width=100% height=100%>
+  		<tr height=44>
+			{section name=SEC loop=$size[ORD]}
+				<td class=snvy align=center  width=5%>{$size[ORD][SEC]}</td>
+			{/section}
+			 <td class=snvy align=center  width=5%>ttl.</td>
+			</tr>
+		</table>
+	</td>
+  <td class=snvy align=center nowrap  width=50 rowspan=2><b>Q'TY  </b> <BR>  IN PCS. <BR> PER CTN.</td>
+  <td class=snvy align=center nowrap  width=40><b>N.N.W.  </b></td>
+  <td class=snvy align=center nowrap  width=40><b>N.W.</b></td>
+  <td class=snvy align=center nowrap  width=40><b>G.W.</b></td>
+  <td class=snvy align=center nowrap  colspan=3 ><b>CTN SIZE </b></td>
+  <td class=snvy align=center nowrap width=30 rowspan=2>&nbsp;</td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  </tr>
+  <tr bgcolor=#C4C3AE>
+ 	 <td class=snvy align=center colspan=3>IN KGS. PER CTN.</td>
+ 	 <td class=snvy align=center nowrap  width=40><b> L </b></td>
+ 	 <td class=snvy align=center nowrap  width=40><b> W </b></td>
+ 	 <td class=snvy align=center nowrap  width=40><b> H </b></td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  </tr>
+  {else}
+  <tr bgcolor=#C4C3AE>
+  	<td colspan=6>&nbsp;</td>
+  	<td>
+  		<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  			<tr>
+				{section name=SEC loop=$size[ORD]}
+					<td class=snvy align=center width=5%>{$size[ORD][SEC]}</td>
+				{/section}
+					<td class=snvy align=center  width=5%>ttl.</td>
+				</tr>
+			</table>
+		</td>
+	</tr>  
+  {/if}
+
+  
+  
+ {if $ord[ORD].order_num == $ord.0.order_num}
+  <tr bgcolor="#FFFFFF">
+  	<td class=snvy align=center rowspan={$row_span}>
+  		<input type=text class=select name='PHP_ctn1' value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')" >
+  			<br>|<br>
+  		<input type=text class=select name='PHP_ctn2' value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')" >	
+  	</td>
+  	<!--
+  	<td class=snvy align=center>
+  		<input type=text class=select name='PHP_cnum' value='' size=1 style=text-align:center>
+  	</td>  	
+  	-->
+
+  	<td class=snvy align=center colspan=6>[{$ord[ORD].order_num}] sub-total	</td>    	  	
+
+  	<td>
+  		<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  			<tr>
+				{section name=SEC loop=$size[ORD]}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$ord[ORD].id}][{$size[ORD][SEC]}]' value='' size=1 style=text-align:center readonly >
+					</td>
+				{/section}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$ord[ORD].id}][s_ttl]' value='' size=1 style=text-align:center readonly >
+					</td>				
+				</tr>
+			</table>
+		</td>
+
+	
+  <td class=snvy align=center rowspan={$row_span}><input type=text name='PHP_ctn_qty' value='' size=1 style=text-align:center  readonly ></td>
+  <td class=snvy align=center colspan=3>&nbsp;</td>	
+  <td class=snvy align=center rowspan={$row_span}><input type=text class=select name='PHP_l'       value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+  <td class=snvy align=center rowspan={$row_span}><input type=text class=select name='PHP_w'       value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+  <td class=snvy align=center rowspan={$row_span}><input type=text class=select name='PHP_h'       value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+  <td class=snvy align=center rowspan={$row_span}><input type=submit class=select_e value='ADD' width=40 onclick=get_inv('ship_add')></td>	
+	<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+	<input type=hidden class=select name='PHP_action' value='do_packet_add'>
+	<!--<input type=hidden class=select name='PHP_ord_id' value='{$ord[ORD].id}'> -->
+	<input type=hidden class=select name='PHP_ord_num[{$ord[ORD].id}]' value='{$ord[ORD].order_num}'>		
+	<input type=hidden name='PHP_inv' value='{$shp.inv_num}'>
+	<input type=hidden name='PHP_unit' value='{$shp.unit}'>	
+	<input type=hidden name='PHP_ord_cust' value='{$ord.0.cust}' >
+	<input type=hidden name='PHP_fty' value='{$ord.0.factory}' >
+	<input type=hidden name='PHP_from' value='add' >	
+
+<!--		
+	<input type=hidden name='PHP_ship_date' value='{$shp.ship_date}'>    	
+	<input type=hidden name='PHP_cust' value='{$shp.cust}'>
+	<input type=hidden name='PHP_ship_term' value='{$shp.ship_term}'>
+	<input type=hidden name='PHP_ship_via' value='{$shp.ship_via}'>
+	<input type=hidden name='PHP_ship_from' value='{$shp.ship_from}'>
+	<input type=hidden name='PHP_ship_to' value='{$shp.ship_to}'>
+	<input type=hidden name='PHP_des' value='{$shp.des}'>    
+	<input type=hidden name='PHP_pack' value='{$shp.pack}' >
+	<input type=hidden name='PHP_vendor' value='{$shp.vendor_name}' >
+	<input type=hidden name='PHP_vendor2' value='{$shp.vendor_addr}' >
+	<input type=hidden name='PHP_consignee' value='{$shp.consignee}' >	
+		
+			
+	
+		
+  <input type=hidden name='PHP_fnl_name'  value='{$shp.fnl_name}'>
+  <input type=hidden name='PHP_fnl_addr'  value='{$shp.fnl_addr}'>
+  <input type=hidden name='PHP_fnl_style' value='{$shp.fnl_style}'> 
+	<input type=hidden name='PHP_fnl_po'    value='{$shp.fnl_po}'>
+  <input type=hidden name='PHP_del_due'   value='{$shp.del_due}'> 
+	<input type=hidden name='PHP_fnl_des'   value='{$shp.fnl_des}'>
+  <input type=hidden name='PHP_fnl_dept'  value='{$shp.fnl_dept}'>      
+	<input type=hidden name='PHP_dept_des'  value='{$shp.dept_des}'>
+  <input type=hidden name='PHP_ctn_num'   value='{$shp.ctn_num}'> 
+ <input type=hidden name='PHP_seal' value='{$shp.seal}'>     
+  <input type=hidden name='PHP_que1' value='{$shp.que1}'>
+ <input type=hidden name='PHP_que2' value='{$shp.que2}'>    
+  <input type=hidden name='PHP_que3' value='{$shp.que3}'>
+  <input type=hidden name='PHP_que4' value='{$shp.que4}'>
+	<input type=hidden name='PHP_que5' value='{$shp.que5}'>		
+-->		
+  </tr>  
+ {else}
+ 		<tr>
+ 		<td colspan=6 align=center class=snvy>[{$ord[ORD].order_num}] sub-total</td>	
+   	<td>
+  		<table border=1 cellspacing=0 cellpadding=0>
+  			<tr>
+				{section name=SEC loop=$size[ORD]}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$ord[ORD].id}][{$size[ORD][SEC]}]' value='' size=1 style=text-align:center readonly  >
+					</td>
+				{/section}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$ord[ORD].id}][s_ttl]' value='' size=1 style=text-align:center readonly  >
+					</td>				
+				</tr>
+			</table>
+		</td>
+		<input type=hidden class=select name='PHP_ord_num[{$ord[ORD].id}]' value='{$ord[ORD].order_num}'>	
+	 </tr>
+ {/if} 
+  	{section name=CPO loop=$cust_po[ORD]}
+		{section name=CLR loop=$color[ORD]}
+			<tr>
+  		<td class=snvy align=center >
+  			<input type=text class=select name='PHP_ucc[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='' size=8 >
+  		</td> 
+  		<td class=snvy align=center >
+  			<input type=text class=select name='PHP_ctn_id[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='' size=8 >
+  		</td>   	
+  		<td class=snvy align=center >
+  			<input type=text class=select name='PHP_ppk[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='' size=1 >
+  		</td>
+  		<td class=snvy align=center >
+  			<input type=text class=select name='PHP_fit[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='' size=1 >
+  		</td>  		
+				<td class=snvy align=center>
+					<input type=text class=select name='PHP_cust_po[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='{$cust_po[ORD][CPO]}' size=15 readonly >
+				</td>    	
+  			<td class=snvy align=center>
+  				<input type=text class=select name='PHP_color[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='{$color[ORD][CLR]}' size=17 readonly >
+					<input type=hidden name='PHP_color_id[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]' value='{$color_f[ORD][CLR]}'>
+  			</td>  	
+  			<td>
+  				<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  					<tr>
+						{section name=SEC loop=$size[ORD]}
+							<td class=snvy align=center width=5%>
+								<input type=text class=select name='PHP_qty[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}][{$size[ORD][SEC]}]' value='' size=1 style=text-align:center onchange="count_sum('ship_add');"  >
+							</td>
+						{/section}
+							<td class=snvy align=center width=5%>
+								<input type=text name='PHP_qty[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}][s_ttl]' value='' size=1 style=text-align:center readonly  >
+							</td>						
+						</tr>
+					</table>
+				</td>
+  			<td class=snvy align=center ><input type=text class=select name='PHP_nnw[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]'     value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+  			<td class=snvy align=center ><input type=text class=select name='PHP_nw[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]'      value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+  			<td class=snvy align=center ><input type=text class=select name='PHP_gw[{$ord[ORD].id}][{$cust_po[ORD][CPO]}][{$color_f[ORD][CLR]}]'      value='' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"  ></td>
+
+
+			</tr>
+		{/section}
+	{/section}
+ {/section}
+ </table>
+</form>
+
+
+
+
+<hr size=2 width=850>	
+<!--修改-->
+{section name=SEC loop=$shp_det}
+{if $shp_det[SEC].tb_mk == 1}
+	<table border=1 cellspacing=1 cellpadding=1 width=890 id='ship_table_{$shp_det[SEC].ord_id}'>
+  	<tr bgcolor=#C4C3AE>
+  		<td class=snvy align=center nowrap width=50 rowspan=2><b>C/NO.</b></td>
+  		<td class=snvy align=center nowrap width=50 rowspan=2><b>TTL<BR>CTN</b></td>
+  		<td class=snvy align=center nowrap width=80 rowspan=2><b>UCC128#</b></td>
+  		<td class=snvy align=center nowrap width=80 rowspan=2><b>CTN. ID</b></td>
+  		<td class=snvy align=center nowrap width=30 rowspan=2><b>PPK</b></td>
+  		<td class=snvy align=center nowrap width=30 rowspan=2><b>FIT</b></td>
+  		
+  		<td class=snvy align=center nowrap width=50 rowspan=2><b>po</b></td>  		
+  		<td class=snvy align=center nowrap width=80 rowspan=2><b>COLOR</b></td>
+  		<td class=snvy align=center nowrap rowspan=2>size scale</td>
+  		
+  		<td class=snvy align=center nowrap  width=50 rowspan=2><b>Q'TY  </b> <BR>  IN PCS. <BR> PER CTN.</td>
+  		<td class=snvy align=center nowrap  width=40><b>N.N.W.  </b></td>
+  		<td class=snvy align=center nowrap  width=40><b>N.W.</b></td>
+  		<td class=snvy align=center nowrap  width=40><b>G.W.</b></td>
+  		<td class=snvy align=center nowrap  colspan=3 ><b>CTN SIZE </b></td>
+  		<td class=snvy align=center nowrap  rowspan=2>&nbsp;</td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  	</tr>
+
+  	<tr bgcolor=#C4C3AE>
+  		<td class=snvy align=center colspan=3>IN KGS. PER CTN.</td>
+  		<td class=snvy align=center nowrap  width=40><b> L </b></td>
+ 		  <td class=snvy align=center nowrap  width=40><b> W </b></td>
+  		<td class=snvy align=center nowrap  width=40><b> H </b></td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  	</tr>  		
+	<form method=POST name=ship_edit[{$shp_det[SEC].cnt}]>
+{elseif $shp_det[SEC].f_mk == 1}
+	</form>
+	<form method=POST name=ship_edit[{$shp_det[SEC].cnt}]>
+{/if}	
+	
+	
+
+
+ 
+{if $shp_det[SEC].f_mk == 1}
+<!--不同箱-->
+  <tr>
+  	<td class=snvy align=center rowspan={$shp_det[SEC].row_span}>
+  		<input type=text class=select name='PHP_s_ctn' value='{$shp_det[SEC].s_cnt}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')">
+  		<br>|<br>
+  		<input type=text class=select name='PHP_e_ctn' value='{$shp_det[SEC].e_cnt}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')">  		
+  	</td>
+  	<td class=snvy align=center rowspan={$shp_det[SEC].row_span}>{$shp_det[SEC].cnum}</td>
+			
+		<td class=snvy align=center  bgcolor=#C4C3AE colspan=6>&nbsp;</td>  
+		<td class=snvy align=center  bgcolor=#C4C3AE>
+  			<table border=1 cellspacing=0 cellpadding=1 width=100% >
+  				<tr>
+					{section name=SEZ loop=$shp_det[SEC].size}			
+						<td class=snvy align=center width=5% >{$shp_det[SEC].size[SEZ]}</td>
+					{/section}
+			 		<td class=snvy align=center  width=5%>ttl.</td>
+					</tr>
+				</table>		
+		</td>  
+  <td class=snvy align=center rowspan={$shp_det[SEC].row_span}><input type=text name='PHP_ctn_qty' value='{$shp_det[SEC].qty}' size=1 style=text-align:center readonly ></td>
+  <td class=snvy align=center colspan=3>&nbsp;</td>
+  <td class=snvy align=center rowspan={$shp_det[SEC].row_span}><input type=text class=select name='PHP_l'       value='{if $shp_det[SEC].ctn_l > 0}{$shp_det[SEC].ctn_l}{/if}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+  <td class=snvy align=center rowspan={$shp_det[SEC].row_span}><input type=text class=select name='PHP_w'       value='{if $shp_det[SEC].ctn_w > 0}{$shp_det[SEC].ctn_w}{/if}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+  <td class=snvy align=center rowspan={$shp_det[SEC].row_span}><input type=text class=select name='PHP_h'       value='{if $shp_det[SEC].ctn_h > 0}{$shp_det[SEC].ctn_h}{/if}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+  <td class=snvy align=center rowspan={$shp_det[SEC].row_span}>
+  	<input type=submit class=select_e value='Update' width=35 >&nbsp;&nbsp;
+ 		<a href="javascript:onclick=del_ajx('{$shp_det[SEC].id}','{$shp_det[SEC].ord_num}','{$shp_det[SEC].cnt}','{$shp_det[SEC].ord_id}',this)" value='revise' style='cursor:pointer'>
+			<img src="images/del.png" border=0 ALT="DELETE"></a>
+  </td>	
+	<input type=hidden name='PHP_id' value='{$shp.id}'>	
+	<input type=hidden name='PHP_inv_num' value='{$shp.inv_num}'>	
+	<input type=hidden name='PHP_unit' value='{$shp.unit}'>		
+	<input type=hidden name='PHP_from' value='add'>	
+	<input type=hidden name='PHP_action' value='do_packet_edit'>
+
+	<input type=hidden class=select name='PHP_o_cnt' value='{$shp_det[SEC].ord_cnt}'>
+	<input type=hidden class=select name='PHP_ord_num[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].ord_num}'>
+	<input type=hidden class=select name='PHP_ord_id[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].ord_id}'>
+	<input type=hidden class=select name='PHP_x_ln[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].x_ln}'>
+	<input type=hidden class=select name='PHP_y_ln[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].y_ln}'>		
+  </tr>
+ 	<tr>
+ 		<td colspan=6 align=center class=snvy>[{$shp_det[SEC].ord_num}] sub-total</td>	
+   	<td>
+  		<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  			<tr>
+				{section name=SEZ loop=$shp_det[SEC].size}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$shp_det[SEC].ord_id}][{$shp_det[SEC].yy[SEZ]}]' value='{$shp_det[SEC].sub_qty[SEZ]}' size=1 style=text-align:center readonly  >
+					</td>
+				{/section}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$shp_det[SEC].ord_id}][s_ttl]' value='{$shp_det[SEC].ln_sub_qty}' size=1 style=text-align:center readonly  >
+					</td>				
+				</tr>
+			</table>
+		</td>
+		<td class=snvy align=center colspan=3>&nbsp;</td>
+	</tr>
+{elseif $shp_det[SEC].ord_mk == 1}
+<!--同箱不同訂單-->
+	<input type=hidden class=select name='PHP_ord_num[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].ord_num}'>
+	<input type=hidden class=select name='PHP_ord_id[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].ord_id}'> 
+	<input type=hidden class=select name='PHP_x_ln[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].x_ln}'>
+	<input type=hidden class=select name='PHP_y_ln[{$shp_det[SEC].oo}]' value='{$shp_det[SEC].y_ln}'>
+  <tr>			
+		<td class=snvy align=center  bgcolor=#C4C3AE colspan=6>&nbsp;</td>  
+		<td class=snvy align=center  bgcolor=#C4C3AE>
+  			<table border=1 cellspacing=0 cellpadding=1 width=100% height=100%>
+  				<tr>
+					{section name=SEZ loop=$shp_det[SEC].size}			
+						<td class=snvy align=center width=5% >{$shp_det[SEC].size[SEZ]}</td>
+					{/section}
+			 		<td class=snvy align=center  width=5%>ttl.</td>
+					</tr>
+				</table>		
+		</td> 
+		<td class=snvy align=center colspan=3>&nbsp;</td> 
+  </tr>
+ 	<tr>
+ 		<td colspan=6 align=center class=snvy>[{$shp_det[SEC].ord_num}] sub-total</td>	
+   	<td>
+  		<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  			<tr>
+				{section name=SEZ loop=$shp_det[SEC].size}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$shp_det[SEC].ord_id}][{$shp_det[SEC].yy[SEZ]}]' value='{$shp_det[SEC].sub_qty[SEZ]}' size=1 style=text-align:center readonly  >
+					</td>
+				{/section}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_sub_qty[{$shp_det[SEC].ord_id}][s_ttl]' value='{$shp_det[SEC].ln_sub_qty}' size=1 style=text-align:center readonly  >
+					</td>				
+				</tr>
+			</table>			
+		</td>
+		<td class=snvy align=center colspan=3>&nbsp;</td>
+	</tr>
+{/if} 
+<!--明細-->
+  <tr>
+		<td class=snvy align=center>
+			<input type=text class=select name='PHP_ucc[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]' value='{$shp_det[SEC].ucc}' size=8>
+		</td>
+		<td class=snvy align=center>
+			<input type=text class=select name='PHP_ctn_id[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]' value='{$shp_det[SEC].ctn_id}' size=8>
+		</td>
+		<td class=snvy align=center >
+			<input type=text class=select name='PHP_ppk[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]' value='{$shp_det[SEC].ppk}' size=1>
+		</td>
+		<td class=snvy align=center >
+			<input type=text class=select name='PHP_fit[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]' value='{$shp_det[SEC].fit}' size=1>
+		</td>		
+ 		<td class=snvy align=center>{$shp_det[SEC].cust_po}</td>
+  	<td class=snvy align=center>{$shp_det[SEC].color}</td>
+   	<td>
+  		<table border=1 cellspacing=0 cellpadding=0 width=100%>
+  			<tr>
+				{section name=SZE loop=$shp_det[SEC].size}
+					<td class=snvy align=center width=5%>
+						<input type=text class=select name='PHP_qty[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}][{$shp_det[SEC].yy[SZE]}]' value='{$shp_det[SEC].size_qty[SZE]}' size=1 style=text-align:center onchange="edit_count_sum('ship_edit[{$shp_det[SEC].cnt}]');">
+					</td>
+				{/section}
+					<td class=snvy align=center width=5%>
+						<input type=text name='PHP_qty[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}][s_ttl]' value='{$shp_det[SEC].ln_qty}' size=1 style=text-align:center readonly  >
+						<input type=hidden class=select name='PHP_shp_id[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]' value='{$shp_det[SEC].id}'>								
+					</td>				
+				</tr>
+			</table>
+		</td>
+  	<td class=snvy align=center ><input type=text class=select name='PHP_nnw[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]'     value='{if $shp_det[SEC].nnw > 0}{$shp_det[SEC].nnw}{/if}' size=1 style=text-align:center onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+  	<td class=snvy align=center ><input type=text class=select name='PHP_nw[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]'      value='{if $shp_det[SEC].nw > 0}{$shp_det[SEC].nw}{/if}' size=1 style=text-align:center  onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+  	<td class=snvy align=center ><input type=text class=select name='PHP_gw[{$shp_det[SEC].ord_id}][{$shp_det[SEC].xx}]'      value='{if $shp_det[SEC].gw > 0}{$shp_det[SEC].gw}{/if}' size=1 style=text-align:center  onkeyup="value=value.replace(/[^\d\.]/g,'')"></td>
+		
+	</tr>
+{/section}
+</form>
+</table>
+
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=800 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=2 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td >
+{if $back_str}
+<form method=POST name=back>
+		<input type=button onClick="window.location.href='shipdoc.php?PHP_action=order_shiped_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%"></form>
+
+{else}&nbsp;
+{/if}
+	</td>
+{if $add_flag}
+	<td width=600><form method=POST name=add_main_det> 
+<!--
+	<input type=hidden name='PHP_ship_date' value='{$shp.ship_date}'>    	
+	<input type=hidden name='PHP_cust' value='{$shp.cust}'>
+	<input type=hidden name='PHP_ship_term' value='{$shp.ship_term}'>
+	<input type=hidden name='PHP_ship_via' value='{$shp.ship_via}'>
+	<input type=hidden name='PHP_ship_from' value='{$shp.ship_from}'>
+	<input type=hidden name='PHP_ship_to' value='{$shp.ship_to}'>
+	<input type=hidden name='PHP_des' value='{$shp.des}'>    
+	<input type=hidden name='PHP_pack' value='{$shp.pack}' >
+	<input type=hidden name='PHP_vendor' value='{$shp.vendor_name}' >
+		<input type=hidden name='PHP_vendor2' value='{$shp.vendor_addr}' >
+	<input type=hidden name='PHP_consignee' value='{$shp.consignee}' >		
+	
+	
+		
+  <input type=hidden name='PHP_fnl_name'  value='{$shp.fnl_name}'>
+  <input type=hidden name='PHP_fnl_addr'  value='{$shp.fnl_addr}'>
+  <input type=hidden name='PHP_fnl_style' value='{$shp.fnl_style}'> 
+	<input type=hidden name='PHP_fnl_po'    value='{$shp.fnl_po}'>
+  <input type=hidden name='PHP_del_due'   value='{$shp.del_due}'> 
+	<input type=hidden name='PHP_fnl_des'   value='{$shp.fnl_des}'>
+  <input type=hidden name='PHP_fnl_dept'  value='{$shp.fnl_dept}'>      
+	<input type=hidden name='PHP_dept_des'  value='{$shp.dept_des}'>
+  <input type=hidden name='PHP_ctn_num'   value='{$shp.ctn_num}'> 
+ <input type=hidden name='PHP_seal' value='{$shp.seal}'>     
+  <input type=hidden name='PHP_que1' value='{$shp.que1}'>
+ <input type=hidden name='PHP_que2' value='{$shp.que2}'>    
+  <input type=hidden name='PHP_que3' value='{$shp.que3}'>
+  <input type=hidden name='PHP_que4' value='{$shp.que4}'>
+	<input type=hidden name='PHP_que5' value='{$shp.que5}'>		
+-->		
+	{if $shp.id == 'x'}
+		<input type=hidden name='PHP_action' value='packing'>
+		<input type=hidden name='PHP_msg' value='SUCCESSFULLY DELETE P/L'>	
+	{else}
+  	<input type=hidden name='PHP_action' value='do_packet_add_show'>
+  {/if}	
+  <input type=hidden class=select name='PHP_ord_id' value='{$ord.id}'>
+  <input type=hidden class=select name='PHP_inner_box' value='0'>	
+	<input type=hidden name='PHP_id' value='{$shp.id}'>
+	<input type=hidden name='PHP_inv' value='{$shp.inv_num}'>
+	<input type=hidden name='PHP_unit' value='{$shp.unit}'>
+
+  <input type=submit class=select_e value='ADD above records'  style="cursor:pointer; width=98%" onclick=get_inv('add_main_det')>
+
+
+		</form>
+
+	</td>
+{/if}	
+  </tr>
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

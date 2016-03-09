@@ -1,0 +1,191 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>ORDER</title>
+<link rel=stylesheet type="text/css" href="./bom.css" />
+{literal}
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-left: 17px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script language="javascript" src="./js/col.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<SCRIPT language=JavaScript>  
+<!--
+var p_id;
+function ord_out(ord_num) {
+	var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	var nm = 'order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function prd_out(ord_num) {
+	var url ="index2.php?PHP_action=out_put_lc&PHP_order_num="+ord_num;
+	var nm = 'Output';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=400 top=50, left=100');
+}
+
+function shp_update(id,num,dept)
+{
+	p_id = id;
+	var ship = window.document.forms['ord_ship'+id].elements['PHP_e_ship'].value;
+	var ship_way = window.document.forms['ord_ship'+id].elements['PHP_e_ship_way'].value;
+
+	if(ship_way == '')
+	{
+	 alert('Please select ship way first');
+	}else{
+ 	 sUrl = "index2.php?PHP_action=ord_eship_update&PHP_ord_num="+num+"&PHP_id="+id+"&PHP_e_ship="+ship+"&PHP_dept="+dept+"&PHP_ship_way="+ship_way;
+ 	 transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, shipback, null);
+  }
+
+}
+  var shipback = {
+    success: function(o) {
+    	var response = o.responseText.split("|");    	
+			document.getElementById("ship_edit"+p_id).style.display='none';
+			document.getElementById("ship_show"+p_id).style.display='block';
+			if(response[2] == 'S') 
+			{
+				document.getElementById("ship_show"+p_id).innerHTML = response[0];
+			}else{
+				document.getElementById("tbl_msg").style.display='block';
+				msg1.innerText  = response[1];
+			}
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+  
+  
+  
+function ob_update(id,num)
+{
+	p_id = id;
+	var ob_date = window.document.forms['ord_ship'+id].elements['PHP_ob_date'].value;
+	var ob_way = window.document.forms['ord_ship'+id].elements['PHP_ob_way'].value;
+	if(ob_way == '')
+	{
+	 alert('Please select ship way first');
+	}else{
+  	sUrl = "index2.php?PHP_action=ord_ob_update&PHP_ord_num="+num+"&PHP_id="+id+"&PHP_ob_date="+ob_date+"&PHP_ob_way="+ob_way;
+  	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, obback, null);
+  }
+}
+  var obback = {
+    success: function(o) {
+    	var response = o.responseText.split("|");    	
+			document.getElementById("ob_edit"+p_id).style.display='none';
+			document.getElementById("ob_show"+p_id).style.display='block';
+
+			if(response[2] == 'S') 
+			{
+				document.getElementById("ob_show"+p_id).innerHTML = response[0];
+				window.document.forms['ord_ship'+id].elements['PHP_ob_date'].value = response[3];
+			}else{
+				document.getElementById("tbl_msg").style.display='block';
+				msg1.innerText  = response[1];			
+			}
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };  
+-->
+
+</SCRIPT>
+{/literal}
+<body bgcolor="#FFFFE6" style="overflow-x: hidden">
+<center>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+  <tr bgcolor=#ffffff> 
+    <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+    <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+    
+  </tr>
+</table>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor=#666666 >
+  <tr align=center bgcolor=#272727 height=30 ><td class=ylw10 colspan=16 ><b>訂單出貨追蹤</b> &nbsp;&nbsp;</td></tr>
+  {section name=SEC loop=$rpt}
+  <tr align=center  bgcolor="#FFFFE6">
+    <td width="56"><a href="javascript:ord_out('{$rpt[SEC].order_num}')"><span class='F3'><small>{$rpt[SEC].order_num}</small></span></a></td>
+    <td width="17" align=left><small>{$rpt[SEC].style}</small></td>
+    <td width="40" align=right><small>{$rpt[SEC].qty|number_format}</small></td>
+    <td width="60" class=snvy {if $today > $rpt[SEC].etd} bgcolor=#FFB0B6{/if}><small>{$rpt[SEC].etd}</small></td>
+    <td width="17"><small>{$rpt[SEC].factory}</small></td>
+    <td width="70" align=left style="border-right:2px solid #666666; "><small>{$rpt[SEC].rmk}</small></td>
+    <form method=POST name=ord_ship{$rpt[SEC].p_id}>			
+    <td width="140" align=left >
+    {if $rpt[SEC].ship_dist_ary.0}
+    {section name=DET loop=$rpt[SEC].ship_way_ary}
+    <small>{$rpt[SEC].ship_day_ary[DET]} to {$rpt[SEC].ship_dist_ary[DET]} by {$rpt[SEC].ship_way_ary[DET]} / <BR></small>
+    {/section}
+    {/if}
+    <!--
+    <div id=ship_show{$rpt[SEC].p_id} style="display:block;" >
+      <small>{if $rpt[SEC].e_ship <> '0000-00-00'}{$rpt[SEC].e_ship} BY {if $rpt[SEC].e_ship_way == 'Air'}<font color=red size=3><B>{$rpt[SEC].e_ship_way}</B></font>{else}{$rpt[SEC].e_ship_way}{/if}{else}&nbsp;{/if}</small>
+      {if $add_flag && $ship_flag}<span style="cursor:hand" onClick="ship_edit{$rpt[SEC].p_id}.style.display='block';ship_show{$rpt[SEC].p_id}.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom"> </span>{/if}
+    </div>
+    <div id='ship_edit{$rpt[SEC].p_id}' style="display:none;">
+      <input type='text' name="PHP_e_ship" size=7 value="{if $rpt[SEC].e_ship <> '0000-00-00'}{$rpt[SEC].e_ship}{else}{$rpt[SEC].etd}{/if}" class=select>
+      <img align='top' onmousedown="javascript:Cal(document.ord_ship{$rpt[SEC].p_id}.PHP_e_ship	,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    
+      BY {$rpt[SEC].es_select}
+      <input type=button onClick="shp_update('{$rpt[SEC].p_id}','{$rpt[SEC].order_num}','{$rpt[SEC].dept}')" value="OK" class=select_e style="cursor:pointer; width=25">&nbsp;
+    </div>    
+    -->  	
+    </td>
+    <td width="220" align=left >
+      <div id=ob_show{$rpt[SEC].p_id} style="display:block;" >
+        <small>{if $rpt[SEC].ob_date <> '0000-00-00'}{$rpt[SEC].ob_date} BY :{if $rpt[SEC].ob_way == 'Air'}<font color=red size=3><B>{$rpt[SEC].ob_way}</B></font>{else}{$rpt[SEC].ob_way}{/if} {else}&nbsp;{/if}</small>
+        {if $ob_flag}<span style="cursor:hand" onClick="ob_edit{$rpt[SEC].p_id}.style.display='block';ob_show{$rpt[SEC].p_id}.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom"> </span>{/if}
+      </div>
+      <div id=ob_edit{$rpt[SEC].p_id} style="display:none;" valign=botton>
+        <input type='text' name="PHP_ob_date" size=7 value="{if $rpt[SEC].ob_date <> '0000-00-00'}{$rpt[SEC].ob_date}{/if}" class=select>
+        <img align='top' onmousedown="javascript:Cal(document.ord_ship{$rpt[SEC].p_id}.PHP_ob_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    
+        BY {$rpt[SEC].ob_select}
+        <input type=button onClick="ob_update('{$rpt[SEC].p_id}','{$rpt[SEC].order_num}')" value="OK" class=select_e style="cursor:pointer; width=25">&nbsp;
+      </div>       
+    
+    </td>
+    </form>		
+    <td width="60" ><small>{if $rpt[SEC].ets == '0000-00-00'}&nbsp;{else}{$rpt[SEC].ets}{/if}</small></td>	
+    <td width="60" {if $today > $rpt[SEC].etf} bgcolor=#FFB0B6{/if}><small>{if $rpt[SEC].etf == '0000-00-00'}&nbsp;{else}{$rpt[SEC].etf}{/if}</small></td>
+    <td width="50" >
+      {if $rpt[SEC].qty_done > 0}
+        <a href="javascript:prd_out('{$rpt[SEC].order_num}')" style="cursor:pointer">										
+            <small>{$rpt[SEC].qty_done}</small>
+        </a>
+      {else}
+        
+      {/if}
+    </td>
+    <td width="33" {if $rpt[SEC].lead < 0}class=sign{/if} ><small>{$rpt[SEC].lead}</small></td>
+    <td width="10"><small>{if $rpt[SEC].sub_con == 0}I{else}S{/if}</small></td>
+  </tr>
+  {if $rpt[SEC].ln_mk == 1}
+  <tr bgcolor="#FFFFE6" height=25>
+    <td colspan=2 align=Center><b> Total  </b></td>
+    <td colspan=3><b>Q'ty : {$rpt[SEC].qty_tal} Pcs </b></td>
+    <td colspan=3><b>SU : {$rpt[SEC].su_tal} su </b></td>
+    <td colspan=10><b>Orders : {$rpt[SEC].count} </b></td>
+  </tr>
+  <tr><td></td></tr>
+  {/if}
+  {if $rpt[SEC].ln_mon == 1}
+    <tr><td></td></tr>
+  {/if}
+  {/section}
+</table>
+</center>
+<!--------- footer ---------->
+{include file="footer.html"}

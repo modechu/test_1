@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function tp(url) { parent.top.location.href=url }
+function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+		location.href=doit;
+	}
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+	
+{if $max_notify > 0 }		
+	<table width="800" border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}			
+	
+<table width="800" border=1 cellspacing=0 cellpadding=2>
+	<tr>
+		<td colspan=10 align=center class=gry><b>Purchase ORDER LIST</b> -- for Un-Approval</td></tr>
+		<tr bgcolor="#003333"> 
+		<td class=w9 width=70 align=center><b>PO. #</b></td>
+		<td class=w9 width=40 align=center><b>dept.</b></td>
+		<td class=w9 width=160 align=center><b>supplier</b></td>
+		<td class=w9 width=80 align=center><b>source area</b></td>
+		<td class=w9 width=80 align=center><b>Currency/Amt.</b></td>
+		<td class=w9 width=80 align=center><b>Deal</b></td>
+		<td class=w9 width=70 align=center><small>Aply date</small></td>
+		<td class=w9 width=120 align=center><b>status</b></td>
+	</tr>
+	{section name=SEC loop=$apply}
+	{if $apply[SEC].status == 12}
+	<tr bgColor='#dddddd'>
+	{else}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+	{/if}
+		<td class=gry9 align=center nowrap><small><a href="{$PHP_SELF}?PHP_action=po_apv_view&PHP_aply_num={$apply[SEC].ap_num}{$back_str}&PHP_sr_startno={$now_pp}">{$apply[SEC].po_num}</a></small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].dept}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].s_name}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].country}&nbsp;</small></td>
+		<td class=gry9 align=right>
+			<small>{$apply[SEC].currency}${$apply[SEC].po_total|number_format:"2f"}&nbsp;</small>
+		</td>
+		<td class=gry9 align=right>
+			<small>{$apply[SEC].currency}${$apply[SEC].dear|number_format:"2f"}&nbsp;</small>
+		</td>				
+		<td class=gry9 align=center><small>{$apply[SEC].po_date}&nbsp;</small></td>
+		<td class=gry9 align=lefr nowrap>&nbsp;<small>{$apply[SEC].statuss}
+		{if $apply[SEC].special == 1} , <font color="green">Extra</font> {/if}
+		{if $apply[SEC].special >= 2 } , <font color="green">P.P.</font> {/if}		
+		</small></td>	
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;Purchase order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,63 @@
+apb_after_list.html<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function tp(url) { parent.top.location.href=url }
+function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+		location.href=doit;
+	}
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+<table width=700 border=1 cellspacing=0 cellpadding=2>
+	<tr>
+		<td colspan=2 align=center class=gry><b>Purchase Order LIST by ( {$payment} )</b>
+	</td></tr>
+	<tr bgcolor="#003333"> 
+		<td class=w9 width=350 align=center><b>supplier</b></td>
+		<td class=w9 width=350 align=center><b>sup code</b></td>
+	</tr>
+	{section name=SEC loop=$apply}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td class=gry9 align=center><a href="{$PHP_SELF}?PHP_action=apb_after_add&PHP_sup_no={$apply[SEC].sup_code}{$back_str}&PHP_sr_startno={$now_pp}">{$apply[SEC].s_name}&nbsp;</a></td>
+		<td class=gry9 align=center>{$apply[SEC].sup_code}&nbsp;</td>
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;Purchase Order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

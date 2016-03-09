@@ -1,0 +1,151 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: 積物料輔助系統 [ 請購 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script language="JavaScript">
+function cfm_add(code,color,qty,item,aply_num,back_str,id,unit) {
+
+	location.href="index2.php?PHP_action=do_apply_edit_add&PHP_code="+code+"&PHP_color="+color+"&PHP_qty="+qty+"&PHP_item="+item+"&PHP_aply_num="+aply_num+back_str+"&PHP_bom_id="+id+"&PHP_unit="+unit+"&PHP_revise=1";
+
+ 
+ }
+
+function cfm_del(code,color,qty,item,aply_num,back_str,id,unit) {
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+code+"]??")) {
+	location.href="index2.php?PHP_action=do_apply_edit_del&PHP_code="+code+"&PHP_color="+color+"&PHP_qty="+qty+"&PHP_item="+item+"&PHP_aply_num="+aply_num+back_str+"&PHP_bom_id="+id+"&PHP_revise=1&PHP_unit="+unit;
+	} 
+ }
+
+
+</script>
+{/literal}
+</head>
+<body ><form METHOD="POST" name="apply_edit" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#003300>
+	<tr>
+	<td class="des" align=center width=540 height=28> <span class=sign_b>APPLY RECORD</span> # <b>{$apply.aply_num}</b> </td>
+	</tr>
+	
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<hr SIZE=2 WIDTH=690>
+<table border=1 cellspacing=0 cellpadding=0 width="700" bgcolor=#FFFFFF>
+  <tr>
+  <td>
+<table border=0 cellspacing=1 cellpadding=3 width="700" bgcolor=#FFFFFF>
+  <tr>
+  
+    <td class=snvy align=right >Supplier : </td>
+    <td class=frnt align=left ><b>&nbsp;{$apply.supl}</b></td>
+    <td class=snvy align=right>Dept : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$apply.dept}</b></td>
+    <td class=snvy align=right>Factory : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$FACTORY_select}</b></td>
+
+  </tr>
+  <tr>
+    <td class=snvy align=right>Source area : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$COUNTRY_select}</b></td>
+
+    <td class=snvy align=right >Currency: </td>
+    <td class=frnt align=left colspan=3><b>&nbsp;{$CURRENCY_select}</b></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>Apply date : </td>
+    <td class=frnt align=left  ><b>&nbsp;{$apply.date}</b></td>
+    <td class=snvy align=right >Applier : </td>
+    <td class=frnt align=left colspan=3 ><b>&nbsp;{$apply.user}</b></td>
+
+  </tr>
+</table>
+</td>
+  </tr>
+</table>
+
+
+<hr SIZE=2 WIDTH=690>
+
+<table border="1" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="310" class=back align="center">Materiel code</td>
+		<td width="120"  class=back align="center">Color</td>
+		<td width="120"  class=back align="center">Q'ty</td>
+		<td width="150"  class=back align="center">ETD</td>
+	</tr>
+{section name=SEC loop=$apply_det} 
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+		<td  align="left">{$apply_det[SEC].aply_mat}</td>
+		<td  align="left">{$apply_det[SEC].mat_color}</td>
+		<td  align="right">{$apply_det[SEC].mat_qty} / {$apply_det[SEC].mat_unit}</td>	
+		<td  align="center">
+		  <img align='top' onmousedown="javascript:Cal(document.apply_edit.PHP_eta{$apply_det[SEC].i},1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    		
+		  <input type="text" name="PHP_eta{$apply_det[SEC].i}" size="8" class=select value={if $apply_det[SEC].eta == '0000-00-00'}''{else}"{$apply_det[SEC].eta}"{/if} readonly> 
+		</td>		
+	</tr>
+	<input type="hidden" name="PHP_mat_id[{$apply_det[SEC].i}]" value="{$apply_det[SEC].id}"> 
+
+{/section}
+</table>
+<hr SIZE=2 WIDTH=690>
+
+<table border="1" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="70" class=back align="center">BOM #</td>
+		<td width="200" class=back align="center">Materiel code</td>
+		<td width="260" class=back align="center">Materiel name</td>
+		<td width="50"  class=back align="center">Color</td>
+		<td width="100"  class=back align="center">Q'ty</td>
+		<td width="20"  class=back align="center">&nbsp;</td>	
+	</tr>
+{section name=SEC loop=$bom} 
+	{if $bom[SEC].ln}
+	<tr>
+		<td align="center" colspan=6></td>
+	</tr>
+	{/if}
+
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+		<td align="center">{$bom[SEC].wi_num}</td>
+		<td width="200" align="left">{$bom[SEC].code}</td>
+		<td width="260" align="left">{$bom[SEC].name}</td>		
+		<td width="50" align="left">{$bom[SEC].color}</td>
+		<td width="100" align="right">{$bom[SEC].qty} {$bom[SEC].unit}</td>
+		<td width="20" align="center">
+		{if $bom[SEC].ap_mark}
+		<a href="javascript:cfm_del('{$bom[SEC].code}','{$bom[SEC].color}','{$bom[SEC].qty}','{$item}','{$apply.aply_num}','{$back_str}','{$bom[SEC].id}','{$bom[SEC].unit}')" value='Delete' style="cursor:pointer"><img src='images/del.png' alt='Delete' border=0 valign=bottom></a>
+		{else}
+		<a href="javascript:cfm_add('{$bom[SEC].code}','{$bom[SEC].color}','{$bom[SEC].qty}','{$item}','{$apply.aply_num}','{$back_str}','{$bom[SEC].id}','{$bom[SEC].unit}')" value='Add' style="cursor:pointer"><img src='images/add2.gif' alt='Add' border=0 valign=bottom></a>
+		{/if}
+<!--		<input type=checkbox name="PHP_bom_mat[{$bom[SEC].j}]" value={$bom[SEC].id}> -->
+		</td>		
+	</tr>
+{/section}
+</table>
+              <hr SIZE=2 WIDTH=690>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+            <tr> 
+              <td align=center width=218>				
+				<input type=submit value="Update above apply record " class=select_e style="cursor:pointer; width=95%">
+				</td>				
+			</tr>
+<input type="hidden" name="PHP_action" value="do_apply_edit">
+<input type="hidden" name="PHP_aply_num" value={$apply.aply_num}>
+<input type="hidden" name="PHP_revise" value=1>
+<input type="hidden" name="PHP_back_str" value={$back_str}>
+				</form>
+       
+          </table> 
+<!--------- footer ---------->
+{include file="footer.html"}

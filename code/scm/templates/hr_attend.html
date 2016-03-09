@@ -1,0 +1,214 @@
+﻿<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>==== ::::::::::  TEST :::::::::: ====</title>
+ <link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">@import url(js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar.js"></script>
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script language="javascript">
+(function($){
+	$(document).ready(function(){
+
+
+		$('input[class=submit_ajax]').click(function(){
+			/*$.blockUI({ message: ' Loding ... '});*/
+			var SubName = $(this).attr('id');
+			
+			
+			switch( SubName ){
+			
+				case 'search':
+				//alert($('#PHP_start_date').val());
+				//alert($('#PHP_end_date').val());
+				//alert( $('#PHP_line').find(':selected').val());
+				if($('#PHP_start_date').val()!='' && $('#PHP_end_date').val()!='')
+				{
+					if($('#PHP_start_date').val() <= $('#PHP_end_date').val())
+					{
+						if($('#PHP_line').find(':selected').val() == '')
+						{
+							alert('請選擇組別');
+						}
+						else
+						{
+							if (confirm('組別考勤查詢\r\n查詢第'+$('#PHP_line').find(':selected').text()+'組'+'\r\n起始日:'+$('#PHP_start_date').val()+'\r\n結束日:'+$('#PHP_end_date').val())) 
+							{
+								location.href = "hr_attend.php?PHP_action=main&PHP_line="+$('#PHP_line').find(':selected').val()+"&PHP_start_date="+$('#PHP_start_date').val()+"&PHP_end_date="+$('#PHP_end_date').val();
+								
+							}
+							else
+							{
+								return false; 
+							}
+							
+						}
+						
+					}
+					else
+					{
+						
+						alert("起始日期必須小於結束日期");
+					}
+				}
+				else
+				{
+					alert("請選擇日期");
+				}
+
+					
+				break;
+
+			}
+		});
+		$("td[id^='attenddetail']").live("click", function () {
+            //var line = $(this).attr('line');
+			
+			var empid = $(this).attr('empid');
+			var thedate = $(this).attr('thedate');
+			if(confirm('檢視出勤紀錄\r\n員工:'+empid+'\r\n日期:'+thedate))
+			{
+				var gofile ="excel_dailyoutput.php?PHP_action=attend_detail&PHP_empid="+empid+"&PHP_date="+thedate;
+				window.open(gofile,'_bank','toolbar=no,location=no,directories=no,status=no,bar=no,menu=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=350,height=400 top=30, left=30');
+			}
+			else
+			{
+				return false; 
+			}
+			
+			});
+	});
+})(jQuery);
+</script>
+{/literal}
+</head>
+<body>
+<table border="0" cellspacing="3" cellpadding="1" width="700">
+				
+				<tr>
+					<td width="140" class=snvy><b>組別(Line)：</b>{$line_select}</td>					
+					
+					<td width="340" align=left>
+						日期(Date) : 
+						<input type=text id="PHP_start_date" name="PHP_start_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_start_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_end_date" name="PHP_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input class="submit_ajax" type="button" id="search" name="search" value=" 查詢 " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+<table cellpadding='0' cellspacing='0' align='left' width='1000'>	
+<tr>
+<td>
+<div>
+<table  cellpadding='0' cellspacing='0' width=98%>
+	<tr><td colspan='10' align='center' class=top16o height=35 >TEST</td></tr>
+	<tr bgcolor="#0D4368"  border=1 cellspacing=0 cellpadding=2> 
+		<td class=w10 width=9% align=center>員工號</td>
+		<td class=w10 width=14% align=center>日期</td>
+		<td class=w10 width=6% align=center>上班時數</td>
+		<td class=w10 width=13% align=center>訂單號</td>
+		<td class=w10 width=11% align=center>工段號</td>
+		<td class=w10 width=10% align=center>工段秒數</td>
+		<td class=w10 width=7% align=center>&nbsp;早班數量</td>
+		<td class=w10 width=7% align=center>&nbsp;加班數量</td> 
+		<td class=w10 width=7% align=center>總秒數</td>
+		<td class=w10 width=16% align=center>當天效率</td>
+	</tr>
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div style='height:600px;overflow:auto;'>
+<table style="border:5px #cccccc solid;"  rules="all" cellpadding='0' cellspacing='0' width=100%>
+{foreach from=$emp_detail key=k item=value name=workerid}
+	<tr>
+		
+		<td rowspan={$value.rowspan} width=9% align=center>&nbsp;{$value.emp_code}&nbsp;</td>
+		
+		{foreach from=$value key=k1 item=value1 name=searchdate}
+			{if $k1!='rowspan' and $k1!='emp_code'}
+			
+			
+				
+				<td rowspan={$value1.rowspan} width=14% align=center id='attenddetail' empid='{$value.emp_code}' thedate='{$k1}'>{$k1}&nbsp;</td>
+				
+				<td rowspan={$value1.rowspan} width=6% align=center>&nbsp;{if $value1.work_hours}{$value1.work_hours}{else}無考勤{/if} &nbsp;</td>
+				{if $value1.order}
+					{foreach from=$value1.order key=k2 item=value2 name=order}
+					
+						<td rowspan={$value2.rowspan} width=12% align=center>{$k2}&nbsp;</td>
+						
+						{foreach from=$value2 key=k3 item=value3 name=step}
+							{if $k3!='rowspan'}
+								{if $k3==900}
+									<td width=12% align=center>&nbsp;組檢&nbsp;</td>
+								{else}
+									<td width=12% align=center>&nbsp;{$k3}</td>
+								{/if}
+								<td width=10% align=center>&nbsp;{$value3.sec}</td>
+								<td width=7% align=center>&nbsp;{$value3.qty}</td>
+								<td width=7% align=center>&nbsp;{$value3.ot_qty}</td>
+								{if $smarty.foreach.order.index == 0 and $smarty.foreach.step.index ==0}
+									<td rowspan={$value1.rowspan} width=7% align=center>&nbsp;{$value1.total_sec}&nbsp; </td>
+									<td rowspan={$value1.rowspan} width=16% align=center>&nbsp;{$value1.performance}%&nbsp; </td>
+									</tr>
+								{else}							
+									</tr>
+								{/if}
+								
+							{/if}
+						{/foreach}
+					{/foreach}
+				{else}
+					<td width=12% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=12% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=10% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=7% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=7% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=7% align=center>&nbsp;無資料&nbsp;</td>
+					<td width=16% align=center>&nbsp;無資料&nbsp;</td>
+					
+					</tr>
+				{/if}
+				
+			{/if} 
+			
+	
+		{/foreach}
+	
+			
+	{/foreach}
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td><!--------- footer ---------->
+{include file="footer.html"}	</td>
+</tr>
+</table>		
+		 
+</body>
+
+
+
+

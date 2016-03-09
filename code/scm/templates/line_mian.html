@@ -1,0 +1,283 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>=== ...... SCM SYSTEM [ Line Output ] ...... ===</title>
+<link type="text/css" rel="stylesheet" href="./css/shipping.css">
+<link type="text/css" rel="stylesheet" href="./js/src/css/jscal2.css" />
+<link type="text/css" rel="stylesheet" href="./js/src/css/border-radius.css" />
+<link type="text/css" rel="stylesheet" href="./js/src/css/steel/steel.css" />
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/src/js/jscal2.js"></script>
+<script type="text/javascript" src="./js/src/js/lang/en.js"></script>
+{literal}
+<script language="javascript">
+$(document).ready(function(){
+
+	$('.mail_msg').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("mail_txt");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("mail_txt");  
+	});
+	
+	$('.title_submit').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+	
+	$('.title_submit').click(function(){
+	
+		if( $(this).attr('id') == 'dop' ){
+		
+			var SCH_fty = $('#SCH_ftys').val();
+			if( SCH_fty == '' ){
+				alert('PLEASE CHOICE FACTORY！');
+				return false;
+			}
+			
+			var SCH_ord = $('#SCH_ords').val();
+			if( SCH_ord == '' ){
+				alert('PLEASE INPUT ORDER NUMBER！');
+				return false;
+			}
+		} else {
+		
+			//alert($(this).attr('id'));
+			alert($('form[id='+$(this).attr('id')+'] #SCH_fty').val());
+			var SCH_fty = $('#SCH_fty').val();
+			if( SCH_fty == '' ){
+				alert('PLEASE CHOICE FACTORY！');
+				return false;
+			}
+
+			var SCH_ord = $('#SCH_ord').val();
+			if( SCH_ord == '' ){
+				alert('PLEASE INPUT ORDER NUMBER！');
+				return false;
+			}
+			var SCH_date_str = $('#SCH_date_str').val();
+			if( SCH_date_str == '' ){
+				alert('PLEASE INPUT START DATE！');
+				return false;
+			}
+
+			var SCH_date_end = $('#SCH_date_end').val();
+			if( SCH_date_end == '' ){
+				alert('PLEASE INPUT FINISH DATE！');
+				return false;
+			}
+		}
+	
+		$("#"+$(this).attr('id')).submit();
+	});
+	
+	get_order = function(){
+	
+		var SCH_fty = $('#SCH_ftys').val();
+
+		$.ajax({
+			url: 'line.php?PHP_action=get_order',
+			type: 'GET',
+			data: {
+				SCH_fty : SCH_fty
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				
+				var sts = response.split("|");
+
+				$('#SCH_ord_dop').html(sts[0]);
+
+			}
+		});
+	};	
+	
+	get_fty2 = function(){
+	
+		// var invoice = $('#SCH_date_str').val().toUpperCase();
+		
+		var SCH_fty = $('#SCH_fty').val();
+		var SCH_ord = $('#SCH_ord').val();
+		var SCH_date_str = $('#SCH_date_str').val();
+		var SCH_date_end = $('#SCH_date_end').val();
+
+		$.ajax({
+			url: 'line.php?PHP_action=get_fty',
+			type: 'GET',
+			data: {
+				SCH_fty : SCH_fty,
+				SCH_ord : SCH_ord,
+				SCH_date_str : SCH_date_str,
+				SCH_date_end : SCH_date_end
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				
+				var sts = response.split("|");
+
+				$('#SCH_line_td').html(sts[0]);
+				$('#SCH_ord_td').html(sts[1]);
+
+			}
+		});
+	};	
+	
+});
+</script>
+{/literal}
+</head>
+<body>
+{if $max_notify > 0 }
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+	<a href="notify.php?PHP_action=notify">
+	<tr height="30" >
+		<td align="center" class="mail_msg" bgcolor="#EEEEEE">
+			<span class="sign" align="center"><b> You have {$max_notify} message un-read</b></span>
+		</td>
+	</tr>
+	</a>
+</table>
+<br>
+{/if}
+
+<table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+	{if $msg_YES}
+	<tr>
+		<td colspan="4">
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	
+	<form id="dop" METHOD="POST" name="search_daily_output" >
+	<tr>
+		<td class="line_t" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_main" colspan="4">[ SEARCH EXISTING Line Output - for DAILY OUT-PUT LIST ]</td>
+	</tr>
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	
+	<tr class="title_menu_bg">
+		<td class="title_txt_r">Factory : </td>
+		<td class="title_txt_l">{$fty}</td>
+		<td class="title_txt_r"></td>
+		<td class="title_txt_l"></td>
+	</tr>
+	
+	<tr class="title_menu_bg">
+		<td class="title_txt_r">Order # : </td>
+		<td class="title_txt_l" id="SCH_ord_dop"><input type="text" id="SCH_ords" name="SCH_ord" size="15" class="select" value=""></td>
+		<td class="title_txt_r"></td>
+		<td class="title_txt_l"></td>
+	</tr>
+	
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_note" colspan="4">
+			※ 1: search / listing Line Output record ; please use combo selection or/and key field.<br>
+			※ 2: if entire listing ; keep fields in blank and click [ SEARCH/LIST Line Output RECORDS ] button.
+		</td>
+	</tr>
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_submit" colspan="4" id="dop">[ SEARCH / LIST DAILY OUT-PUT RECORDS ]</td>
+	</tr>
+	<input type="hidden" name="PHP_action" value="sch_daily">
+	</form>
+	
+	<tr>
+		<td class="line_black" colspan="4"></td>
+	</tr>
+<!-- 
+	<form id="poa" METHOD="POST" name="search_daily_output" >
+	<tr>
+		<td class="line_t" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_main" colspan="4">[ SEARCH EXISTING Line Output - for 縫製訂單派公統計表 ]</td>
+	</tr>
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	
+	<tr class="title_menu_bg">
+		<td class="title_txt_r">Factory : </td>
+		<td class="title_txt_l">{$fty2}</td>
+		<td class="title_txt_r"></td>
+		<td class="title_txt_l"></td>
+	</tr>
+	
+	<tr class="title_menu_bg">
+		<td class="title_txt_r">Order # : </td>
+		<td class="title_txt_l" id="SCH_ord_td"><input type="text" name="SCH_ord" size="15" class="select" value=""></td>
+		<td class="title_txt_r">Line : </td>
+		<td class="title_txt_l" id="SCH_line_td">{$line_select}</td>
+	</tr>
+	
+	<tr class="title_menu_bg">
+		<td class="title_txt_r">Date : </td>
+		<td class="title_txt_l">
+			<input id="SCH_date_str" type="text" name="SCH_date_str" size="10" class="select" value="" readonly="readonly">
+			~
+			<input id="SCH_date_end" type="text" name="SCH_date_end" size="10" class="select" value="" readonly="readonly">
+			{literal}
+			<script type="text/javascript">//<![CDATA[
+			  Calendar.setup({
+				inputField : "SCH_date_str",
+				trigger    : "SCH_date_str",
+				onSelect   : function() { this.hide() },
+				dateFormat : "%Y-%m-%d"
+			  });
+			  Calendar.setup({
+				inputField : "SCH_date_end",
+				trigger    : "SCH_date_end",
+				onSelect   : function() { this.hide() },
+				dateFormat : "%Y-%m-%d"
+			  });
+			//]]></script>
+			{/literal}		
+		</td>
+		<td class="title_txt_r"></td>
+		<td class="title_txt_l"></td>
+	</tr>
+	
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_note" colspan="4">
+			※ 1: search / listing Line Output record ; please use combo selection or/and key field.<br>
+			※ 2: if entire listing ; keep fields in blank and click [ SEARCH/LIST Line Output RECORDS ] button.
+		</td>
+	</tr>
+	<tr>
+		<td class="line_spc" colspan="4"></td>
+	</tr>
+	<tr>
+		<td class="title_submit" colspan="4" id="poa">[ SEARCH / LIST 縫製訂單派公統計表 RECORDS ]</td>
+	</tr>
+	<input type="hidden" name="PHP_action" value="ship_sch">
+	</form> -->
+
+</table>

@@ -1,0 +1,1002 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+<link rel=stylesheet type="text/css" href="./css/jquery.loadmask.css" />
+{literal}
+<style type="text/css">
+<!--
+#Layer1 {
+background: #333333;
+opacity:0.45;
+filter: alpha(opacity=26);
+position:absolute;
+top:0px;
+left:0px; 
+height:expression(window.document.body.clientHeight);
+}
+-->
+</style>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript" src="./js/date.js"></script>
+<Script language="javascript">
+var fd_id;
+var tb_check;
+var tmp_special, tmp_id, tmp_id, tmp_ap_num, tmp_add_back, tmp_sup_id;
+var transaction;
+var sUrl;
+var callback = {
+	success: function(o) {
+		var response = o.responseText.split("|");
+		var rsp= response[0];
+		if (rsp == 'no')
+		{
+			alert ("UN Currect Unit Coversion!");
+			window.document.forms['po_add'].elements['PHP_unit'+fd_id].value = response[1];
+			window.document.forms['po_add'].elements['PHP_qty'+fd_id].value = response[3];
+		}else{
+			window.document.forms['po_add'].elements['PHP_qty'+fd_id].value = rsp;
+		}
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+var back_range = {
+	success: function(o) {
+		var response = o.responseText;
+		var rsp= response;
+		window.document.forms['po_add'].elements['PHP_po'+fd_id].value = response;
+		$.unblockUI();
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+		$.unblockUI();
+	}
+};
+
+var addback = {
+	success: function(o) {
+		var response = o.responseText.split("|");
+		var rsp= response[0];
+		document.getElementById("tbl_msg").style.display='block';
+		document.getElementById("edita"+fd_id).style.display='none';
+		document.getElementById("eta_edit"+fd_id).style.display='none';
+		document.getElementById("base_edit"+fd_id).style.display='none';
+		// document.getElementById("editb"+fd_id).style.display='none';
+		document.getElementById("po_viewb"+fd_id).style.display='block';
+		document.getElementById("eta_view"+fd_id).style.display='block';
+		document.getElementById("base_view"+fd_id).style.display='block';
+		// document.getElementById("po_viewc"+fd_id).style.display='block';
+		var viewb = document.getElementById("po_viewb"+fd_id);
+		// var viewc = document.getElementById("po_viewc"+fd_id);
+		var eta_view = document.getElementById("eta_view"+fd_id);
+		var base_view = document.getElementById("base_view"+fd_id);
+		msg1.innerText  = rsp;
+		viewb.innerHTML="<b>"+response[1]+"</b>";
+		eta_view.innerText = response[2];
+		window.document.forms['po_add'].elements['PHP_amount'+fd_id].value = response[3];			
+		base_view.innerText = response[4];
+		var tmp_qty;
+		var tmp_price;
+		var ttl = 0;
+{/literal}
+
+		{section name=SEC loop=$ap_spec} 
+		tmp_qty = window.document.forms['po_add'].elements['PHP_poe{$ap_spec[SEC].id}'].value;
+		tmp_price = window.document.forms['po_add'].elements['PHP_pricee{$ap_spec[SEC].id}'].value;
+		tmp_amount = window.document.forms['po_add'].elements['PHP_amounte{$ap_spec[SEC].id}'].value;
+		ttl = parseFloat(ttl) + parseFloat(tmp_amount);
+		{/section}
+
+		{section name=SEC loop=$ap_det2} 
+		tmp_qty = window.document.forms['po_add'].elements['PHP_po{$ap_det2[SEC].id}'].value;
+		tmp_price = window.document.forms['po_add'].elements['PHP_price{$ap_det2[SEC].id}'].value;
+		tmp_amount = window.document.forms['po_add'].elements['PHP_amount{$ap_det2[SEC].id}'].value;
+		ttl = parseFloat(ttl) + parseFloat(tmp_amount);
+		{/section}
+ 
+		{section name=SEC loop=$ap_oth_cost}
+		ttl = parseFloat(ttl) + parseFloat({$ap_oth_cost[SEC].cost});
+		{/section}
+{literal}
+
+		ttl = roundAmount(ttl);
+		window.document.forms['po_add'].elements['PHP_dear'].value = ttl;
+		$.unblockUI();
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+  
+var tolerback = {
+	success: function(o) {
+		var response = o.responseText;    	
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText = response;
+		document.getElementById("toler_add").style.display='none';
+		document.getElementById("toler_view").style.display='block';
+		$.unblockUI();
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+  
+var dearback = {
+	success: function(o) {
+		var response = o.responseText;    	
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = response;
+		document.getElementById("dear_add").style.display='none';
+		document.getElementById("dear_view").style.display='block';
+		$.unblockUI();
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+var otherback = {
+	success: function(o) {
+		var response = o.responseText.split("|");    	
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = response[0];
+		r=oth_table.insertRow();
+		r.insertCell().innerHTML	= response[1];
+		r.insertCell().innerHTML	= response[2];
+		var ttl = window.document.forms['po_add'].elements['PHP_dear'].value;
+		ttl = parseFloat(ttl) +parseFloat(response[3]) ;
+		ttl = roundAmount(ttl);
+		window.document.forms['po_add'].elements['PHP_dear'].value = ttl;	
+		$.unblockUI();
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+var delback = {
+	success: function(o) {
+		var response = o.responseText;    	
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = response;	
+		$.unblockUI();		
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+function roundAmount(n) {
+	var s = "" + Math.round( n * 100 ) / 100
+	var i = s.indexOf('.')
+	if( i < 0 ) return s + ".00"
+	var t = s.substring( 0 , i + 1 ) + s.substring( i + 1 , i + 3 )
+	if ( i + 2 == s.length ) t += "0"
+
+	return t   
+}   
+
+function po_edit_p2(id) {
+	fd_id=id;
+	document.getElementById("tbl_msg").style.display='none';
+	document.getElementById("edita"+fd_id).style.display='block';
+	document.getElementById("eta_edit"+fd_id).style.display='block';
+	document.getElementById("base_edit"+fd_id).style.display='block';
+	// document.getElementById("editb"+fd_id).style.display='block';
+	document.getElementById("po_viewb"+fd_id).style.display='none';
+	document.getElementById("eta_view"+fd_id).style.display='none';
+	document.getElementById("base_view"+fd_id).style.display='none';
+	// document.getElementById("po_viewc"+fd_id).style.display='none';
+	document.getElementById("dear_add").style.display='block';
+	document.getElementById("dear_view").style.display='none';
+	
+	//$("#PHP_qty"+id).css({"background-color" : "#FFCCCC"});
+	$("#PHP_pec"+id).css({"background-color" : "#FFCCCC"});
+	$("#PHP_po"+id).css({"background-color" : "#FFCCCC"});
+	$("#PHP_po_ut"+id).css({"background-color" : "#FFCCCC"});
+	$("#PHP_chack_"+id).val("1");
+}
+ 
+function chg_unit(id,select_num) {
+	fd_id=id;
+	document.getElementById("tbl_msg").style.display='none';
+	var ounit = window.document.forms['po_add'].elements['PHP_o_unit'+id].value;
+	var sel_index = window.document.forms['po_add'].elements['PHP_o_unit'+id].selectedIndex;
+	window.document.forms['po_add'].elements['PHP_prc_unit'+id].selectedIndex = select_num;
+	//alert (ounit);
+	var qty = window.document.forms['po_add'].elements['PHP_o_qty'+id].value;
+	var unit = window.document.forms['po_add'].elements['PHP_unit'+id].value;
+  var weight = window.document.forms['po_add'].elements['PHP_weight'+id].value;
+  if ( unit == 'g/yd.' && weight == "" ) {
+    alert ("plaese check fabric weight!!");
+    return false;
+  }	
+  // window.document.forms['po_add'].elements['PHP_po_ut'+fd_id].value = unit;
+  sUrl = "po.php?PHP_action=chg_unit_ajax&PHP_id="+id+"&PHP_qty="+qty+"&PHP_ounit="+ounit+"&PHP_nunit="+unit+"&PHP_weight="+weight;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+function count_range(id,det_id,tb) {
+
+	$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+	
+    var weight = window.document.forms['po_add'].elements['PHP_weight'+id].value;
+    var unit = window.document.forms['po_add'].elements['PHP_unit'+id].value;
+
+	if ( unit == 'g/yd.' && weight == "" ) {
+		alert ("plaese check fabric weight!!");
+		$.unblockUI();
+		return false;
+	} else {
+		fd_id=id;
+		$("#PHP_chack_"+id).val('0');
+		$("#PHP_pec"+id).css({"background-color" : "#E5FFCD"});
+		$("#PHP_po"+id).css({"background-color" : "#E5FFCD"});
+		$("#PHP_po_ut"+id).css({"background-color" : "#E5FFCD"});
+		
+		document.getElementById("tbl_msg").style.display='none';
+		var qty = window.document.forms['po_add'].elements['PHP_qty'+id].value;
+		var pec = window.document.forms['po_add'].elements['PHP_pec'+id].value;
+		window.document.forms['po_add'].elements['PHP_po_ut'+fd_id].value = unit;
+		sUrl = "po.php?PHP_action=count_range_ajax&PHP_det_id="+det_id+"&PHP_qty="+qty+"&PHP_range="+pec+"&PHP_table="+tb+"&PHP_unit="+unit;
+		transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, back_range, null);
+	}
+}
+
+function po_qty(id,det_id,tb,po_num,ap_num,mat_code,mat_cat) {
+	$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+	fd_id=id;	
+	tb_check = tb;
+	var today = GetTodayDate();
+	
+	document.getElementById("tbl_msg").style.display='none';
+	document.getElementById("dear_add").style.display='block';
+	document.getElementById("dear_view").style.display='none';
+
+	var old_qty = window.document.forms['po_add'].elements['PHP_qty'+id].value;
+	var qty = window.document.forms['po_add'].elements['PHP_po'+id].value;
+	var price = window.document.forms['po_add'].elements['PHP_price'+id].value;
+	var pec = window.document.forms['po_add'].elements['PHP_pec'+id].value;
+	var unit = window.document.forms['po_add'].elements['PHP_unit'+id].value;
+	var eta = window.document.forms['po_add'].elements['PHP_eta'+id].value;
+	var prc_unit = window.document.forms['po_add'].elements['PHP_prc_unit'+id].value;
+	var po_ut = window.document.forms['po_add'].elements['PHP_po_ut'+id].value;
+	var base_ck = window.document.forms['po_add'].elements['PHP_base'+id].checked;
+	var base_qty = window.document.forms['po_add'].elements['PHP_base_qty'+id].value;
+	
+	if ( $("#PHP_chack_"+id).val() == '1' ){
+		alert("plase chack lossy!");
+		$.unblockUI();
+		return;	
+	}
+	
+
+	if(base_ck && (base_qty == 0 || base_qty == '')) {
+		alert("plase input min. purchase");
+		$.unblockUI();
+		return;
+	}
+	
+	if(!base_ck)base_qty = 0;
+	var check_qty = parseFloat(old_qty) +(parseFloat(old_qty) * 10 / 100);
+
+	if(po_ut == '') {
+		alert("Please Select unit first");
+		$.unblockUI();
+		return;
+	}
+	
+	if(eta < today) {
+		alert("ETD must > Today");
+		$.unblockUI();
+		return;	
+	}
+	
+	if ( check_qty < qty ) {
+		if ( confirm("Q'ty Loss is more than [10%] \r\rAre you sure Purchase is currect?")) {
+		}else{
+			window.document.forms['po_add'].elements['PHP_po'+id].value = '';
+			window.document.forms['po_add'].elements['PHP_pec'+id].value = 0;
+			window.document.forms['po_add'].elements['PHP_po_ut'+id].value = '';
+			$.unblockUI();
+			return
+		}
+	}
+
+	if ( qty > 0 && price > 0 )	{
+{/literal}
+		{if $ap.special}
+			var special = {$ap.special};
+		{else}
+			var special = 0;
+		{/if}
+{literal}
+	if (special == 2) {
+{/literal}
+		{section name=SEC loop=$ap_spec} 
+		var tmp_eta = window.document.forms['po_add'].elements['PHP_etae{$ap_spec[SEC].id}'].value;
+		if (tmp_eta < '0000-00-00')window.document.forms['po_add'].elements['PHP_etae{$ap_spec[SEC].id}'].value = eta;
+		{/section}
+{literal}
+	} else {
+{/literal}
+		{section name=SEC loop=$ap_det2} 
+		var tmp_eta = window.document.forms['po_add'].elements['PHP_eta{$ap_det2[SEC].id}'].value;	 
+		if (tmp_eta < '0000-00-00') window.document.forms['po_add'].elements['PHP_eta{$ap_det2[SEC].id}'].value = eta;
+		{/section}
+{literal}
+	}
+
+
+
+  	sUrl = "po.php?PHP_action=add_po_qty&PHP_det_id="+det_id+"&PHP_qty="+qty+"&PHP_table="+tb+
+  	       "&PHP_id="+id+"&PHP_po_num="+po_num+"&PHP_ap_num="+ap_num+"&PHP_price="+price+
+  	       "&PHP_mat_code="+mat_code+"&PHP_mat_cat="+mat_cat+"&PHP_range="+pec+"&PHP_unit="+unit+
+  	       "&PHP_eta="+eta+"&PHP_prc_unit="+prc_unit+"&PHP_base_qty="+base_qty;
+		transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, addback, null);
+ 	}else{
+ 	  alert("Please check price, FOB or qty again!")
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = "Q'ty and Price Must > 0";
+		$.unblockUI();
+ 	}
+}
+
+function add_toler(po_num) {
+	$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+	//var toler = window.document.forms['po_add'].elements['PHP_toler'].value;
+	var integers = window.document.forms['po_add'].elements['PHP_integers'].value;
+	var Negative = window.document.forms['po_add'].elements['PHP_Negative'].value;
+	if( integers == '' ) integers = 0;
+	if( Negative == '' ) Negative = 0;
+	toler_view.innerHTML  =  '<b>Acceptable Tolerance : ( + '+integers+' % ~ - '+Negative+' % )</b> &nbsp; <input type="button" size=15 class=select_e value="EDIT" onClick="edit_toler( )";>';
+  sUrl = "po.php?PHP_action=add_po_toler&PHP_po_num="+po_num+"&PHP_integers="+integers+"&PHP_Negative="+Negative;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, tolerback, null);
+}
+
+function edit_toler() {
+	document.getElementById("toler_add").style.display='block';
+	document.getElementById("toler_view").style.display='none';
+}
+
+function add_dear(po_num) {
+	$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+	var dear = window.document.forms['po_add'].elements['PHP_dear'].value;
+	dear_view.innerHTML  =  '<b>Dear Amount : '+dear+'</b> &nbsp; <input type="button" size=15 class=select_e value="EDIT" onClick="edit_dear( )";>';
+  sUrl = "po.php?PHP_action=add_po_dear&PHP_po_num="+po_num+"&PHP_dear="+dear;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, dearback, null);
+}
+
+function edit_dear() {
+	document.getElementById("dear_add").style.display='block';
+	document.getElementById("dear_view").style.display='none';
+}
+
+function add_oth_cost(po_num) {
+	var item = window.document.forms['po_add'].elements['PHP_oth_item'].value;
+	var cost = window.document.forms['po_add'].elements['PHP_oth_cost'].value;
+	document.getElementById("dear_add").style.display='block';
+	document.getElementById("dear_view").style.display='none';
+	if (!item || !cost) {
+		alert("Please input charge and describe first.")
+		return;
+	}
+	$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+  sUrl = "po.php?PHP_action=add_oth_cost&PHP_po_num="+po_num+"&PHP_item="+item+"&PHP_cost="+cost;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, otherback, null);
+}
+
+function del_cost(cost_id,cost,po_num,r) {
+	if ( confirm("This record will delete and can't reversion anymore  !\r\rPlease check again\r\rAre you sure delet this ??")) {
+		$.blockUI({ message: '<img src="./images/ajpk.gif" border=0 width="66" height="66">'});
+		document.getElementById("dear_add").style.display='block';
+		document.getElementById("dear_view").style.display='none';
+
+		var ttl = window.document.forms['po_add'].elements['PHP_dear'].value;
+		ttl = parseFloat(ttl) - parseFloat(cost) ;
+		window.document.forms['po_add'].elements['PHP_dear'].value = ttl;
+
+	  var i=r.parentNode.parentNode.rowIndex;
+	  document.getElementById('oth_table').deleteRow(i);
+		
+ 	  sUrl = "po.php?PHP_action=oth_cost_del&PHP_cost_id="+cost_id+"&PHP_po_num="+po_num;
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	}
+}
+
+function po_check1(special,id,ap_num,add_back,sup_id) {
+    
+    var t_day = 0;
+
+	$("input[id^=J_etd]").each(function(i,elm) {
+    
+        if ( DateDiff( $(elm).attr("s_etd") ,  $(elm).val() ) < 60 ) {
+            $("#eta_edit"+$(elm).attr("sid")).css({"background-color" : "#FFCCCC"});
+            $("#eta_edite"+$(elm).attr("sid")).css({"background-color" : "#FFCCCC"});
+            t_day++;
+        } else {
+            $("#eta_edit"+$(elm).attr("sid")).css({"background-color" : ""});
+            $("#eta_edite"+$(elm).attr("sid")).css({"background-color" : ""});
+        }
+        
+	});    
+    
+    if( t_day > 0 ){
+        if ( !confirm('ETD 超過訂單 60 天，確定是否繼續成立採購單！') ) {
+
+            return false;
+            
+        }
+    }
+
+	if(special > 0) {
+		po_check(special,id,ap_num,add_back,sup_id,0)
+	}else{
+		tmp_special = special;
+		tmp_id = id;
+		tmp_ap_num = ap_num;
+		tmp_add_back = add_back;
+		tmp_sup_id = sup_id;
+		sUrl = "po.php?PHP_action=chk_det_ajax&PHP_num="+ap_num;
+		transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, checkback, null);
+	}	
+}
+
+var checkback = {
+	success: function(o) {
+		var response = o.responseText;    
+
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = response;
+
+		if(response == '') {
+			po_check(tmp_special,tmp_id,tmp_ap_num,tmp_add_back,tmp_sup_id,0);
+		} else {
+			if (confirm("PO overload BOM in QTY : \r\r"+response+"Would you want to update again?")) {
+				back;
+			} else {
+				po_check(tmp_special,tmp_id,tmp_ap_num,tmp_add_back,tmp_sup_id,1);
+			}
+		}			
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+function po_check(special,id,ap_num,add_back,sup_id,exc_mk) {
+
+	var bk_mk = 0;
+	if (special == 2) {
+		{/literal}
+		{section name=SEC loop=$ap_spec} 
+		if( document.getElementById("po_viewbe{$ap_spec[SEC].id}").style.display=='none') bk_mk =1;
+		{/section}
+		{literal}
+	} else {
+		{/literal}
+		{section name=SEC loop=$ap_det2} 
+		if( document.getElementById("po_viewb{$ap_det2[SEC].id}").style.display=='none') bk_mk =1;
+		{/section}
+		{literal}
+	}
+	
+	if (bk_mk == 1) {
+		alert("Please check each materials have already purchased.");
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = "Please check each materials have already purchased. ";
+	}
+	
+	//var toler = window.document.forms['po_add'].elements['PHP_toler'].value;
+	if( document.getElementById("toler_view").style.display=='none') bk_mk =1;
+
+	if (bk_mk == 1) {
+		alert("Please input  Acceptable Toleramce .");
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = "Please input  Acceptable Tolerance. ";
+		bk_mk =1;
+	}
+
+	if( document.getElementById("dear_view").style.display=='none') bk_mk =1;
+	if (bk_mk == 1) {
+		alert("Please input  Dear Amount .");
+		document.getElementById("tbl_msg").style.display='block';
+		msg1.innerText  = "Please input  Dear Amount. ";
+		bk_mk =1; 
+	} 
+
+	var des = window.document.forms['po_add'].elements['PHP_des'].value;
+	var currency = window.document.forms['po_add'].elements['PHP_CURRENCY'].value;
+	var fty = window.document.forms['po_add'].elements['PHP_FACTORY'].value;
+	var finl = window.document.forms['po_add'].elements['PHP_finl_dist'].value;
+	var dmway = window.document.forms['po_add'].elements['PHP_dm_way'].value;
+	var name = window.document.forms['po_add'].elements['PHP_ship_name'].value;
+	var attn = window.document.forms['po_add'].elements['PHP_ship_attn'].value;
+	var fax  = window.document.forms['po_add'].elements['PHP_ship_fax'].value;
+	var tel  = window.document.forms['po_add'].elements['PHP_ship_tel'].value;
+	var addr = window.document.forms['po_add'].elements['PHP_ship_addr'].value;
+	var fob  = window.document.forms['po_add'].elements['PHP_FOB'].value;
+	var fob_area = window.document.forms['po_add'].elements['PHP_fob_area'].value;
+	//var old_des = window.document.forms['po_add'].elements['PHP_ord_des'].value;
+    
+	var before = window.document.forms['po_add'].elements['PHP_before'].value;
+	var after = window.document.forms['po_add'].elements['PHP_after'].value;
+
+	if ( des == '' ) {
+		alert("Please input description");
+		return;
+	}
+	
+	if (currency == '') {
+		alert("Please Select Currency");
+		return;
+	}
+	
+	if (fty == '') {
+		alert("Please Select Send To");
+		return;
+	}
+
+	if (finl == '') {
+        if( !confirm("你確認不輸入 Final Dist! \n如果不輸入，工廠將不會在大表提醒未驗收通知！ \n\nAre you sure there is don't need to input the Final Distinction!") ){
+            return false;
+        } 
+	}
+
+	if(fty != 'HJ' && fty != 'LY') {
+		if(finl == ''){
+			alert("Please Select Final Distinction");
+			return;
+		}
+	}
+	
+	if (dmway == '') {
+		alert("Please Select Payment");
+		return;
+	}
+    
+    if( $("#PHP_dm_way").find(":selected").text() == 'Input TT before & after shipment' ) {
+        if (before == '') {
+            alert("Please input before Payment");
+            return;
+        }
+        if (after == ''){
+            alert("Please input after Payment");
+            return;
+        }
+    }
+		
+	var fob_mk = 0;
+	if(!fob) fob_mk=1;
+	if(fob != 'EX-FTY' && fob != 'EX-Works') {
+		if(fob_area == '') fob_mk = 1
+	}
+	
+	if(fob_mk == 1) {
+		alert("Please input price term");
+		return;
+	}
+
+	if (bk_mk == 0) {
+		window.location ='po.php?PHP_action=po_ex_submit&PHP_id='+id+'&PHP_aply_num='+ap_num+'&PHP_add_back='+add_back+
+										//'&PHP_sattn='+attn+'&PHP_sname='+name+'&PHP_sfax='+fax+'&PHP_stel='+tel+'&PHP_saddr='+addr+ // 此為如果無運送地(ID)時,記錄運送地詳細資料，暫無使用
+										'&PHP_CURRENCY='+currency+'&PHP_FACTORY='+fty+'&PHP_des='+des+
+										'&PHP_dmway='+dmway+'&PHP_sup_id='+sup_id+"&PHP_fob="+fob+"&PHP_fob_area="+fob_area+
+										'&PHP_finl_dist='+finl+'&PHP_exc_mk='+exc_mk+'&PHP_before='+before+'&PHP_after='+after; 
+
+	} 
+}
+
+function ship_show(r) {
+	var ship = r.value
+	sUrl="po.php?PHP_action=get_ship_ajax&PHP_ship="+ship;
+	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, shipback, null);
+}
+
+var shipback = {
+	success: function(o) {
+		var response = o.responseText.split("|");    	
+		window.document.forms['po_add'].elements['PHP_ship_name'].value = response[0];
+		window.document.forms['po_add'].elements['PHP_ship_attn'].value = response[4];
+		window.document.forms['po_add'].elements['PHP_ship_fax'].value  = response[3];
+		window.document.forms['po_add'].elements['PHP_ship_tel'].value  = response[2];
+		window.document.forms['po_add'].elements['PHP_ship_addr'].value = response[1];
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+function finl_show(r) {
+	var ship = r.value
+	sUrl="po.php?PHP_action=get_finl_ajax&PHP_finl="+ship;
+	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, finlback, null);
+}
+
+
+var finlback = {
+	success: function(o) {
+		var response = o.responseText.split("|");    	
+		window.document.forms['po_add'].elements['PHP_finl_name'].value = response[0];
+		window.document.forms['po_add'].elements['PHP_finl_attn'].value = response[4];
+		window.document.forms['po_add'].elements['PHP_finl_fax'].value  = response[3];
+		window.document.forms['po_add'].elements['PHP_finl_tel'].value  = response[2];
+		window.document.forms['po_add'].elements['PHP_finl_addr'].value = response[1];
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+function open_append() {
+	document.getElementById("Layer1").style.display='none';
+}
+
+function check(obj) {
+	var obj;
+	var max=127;
+	obj.value=obj.value.substring(0,max);
+}
+
+
+{/literal}{if $ap.before}var before = {$ap.before}{/if}{literal};
+{/literal}{if $ap.after}var after = {$ap.after}{/if}{literal};
+
+$(document).ready(function() {
+    chk_dm_way = function(){
+        if( $("#PHP_dm_way").find(":selected").text() == 'Input T/T of shipment separately the BEFORE & AFTER' ) {
+            $('#dm_way').attr({'style':'display:inline;'});
+            $('#PHP_before').val(before);
+            $('#PHP_after').val(after);
+        } else {
+            $('#dm_way').attr({'style':'display:none;'});
+            $('#PHP_before').val('');
+            $('#PHP_after').val('');
+        }
+    }
+    chk_dm_way();
+    
+    pi = function(po_num){
+        //alert($("#PHP_pi").val());
+        //alert(po);
+		$.blockUI({ message: '<div><br><h4>Waiting...</h4></div>'});
+        
+        var pi = $("#PHP_pi").val();
+        
+        $.ajax({
+            url: "po.php?PHP_action=pi_add",
+            type: 'POST',
+			data: {
+				po_num: po_num,
+				pi: $("#PHP_pi").val()
+			},
+            success: function(msg){
+                if ( msg == 'ok' ) {
+					$.unblockUI();
+                } else {
+                    alert('error!!');
+                }
+            },
+            error:function(xhr, ajaxOptions, thrownError){ 
+                alert(xhr.status); 
+                alert(thrownError); 
+            }
+        });
+    }
+    
+});
+
+
+function DateDiff( sDate1, sDate2){  
+    //sDate1和sDate2是2002-12-18格式
+    var aDate , oDate1 , oDate2 , iDays
+    aDate  = sDate1.split( "-")
+    oDate1 = new Date(aDate[1] +
+    '-' + aDate[2] +
+    '-' + aDate[0])  
+    // 轉換?12-18-2002格式
+
+    aDate  = sDate2.split( "-" )
+    oDate2 = new Date(aDate[1] +
+    '-' + aDate[2] +  
+    '-' + aDate[0])
+
+    //alert( oDate1 - oDate2 )
+
+    iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24 )  
+    //把相差的毫秒數轉換?天數
+    return iDays
+}
+
+
+</script>
+{/literal}
+</head>
+<body topmargin="10" >
+<div id="Layer1" style="display : none;" >
+	<table width="100%" height="100%">
+		<tr>
+			<td align="center" valign="middle" ><img src="./images/ajpk.gif" border=0 width="66" height="66"></td>
+		</tr>
+	</table>
+</div>
+
+<form METHOD="POST" name="po_add" action="{$PHP_SELF}">
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr>
+		<td class="des" align=center width=200 height=28> <span class=ssign><b>Extra Purchase Order</b></td>
+		<td class="des" align=center width=300 height=28>P / O &nbsp;Develop &nbsp;&nbsp; P / O  # <span class=ylw10><b> {$ap.po_num}</b></span> </td>
+		<td class="ylw10" align=center height=28> {if $ap.po_rev}<span class=sign_b>Revise</span> <b>{$ap.po_rev}</b>{else}&nbsp;{/if} </td>
+	</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=900 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+<hr SIZE=2 WIDTH=900>
+<table border=1 cellspacing=0 cellpadding=0 width="900" bgcolor=#FFFFFF>
+	<tr>
+		<td>
+			<table border=0 cellspacing=1 cellpadding=3 width="900" bgcolor=#FFFFFF>
+				<tr>
+					<td class=snvy align=right><b>PI : </b></td>
+					<td class=snvy align=left>
+						<input type="text" id="PHP_pi" name="PHP_pi" size=20 class="select" value="{$ap.pi_num}">
+                        <input type="button" size=15 class=select_e value="OK" onClick="pi('{$ap.po_num}')";>
+					</td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Dept : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6 ><b>&nbsp;{if $ap.dept <> $ap.open_dept && $ap.open_dept <> ''}{$ap.open_dept}{else}{$ap.dept}{/if}</b></td>
+					<td class=snvy align=right ><b>Supplier : </b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.s_name}</b></td>
+					<td class=snvy align=right ><b>Source area : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.country}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right ><b>Currency: </b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6><b>&nbsp;{$CURRENCY_select}</b></td>
+					<td class=snvy align=right ><b>Price: </b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6><b>&nbsp;{$FOB_select}</b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6><input type="text" name="PHP_fob_area" size=7 class=select value="{$ap.fob_area}"></td>
+					<td class=snvy align=right><b>Payment : </b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$dm_way_select}</b><span id="dm_way" style="display:none;"><br>&nbsp; Before: <input type="text" id="PHP_before" name="PHP_before" size="3" class="select" value="{$ap.before}">% After: <input type="text" id="PHP_after" name="PHP_after" size="3" class="select" value="{$ap.after}">%</span></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Send TO : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6>&nbsp;{$FACTORY_select}</td>
+					<td class=frnt align=left colspan=6 bgcolor=#E7E6E6>&nbsp;<b>OR</b>&nbsp;&nbsp;<input type="text" name="PHP_ship_name" size=98 class=select value="{$ap.ship_name}" readonly ></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Attn. To : </b></td>			
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;<input type="text" name="PHP_ship_attn" size=23 class=select value="{$ap.ship_attn}" readonly ></b></td>
+					<td class=snvy align=right nowrap><b>TEL: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2 ><b>&nbsp;<input type="text" name="PHP_ship_tel" size=23 class=select value="{$ap.ship_tel}" readonly ></b></td>
+					<td class=snvy align=right ><b>FAX : </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 ><b>&nbsp;<input type="text" name="PHP_ship_fax" size=23 class=select value="{$ap.ship_fax}" readonly ></b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Addr: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=7><b>&nbsp;<input type="text" name="PHP_ship_addr" size=119 class=select value="{$ap.ship_addr}" readonly ></b></td>
+				</tr>
+				<tr>
+					<td colspan=8><hr SIZE=1 WIDTH=99%></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Final dist. : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6>&nbsp;{$FINL_select}</td>
+					<td class=frnt align=left colspan=6 bgcolor=#E7E6E6>&nbsp;<b>OR</b>&nbsp;&nbsp;<input type="text" name="PHP_finl_name" size=98 class=select value="{$ap.finl_name}" readonly ></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Attn. To : </b></td>			
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;<input type="text" name="PHP_finl_attn" size=23 class=select value="{$ap.finl_attn}"  readonly ></b></td>
+					<td class=snvy align=right nowrap><b>Rcver TEL: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2 ><b>&nbsp;<input type="text" name="PHP_finl_tel" size=23 class=select value="{$ap.finl_tel}" readonly ></b></td>
+					<td class=snvy align=right ><b>Rcver FAX : </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 ><b>&nbsp;<input type="text" name="PHP_finl_fax" size=23 class=select value="{$ap.finl_fax}" readonly ></b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Rcver Addr: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=7><b>&nbsp;<input type="text" name="PHP_finl_addr" size=119 class=select value="{$ap.finl_addr}" readonly ></b></td>
+				</tr>				
+			</table>
+		</td>
+	</tr>
+</table>
+<hr SIZE=2 WIDTH=900>
+
+<table border="1" cellspacing=0 cellpadding=2 width=900 id="table2">	
+	<tr bgcolor="#003333" height=28>		
+		<td colspan=2    class=back align="center"><b>Material #</b></td>
+		<td width="220"  class=back align="center"><b>Orders</b></td>
+		<td width="130"  class=back align="center"><b>ETD</b></td>
+		<td width="200"  class=back align="center"><b>Color / Cat.</b></td>
+		<td width="230" class=back align="center">&nbsp;</td>
+	</tr>
+	{section name=SEC loop=$ap_det2} 
+	<tr id="j_ap_det" onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td  colspan=2 align="left" nowrap>
+			<a href="javascript:{if $ap_det2[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap_det2[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$ap_det2[SEC].mat_code}</a>
+		</td>
+		<td  align="left" nowrap>
+ 	  	{section name=AP loop=$ap_det2[SEC].orders}
+	  	<a href="javascript:po_bom_view('{$ap_det2[SEC].orders[AP]}','{$ap.po_num}')" value='ord_out' style='cursor:pointer'>
+ 	  	{$ap_det2[SEC].orders[AP]}</a> - {$ap_det2[SEC].o_etd[AP]} <br>
+ 	  	{/section}
+		</td>
+    <td  align="center">
+    <div id=eta_edit{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty > 0}display:none;{/if}">
+        <input type="text" s_etd="{$ap_det2[SEC].s_etd}" id="J_etd_{$ap_det2[SEC].id}" sid="{$ap_det2[SEC].id}" name="PHP_eta{$ap_det2[SEC].id}" size=7 value="{if $ap_det2[SEC].po_eta == '0000-00-00'}{else}{$ap_det2[SEC].po_eta}{/if}" >
+        <img align='top' onMouseDown="javascript:Cal(document.po_add.PHP_eta{$ap_det2[SEC].id},1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16" style='cursor:hand'>    
+    </div>
+    <div id=eta_view{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty == 0}display:none;{/if}">
+    {if $ap_det2[SEC].po_eta == '0000-00-00'}&nbsp;{else}{$ap_det2[SEC].po_eta}{/if} 
+    </div>
+		</td>	
+		<td align="left">{$ap_det2[SEC].color}&nbsp;<br>{$ap_det2[SEC].size}</td>	
+		<td align="left" nowrap>
+		<div id=base_edit{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty > 0}display:none;{/if}">
+			<input type="checkbox" name="PHP_base{$ap_det2[SEC].id}" value="1">
+			need min. purchase :&nbsp;
+			<input type="text" name="PHP_base_qty{$ap_det2[SEC].id}" size=3 value="{$ap_det2[SEC].base_qty}" >		
+    </div>
+		<div id=base_view{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty == 0}display:none;{/if}">
+			{if $ap_det2[SEC].base_qty == 0}&nbsp;{else}need min. purchase : {$ap_det2[SEC].base_qty}{/if}
+    </div>
+		</td>
+	</tr>	
+	<tr>
+		<td colspan=6>
+			{if $ap_det2[SEC].mat_name}Name : {$ap_det2[SEC].mat_name} ; {/if}
+			{if $ap_det2[SEC].width}C.width : {$ap_det2[SEC].width} ; {/if}
+			{if $ap_det2[SEC].weight}Weight : {$ap_det2[SEC].weight} ; {/if}
+			{if $ap_det2[SEC].mile}Supplier's # : {$ap_det2[SEC].mile} ; {/if}
+			{if $ap_det2[SEC].mile_name}Supplier's Name : {$ap_det2[SEC].mile_name} ; {/if}
+			{if $ap_det2[SEC].con1}{$ap_det2[SEC].con1} ; {/if}
+			{if $ap_det2[SEC].con2}{$ap_det2[SEC].con2} {/if}&nbsp;
+		</td>
+	</tr>	
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td width="30" align="right"  class=back bgcolor="#003333" ><b>Q'TY</b></td>
+		<td width="80" align="right">{$ap_det2[SEC].ap_qty|number_format:"2f"}&nbsp;{$ap_det2[SEC].unit}</td>
+		<td colspan=4 align="left" bgcolor=#EAEAEA>
+			<input type="hidden" name="PHP_o_unit{$ap_det2[SEC].id}" value="{$ap_det2[SEC].unit}">
+			<input type="hidden" name="PHP_o_qty{$ap_det2[SEC].id}" value="{$ap_det2[SEC].ap_qty}">
+			<input type="hidden" name="PHP_amount{$ap_det2[SEC].id}" value="{$ap_det2[SEC].amount}">
+			<input type="hidden" name="PHP_weight{$ap_det2[SEC].id}" value="{$ap_det2[SEC].weight}">		
+			<input type="hidden" id="PHP_chack_{$ap_det2[SEC].id}" value="{$ap_det2[SEC].id}">		
+			<div id=edita{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty > 0}display:none;{/if} background:#FFFFFF;">
+				&nbsp;<input type="label" id="PHP_qty{$ap_det2[SEC].id}" name="PHP_qty{$ap_det2[SEC].id}" size=6 value="{$ap_det2[SEC].ap_qty}" readonly style=text-align:right>
+				&nbsp;{$ap_det2[SEC].Unit_select}&nbsp;<b>+</b>
+				lossy <input type="text" id="PHP_pec{$ap_det2[SEC].id}" name="PHP_pec{$ap_det2[SEC].id}" size=1 value="{$ap_det2[SEC].range}" style="text-align:right">
+				<b>%</b>&nbsp;
+				<input type="button" size=15 class=select_e value="OK" onClick="count_range('{$ap_det2[SEC].id}', '{$ap_det2[SEC].ids}','ap_det' )";>
+				&nbsp;
+				&nbsp;<input type="text" id="PHP_po{$ap_det2[SEC].id}" name="PHP_po{$ap_det2[SEC].id}" size=6 class=select value="{$ap_det2[SEC].po_qty}" style=text-align:right>			
+				&nbsp;<input type="label" id="PHP_po_ut{$ap_det2[SEC].id}" name="PHP_po_ut{$ap_det2[SEC].id}" size=1 value="{$ap_det2[SEC].po_unit}" readonly >
+				&nbsp;
+				<b>Price : @ $</b><input type="text" name="PHP_price{$ap_det2[SEC].id}" size=5 class=select value="{if $ap_det2[SEC].prics > 0}{$ap_det2[SEC].prics|number_format:"5f"}{else}{$ap_det2[SEC].price1|number_format:"5f"}{/if}" style=text-align:right>
+				&nbsp;{$ap_det2[SEC].prc_unit_select}&nbsp;
+				&nbsp;<input type="button" size=15 class=select_e value="OK" onClick="po_qty('{$ap_det2[SEC].id}', '{$ap_det2[SEC].ids}','ap_det','{$ap.po_num}','{$ap.ap_num}','{$ap_det2[SEC].mat_code}','{$ap_det2[SEC].mat_cat}' )";>
+			</div>		
+			<div id=po_viewb{$ap_det2[SEC].id} style="{if $ap_det2[SEC].po_qty == 0}display:none;{/if}background:#EAEAEA;">
+				<b>PO Q'ty : {$ap_det2[SEC].po_qty|number_format:"2f"} {$ap_det2[SEC].po_unit}  &nbsp;&nbsp;&nbsp; Loss  : {$ap_det2[SEC].range}% &nbsp;&nbsp;&nbsp; Price :  @ ${$ap_det2[SEC].prics|number_format:"2f"}</b>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="button" size=30 class=select_e value='EDIT' onClick="po_edit_p2('{$ap_det2[SEC].id}')";>
+			</div>
+		</td>
+	<tr>
+	{/section}
+</table>
+
+<table border=1 cellspacing=0 cellpadding=0 width=900 align=center bgcolor=#EAEAEA id=oth_table>
+	{if $ap_oth_cost.0.id <= 0}
+	<tr bgcolor=#EAEAEA >
+		<td align=left width=740></td>	
+		<td align=left width=30></td>
+	</tr>		
+	{/if}
+	{section name=SEC loop=$ap_oth_cost}
+	<tr bgcolor=#EAEAEA >
+		<td align=left width=740>
+			<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Others&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Describe :
+				 {$ap_oth_cost[SEC].item}
+				 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Price :
+				 {$ap_oth_cost[SEC].cost}
+			</b>
+		</td>	
+		<td align=left width=30>
+		<input type='image' src='images/del.gif' height=20 onclick="del_cost('{$ap_oth_cost[SEC].id}','{$ap_oth_cost[SEC].cost}','{$ap.po_num}',this)">
+		</td>
+	</tr>		
+	{/section}
+</table>
+<table border=1 cellspacing=0 cellpadding=0 width=900 align=center>
+	<tr><td>
+	<table border=0 cellspacing=0 cellpadding=0 width=900 align=center>
+		<tr>
+			<td align=left width=120><b>&nbsp;Other (charge) : $</b></td>	
+			<td align=left width=150><input type="text" name="PHP_oth_cost" size=20 class=select value="" ></td>
+			<td align=left width=70><b>&nbsp;Describe :</b></td>	
+			<td align=left width=220><input type="text" name="PHP_oth_item" size=50 class=select value="" ></td>
+			<td align=left width=100><input type="button" size=15 class=select_e value="ADD" onClick="add_oth_cost('{$ap.ap_num}')"></td>	
+		</tr>
+	</table>
+	</td></tr>
+</table>
+
+
+
+<table border="1" cellspacing=0 cellpadding=2 width=900>	
+	<tr height=28>
+		<td align="Left">
+			<div id=toler_add style="{if $ap.toler > 0}display:none;{/if}">
+				<b>&nbsp;Acceptable Tolerance : ( ＋ : <input type="text" name="PHP_integers" size=2 class=select value="{$ap.toleri}"  style=text-align:center onkeyup="this.value=this.value.replace(/[^0-9]/g,'')"> % ) ~ ( － : <input type="text" name="PHP_Negative" size=2 class=select value="{$ap.tolern}"  style=text-align:center onkeyup="this.value=this.value.replace(/[^\d\.]/g,'')"> % ) </b>
+				<input type="button" size=15 class=select_e value="OK" onClick="add_toler('{$ap.ap_num}' )";>
+			</div>
+			<div id=toler_view style="{if $ap.toler == 0}display:none;{/if}">
+				<b>&nbsp;Acceptable Tolerance : {if $ap.toler == '0|0'}0{else} + {$ap.toleri} % {if $ap.tolern != '0'}~ - {$ap.tolern} % {/if}{/if}</b>
+				<input type="button" size=15 class=select_e value="EDIT" onClick="edit_toler( )";>
+			</div>
+		</td>
+	</tr>
+	<tr height=28>
+		<td align="Left">
+			<div id=dear_add style="{if $ap.dear > 0}display:none;{/if}">
+			<b>&nbsp;Deal Amount : <input type="text" name="PHP_dear" size=10 class=select value="{if $ap.dear > 0}{$ap.dear}{else}{$ap.po_total}{/if}"  style=text-align:center></b>
+			<input type="button" size=15 class=select_e value="OK" onClick="add_dear('{$ap.ap_num}' )";>
+			</div>
+			<div id=dear_view style="{if $ap.dear == 0}display:none;{/if}">
+			<b>&nbsp;Deal Amount : {$ap.dear}</b>
+			<input type="button" size=15 class=select_e value="EDIT" onClick="edit_dear( )";>
+			</div>
+		</td>
+	</tr>
+</table>
+
+<table border=1 cellspacing=0 cellpadding=0 width=900 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td align=center class=nvy9><b>Reason for Special Purchase</b> (Must be...)</td>
+	</tr>
+	<tr bgcolor=#eeeeee>
+		<td class=gry9 align=left><textarea name="PHP_des" rows=2 cols=135 class=select onBlur=check(this)>{$apply_special.0.des}</textarea></td>	
+	</tr>
+</table>
+
+<hr SIZE=2 WIDTH=900>
+
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+	<tr>
+		<td valign=top width=100>
+			{if $back_str}
+			<input type="button" onClick="window.location.href='{$PHP_SELF}{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=95">
+			{/if} 
+		</td>
+		<td>		
+			<input type="hidden" name="PHP_action" value="po_view">
+			<input type="hidden" name="PHP_id" value="{$ap.id}">
+			<input type="hidden" name="PHP_aply_num" value="{$ap.ap_num}">
+			<input type="hidden" name="PHP_po_num" value="{$ap.po_num}">
+			<input type="hidden" name="PHP_back_str" value="{$back_str}">
+			<input type="hidden" name="PHP_rev" value="{$revise}">
+			<input type="hidden" name="PHP_add" value="{$add_back}">
+			<input type="button" value="Submit Above" class=select_e style="cursor:pointer; width=99%" onClick="po_check1('{$ap.special}','{$ap.id}','{$ap.ap_num}','{$add_back}','{$ap.supl_id}')">		
+		</td>
+	</tr>
+</table> 
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

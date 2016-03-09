@@ -1,0 +1,177 @@
+{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">{if $T_inventory_main_title}{$T_inventory_main_title}{else}Inventory{/if}</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Append Inventory : </td>
+					<td>{if !$lots && !$acc}<input class="submit_ajax" type="button" id="append_inventory" style="width:90px;" name="Submit" value="Start">{/if}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Order : </td>
+					<td>
+						<input type="text" name="PHP_order" id="PHP_order" onchange="chk_inventory(this)" value="{$order}"/> 
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Material : </td>
+					<td>
+						<input type="radio" name="mat" id="mat" value="lots" onclick="chk_inventory(this)" {if $item == 'lots'}checked="checked"{/if}/> Fabric 
+						<input type="radio" name="mat" id="mat" value="acc" onclick="chk_inventory(this)" {if $item == 'acc'}checked="checked"{/if}/> Accessory
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Factory : </td>
+					<td>{if $dept_select}{$dept_select}{else}{$dept}{/if}
+						<input type="hidden" id="item" name="item" value="{$item}">
+						<input type="hidden" id="PHP_dept" name="PHP_dept" value="{$dept}">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	{if $lots}
+	<tr>
+		<td>
+			<table cellspacing="0" cellpadding="0" cols="0">
+				{section name=DET loop=$lots}
+				{if $smarty.section.DET.index % 16 == 0}
+				<tr>
+					<td class="ListName" title="Factory">{if $T_factory}{$T_factory}{else}Factory{/if}</td>
+					<td class="ListName" title="Material">{if $T_material}{$T_material}{else}Material{/if}</td>
+					<td class="ListName" title="Open User">{if $T_open_user}{$T_open_user}{else}Open User{/if}</td>
+					<td class="ListName" title="Open Date">{if $T_open_date}{$T_open_date}{else}Open Date{/if}</td>
+					<td class="ListName" title="Submit User">{if $T_submit_user}{$T_submit_user}{else}Submit User{/if}</td>
+					<td class="ListName" title="Submit Date">{if $T_submit_date}{$T_submit_date}{else}Submit Date{/if}</td>
+					<td class="ListName" title="Confirm Use">{if $T_confirm_user}{$T_confirm_user}{else}Confirm User{/if}</td>
+					<td class="ListName" title="Confirm Date">{if $T_confirm_date}{$T_confirm_date}{else}Confirm Date{/if}</td>
+					<td class="ListName" title="Remark">{if $T_remark}{$T_remark}{else}Remark{/if}</td>
+				</tr>				
+				{/if}
+				<tr id="List_TR_link">
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].fty}{$lots[DET].fty}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].mat_cat == 'l'}Fabric{else}Accessory{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].open_user}{$lots[DET].open_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].open_date}{$lots[DET].open_date}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].submit_user}{$lots[DET].submit_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].submit_date && $lots[DET].submit_date != '0000-00-00 00:00:00'}{$lots[DET].submit_date}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].confirm_user}{$lots[DET].confirm_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $lots[DET].confirm_date && $lots[DET].confirm_date != '0000-00-00 00:00:00'}{$lots[DET].confirm_date}{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft">
+						<div id="b_{$lots[DET].ver}{$lots[DET].fty}{$item}">
+							<table cellspacing="0" cellpadding="2" >
+								<tr>
+									<td>{if $lots[DET].remark}{$lots[DET].remark|nl2br}{else}{/if}
+									<td><img id="stock_remark" title="Remark" onclick="stock_remark('')" src="images/edit.gif" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}"></td>
+								</tr>
+							</table>
+						</div>
+						<div id="e_{$lots[DET].ver}{$lots[DET].fty}{$item}" style="display:none;">
+							<textarea cols="20" rows="3" id="text_{$lots[DET].ver}{$lots[DET].fty}{$item}">{$lots[DET].remark}</textarea><input id="inventory_edit" type="button" value="EDIT" style="cursor:pointer;" ver="{$lots[DET].ver}" fty="{$lots[DET].fty}" item="{$item}">
+						</div>
+					</td>
+				</tr>
+				{if $finish_button_show}
+				<tr>
+					<td class="List_msg">
+					<input class="submit_ajax" type="button" id="inventory_finish" style="width:90px;" name="finish" value="Finish">
+					</td>
+				</tr>
+				{/if}
+				{sectionelse}
+				<tr>
+					<td class="List_msg">{$dept}, No data!</td>
+				</tr>
+				{/section}
+				
+				
+			</table>
+		</td>
+	</tr>
+	{/if}
+	{if $acc}
+	<tr>
+		<td>
+			<table cellspacing="0" cellpadding="0" cols="0">
+				{section name=DET loop=$acc}
+				{if $smarty.section.DET.index % 16 == 0}
+				<tr>
+					<td class="ListName" title="Factory">Factory</td>
+					<td class="ListName" title="Material">Material</td>
+					<td class="ListName" title="Open User">Open User</td>
+					<td class="ListName" title="Open Date">Open Date</td>
+					<td class="ListName" title="Submit User">Submit User</td>
+					<td class="ListName" title="Submit Date">Submit Date</td>
+					<td class="ListName" title="Confirm Use">Confirm User</td>
+					<td class="ListName" title="Confirm Date">Confirm Date</td>
+					<td class="ListName" title="Remark">Remark</td>
+				</tr>				
+				{/if}
+				<tr id="List_TR_link" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}">
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].fty}{$acc[DET].fty}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].mat_cat == 'l'}Fabric{else}Accessory{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].open_user}{$acc[DET].open_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].open_date}{$acc[DET].open_date}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].submit_user}{$acc[DET].submit_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].submit_date && $acc[DET].submit_date != '0000-00-00 00:00:00'}{$acc[DET].submit_date}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].confirm_user}{$acc[DET].confirm_user}{else}&nbsp;{/if}</td>
+					<td id="List_TR_link_inventory" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}" order="{$order}" class="ListValueLeft">{if $acc[DET].confirm_date && $acc[DET].confirm_date != '0000-00-00 00:00:00'}{$acc[DET].confirm_date}{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft">
+						<div id="b_{$acc[DET].ver}{$acc[DET].fty}{$item}">
+							<table cellspacing="0" cellpadding="2" >
+								<tr>
+									<td>{if $acc[DET].remark}{$acc[DET].remark|nl2br}{else}{/if}
+									<td><img id="stock_remark" title="Remark" onclick="stock_remark('')" src="images/edit.gif" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}"></td>
+								</tr>
+							</table>
+						</div>
+						<div id="e_{$acc[DET].ver}{$acc[DET].fty}{$item}" style="display:none;">
+							<textarea cols="20" rows="3" id="text_{$acc[DET].ver}{$acc[DET].fty}{$item}">{$acc[DET].remark}</textarea><input id="inventory_edit" type="button" value="EDIT" style="cursor:pointer;" ver="{$acc[DET].ver}" fty="{$acc[DET].fty}" item="{$item}">
+						</div>
+					</td>
+				</tr>
+				{if $finish_button_show}
+				<tr>
+					<td class="List_msg">
+					<input class="submit_ajax" type="button" id="inventory_finish" style="width:90px;" name="finish" value="Finish">
+					</td>
+				</tr>
+				{/if}
+				{sectionelse}
+				<tr>
+					<td class="List_msg">{$dept}, No data!</td>
+				</tr>
+				{/section}
+				
+			</table>
+		</td>
+	</tr>
+	{/if}
+</table>
+{include file="footer.html"}

@@ -1,0 +1,59 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM MONITOR ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+  <script language="javascript" src="./js/open_detial.js"></script>
+
+	<script language="javascript">
+  
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='picture/saw0.png?'+ Math.random();
+}
+
+	</script>
+	{/literal}
+</head>
+<body onLoad="refreshIt();">
+
+<img src="picture/saw0.png" name="pic">
+<br>
+<br>
+{if $total_su > 0}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+<tr>
+<td valign=top>
+<table border=1 cellspacing=1 cellpadding=1 width=250 bgcolor=#FFFFFF>
+  <tr>
+     <td class=frnt align=right width=60><b>Average : </b> &nbsp; </td>
+     <td class=frnt align=left> &nbsp; <b>{$avg_su|number_format} su / day</b></td>
+     <td class=frnt align=left> &nbsp;{if $avg_ord > 0} <b>{$avg_ord|number_format} days / order</b>{/if}</td>
+  </tr>
+  <tr>
+     <td class=frnt align=right><b>Total : </b> &nbsp; </td>
+     <td class=frnt align=left colspan=2> &nbsp; <b>{$total_su|number_format} su <br> &nbsp; {$year_title}</b></td>
+  </tr>
+</table>
+</td>
+<td valign=top>
+<table border=1 cellspacing=1 cellpadding=1 width=350 bgcolor=#FFFFFF>
+{section name=SEC loop=$polt_det} 
+  <tr>
+     <td class=frnt align=right width=10 bgcolor={$polt_det[SEC].color}>&nbsp; </td>
+     <td class=frnt align=left>
+	   	<a href="javascript:show_order_rec('','{$polt_det[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>
+	   		<b>{$polt_det[SEC].order}</b></a>  	     
+     	
+     </td>
+     <td class=frnt align=left width=20>&nbsp;<b>IE : </b></td>
+     <td class=frnt align=left><b>{$polt_det[SEC].ie}</b></td>
+  </tr>
+{/section} 
+</table>
+</td>
+{/if}
+
+<!--------- footer ---------->
+{include file="footer.html"}

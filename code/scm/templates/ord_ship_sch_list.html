@@ -1,0 +1,195 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>=== ...... SCM SYSTEM [ SHIPPING DOCUMENT ADD LIST ] ...... ===</title>
+<link type="text/css" rel="stylesheet" href="./css/shipping.css">
+<script type="text/javascript" src="./js/jquery.js"></script>
+{literal}
+<script language="javascript">
+
+function ord_del(id) {
+	location.href="shipping.php?PHP_action=ord_ship_del&PHP_id="+id;
+}
+
+function add(id,ord,cust,mks,p_id,factory){
+	location.href="shipping.php?PHP_action=ord_ship_add&PHP_id="+id+"&PHP_ord="+ord+"&PHP_cust="+cust+"&PHP_mks="+mks+"&PHP_p_id="+p_id+"&PHP_fty="+factory;
+}
+
+$(document).ready(function(){
+
+	$('.mail_msg').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("mail_txt");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("mail_txt");  
+	});
+	
+	$('.title_submit').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+	
+	$('.title_submit2').hover(function(){
+		$(this).animate({ fontSize: '+=5' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ fontSize: '-=5' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+		
+	$('.list_txt').hover(function(){
+		$(this).addClass("list_txt_bg");
+	},function(){
+		$(this).removeClass("list_txt_bg");  
+	});
+	
+	$('.title_submit').click(function(){
+		$("#"+$(this).attr('id')).submit();
+	});
+	
+});
+
+</script>
+{/literal}
+</head>
+<body>
+{if $max_notify > 0 }
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+	<a href="notify.php?PHP_action=notify">
+	<tr height="30" >
+		<td align="center" class="mail_msg" bgcolor="#EEEEEE">
+			<span class="sign" align="center"><b> You have {$max_notify} message un-read</b></span>
+		</td>
+	</tr>
+	</a>
+</table>
+<br>
+{/if}	
+
+<table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+	{if $msg_YES}
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td class="line_t"></td>
+	</tr>
+	<tr>
+		<td class="title_main">[ SHIPPING DOCUMENT ADD LIST ~ FOR FINISHED ORDER ]</td>
+	</tr>
+	<tr>
+		<td class="line_spc"></td>
+	</tr>
+	{if $span > 0}
+	<tr>
+		<td>
+			<form id="ccfsd" METHOD="POST" name="ship_ord">
+			<table width="100%">
+				<tr class="title_txt_l_spc_r">
+					{section name=SEC loop=$ord_select}
+					<td>{$ord_select[SEC].num}{$ord_select[SEC].mks} <img src="./images/button_drop.png" onClick="ord_del('{$ord_select[SEC].id}');" style="cursor:pointer"></td>
+					{/section}
+				</tr>
+			</table>
+			<input type='hidden' name="PHP_action" value="ord_ship_check_colorway">
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_spc"></td>
+	</tr>
+	<tr>
+		<td class="title_submit" id="ccfsd">Check Colorway For Shipping Document</td>
+	</tr>
+	{/if}
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_b">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr class="list_title">
+					<td>ORDER#</td>
+					<td>Customer</td>
+					<td>Style#</td>
+					<td>ETD</td>	
+					<td>Cust. PO#</td>
+					<td>FTY</td>
+					<td>Size</td>
+					<td>ADD</td>
+				</tr>
+				{if $record_NONE}
+				<tr>
+					<td colspan="8" align="center" class="ssign"><br>No Records!<br><br>
+				</tr>
+				{/if}
+				{section name=SEC loop=$ord} 
+				<tr class="list_txt">
+					<td>{$ord[SEC].order_num}{if $ord[SEC].partial_num > 1}{$ord[SEC].mks}{/if}</td>
+					<td>{$ord[SEC].cust_name}</td>
+					<td>{$ord[SEC].style_num}</td>
+					<td>{$ord[SEC].etd}</td>   
+					<td>{$ord[SEC].cust_po}</td> 
+					<td>{$ord[SEC].factory}</td> 
+					<td>{$ord[SEC].size_scale}</td>
+					<td width="80">
+					<input type="button" value="Add" class="title_submit2" id="add" onClick="add('{$ord[SEC].id}','{$ord[SEC].order_num}','{$ord[SEC].cust}','{if $ord[SEC].partial_num > 1}{$ord[SEC].mks}{else} {/if}','{$ord[SEC].p_id}','{$ord[SEC].factory}')">
+					</td>
+				</tr>
+				{/section} 
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="list_note" colspan="8">※ message : above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} {/section} wi record! [ total {$max_no} entries ] </td>
+	</tr>
+	<tr>
+		<td align="center" colspan="8">
+			<table>
+				<tr>
+					<td class="list_page">
+						{if $pages[0] > 1}
+						<a href="shipping.php?&PHP_action=ord_ship_sch&PHP_sr_startno=p{$pages[1]}{$back_str}" style="cursor:pointer"><img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+						{/if}
+					</td>
+					<td class="list_page">
+						{section name=PGE loop=$pages}
+						{if $pages[PGE] <= $maxpage }
+							{if $pages[PGE] == $now_pp}
+								{$pages[PGE]}
+							{else}
+								<a href="shipping.php?&PHP_action=ord_ship_sch&PHP_sr_startno={$pages[PGE]}{$back_str}" style="cursor:pointer">{$pages[PGE]}</a>
+							{/if}
+						{/if}   
+						{/section}
+					</td>
+					<td class="list_page">
+						{if $lastpage < $maxpage}
+						<a href="shipping.php?&PHP_action=ord_ship_sch&PHP_sr_startno=n{$lastpage}{$back_str}"><img src="images/right2.gif" border=0 alt="後12筆資料"></a>
+						{/if} 
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>	
+</table>

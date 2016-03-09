@@ -1,0 +1,297 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  SCM SYSTEM .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript">
+function cfm(ref,id) {
+	if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 樣本記錄:["+ref+"]??")) {
+		location.href="index2.php?PHP_action=smpl_del&PHP_id="+id;
+	} 
+}
+
+function check(){
+}
+
+function list(item){
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+	style.focus();
+}
+ 
+function fablist(){
+	var gofile ='index2.php?PHP_action=show_fabric_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+	style.focus();
+}
+
+function acclist(){
+	var gofile ='index2.php?PHP_action=show_accessory_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+	style.focus();
+}
+ 
+function writeToParentList(lots_code,lots_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['PHP_fab'].value = lots_code;
+}
+
+function writeToAccList(acc_code,acc_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['PHP_acc'].value = acc_code;
+} 
+ 
+function writeToSuplList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['add_aply'].elements['PHP_supl'].value = supl_s_name;
+	window.document.forms['add_aply'].elements['PHP_supl_cat'].value = supl_cat;
+}
+
+function writeToSupSESlList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['search_aply'].elements['PHP_SCH_supl'].value = supl_s_name;
+}
+
+function search_spceial(mang) {
+	var dept = window.document.forms['add_aply'].elements['PHP_dept_code'].value ;
+	var cust = window.document.forms['add_aply'].elements['PHP_cust'].value ;
+	var num = window.document.forms['add_aply'].elements['PHP_num'].value ;
+
+	window.location='index2.php?PHP_action=apply_search_bom&PHP_special=1&PHP_dept_code='+dept+"&PHP_cust="+cust+"&PHP_num="+num; 	
+
+}
+
+function search_unbom(mang) {
+	var dept = window.document.forms['add_aply'].elements['PHP_dept_code'].value ;
+	var cust = window.document.forms['add_aply'].elements['PHP_cust'].value ;
+	var num = window.document.forms['add_aply'].elements['PHP_num'].value ;
+
+	window.location='index2.php?PHP_action=apply_search_ord&PHP_special=1&PHP_dept_code='+dept+"&PHP_cust="+cust+"&PHP_num="+num; 	
+
+}
+
+function search_pp(mang) {
+	var dept = window.document.forms['add_aply'].elements['PHP_dept_code'].value ;
+	var cust = window.document.forms['add_aply'].elements['PHP_cust'].value ;
+	var num = window.document.forms['add_aply'].elements['PHP_num'].value ;
+
+	window.location='po.php?PHP_action=apply_search_pp&PHP_special=2&PHP_dept_code='+dept+"&PHP_cust="+cust+"&PHP_num="+num; 	
+
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+	
+{if $max_notify > 0 }		
+	<table width=620 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}		
+	
+<!-- ################################################################################# -->
+{if $add_flag}
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+	<form METHOD="POST" name="add_aply">
+	<tr> 
+		<td class=des align=center colspan=5 bgcolor=#280004 >[ Purchase Order Developing-- <b>B.O.M. Search</b> ]</td>
+	</tr>
+	<tr>
+	{if $manager_flag}
+		<td class=b9 align=center><b>TEAM : &nbsp;&nbsp;{$dept_ary}</b></td>
+	{else}
+		<td class=b9 align=center><b><span class=ylw10>TEAM : &nbsp;&nbsp;{$dept_id}</span></b></td>
+	{/if}
+		{if !$manager_flag}<input type="hidden" name="PHP_dept_code" value="{$dept_id}">{/if}
+		<td class=b9 align=center ><b>CUST : &nbsp;&nbsp;{$cust_select}</b></td>
+		<td class=b9 align=center> <b>ORDER # : </b>&nbsp;&nbsp;<input type=text name="PHP_num" size=15 class=select value=""></td>
+		<td class=b9 align=center> <b>FULL LIST : </b>&nbsp;&nbsp;<input type=checkbox name="PHP_full" value="1"><br><small>P/O done included</small></td>
+	</tr>
+	<tr>
+		<td colspan="4" align="center">
+			<input type="submit" value="Purchase by BOM" class=select_e style="width:49%;cursor:pointer">
+			<!-- <input type="button" value="Purchase beyond BOM" class="select_red" style="width:30%;cursor:pointer" onClick="search_spceial({$manager_flag})"> -->
+			<input type="button" value="Pre-Purchase" class="select_red" style="width:49%;cursor:pointer" onClick="search_pp({$manager_flag})">
+		</td>
+	</tr>
+	<input type="hidden" name="PHP_action" value="apply_search_bom">
+	</form> 
+{/if}
+	{if $msg_YES}
+	<tr>
+		<td colspan=5 >
+			<table border=1 cellpadding=4 cellspacing=0 width=600 align=center>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+</table>
+
+<hr size=1 width=600 align=center>
+<br><br><br>
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+<form METHOD="POST" name="search_aply" action='po.php'>
+	<tr>
+		<td>
+			<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300 align=center>
+				<tr>
+					<td class="des" align=center height=28>[ SEARCH EXISTING&nbsp;Purhcase Order ]</td>
+				</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=1 width=600>
+				<tr>
+					<td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+				</tr>
+				<tr><input type="hidden" name="PHP_dept_code" value={if $manager_v_flag}""{else}"{$dept_id}"{/if}>
+					<td class=snvy align=right><b>P/O No. : </b></td>
+					<td class=frnt align=left><input type=text name="PHP_SCH_num" size=15 class=select value=""></td>
+                    <td class=snvy align=right><b>PI No. : </b></td>
+					<td class=frnt align=left><input type=text name="PHP_pi_num" size=15 class=select value=""></td>
+					
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Ship To:</b></td>
+					<td class=frnt align=left>{$factory_select}</td>
+					<td class=snvy align=right><b>Supplier : </b></td>
+					<td class=frnt align=left><b><input type=text name="PHP_SCH_supl" size=15 class=select value=""><img src="./images/icoSearch.gif" alt="Supplier" onClick="list('search');" style="cursor:pointer"></b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Create user : </b></td>
+					<td class=frnt align=left><input type=text name="PHP_create_user" size=15 class=select></td>
+                    <td class=snvy align=right><b>Customer : </b></td>
+					<td class=frnt align=left><b>{$cust_sch_select}</td>
+				</tr>
+				<tr>
+					<td class=snvy align=center colspan=2>
+						<input type=radio name="SCH_del" value="1">
+						<b>include deleted Purchase order</b>
+					</td>					
+					<td class=snvy align=center colspan=2>
+						<input type=radio name="SCH_del" value="2">
+						<b>deleted Purchase order only</b>
+					</td>						
+				</tr>	
+			</table>
+			<table border=0 cellspacing=0 cellpadding=0 width=600 align=center>
+				<tr> 
+					<td align=left class=b9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 1: search / listing purchase record ; please use combo selection or/and key field.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 2: if entire listing ; keep fields in blank and just click [ SEARCH/LIST P / O RECORDS ] button.
+					</td>
+				</tr>
+				<tr><hr SIZE=2 WIDTH=97%></tr>
+				<tr> 
+					<td align=center>
+					<input type="hidden" name="PHP_action" value="po_search">
+					<input type=submit value="[ SEARCH / LIST Purchase Order RECORDS ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</form>
+</table>
+
+<BR><BR>
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+<form METHOD="POST" name="est_stock" action=po.php>
+	<tr>
+		<td>
+			<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300 align=center>
+				<tr>
+					<td class="des" align=center height=28>[ Fabric Estimating Stock ]</td>
+				</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=1 width=600>
+				<tr>
+					<td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>ORDER : </b></td>
+					<td class=frnt align=left><input type=text name="SCH_ord_num" size=15 class=select value=""></td>
+				</tr>	
+				<tr>
+					<td class=snvy align=right><b>PO ETD : </b></td>
+					<td class=frnt align=left>
+						<input type=text name="SCH_str" size=15 class=select value="">
+						<img align='top' onmousedown="javascript:Cal(document.est_stock.SCH_str,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>	
+						~
+						<input type=text name="SCH_end" size=15 class=select value="">
+						<img align='top' onmousedown="javascript:Cal(document.est_stock.SCH_end,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>	
+					</td>
+				</tr>					
+			</table>
+			<table border=0 cellspacing=0 cellpadding=0 width=600 align=center>
+				<tr><hr SIZE=2 WIDTH=97%></tr>
+				<tr> 
+					<td>
+						<input type="hidden" name="PHP_action" value="po_remain_report">
+						<input type="hidden" name="PHP_from" value="search">	
+						<input type=submit value="[ REPORT for Estimating Stock ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</form>
+</table>
+
+
+<!--
+<hr size=1 width=600 align=center>
+<br><br><br>
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+<form METHOD="POST" name="search_aply">
+	<tr>
+		<td>
+			<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300 align=center>
+				<tr>
+					<td class="des" align=center height=28>[ SEARCH EXISTING&nbsp;Purchase Application ]</td>
+				</tr>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=1 width=600>
+				<tr>
+					<td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+				</tr>
+				<tr><input type="hidden" name="PHP_dept_code" value={if $manager_v_flag}""{else}"{$dept_id}"{/if}>
+					<td class=snvy align=right><b>P/A No. : </b></td>
+					<td class=frnt align=left><input type=text name="PHP_SCH_num" size=15 class=select value=""></td>
+					<td class=snvy align=right><b>Supplier : </b></td>
+					<td class=frnt align=left><b><input type=text name="PHP_SCH_supl" size=15 class=select value=""><img src="./images/icoSearch.gif" alt="Supplier" onClick="list('search');" style="cursor:pointer"></b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Ship To:</b></td>
+					<td class=frnt align=left>{$factory_select}</td>
+					<td class=snvy align=right><b>Customer : </b></td>
+					<td class=frnt align=left><b>{$cust_sch_select}
+				</td>
+			</table>
+			<table border=0 cellspacing=0 cellpadding=0 width=600 align=center>
+				<tr> 
+					<td align=left class=b9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 1: search / listing order record ; please use combo selection or/and key field.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 2: if entire listing ; keep fields in blank and just click [ SEARCH/LIST P / O RECORDS ] button.
+					</td>
+				</tr>
+				<tr><hr SIZE=2 WIDTH=97%></tr>
+				<tr> 
+					<td align=center>
+					<input type="hidden" name="PHP_action" value="apply_search">
+					<input type=submit value="[ SEARCH / LIST Purchase Application RECORDS ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</form>
+</table>
+-->
+<!--------- footer ---------->
+{include file="footer.html"}

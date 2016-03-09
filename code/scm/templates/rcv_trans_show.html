@@ -1,0 +1,177 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===::::::::::SCM SYSTEM -- RECEIVING ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<Script language="javascript">
+function rcv_rev(id,trn_num,back_str,version,rcv_num) {
+	var loc;
+	loc='revise';
+	if ( confirm("are you sure to REVISE Receive:#[ "+rcv_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the apply procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		location.href="trans_rcvd.php?PHP_action=rcvd_revise&PHP_trn_num="+trn_num+back_str+"&PHP_id="+id+"&PHP_ver="+version;
+	} 
+}
+
+</script>
+
+{/literal}
+</head>
+<body ><form METHOD="POST" name="supl_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr>
+	<td class="des" align=center width=150>{if $trans.status ==4}<b>Waiting for submit</b>{/if}{if $trans.status ==6}<b>Submitted</b>{/if}</td>
+	<td class="des" align=center width=250><span class=sign_b>Receiving&nbsp;</span> # <span class=ylw10><b>{$trans.rcv_num}</b></span>  Record </td>
+		<td class="des" align=center>
+	   {if $trans.status == 6 && $back_str && $edit_flag}
+			<a href="javascript:rcv_rev('{$trans.id}','{$trans.trn_num}','{$back_str}','{$trans.rcv_rev}','{$trans.rcv_num}')" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE"></a>
+	   {/if}
+	  </td>
+		<td class="ylw10" align=center height=28> {if $trans.rcv_rev <> 0}<span class=sign_b>Version</span> <b>{$trans.rcv_rev}</b>{else}&nbsp;{/if} </td>
+
+	<td>
+    {if $trans.status == 6 }
+    <a href="trans_rcvd.php?PHP_action=rcvd_print&PHP_trn_num={$trans.trn_num}">
+			<img src="./images/print9.jpg" border=0 alt="PDF: SAVE/PRINT"></a>
+			{else}&nbsp;{/if}
+	</td>
+	</tr>
+</table>
+
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<hr SIZE=2 WIDTH=600>
+<table border=0 cellspacing=1 cellpadding=4 width=600 bgcolor=#FFFFFF>
+  <tr>
+		<td width=110 class=snvy align=right bgcolor=#E9F7E8><b>Receiving # : </b> &nbsp;</td>
+		<td width=110 align=left>&nbsp;	<b>{$trans.rcv_num}</b></td>
+		
+
+		<td width=140 class=snvy align=right bgcolor=#E9F7E8><b>Source FTY : </b> &nbsp;</td>
+		<td width=50 align=left>&nbsp; <b>{$trans.org_fty}　</b></td>
+		
+		<td width=140 class=snvy align=right bgcolor=#E9F7E8><b>Receiver : </b> &nbsp;</td>
+		<td width=50 align=left>&nbsp;	<b>{$trans.new_fty}</b></td>
+	</tr>
+	<tr>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>ORDER # : </b> &nbsp;</td>
+		<td align=left>&nbsp;	<b>{$trans.ord_num}</b></td>
+
+		<td class=snvy align=right bgcolor=#E9F7E8 ><b>Transport # : </b> &nbsp;</td>
+		<td align=left colspan=3>&nbsp;	<b>{$trans.trn_num}</b></td>
+</tr>
+</table>
+<hr SIZE=2 WIDTH=600>
+
+<table border="1" cellspacing=0 cellpadding=3 width="600" id="table1">	
+	<tr bgcolor="#584E5C" height=30>
+		<td cellpadding=2 width="100" class=back align="center"><b>Material #</b></td>	
+		<td cellpadding=2 width="200" class=back align="center"><b>Color/cat</b></td>	
+		<td cellpadding=2 width="150" class=back align="center"><b>P / O &nbsp;&nbsp;&nbsp;Q'ty</b></td>
+		<td cellpadding=2 width="150" class=back align="center"><b>Receiving Q'ty</b></td>		
+	</tr>
+{section name=SEC loop=$trans_det}
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+		<td align="center" nowrap>
+			  <a href="javascript:{if $trans_det[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$trans_det[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$trans_det[SEC].mat_code}</a>
+		</td>
+		<td align="left">{$trans_det[SEC].color}&nbsp;</td>			
+		<td align="right">{$trans_det[SEC].qty|number_format:"2f"} {$trans_det[SEC].unit}</td>
+		<td align="right">{$trans_det[SEC].rcv_qty|number_format:"2f"} {$trans_det[SEC].unit}</td>
+	</tr>
+{/section}
+</table>
+<br>
+
+{if $rcv_log}  
+<table border=1 cellspacing=0 cellpadding=0 width=600 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=5 align=center class=nvy9><b>Remark Records</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Date</td>
+		<td width=80 class=w10 align=center>Item</td>
+		<td width=200 class=w10 align=center>History records</td>
+		<td width=80 class=w10 align=center>by</td>
+	</tr>
+	{section name=SEC loop=$rcv_log}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center><small>{$rcv_log[SEC].k_date}</small></td>
+		<td class=gry9 align=left>{$rcv_log[SEC].item}</td>
+		<td class=gry9 align=left>{$rcv_log[SEC].des}</td>
+		<td class=gry9 align=center>{$rcv_log[SEC].user}</td>
+	</tr>
+	{/section}
+</table>
+{/if}  
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=600>
+<tr>
+<td WIDTH=360 align=right><font size=1 >Submit : </font> </td>
+<td WIDTH=120 align=left>{if $trans.rcv_sub_user}<font size=1 ><a href="javascript:message_out('{$trans.rcv_sub_user_id}')" style="cursor:pointer">{$trans.rcv_sub_user}</a> / {$trans.rcv_sub_date}&nbsp;</font>{/if}</td>
+<td WIDTH=100 align=right><font size=1 >Receive : </font></td>
+<td WIDTH=120 align=left><font size=1 ><a href="javascript:message_out('{$trans.rcv_user_id}')" style="cursor:pointer">{$trans.rcv_user}</a> / {$trans.rcv_date}&nbsp;</font></td>
+</tr>
+</table>
+<br>
+{if $add_flag && $trans.status == 4}
+<!---------- sample logs form   -->
+<table border=1 cellspacing=0 cellpadding=0 width=600 align=center>
+<form method=POST name=smpl_logs>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=2 align=center class=nvy9><b>ADD Remark</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=520 class=w10 align=center>Remark</td>
+		<td width=70 class=w10 align=center>&nbsp;</td>
+	</tr>
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=left>
+		<textarea name="PHP_des" rows=2 cols=100 class=select>{$smpl_log.des}</textarea></td>
+		<td class=ylw9 align=center valign=center>
+		<input type=submit value="save" class=select_e style="cursor:pointer; width=55; height=35" onClick=this.width=0;></td>
+		<input type="hidden" name="PHP_action" value="rcvd_log_add">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_rcv_num" value="{$rcv.rcv_num}">
+		<input type="hidden" name="PHP_id" value="{$rcv.id}">
+	<!--		<input type="hidden" name="PHP_back_str" value="{$back_str2}">    -->
+	</tr>
+</form>
+</table>
+<br>
+{/if} 
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=600>
+ <tr>       
+ {if $back_str}     	
+	<td width=100>			
+			<input type="button" onClick="window.location.href='receive.php?PHP_action=rcvd_search{$back_str}'" value=" << back " class=select_e  style="cursor:pointer; width:95%" >
+	</td>
+	{/if}
+	<td align=center width=200>	
+		{if $edit_flag && $trans.status == 4}				
+			<input type="button" onClick="window.location.href='trans_rcvd.php?PHP_action=rcvd_submit&PHP_id={$trans.id}&PHP_trn_num={$trans.trn_num}&PHP_ver={$trans.rcv_rev}{$back_str}'" value=" [ Submit ] " class=select_e  style="cursor:pointer; width:95%" >
+		{/if}				
+   </td>
+   <td align=center width=200>	
+		{if $trans.status == 4 && $edit_flag}				
+			<input type="button" onClick="window.location.href='trans_rcvd.php?PHP_action=rcvd_edit&PHP_trn_num={$trans.trn_num}{$back_str}'" value=" [ EDIT ] " class=select_e  style="cursor:pointer; width:95%" >
+		{/if}				
+   </td>
+	</tr>
+</table>
+</form>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

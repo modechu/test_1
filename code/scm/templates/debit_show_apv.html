@@ -1,0 +1,147 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=650 bgcolor=#333333>
+	<tr>
+	   <td align=left class="des">
+			{if $dn.status == 0} Wait for Submit {/if}
+			{if $dn.status == 2} Wait for APV {/if}
+			{if $dn.status == 4} <b>APVD</b> {/if}
+		</td>
+		<td class="des" align=center height=28> [ <span class=ylw10><b>外銷業務索賠報告 -- {$dn.dn_num}</b></span> ] </td>
+	   <td align=right>
+	   {if $dn.status == 4}
+    	<a href="exception.php?PHP_action=exc_print&PHP_id={$dn.id}">
+				<img src="./images/print9.jpg" border=0 alt="PDF: SAVE/PRINT"></a>
+			{/if}
+		</td>
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=650>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=b9>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<br>
+<table border=0 cellspacing=2 cellpadding=2 width=650 bgcolor=#FFFFFF>
+  <tr>	
+     <td width=100 class=snvy align=right nowrap><b>部門 :</b></td>			
+    <td width=125 class=b9 align=left bgcolor='#eeeeee'><b>{$dn.dept}</b></td>		 	
+    <td width=100 class=snvy align=right ><b>報告日期 : </b></td>
+    <td width=125 class=b9 align=left bgcolor='#eeeeee'><b>{$dn.dn_date}</b></td>
+    <td width=100 class=snvy align=right ><b>報告人 : </b></td>
+    <td width=100 class=b9 align=left bgcolor='#eeeeee' ><b><a href="javascript:message_out('{$dn.dn_user_id}')" style="cursor:pointer">{$dn.dn_user}</a></b></td> 
+ 	</tr>
+ 	<tr>
+ 		 	<td class=snvy align=right><b>索賠對向 :</b></td>
+  		<td class=b9 align=left colspan=3 bgcolor='#eeeeee'><b>{$dn.dn_to_name}</b></td> 
+    	<td class=snvy align=right><b>索賠價格 :</b>&nbsp;</td>
+    	<td class=b9 align=left bgcolor='#eeeeee' ><b>{$dn.currency} $ {$dn.dn_price|number_format:"2f"}</b></td>
+
+	</tr>
+ 	<tr>
+    <td class=snvy align=right nowrap><b>訂單編號 :</b></td>
+    <td class=b9 align=left  colspan=3 bgcolor='#eeeeee'><b>
+
+    	 {section name=SEC loop=$dn.orders}
+  			<a href="javascript:show_order_rec('','{$dn.orders[SEC]}')" style='cursor:pointer'>
+				{$dn.orders[SEC]}</a> 
+			{/section}
+    </b></td>
+ 	</tr>
+ 	<tr>
+ 		 	<td class=snvy align=right><b>Customer P.O.# :</b></td>
+  		<td class=b9 align=left colspan=3 bgcolor='#eeeeee'><b>{$dn.cust_po}</b></td> 
+    	<td class=snvy align=right><b>採購單編號 :</b>&nbsp;</td>
+    	<td class=b9 align=left bgcolor='#eeeeee' ><b><a href="javascript:po_show('{$dn.pa_num}')">{$dn.po_num}</a></b></td>
+    	
+	</tr> 	
+ </table>
+ 
+
+ <br>
+ 
+
+<table border=0 cellspacing=7 cellpadding=7 width=650 bgcolor=#FFFFFF>
+
+ <tr height=28>
+    <td width=290 bgcolor=#eeeeee class=bgdy align=center nowrap><b>索賠事由</b></td>
+    <td width=310 bgcolor=#eeeeee class=bgdy align=center nowrap><b>會辦單位</b></td>
+ </tr>
+ <tr>
+   <td class=frnt align=left rowspan=8 valign=top>{$dn.dn_des}</td>
+ </tr>
+ {section name=SEC loop=$comm}	   
+  <tr>
+  	<td><b>{$comm[SEC].dept_name}</b> {if $comm[SEC].comm_user}-- [<a href="javascript:message_out('{$comm[SEC].comm_user_id}')" style="cursor:pointer">{$comm[SEC].comm_user}</a> / {$comm[SEC].comm_date}]{/if}</td>
+  </tr>
+  <tr>
+  	<td>{$comm[SEC].Comm}&nbsp;</td>
+  </tr>
+  {/section}
+
+ 
+</table>
+<br>
+
+
+<table border=0 cellspacing=0 cellpadding=1 width=650 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#333333 height=28>
+  <tr>
+    <td  colspan=2 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>    
+ </tr>
+ 
+</table>
+
+
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=650>
+   <tr>
+	<td valign=top width=70>
+		<input type=button onClick="window.location.href='{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=95%; height=40">
+</td>
+{if $add_flag && $dn.status == 2}
+	<td width=62 valign=top><form method=POST name=cfm>
+		<input type="hidden" name="PHP_action" value="do_dn_apv">
+		<input type="hidden" name="PHP_id" value="{$dn.id}">
+		<input type="hidden" name="PHP_ord_num" value="{$dn.ord_num}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value="APV ok" class=select_e style="cursor:pointer; width=60; height=40"></form>
+	</td>
+	
+	<td class=gry10 align=right valign=middle width=65>remark:</td>
+	<td class=gry10 valign=top><form method=POST name=reject>
+	    <textarea name="PHP_detail" rows=2 cols=60 class=select>{$dn_log.des}</textarea>
+		<input type="hidden" name="PHP_action" value="reject_dn_apv">
+		<input type="hidden" name="PHP_id" value="{$dn.id}">
+		<input type="hidden" name="PHP_ord_num" value="{$dn.ord_num}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value=" reject " class=select_e style="cursor:pointer; width=60; height=40" onClick=this.width=0;></form>
+	</td>
+{else}
+<td width=500></td>
+{/if}
+
+
+			</tr>
+				
+       
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

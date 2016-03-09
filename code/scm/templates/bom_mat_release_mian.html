@@ -1,0 +1,209 @@
+{include file="header_utf8.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle"> Materials release ( Factory ) </td>
+	</tr>
+    <tr>
+        <td class="space"></td>
+    </tr>
+    <tr>
+        <td class="subInputName">
+            <table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td class="item_title"> 
+                        <table cellspacing="0" cellpadding="0" cols="0">
+                            <tr>
+                                <td class="bar_t_l"></td>
+                                <td class="bar_t_m"></td>
+                                <td class="bar_t_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_m_l"></td>
+                                <td class="bar_m_m"> SEARCH / Append order material send </td>
+                                <td class="bar_m_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_b_l"></td>
+                                <td class="bar_b_m"></td>
+                                <td class="bar_b_r"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form METHOD="POST" id="bom_mat_release_append_list" action="{$PHP_SELF}?PHP_action=bom_mat_release_append_list">
+                        <table id="Search" cellpadding="3" cellspacing="0" cols="0" >
+                            <tr>
+                                <td class="title_txt_r">Factory : </td>
+                                <td class="subInputValue">{$fty_select}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="title_txt_r">Order # : </td>
+                                <td class="subInputValue"><input type="text" class="styled-input" name="PHP_ord_num"></td>
+                                <td></td>
+                                <td></td>
+                            </tr><!-- 
+                            <tr>
+                                <td class="title_txt_r">Materials : </td>
+                                <td class="subInputValue">
+                                    <span class="styled-checkbox" style="width:90px;text-align:center;"> Fabric <input type="radio" name="PHP_mat" id="checkbox" value="lots" /></span> 
+                                    <span class="styled-checkbox" style="width:120px;text-align:center;"> Accessory <input type="radio" name="PHP_mat" id="checkbox" value="acc"/></span>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr> -->
+                            <tr>
+                                <td colspan="4" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <input id="bom_mat_release_append_list" type="button" class="submit_ajax" style="width:150px;" value="Search">
+                                </td>
+                            </tr>	
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td class="note_msg">
+                        ※ 1: search / view order record; please use combo selection or/and key field.<br>
+                        ※ 2: if entire Search ; keep fields in blank and just click [ Search ] button.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                                <tr>
+                    <td class="item_title"> 
+                        <table cellspacing="0" cellpadding="0" cols="0">
+                            <tr>
+                                <td class="bar_t_l"></td>
+                                <td class="bar_t_m"></td>
+                                <td class="bar_t_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_m_l"></td>
+                                <td class="bar_m_m"> SEARCH / View send list </td>
+                                <td class="bar_m_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_b_l"></td>
+                                <td class="bar_b_m"></td>
+                                <td class="bar_b_r"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form METHOD="POST" id="bom_mat_release_search" action="{$PHP_SELF}?PHP_action=bom_mat_release_search">
+                        <table id="Search" cellpadding="3" cellspacing="0" cols="0" >
+                            <tr>
+                                <td class="title_txt_r">Factory : </td>
+                                <td class="subInputValue">{$fty_select}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="title_txt_r">Order # : </td>
+                                <td class="subInputValue"><input type="text" class="styled-input" name="PHP_ord_num"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td class="title_txt_r">Send # : </td>
+                                <td class="subInputValue"><input type="text" class="styled-input" name="PHP_send"></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <input id="bom_mat_release_search" type="button" class="submit_ajax" style="width:150px;" value="Search">
+                                </td>
+                            </tr>	
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td class="note_msg">
+                        ※ 1: search / view order record; please use combo selection or/and key field.<br>
+                        ※ 2: if entire Search ; keep fields in blank and just click [ Search ] button.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td class="item_title"> 
+                        <table cellspacing="0" cellpadding="0" cols="0">
+                            <tr>
+                                <td class="bar_t_l"></td>
+                                <td class="bar_t_m"></td>
+                                <td class="bar_t_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_m_l"></td>
+                                <td class="bar_m_m"> Schedule date:{$begin_date} ~ {$end_date} </td>
+                                <td class="bar_m_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_b_l"></td>
+                                <td class="bar_b_m"></td>
+                                <td class="bar_b_r"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table id="Search" cellpadding="0" cellspacing="3" cols="0" >
+                            <tr>
+                                <td class="title_txt_r"><b>un-SET FAB/ACC Order List</b></td>
+                            </tr>
+                            {section name=DET loop=$ord_list}
+                            <tr>
+                                <td bgcolor="#E8CCFF" align="center">
+                                    <b>{$ord_list[DET]}</b>
+                                </td>
+                            </tr>
+                            {/section}
+                            <tr>
+                                <td colspan="4" class="space"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+            </table>
+            
+        </td>
+    </tr>
+    <tr>
+        <td class="space_9"></td>
+    </tr>    
+</table>
+{include file="footer_utf8.html"}

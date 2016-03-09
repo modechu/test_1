@@ -1,0 +1,130 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+        
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=900>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+ <table width=900 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=14 align=center class=gry><b>Exceptional LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=70 align=center rowspan=2>異常報告#</td> 
+    <td class=w9 width=120  align=center rowspan=2>訂單編號#</td>
+    <td class=w9 width=100  align=center rowspan=2>異常狀態</td>
+    <td class=w9 width=70 align=center rowspan=2>客戶</td>
+    <td class=w9 width=30  align=center rowspan=2>部門</td>
+<!--    <td class=w9 width=70 align=center rowspan=2>報告日期</td> -->
+    <td class=w9 align=center colspan=5>會辦單位</td>
+    <td class=w9 width=80  align=center rowspan=2>狀態</td>
+  </tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=35 align=center>立元</td>
+    <td class=w9 width=35 align=center>湖嘉</td>
+    <td class=w9 width=35 align=center>嘉菲</td>
+    <td class=w9 width=35 align=center>生企</td>
+    <td class=w9 width=35 align=center>採購</td>
+  </tr>  
+{section name=SEC loop=$exc}
+{if $exc[SEC].status == 4}
+<tr bgColor='#eeeeee' onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#eeeeee'">
+{else}
+<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+{/if}
+<!--*****--2006.11.16頁碼新增 start	  -->
+   <td class=gry9 align=left><small><a href="exception.php?PHP_action=exc_show&PHP_id={$exc[SEC].id}{$back_str}&PHP_sr_startno={$now_pp}">{$exc[SEC].ex_num}</a></small></td>
+   <td class=gry9 align=left><small><a href="exception.php?PHP_action=exc_show&PHP_id={$exc[SEC].id}{$back_str}&PHP_sr_startno={$now_pp}">{$exc[SEC].ord_num}</a></small></td>
+<!--*****--2006.11.16頁碼新增 end	  -->   
+   <td class=gry9 align=left><small>{$exc[SEC].ex_status}&nbsp;</small></td>
+   <td class=gry9 align=left><small>{$exc[SEC].cust_iname}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$exc[SEC].dept}&nbsp;</small></td>
+ <!--  <td class=gry9 align=center><small>{$exc[SEC].exc_date}</small></td> -->
+   <td class=gry9 align=center>
+   	{if $exc[SEC].LY == 1}<img src="images/yes2.gif" border=0 width=15>{/if}
+   	{if $exc[SEC].LY == 2}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].HJ == 1}<img src="images/yes2.gif" border=0 width=15>{/if}
+   	{if $exc[SEC].HJ == 2}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].CF == 1}<img src="images/yes2.gif" border=0 width=15>{/if}
+   	{if $exc[SEC].CF == 2}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].PM == 1}<img src="images/yes2.gif" border=0 width=15>{/if}
+   	{if $exc[SEC].PM == 2}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].PO == 1}<img src="images/yes2.gif" border=0 width=15>{/if}
+   	{if $exc[SEC].PO == 2}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+
+ 	 <td class=gry9 align=left>&nbsp;
+
+ 	 		{if $exc[SEC].status == 0}<small>Wait for Submit</small>{/if}
+ 	 		{if $exc[SEC].status == 1}<b>CLOSED</b>{/if}
+ 	 		{if $exc[SEC].status == 2}Wait for CFM.{/if}
+ 	 		{if $exc[SEC].status == 3}Wait for APV.{/if}
+ 	 		{if $exc[SEC].status == 4}<b>APVD.</b>{/if}
+ 	 		{if $exc[SEC].status == 5}REJECT{/if}
+
+ 	 </td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=900 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='exception.php?PHP_action=exc_search{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="exception.php?PHP_action=exc_search{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='exception.php?PHP_action=exc_search{$back_str}&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->
+    </td></form>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

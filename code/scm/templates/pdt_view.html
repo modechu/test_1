@@ -1,0 +1,600 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+
+
+{literal}
+<script language="javascript">
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='picture/e_chart1.png?'+ Math.random();
+}
+function mon_out(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"monout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+
+function mon_ord_p(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="pdt_static.php?PHP_action=etp_ord_prc&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"monout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_out(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unout_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"unout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=950,height=620 top=30, left=150');
+}
+function mon_sub_out(fty,year,mon,su) {
+
+	 var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_subout=1";
+	 var nm = fty+year+mon+"monsub";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function etp_out(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"etpout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+
+function etp_out_top(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="pdt_static.php?PHP_action=style_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_style=T";
+	 var nm = fty+year+mon+"etpouttop";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function etp_out_btn(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="pdt_static.php?PHP_action=style_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_style=B";
+	 var nm = fty+year+mon+"etpoutbtn";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_apv(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unapv_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"unapv";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function unetp_out(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=un_etp_monthy&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"unetpout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=fty_etp_monthy&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyschld";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule2(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_shp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyschld2";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule3(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unshp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyschld3";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp(fty,year,mon,qty,amt) {
+
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon); 
+	var gofile ="index2.php?PHP_action=etp_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt;
+	var nm = fty+year+mon+"shp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp_s(fty,year,mon,qty,amt) {
+
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon); 
+	var gofile ="index2.php?PHP_action=etd_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt;
+	var nm = fty+year+mon+"shp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp_tp(fty,year,mon,qty,amt) {
+
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon); 
+	var gofile ="index2.php?PHP_action=etd_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt+"&PHP_mk=5";
+	var nm = fty+year+mon+"shp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp_ly(fty,year,mon,qty,amt) {
+
+	//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon); 
+	var gofile ="index2.php?PHP_action=etd_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt+"&PHP_mk=6";
+	var nm = fty+year+mon+"shp";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_shp(fty,year,mon,qty,amt) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_un_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_amt="+amt;
+	 var nm = fty+year+mon+"unshp";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function forcast_out(fty,year,mon,qty) {
+
+	 var gofile ="index2.php?PHP_action=mm_forcast_show&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty;
+	 var nm = fty+year+mon+"fcst";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function pre_order_out(fty,year,mon,qty) {
+
+	 var gofile ="pre_order.php?PHP_action=mm_per_order_show&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty;
+	 var nm = fty+year+mon+"preord";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10 onLoad="refreshIt();"><form>
+
+ <table width=820 border=1 cellspacing=0 cellpadding=2 bgcolor="#303030">
+  <tr bgcolor="#ffffff">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ ORDER PRODUCTION STATUS STATIC ( by ETD base ) +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=800 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#225176"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    <td class=w9 width=60 align=center><b>JAN</b></td>
+    <td class=w9 width=60 align=center><b>FEB</b></td>
+    <td class=w9 width=60 align=center><b>MAR</b></td>
+    <td class=w9 width=60 align=center><b>APR</b></td>
+    <td class=w9 width=60 align=center><b>MAY</b></td>
+    <td class=w9 width=60 align=center><b>JUN</b></td>
+    <td class=w9 width=60 align=center><b>JUL</b></td>
+    <td class=w9 width=60 align=center><b>AUG</b></td>
+    <td class=w9 width=60 align=center><b>SEP</b></td>
+    <td class=w9 width=60 align=center><b>OCT</b></td>
+    <td class=w9 width=60 align=center><b>NOV</b></td>
+    <td class=w9 width=60 align=center><b>DEC</a></td>
+    <td class=ylw9 width=80 align=center bgcolor=#999999><b>Total</b></td>
+  </tr>
+  <tr bgcolor="#CCCCCC"> 
+    <td class=bgdy9 width=100 align=center bgcolor=#dddddd>&nbsp;CAPACITY</td>
+    <td class=bgdy9 width=60 align=right>{$c1.1|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.2|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.3|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.4|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.5|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.6|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.7|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.8|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.9|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.10|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.11|number_format}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$c1.12|number_format}&nbsp;</td>
+    <td class=bgdy9 width=80 align=right><b>{$c1.sum|number_format}&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORDER</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'01',{$ord.01})" value='etp_out' style='cursor:pointer'>{$ord.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'02',{$ord.02})" value='etp_out' style='cursor:pointer'>{$ord.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'03',{$ord.03})" value='etp_out' style='cursor:pointer'>{$ord.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'04',{$ord.04})" value='etp_out' style='cursor:pointer'>{$ord.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'05',{$ord.05})" value='etp_out' style='cursor:pointer'>{$ord.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'06',{$ord.06})" value='etp_out' style='cursor:pointer'>{$ord.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'07',{$ord.07})" value='etp_out' style='cursor:pointer'>{$ord.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'08',{$ord.08})" value='etp_out' style='cursor:pointer'>{$ord.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'09',{$ord.09})" value='etp_out' style='cursor:pointer'>{$ord.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'10',{$ord.10})" value='etp_out' style='cursor:pointer'>{$ord.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'11',{$ord.11})" value='etp_out' style='cursor:pointer'>{$ord.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out('{$fty}',{$year1},'12',{$ord.12})" value='etp_out' style='cursor:pointer'>{$ord.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$ord.13|number_format}&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORD.(T)</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'01',{$ord_T.01})" value='etp_out_top' style='cursor:pointer'>{$ord_T.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'02',{$ord_T.02})" value='etp_out_top' style='cursor:pointer'>{$ord_T.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'03',{$ord_T.03})" value='etp_out_top' style='cursor:pointer'>{$ord_T.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'04',{$ord_T.04})" value='etp_out_top' style='cursor:pointer'>{$ord_T.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'05',{$ord_T.05})" value='etp_out_top' style='cursor:pointer'>{$ord_T.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'06',{$ord_T.06})" value='etp_out_top' style='cursor:pointer'>{$ord_T.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'07',{$ord_T.07})" value='etp_out_top' style='cursor:pointer'>{$ord_T.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'08',{$ord_T.08})" value='etp_out_top' style='cursor:pointer'>{$ord_T.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'09',{$ord_T.09})" value='etp_out_top' style='cursor:pointer'>{$ord_T.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'10',{$ord_T.10})" value='etp_out_top' style='cursor:pointer'>{$ord_T.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'11',{$ord_T.11})" value='etp_out_top' style='cursor:pointer'>{$ord_T.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_top('{$fty}',{$year1},'12',{$ord_T.12})" value='etp_out_top' style='cursor:pointer'>{$ord_T.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$ord_T.13|number_format}&nbsp;</b></td>
+  </tr> 
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd>&nbsp;ORD.(B)</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'01',{$ord_B.01})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'02',{$ord_B.02})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'03',{$ord_B.03})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'04',{$ord_B.04})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'05',{$ord_B.05})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'06',{$ord_B.06})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'07',{$ord_B.07})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'08',{$ord_B.08})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'09',{$ord_B.09})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'10',{$ord_B.10})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'11',{$ord_B.11})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:etp_out_btn('{$fty}',{$year1},'12',{$ord_B.12})" value='etp_out_btn' style='cursor:pointer'>{$ord_B.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$ord_B.13|number_format}&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;SCHDL</td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'01',{$sch.01})" value='fty_schedule' style='cursor:pointer'>{$sch.01|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'02',{$sch.02})" value='fty_schedule' style='cursor:pointer'>{$sch.02|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'03',{$sch.03})" value='fty_schedule' style='cursor:pointer'>{$sch.03|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'04',{$sch.04})" value='fty_schedule' style='cursor:pointer'>{$sch.04|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'05',{$sch.05})" value='fty_schedule' style='cursor:pointer'>{$sch.05|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'06',{$sch.06})" value='fty_schedule' style='cursor:pointer'>{$sch.06|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'07',{$sch.07})" value='fty_schedule' style='cursor:pointer'>{$sch.07|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'08',{$sch.08})" value='fty_schedule' style='cursor:pointer'>{$sch.08|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'09',{$sch.09})" value='fty_schedule' style='cursor:pointer'>{$sch.09|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'10',{$sch.10})" value='fty_schedule' style='cursor:pointer'>{$sch.10|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'11',{$sch.11})" value='fty_schedule' style='cursor:pointer'>{$sch.11|number_format}&nbsp;</a></td>
+    <td class=b9 width=60 align=right><a href="javascript:fty_schedule2('{$fty}',{$year1},'12',{$sch.12})" value='fty_schedule' style='cursor:pointer'>{$sch.12|number_format}&nbsp;</a></td>
+    <td class=b9 width=80 align=right><b>{$sch.13|number_format}&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd>&nbsp;OUT-PUT</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'01',{$out.01})" value='mon_out' style='cursor:pointer'>{$out.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'02',{$out.02})" value='mon_out' style='cursor:pointer'>{$out.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'03',{$out.03})" value='mon_out' style='cursor:pointer'>{$out.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'04',{$out.04})" value='mon_out' style='cursor:pointer'>{$out.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'05',{$out.05})" value='mon_out' style='cursor:pointer'>{$out.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'06',{$out.06})" value='mon_out' style='cursor:pointer'>{$out.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'07',{$out.07})" value='mon_out' style='cursor:pointer'>{$out.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'08',{$out.08})" value='mon_out' style='cursor:pointer'>{$out.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'09',{$out.09})" value='mon_out' style='cursor:pointer'>{$out.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'10',{$out.10})" value='mon_out' style='cursor:pointer'>{$out.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'11',{$out.11})" value='mon_out' style='cursor:pointer'>{$out.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_out('{$fty}',{$year1},'12',{$out.12})" value='mon_out' style='cursor:pointer'>{$out.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$out.13|number_format}&nbsp;</b></td>
+  </tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=grn9 width=100 align=center bgcolor=#dddddd><small>order amt.($)</small></td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'01',{$ord_p.01})" style='cursor:pointer'>{$ord_p.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'02',{$ord_p.02})" style='cursor:pointer'>{$ord_p.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'03',{$ord_p.03})" style='cursor:pointer'>{$ord_p.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'04',{$ord_p.04})" style='cursor:pointer'>{$ord_p.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'05',{$ord_p.05})" style='cursor:pointer'>{$ord_p.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'06',{$ord_p.06})" style='cursor:pointer'>{$ord_p.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'07',{$ord_p.07})" style='cursor:pointer'>{$ord_p.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'08',{$ord_p.08})" style='cursor:pointer'>{$ord_p.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'09',{$ord_p.09})" style='cursor:pointer'>{$ord_p.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'10',{$ord_p.10})" style='cursor:pointer'>{$ord_p.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'11',{$ord_p.11})" style='cursor:pointer'>{$ord_p.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_ord_p('{$fty}',{$year1},'12',{$ord_p.12})" style='cursor:pointer'>{$ord_p.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$ord_p.13|number_format}&nbsp;</b></td>
+  </tr>  
+<tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>sub out-put</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'01',{$sub_out.01})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'02',{$sub_out.02})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'03',{$sub_out.03})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'04',{$sub_out.04})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'05',{$sub_out.05})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'06',{$sub_out.06})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'07',{$sub_out.07})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'08',{$sub_out.08})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'09',{$sub_out.09})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'10',{$sub_out.10})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'11',{$sub_out.11})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:mon_sub_out('{$fty}',{$year1},'12',{$sub_out.12})" value='mon_sub_out' style='cursor:pointer'>{$sub_out.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$sub_out.13|number_format}&nbsp;</b></td>
+  </tr>
+  <tr><td></td></tr>
+  
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd><b>SHIP(ETD)</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'01',{$shp.01})" value='shp' style='cursor:pointer'>{$shp.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'02',{$shp.02})" value='shp' style='cursor:pointer'>{$shp.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'03',{$shp.03})" value='shp' style='cursor:pointer'>{$shp.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'04',{$shp.04})" value='shp' style='cursor:pointer'>{$shp.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'05',{$shp.05})" value='shp' style='cursor:pointer'>{$shp.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'06',{$shp.06})" value='shp' style='cursor:pointer'>{$shp.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'07',{$shp.07})" value='shp' style='cursor:pointer'>{$shp.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'08',{$shp.08})" value='shp' style='cursor:pointer'>{$shp.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'09',{$shp.09})" value='shp' style='cursor:pointer'>{$shp.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'10',{$shp.10})" value='shp' style='cursor:pointer'>{$shp.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'11',{$shp.11})" value='shp' style='cursor:pointer'>{$shp.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp('{$fty}',{$year1},'12',{$shp.12})" value='shp' style='cursor:pointer'>{$shp.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$shp.13|number_format}&nbsp;</b></td>
+  </tr>
+  
+
+  
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy width=100 align=center bgcolor=#dddddd><small>SHIP (fob$)</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_p.01|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_p.02|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_p.03|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_p.04|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_p.05|number_format}&nbsp;</small></td>        
+    <td class=snvy width=60 align=right><small>{$shp_p.06|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.07|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.08|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.09|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.10|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.11|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_p.12|number_format}&nbsp;</small></td>    
+    <td class=snvy width=80 align=right><small>{$shp_p.13|number_format}&nbsp;</small></td>
+  </tr>
+  
+  <tr><td></td></tr>
+  
+  
+  
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><b>SHIP</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'01',{$shp_s.01})" value='shp_s' style='cursor:pointer'>{$shp_s.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'02',{$shp_s.02})" value='shp_s' style='cursor:pointer'>{$shp_s.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'03',{$shp_s.03})" value='shp_s' style='cursor:pointer'>{$shp_s.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'04',{$shp_s.04})" value='shp_s' style='cursor:pointer'>{$shp_s.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'05',{$shp_s.05})" value='shp_s' style='cursor:pointer'>{$shp_s.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'06',{$shp_s.06})" value='shp_s' style='cursor:pointer'>{$shp_s.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'07',{$shp_s.07})" value='shp_s' style='cursor:pointer'>{$shp_s.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'08',{$shp_s.08})" value='shp_s' style='cursor:pointer'>{$shp_s.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'09',{$shp_s.09})" value='shp_s' style='cursor:pointer'>{$shp_s.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'10',{$shp_s.10})" value='shp_s' style='cursor:pointer'>{$shp_s.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'11',{$shp_s.11})" value='shp_s' style='cursor:pointer'>{$shp_s.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_s('{$fty}',{$year1},'12',{$shp_s.12})" value='shp_s' style='cursor:pointer'>{$shp_s.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$shp_s.13|number_format}&nbsp;</b></td>
+  </tr>
+
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><small>SHIP (fob$)</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_s_p.01|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_s_p.02|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_s_p.03|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_s_p.04|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_s_p.05|number_format}&nbsp;</small></td>        
+    <td class=snvy width=60 align=right><small>{$shp_s_p.06|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.07|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.08|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.09|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.10|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.11|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_s_p.12|number_format}&nbsp;</small></td>    
+    <td class=snvy width=80 align=right><small>{$shp_s_p.13|number_format}&nbsp;</small></td>
+  </tr>  
+  
+  <tr><td></td></tr>
+  {if $fty == 'LY'}
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><b>SHIP(TP)</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'01',{$shp_tp.01})" value='shp_tp' style='cursor:pointer'>{$shp_tp.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'02',{$shp_tp.02})" value='shp_tp' style='cursor:pointer'>{$shp_tp.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'03',{$shp_tp.03})" value='shp_tp' style='cursor:pointer'>{$shp_tp.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'04',{$shp_tp.04})" value='shp_tp' style='cursor:pointer'>{$shp_tp.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'05',{$shp_tp.05})" value='shp_tp' style='cursor:pointer'>{$shp_tp.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'06',{$shp_tp.06})" value='shp_tp' style='cursor:pointer'>{$shp_tp.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'07',{$shp_tp.07})" value='shp_tp' style='cursor:pointer'>{$shp_tp.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'08',{$shp_tp.08})" value='shp_tp' style='cursor:pointer'>{$shp_tp.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'09',{$shp_tp.09})" value='shp_tp' style='cursor:pointer'>{$shp_tp.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'10',{$shp_tp.10})" value='shp_tp' style='cursor:pointer'>{$shp_tp.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'11',{$shp_tp.11})" value='shp_tp' style='cursor:pointer'>{$shp_tp.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_tp('{$fty}',{$year1},'12',{$shp_tp.12})" value='shp_tp' style='cursor:pointer'>{$shp_tp.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$shp_tp.13|number_format}&nbsp;</b></td>
+  </tr>
+
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><small>SHIP (fob$)</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.01|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.02|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.03|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.04|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.05|number_format}&nbsp;</small></td>        
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.06|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.07|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.08|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.09|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.10|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.11|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_tp_p.12|number_format}&nbsp;</small></td>    
+    <td class=snvy width=80 align=right><small>{$shp_tp_p.13|number_format}&nbsp;</small></td>
+  </tr>  
+  
+  <tr><td></td></tr>
+  
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><b>SHIP(LY)</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'01',{$shp_ly.01})" value='shp_ly' style='cursor:pointer'>{$shp_ly.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'02',{$shp_ly.02})" value='shp_ly' style='cursor:pointer'>{$shp_ly.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'03',{$shp_ly.03})" value='shp_ly' style='cursor:pointer'>{$shp_ly.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'04',{$shp_ly.04})" value='shp_ly' style='cursor:pointer'>{$shp_ly.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'05',{$shp_ly.05})" value='shp_ly' style='cursor:pointer'>{$shp_ly.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'06',{$shp_ly.06})" value='shp_ly' style='cursor:pointer'>{$shp_ly.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'07',{$shp_ly.07})" value='shp_ly' style='cursor:pointer'>{$shp_ly.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'08',{$shp_ly.08})" value='shp_ly' style='cursor:pointer'>{$shp_ly.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'09',{$shp_ly.09})" value='shp_ly' style='cursor:pointer'>{$shp_ly.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'10',{$shp_ly.10})" value='shp_ly' style='cursor:pointer'>{$shp_ly.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'11',{$shp_ly.11})" value='shp_ly' style='cursor:pointer'>{$shp_ly.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:shp_ly('{$fty}',{$year1},'12',{$shp_ly.12})" value='shp_ly' style='cursor:pointer'>{$shp_ly.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$shp_ly.13|number_format}&nbsp;</b></td>
+  </tr>  
+  
+  
+  <tr bgcolor="#FFCDFE"> 
+    <td class=snvy width=100 align=center bgcolor=#FFCDFE><small>SHIP (fob$)</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.01|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.02|number_format}&nbsp;</small></td>
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.03|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.04|number_format}&nbsp;</small></td>  
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.05|number_format}&nbsp;</small></td>        
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.06|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.07|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.08|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.09|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.10|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.11|number_format}&nbsp;</small></td>    
+    <td class=snvy width=60 align=right><small>{$shp_ly_p.12|number_format}&nbsp;</small></td>    
+    <td class=snvy width=80 align=right><small>{$shp_ly_p.13|number_format}&nbsp;</small></td>
+  </tr>
+  <tr><td></td></tr>
+  {/if}
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>UN SCHDL</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'01',{$un_sch.01})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'02',{$un_sch.02})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'03',{$un_sch.03})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'04',{$un_sch.04})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'05',{$un_sch.05})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'06',{$un_sch.06})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'07',{$un_sch.07})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'08',{$un_sch.08})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'09',{$un_sch.09})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'10',{$un_sch.10})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'11',{$un_sch.11})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:fty_schedule3('{$fty}',{$year1},'12',{$un_sch.12})" value='fty_schedule3' style='cursor:pointer'>{$un_sch.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$un_sch.13|number_format}&nbsp;</b></td>
+  </tr>      
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA><b>Un FINSHED</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'01',{$un_out.01})" value='un_out' style='cursor:pointer'>{$un_out.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'02',{$un_out.02})" value='un_out' style='cursor:pointer'>{$un_out.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'03',{$un_out.03})" value='un_out' style='cursor:pointer'>{$un_out.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'04',{$un_out.04})" value='un_out' style='cursor:pointer'>{$un_out.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'05',{$un_out.05})" value='un_out' style='cursor:pointer'>{$un_out.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'06',{$un_out.06})" value='un_out' style='cursor:pointer'>{$un_out.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'07',{$un_out.07})" value='un_out' style='cursor:pointer'>{$un_out.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'08',{$un_out.08})" value='un_out' style='cursor:pointer'>{$un_out.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'09',{$un_out.09})" value='un_out' style='cursor:pointer'>{$un_out.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'10',{$un_out.10})" value='un_out' style='cursor:pointer'>{$un_out.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'11',{$un_out.11})" value='un_out' style='cursor:pointer'>{$un_out.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_out('{$fty}',{$year1},'12',{$un_out.12})" value='un_out' style='cursor:pointer'>{$un_out.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$un_out.13|number_format}&nbsp;</b></td>
+  </tr>
+  <tr><td></td></tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#FBF6A7><b>Un APV</b></td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'01',{$un_apv.01})" value='un_apv' style='cursor:pointer'>{$un_apv.01|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'02',{$un_apv.02})" value='un_apv' style='cursor:pointer'>{$un_apv.02|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'03',{$un_apv.03})" value='un_apv' style='cursor:pointer'>{$un_apv.03|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'04',{$un_apv.04})" value='un_apv' style='cursor:pointer'>{$un_apv.04|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'05',{$un_apv.05})" value='un_apv' style='cursor:pointer'>{$un_apv.05|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'06',{$un_apv.06})" value='un_apv' style='cursor:pointer'>{$un_apv.06|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'07',{$un_apv.07})" value='un_apv' style='cursor:pointer'>{$un_apv.07|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'08',{$un_apv.08})" value='un_apv' style='cursor:pointer'>{$un_apv.08|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'09',{$un_apv.09})" value='un_apv' style='cursor:pointer'>{$un_apv.09|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'10',{$un_apv.10})" value='un_apv' style='cursor:pointer'>{$un_apv.10|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'11',{$un_apv.11})" value='un_apv' style='cursor:pointer'>{$un_apv.11|number_format}</a>&nbsp;</td>
+    <td class=snvy width=60 align=right><a href="javascript:un_apv('{$fty}',{$year1},'12',{$un_apv.12})" value='un_apv' style='cursor:pointer'>{$un_apv.12|number_format}</a>&nbsp;</td>
+    <td class=snvy width=80 align=right><b>{$un_apv.13|number_format}&nbsp;</b></td>
+  </tr>
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor=#FBF6A7>Pre-Order</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'0',{$forcast.01})" value='forcast_out' style='cursor:pointer'>{$forcast.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'1',{$forcast.02})" value='forcast_out' style='cursor:pointer'>{$forcast.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'2',{$forcast.03})" value='forcast_out' style='cursor:pointer'>{$forcast.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'3',{$forcast.04})" value='forcast_out' style='cursor:pointer'>{$forcast.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'4',{$forcast.05})" value='forcast_out' style='cursor:pointer'>{$forcast.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'5',{$forcast.06})" value='forcast_out' style='cursor:pointer'>{$forcast.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'6',{$forcast.07})" value='forcast_out' style='cursor:pointer'>{$forcast.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'7',{$forcast.08})" value='forcast_out' style='cursor:pointer'>{$forcast.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'8',{$forcast.09})" value='forcast_out' style='cursor:pointer'>{$forcast.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'9',{$forcast.10})" value='forcast_out' style='cursor:pointer'>{$forcast.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'10',{$forcast.11})" value='forcast_out' style='cursor:pointer'>{$forcast.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:forcast_out('{$fty}',{$year1},'11',{$forcast.12})" value='forcast_out' style='cursor:pointer'>{$forcast.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$forcast.13|number_format}&nbsp;</b></td>
+  </tr>  
+   <tr bgcolor="#FFFFFF"> 
+    <td class=snvy width=100 align=center bgcolor=#DDDDDD>Sumry.</td>
+    <td class=grn9 width=60 align=right>{$sumy.01|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.02|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.03|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.04|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.05|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.06|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.07|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.08|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.09|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.10|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.11|number_format}</td>
+    <td class=grn9 width=60 align=right>{$sumy.12|number_format}</td>
+    <td class=b9 width=80 align=right><b>{$sumy.13|number_format}&nbsp;</b></td>
+  </tr> 
+ <!-- 
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy width=100 align=center bgcolor=#DFFBBA>Pre-Order</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'01',{$pre_order.01})" value='pre_order_out' style='cursor:pointer'>{$pre_order.01|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'02',{$pre_order.02})" value='pre_order_out' style='cursor:pointer'>{$pre_order.02|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'03',{$pre_order.03})" value='pre_order_out' style='cursor:pointer'>{$pre_order.03|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'04',{$pre_order.04})" value='pre_order_out' style='cursor:pointer'>{$pre_order.04|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'05',{$pre_order.05})" value='pre_order_out' style='cursor:pointer'>{$pre_order.05|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'06',{$pre_order.06})" value='pre_order_out' style='cursor:pointer'>{$pre_order.06|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'07',{$pre_order.07})" value='pre_order_out' style='cursor:pointer'>{$pre_order.07|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'08',{$pre_order.08})" value='pre_order_out' style='cursor:pointer'>{$pre_order.08|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'09',{$pre_order.09})" value='pre_order_out' style='cursor:pointer'>{$pre_order.09|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'10',{$pre_order.10})" value='pre_order_out' style='cursor:pointer'>{$pre_order.10|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'11',{$pre_order.11})" value='pre_order_out' style='cursor:pointer'>{$pre_order.11|number_format}<a>&nbsp;</td>
+    <td class=grn9 width=60 align=right><a href="javascript:pre_order_out('{$fty}',{$year1},'12',{$pre_order.12})" value='pre_order_out' style='cursor:pointer'>{$pre_order.12|number_format}<a>&nbsp;</td>
+    <td class=b9 width=80 align=right><b>{$pre_order.13|number_format}&nbsp;</b></td>
+  </tr>  
+ --> 
+  </table>
+<p>
+<img src="picture/e_chart1.png" name="pic">
+</P>
+
+
+ <table width=800 border=0 cellspacing=0 cellpadding=2>
+  <tr>
+    <td align=right class=gry><a href="pdt_static.php?PHP_action=ord_qty_wkly&PHP_fty={$fty}&PHP_year1={$year1}&PHP_month={$month}" style='cursor:pointer'>Detail</a></td>
+
+	</tr>
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,236 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM System ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript" src="./js/jquery.min.js"></script>
+<Script language="javascript">
+	var transaction;
+	var sUrl;	
+function add_po(r,ap_num,mat_cat,mat_id,color,size,id,special){
+	$(r).attr("disabled", true);
+	var qty0;
+	qty = window.document.forms['add_ship'].elements['PHP_qty_'+id].value;
+	self.opener.writeToAPAdd(ap_num,mat_cat,mat_id,color,size,qty,special);
+}
+
+//function add_all(){
+//	var ctn=qty=nw=gw=special=0;
+//	var spare='';
+//	var ap_special = {/literal} {$ap.special} {literal}
+//	ap_special == 2 ? special=1 : special=0;
+	
+//        $("input[id^=PHP_qty_]").each(function(i,elm) {
+//		ctn = $("#PHP_ctn_"+i).val();
+//		qty = $(elm).val();
+//		nw = $("#PHP_nw_"+i).val();
+//		gw = $("#PHP_gw_"+i).val();
+//		spare = $("#PHP_po_spare_"+i).val();
+//		if( qty>0 && qty!='') self.opener.writeToAPAdd(spare,ctn,qty,special,nw,gw);
+//	});
+	
+//}
+</script>
+{/literal}
+</head>
+<body >
+<br>
+<form method=POST name=add_ship>
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr>
+		{if $ap.status == 6 && $back_str && $add_flag}<td class=gry9 align=center><small><input type='image' src="images/cancel.gif"   onclick=del_po('{$ap.ap_num}','{$back_str}','{$ap.po_num}')></small></td>{/if}
+	
+		<td class="ylw10" align=center><small><span class=ylw10><b>PO. APVD</b></span></small></td>
+		<td class="des" align=center width=180 height=28> <span class=ssign>{if $pp > 0}<b>Pre-Purchase</b>{else}{if $ap.special == 0}<b>Purchase Order </b>{else}<b>Extra Purchase</b>{/if}{/if} </td>
+
+		<td class="des" align=center width=180 height=28> P / O  # <span class=ylw10><b> {$ap.po_num}</b></span> </td>
+
+
+		<td class="ylw10" align=center height=28> {if $ap.revise}<span class=sign_b>Version : </span> <b>{$ap.revise}</b>{else}&nbsp;{/if} </td>
+	
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=900 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+
+
+<hr SIZE=2 WIDTH=900>
+<table border=1 cellspacing=0 cellpadding=0 width="900" bgcolor=#FFFFFF>
+	<tr>
+		<td>
+			<table border=0 cellspacing=1 cellpadding=3 width="900" bgcolor=#FFFFFF>
+				<tr>
+					<td class=snvy width=100 align=right ><b>Supplier : </b></td>
+					<td class=frnt width=130 align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.s_name}</b></td>
+					<td class=snvy width=100  align=right><b>Dept : </b></td>			
+					<td class=frnt width=130  align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.dept}</b></td>
+					<td class=snvy width=100  align=right ><b>Currency: </b></td>
+					<td class=frnt width=130  align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.currency}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Payment : </b></td>
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=3><b>&nbsp;{$ap.dm_way}</b></td>
+					<td class=snvy align=right><b>Source area : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.country}</b></td>
+				<tr>
+					
+				<tr>
+					<td class=snvy align=right><b>Send TO : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=3><b>&nbsp;{$ap.ship_name}</b></td>
+					<td class=snvy align=right><b>Attn. TO : </b></td>			
+					<td class=frnt align=left  bgcolor=#E7E6E6><b>&nbsp;{$ap.ship_attn}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>TEL: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.ship_tel}</b></td>
+					<td class=snvy align=right ><b>FAX : </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.ship_fax}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Addr: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=6><b>&nbsp;{$ap.ship_addr}</b></td>
+				</tr>
+				
+				{if $ap.finl_dist}
+				<tr><td colspan=8><hr SIZE=1 WIDTH=99%></td></tr>				
+				<tr>
+					<td class=snvy align=right><b>Final Dist. : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=3><b>&nbsp;{$ap.finl_name}</b></td>
+					<td class=snvy align=right><b>Attn. TO : </b></td>			
+					<td class=frnt align=left  bgcolor=#E7E6E6><b>&nbsp;{$ap.finl_attn}</b></td>
+
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Rcver TEL: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.finl_tel}</b></td>
+					<td class=snvy align=right ><b>Rcver FAX : </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.finl_fax}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Rcver Addr: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=6><b>&nbsp;{$ap.finl_addr}</b></td>
+				</tr>	
+				{/if}	
+			</table>
+		</td>
+	</tr>
+</table>
+<hr SIZE=2 WIDTH=900>
+<table width="900" border=0 cellpadding=6 cellspacing=0 id="table2">
+	<tr>
+		<td width="90" align=right nowrap bgcolor=#DBC9F2><b>Tolerance : </b></td>
+		<td align=left nowrap bgcolor=#DBC9F2><b>&nbsp;{if $ap.toler == '0|0'}0{else} + {$ap.toleri} % {if $ap.tolern != '0'}~ - {$ap.tolern} % {/if}{/if}</b></td>
+	</tr>
+</table>
+{if $ap.special  <= 3}
+<table border="1" cellspacing=0 cellpadding=2 width=900 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="90"  class=back align="center"><b>Order #</b></td>		
+		<td width="90" class=back align="center"><b>Material #</b></td>
+		<td width="90" class=back align="center"><b>Mat. Name</b></td>
+		<td width="160" class=back align="center"><b>Color / Cat.</b></td>
+		<td width="130" class=back align="center"><b>Price</b></td>
+		<td width="100" class=back align="center"><b>P/O Q'ty</b></td>		
+		<td width="70" class=back align="center"><b>Q'TY</b></td>
+		<td width="40" class=back align="center"><b>ADD</b></td>
+	</tr>
+	{section name=SEC loop=$ap_det2} 
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td  align="left">
+ 	  	{section name=AP loop=$ap_det2[SEC].orders}
+	  	<a href="javascript:po_bom_view('{$ap_det2[SEC].orders[AP]}','{$ap.po_num}')" value='ord_out' style='cursor:pointer'>
+ 	  	{$ap_det2[SEC].orders[AP]}&nbsp;</a><br>
+ 	  	{/section}
+		</td>
+		<td  align="left" nowrap>
+			<a href="javascript:{if $ap_det2[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap_det2[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$ap_det2[SEC].mat_code}</a>
+		</td>
+		<td  align="left">{$ap_det2[SEC].mat_name}&nbsp;</td>
+		<td  align="left">{$ap_det2[SEC].color}&nbsp;</td>
+		<td  align="left">{$ap_det2[SEC].prics} / {$ap_det2[SEC].prc_unit}</td>
+		<td  align="right">{$ap_det2[SEC].po_qty|number_format:"2f"}&nbsp;{$ap_det2[SEC].po_unit}</td>		
+		<td  align="right"><input type=text size=7 id='PHP_qty_{$ap_det2[SEC].i}' name='PHP_qty_{$ap_det2[SEC].id}' onchange="" value='{$ap_det2[SEC].remain_qty}'></td>			
+		<td  align="right">
+			<input type ='button' value ="ADD" class=select onClick="add_po(this,'{$ap_det2[SEC].ap_num}','{$ap_det2[SEC].mat_cat}','{$ap_det2[SEC].mat_id}','{$ap_det2[SEC].color}','{$ap_det2[SEC].size}','{$ap_det2[SEC].id}','0');" style="cursor:pointer; width=95%">
+		</td>
+		<input type=hidden id='PHP_po_spare_{$ap_det2[SEC].i}' name='PHP_po_spare_{$ap_det2[SEC].id}' value='{$ap_det2[SEC].po_spare}'>
+	</tr>	
+	{/section}
+
+{else}
+<table border="1" cellspacing=0 cellpadding=2 width=900 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="90"  class=back align="center"><b>Order s#</b></td>		
+		<td width="90" class=back align="center"><b>Material #</b></td>
+		<td width="90" class=back align="center"><b>Mat. Name</b></td>
+		<td width="160" class=back align="center"><b>Color / Cat.</b></td>
+		<td width="130" class=back align="center"><b>Price</b></td>
+		<td width="100" class=back align="center"><b>P/O Q'ty</b></td>		
+		<td width="70" class=back align="center"><b>Q'TY</b></td>
+		<td width="40" class=back align="center"><b>ADD</b></td>
+	</tr>
+	{section name=SEC loop=$ap_spec} 
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td  align="left">			
+	  	<a href="javascript:po_bom_view('{$ap_spec[SEC].ord_num}','{$ap.po_num}')" value='ord_out' style='cursor:pointer'>
+ 	  	{$ap_spec[SEC].ord_num}&nbsp;</a>
+		</td>	
+		<td  align="left" nowrap >			
+			<a href="javascript:{if $ap_spec[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap_spec[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$ap_spec[SEC].mat_code}</a>
+		</td>		
+		<td  align="left">{$ap_spec[SEC].mat_name}&nbsp;</td>
+		<td  align="left">{$ap_spec[SEC].color}&nbsp;</td>
+		<td  align="left">{$ap_spec[SEC].prics} / {$ap_spec[SEC].prc_unit}</td>
+		<td  align="right">{$ap_spec[SEC].po_qty|number_format:"2f"}&nbsp;{$ap_spec[SEC].po_unit}</td>				
+		<td  align="right"><input type=text size=7 id='PHP_qty_{$ap_spec[SEC].i}' name='PHP_qty_{$ap_spec[SEC].id}' value='{$ap_spec[SEC].po_qty|number_format:"2f":"":""}'></td>				
+		<td  align="right">
+			<input type ='button'  value ="ADD" class=select onClick="add_po(this,'{$ap_det2[SEC].ap_num}','{$ap_det2[SEC].mat_cat}','{$ap_det2[SEC].mat_id}','{$ap_det2[SEC].color}','{$ap_det2[SEC].size}'','{$ap_spec[SEC].id}','1');" style="cursor:pointer; width=95%">
+		</td>
+		<input type=hidden id='PHP_po_spare_{$ap_spec[SEC].i}' name='PHP_po_spare_{$ap_spec[SEC].id}' value='{$ap_spec[SEC].po_spare}'>
+	</tr>
+	{/section}
+{/if}
+
+</table>
+
+<!-- <p align="right"><input type ='button' value="ADD ALL" class=select onClick="add_all();"></p> -->
+
+<hr SIZE=2 WIDTH=900>
+	
+  	
+	
+<table border="0" cellspacing=0 cellpadding=2 width=900 id="table2">	
+	<tr>
+		<td width="100"  class=snvy align="Right">Approval : </td>
+		<td width="170"  class=frnt align="left"><small>&nbsp;{if $ap.po_apv_user}<a href="javascript:message_out('{$ap.po_apv_user_id}')" style="cursor:pointer">{$ap.po_apv_user}</a>&nbsp;/&nbsp;{$ap.po_apv_date}{else}NO{/if}</small></td>
+		<td width="100"  class=snvy align="Right">Confirm : </td>
+		<td width="170"  class=frnt align="left"><small>&nbsp;{if $ap.po_cfm_user}<a href="javascript:message_out('{$ap.po_cfm_user_id}')" style="cursor:pointer">{$ap.po_cfm_user}</a>&nbsp;/&nbsp;{$ap.po_cfm_date}{else}NO{/if}</small></td>
+
+		<td width="140" class=snvy align="Right">Submit : </td>
+		<td width="120"  class=frnt align="left"><small>&nbsp;{if $ap.po_sub_date > '0000-00-00'}{$ap.po_sub_date}{else}NO{/if}</small></td>
+		<td width="100"  class=snvy align="left">Apply by : </td>
+		<td width="170"  class=frnt align="left"><small><a href="javascript:message_out('{$ap.po_user_id}')" style="cursor:pointer">{$ap.po_user}</a>&nbsp;/&nbsp;{$ap.po_date}</small></td>
+
+	</tr>
+</table> 
+</form>
+<hr SIZE=2 WIDTH=900>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+	<tr>
+			{if $back_str}
+		<td valign=top width=100>
+			<input type=button onClick="window.location.href='po_ship.php?&PHP_action=do_po_search{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=99"></form>
+		</td>
+			{/if} 
+
+	</tr>
+</table> 
+<!--------- footer ---------->
+{include file="footer.html"}

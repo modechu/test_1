@@ -1,0 +1,126 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===......... consignee list .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id) {
+	if ( confirm("delete record will permanent delete !\r\r please conform again  \r\r are you sure permanent delet consignee record:["+ref+"]??")) {
+	location.href="index2.php?PHP_action=csge_del&PHP_id="+id;
+	} 
+ }
+
+
+function shift()
+{
+	var dept;
+	dept = window.document.forms['add_csge'].elements['PHP_dept_code'].value;
+	location.href="index2.php?PHP_action=csge_shift&PHP_dept="+dept;
+}
+
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+ <tr><form METHOD="POST" name="add_csge">
+		<input type="hidden" name="PHP_action" value="csge_add">   
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=600 bgcolor=#534A67>
+      <tr><td width=50% class=des align=center>.....  consignee list .......</td>
+
+	   
+</tr></form>
+     </table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=97%>
+
+<table border cellspacing=0 cellpadding=2 width=650 bgcolor=#ffffff align=center>
+
+  <tr bgcolor="#003333" height=28>
+  <td nowrap width=100 align=center class=back>code</td>	 
+  <td nowrap width=100 align=center class=back>short name</td>	 
+	<td nowrap width=80 align=center class=back>csge</td>
+	<td nowrap width=40 align=center class=back>dept</td>
+	
+	<td nowrap width=210 align=center class=back>full name</td>
+	<td nowrap width=80 align=center class=back>cont. person</td>
+	<td nowrap width=70 align=center class=back>cont. tel</td>
+	<td nowrap align=center class=back>remark</td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=5 align=center class=ssign><br>No Record!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$csge} 
+  <tr><form>
+	<td class=g10 align=center>{$csge[SEC].code}</td>	
+	<td class=g10 align=center>
+		
+      <a href="consignee.php?PHP_action=consignee_view&PHP_id={$csge[SEC].id}&PHP_sr_startno={$now_pp}">
+			{$csge[SEC].s_name}</a></td>
+	<td class=g10 align=center>{$csge[SEC].cust}</td>			
+	<td class=g10 align=center>{$csge[SEC].dept}</td>
+	 <td class=g10><small>{$csge[SEC].f_name}&nbsp;</small></td>
+
+    <td align=center class=grn9>{$csge[SEC].cont}&nbsp;</td>
+    <td align=center class=gry9>{$csge[SEC].tel}&nbsp;</td>
+    <td align=center nowrap class=b10>&nbsp;
+		{if $view_flag}
+	      <a href="consignee.php?PHP_action=consignee_view&PHP_sr_startno={$now_pp}&PHP_id={$csge[SEC].id}" value="user資料" style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+		{/if}
+		{if $edit_flag}
+      <a href="consignee.php?PHP_action=consignee_edit&PHP_sr_startno={$now_pp}&PHP_id={$csge[SEC].id}" value="更新" style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+		{/if}
+		{if $manager_flag}
+	      <!--<a href="javascript:cfm('{$csge[SEC].csge_s_name}','{$csge[SEC].id}')" value="刪除" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a> -->
+		{/if}
+
+		</td>
+		</form>
+  </tr>
+			{/section} 
+</table>
+<hr size=1 width=97%>
+<table border=0 cols=4 width=600 align=center>
+  <tr>
+  
+    <td align=center width=300>
+    <!-- 2006.11.14頁碼顯示start -->    
+{if $pages[0] > 1}
+ 	  <a href="consignee.php?PHP_action=consignee_search&PHP_sr_startno=p{$pages[0]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+  {/if}
+   {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+  <a href="consignee.php?PHP_action=consignee_search&PHP_sr_startno={$pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    {if $lastpage < $maxpage}
+  <a href="consignee.php?PHP_action=consignee_search&PHP_sr_startno=n{$lastpage}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/right2.gif" alt="後12筆資料" border=0></a>
+    {/if}
+<!-- 2006.11.14頁碼顯示end -->     
+    </td>
+  </tr>
+</table>
+<hr size=1 width=97%>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

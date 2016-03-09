@@ -1,0 +1,276 @@
+¤Ú¶ð­ô¥§¨ÈµµÀÈ
+Patagonian Rosewood
+3840
+
+¤¤´äª´ºÀ
+Redland Rose
+3840
+
+¤Ú¦è¶ÂÀÈ
+Brazilian Ebony
+3692
+
+¤Ú¦è®Ö®ç
+Brazilian Walnut
+3684
+
+¤Ú¦è¬c¤ì
+Brazilian Teak
+3540
+
+ÅK¯SµµÀÈ
+Tiete Rosewood
+3280
+
+¤Ú¦è¬õ¤ì
+Brazilian Redwood
+3190
+
+¦å¤ì
+Bloodwood 
+2900  
+
+ÅK¯SªO®ß
+Tiete Chestnut
+2700
+
+¿D¬w¬õ¬õ¤ì
+Australian Red Mahogany
+2697
+
+¤Ú¦èÄå®ç
+Brazilian Cherry
+2350
+
+®á¦«´µ¬õ¤ì
+Santos Mahogany
+2200
+
+©¬©ÔµµÀÈ
+Para Rosewood
+2100
+
+¥d¨½
+Karri
+2030
+
+±x¥§ÂÅÑÛ
+Sydney Blue Gum
+2023
+
+¥j¦iÄ¬
+Bubinga
+1980
+
+Amendoim 
+ 1912  
+
+¸ë©Ô 
+ 1910  
+
+Canarywood 
+ 1860  
+
+µµ¤ß 
+ 1860  
+
+Tigerwood 
+ 1850  
+
+¤s®Ö®ç* 
+ 1820  
+
+Yellowheart 
+ 1820  
+
+¬Á§Qºû¨ÈµµÀÈ 
+ 1780  
+
+µµÀÈ¤ì 
+ 1725  
+
+¿D¤j§Q¨È¤s¤òõÑ 
+ 1686  
+
+¤Ú¦è¾ó¾ð 
+ 1650  
+
+WENGE 
+ 1630  
+
+´³°¨ 
+ 1575  
+
+Timborana 
+ 1570  
+
+¨F¤ñ§Q 
+ 1510  
+
+µw·¬¤ì* 
+ 1450  
+
+¥Õ¾ó¤ì* 
+ 1360  
+
+¶ð´µ°¨¥§¨È¾ó¤ì 
+ 1350  
+
+¦Ç* 
+ 1320  
+
+õÑ¤ì* 
+ 1320  
+
+¬õ¾ó¤ì* 
+[¼Ð§ý]  1290  
+
+¾ì¤ì* 
+ 1260  
+
+¬Ó®a¬õ¤ì 
+ 1220  
+
+¶ÀÀÈ¤ì 
+ 1136  
+
+Á¥Á¨ªe½¦ 
+ 1125  
+
+¯µ¾|®Ö®ç 
+ 1080  
+
+®Ö®ç* 
+ 1010  
+
+Äå®ç* 
+ 950  
+
+Imbuia 
+ 950  
+
+¿Ï 
+ 830  
+
+¯u¥¿ªº¬õ¤ì 
+ 800  
+
+±ï®ä* 
+ 770  
+
+¤è¶ÀªQ* 
+ 690  
+
+¹D®æ©Ô´µ§N§ü* 
+ 660  
+
+ªF³¡¥ÕªQ* 
+420
+
+
+
+
+Amendoim 
+1912  
+
+Jarrah 
+1910  
+
+Canarywood 
+1860  
+
+Purpleheart 
+1860  
+
+Tigerwood 
+1850  
+
+Hickory* 
+1820  
+
+Yellowheart 
+1820  
+
+Bolivian Rosewood 
+1780  
+
+Padauk 
+1725  
+
+Australian Beech 
+1686  
+
+Brazilian Oak 
+1650  
+
+Wenge 
+1630  
+
+Zebrawood 
+1575  
+
+Timborana 
+1570  
+
+Sapele 
+1510  
+
+Hard Maple* 
+1450  
+
+White Oak* 
+1360  
+
+Tasmanian Oak 
+1350  
+
+Ash* 
+1320  
+
+Beech* 
+1320  
+
+Red Oak* 
+[benchmark] 1290  
+
+Birch* 
+1260  
+
+Royal Mahogany 
+1220  
+
+Cocobolo 
+1136  
+
+Rose River Gum 
+1125  
+
+Peruvian Walnut 
+1080  
+
+Walnut* 
+1010  
+
+Cherry* 
+950  
+
+Imbuia 
+950  
+
+Khaya 
+830  
+
+Genuine Mahogany 
+800  
+
+Sycamore* 
+770  
+
+Yellow Pine* 
+690  
+
+Douglas-fir* 
+660  
+
+Eastern White Pine* 
+ 

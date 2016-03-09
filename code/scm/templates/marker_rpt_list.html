@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>Marker list</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+
+function show_rpt(num) {
+	var url ='fty_marker.php?PHP_action=marker_rpt_view&PHP_order_num='+num; 	
+	var nm = 'Order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=900,height=600 top=50, left=100');
+}
+</script>
+{/literal}
+
+</head>
+
+<body topmargin="12">
+<table border="border" cellspacing="0" cellpadding="4" cols="1" width="620" bgcolor="#cccccc"  align="center">
+	<tr>
+		<td>
+			<table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" cols="1" bgcolor="#003300">
+				<tr>
+          <td height="28" align="center" class="des">[ cutting report list for batch order  ]</td>
+        </tr>
+      </table>
+			{if $msg_YES}
+			<table border="1" cellpadding="4" cellspacing="0" cols="1" width="100%">
+				<tr bgcolor="#ffffff">
+					<td width="90" class="gry10" align="center"><img src="images/alert.gif" border="0" /></td>
+					<td class="bgdy">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br />{/section}</td>
+				</tr>
+			</table>
+			{/if}
+			<hr size="2" width="100%" />
+			<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#999999">
+				<tr bgcolor="#0D4368">
+					<td class="w9" align="center" rowspan=2> Order # </td>
+					<td class="w9" align="center" rowspan=2> unit </td>
+					<td class="w9" align="center" colspan=4>main fabric volume required per unit</td>	
+					<td class="w9" align="center" title="採購數量" rowspan=2> PO. Qty </td>
+					<td class="w9" align="center" title="驗收數量" rowspan=2> RCVD. Qty</td>
+					<td class="w9" align="center" title="工廠裁減數量" rowspan=2> Cut Qty</td>
+				</tr>
+				<tr bgcolor="#0D4368">
+					<td class="w9" align="center" title="Quotation&#13;業務報價的用量">Qout.</td>
+					<td class="w9" title="Fabric YY 輸入用量" align="center">BOM</td>
+					<td class="w9" title="台北中壢排的用量" align="center">marker</td>
+					<td class="w9" title="工廠排的用量" align="center">cut</td>
+				</tr>
+				{section name=SEC loop=$marker}
+				<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+					<td align="center" bgcolor="#FFFFFF" class="gry9">
+					<small>
+			    <a href="javascript:show_rpt('{$marker[SEC].order_num}')" style='cursor:pointer'>{$marker[SEC].order_num}</a></small>					</td>
+
+					<td align="center" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].lots_unit}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].mat_useage|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].bom_use|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].mark_use|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].cut_use|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].po_qty|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].rcv_qty|number_format:"2f"}</small></td>
+					<td align="right" bgcolor="#FFFFFF" class="gry9"><small>{$marker[SEC].cut_qty|number_format:"2f"}</small></td>
+
+				</tr>
+				{/section}
+			</table>
+		</td>
+	</tr>
+</table>
+<table width="620" border=0 cellpadding=3 cellspacing=3 align="center">
+	<tr>
+		<td class=w9 colspan=3 align="center">
+		<span class="bgdy">
+		※ message :above list 
+		{section name=SEC_MSG loop=$msg}{$msg[SEC_MSG]} &nbsp;{/section}&nbsp;
+		marker record!&nbsp;&nbsp;
+		[ total {$max_no} entries ]
+		</span>
+		</td>
+	</tr>
+  <tr>
+    <td align=center width="180">
+			{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onclick="window.location='{$cgistr_get}&PHP_sr_startno=p{$pages[0]}'" />
+			{/if}
+			&nbsp;
+		</td>
+		<td align=center width="260">
+			{section name=PGE loop=$pages}
+			{if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+			<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+			<a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+			{/if}   
+			{/section}
+			&nbsp;
+		</td>
+    <td  align=center width="180">
+			{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_startno=n{$lastpage}'">
+			{/if}
+			&nbsp;
+			<!--*****--2006.11.16頁碼新增 end	  -->
+		</td>
+	</tr>
+</table>
+<br>
+<!--
+<input type="button" onclick="javascript:history.back(-1)" value=" &lt;&lt; go back " class="select_e" style="cursor:pointer; width:620px" />
+-->
+</body>
+</html>
+<!--------- footer ---------->
+{include file="footer.html"}

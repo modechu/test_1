@@ -1,0 +1,91 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function tp(url) { parent.top.location.href=url }
+ function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+	location.href=doit;
+	}
+ }
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+ <table width=660 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=9 align=center class=gry><b>ORDER LIST -<span class=bgdy> for sample apv recored </span></b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=70 align=center>order#</td>
+    <td class=w9 width=70 align=center>cust. ref</td>
+    <td class=w9 width=60 align=center>cust.</td>
+    <td class=w9 width=70 align=center>ETD</td>
+    <td class=w9 width=70 align=center>ETP</td>
+    <td class=w9 width=60 align=center>q'ty</td>
+    <td class=w9 width=70 align=center>fty ETS</td>
+    <td class=w9 width=70 align=center>smpl APV</td>
+    <td class=w9 width=30 align=center>FTY</td>
+  </tr>
+{section name=SEC loop=$sorder}
+{if $sorder[SEC].status > 8}
+  <tr bgColor='#eeeeee'></a>
+{elseif  $sorder[SEC].status > 10}
+  <tr bgColor='#dddddd'></a>
+{else}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+{/if}
+<!--*****--2006.11.16頁碼新增 start	  -->  
+   <td class=gry9 align=center><small><a href="{$PHP_SELF}?PHP_action=smpl_apv_rec_view&PHP_id={$sorder[SEC].id}&PHP_order_num={$sorder[SEC].order_num}&cgiget={$cgistr_get}&cgino={$now_pp}&cgi_1={$cgi.dept}&cgi_2={$cgi.order_num}&cgi_3={$cgi.cust}&cgi_4={$cgi.ref}&cgi_5={$cgi.factory}">{$sorder[SEC].order_num}</a></small></td>
+<!--*****--2006.11.16頁碼新增 end	  -->     
+   <td class=gry9 align=center><small>{$sorder[SEC].ref}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].cust}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].etd}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].etp}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].qty}&nbsp;{$sorder[SEC].unit}</small></td>
+   <td class=bgdy9 align=center><small>{$sorder[SEC].ets}&nbsp;</small></td>
+   <td class=ssign align=center><small><b>{if $sorder[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$sorder[SEC].smpl_apv}{/if}</b></small></td>
+   <td class=gry9 align=center><b>{$sorder[SEC].factory}&nbsp;</b></td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:以上表列 {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;訂單記錄!&nbsp;&nbsp;<span class=bgdy>[ 總共 {$max_no} 筆 ]</font>
+    </td>
+  </tr>
+  <tr>
+<!--*****--2006.11.16頁碼新增 start	  -->  
+<td align=center width=180><form name="form5" method="post">
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=p{$pages[0]}'">
+{/if}  
+    &nbsp;
+	</td>
+	<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+    
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next 10-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    
+    </td></form>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

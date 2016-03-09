@@ -1,0 +1,165 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+<Script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28> [ <span class=ylw10><b>異常報告 -- 意見  [  {$exc.ex_num} ]</b></span> ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=b9>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<br><form method=POST name=back>
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+	  
+	
+  <tr>	
+    <td class=snvy align=right nowrap><b>訂單編號 :</b></td>
+    <td class=b9 align=left  ><b>{$exc.ord_num}</b></td>
+    
+  	<td colspan=6 class=frnt align=right><b>客戶 :</b></td>
+  	<td class=b9 align=left><b>{$exc.cust}</b></td> 
+
+     <td class=snvy align=right nowrap><b>部門 :</b></td>			
+     <td class=b9 align=left><b>{$exc.dept}</b></td>
+		 	
+    <td colspan=6 class=frnt align=right><b>報告日期 : {$exc.exc_date}</b></td>
+
+
+ 	</tr>
+ </table>
+<table border=0 cellspacing=2 cellpadding=1 width=750 bgcolor=#FFFFFF>
+	<tr><td colspan=8><hr size=2 width=98%></td></tr>  
+	
+  <tr>	
+    <td class=snvy align=right nowrap><b>QTY :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.qty}</b></td>
+    
+  	<td class=snvy align=right><b>ETD :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee ><b>{$ord_rec.etd}</b></td> 
+
+     <td class=snvy align=right nowrap><b>Smpl CFM :</b></td>			
+     <td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.smpl_apv}</b></td>
+     <td class=b9 align=right><b>報告人 : </b></td>
+     <td class=b9 align=left ><b><a href="javascript:message_out('{$exc.exc_user_id}')" style="cursor:pointer">{$exc.exc_user}</a></b></td> 
+ 	</tr>
+  <tr>	
+    <td class=snvy align=right nowrap width=80><b>FAB ETA :</b></td>
+    <td class=b9 align=left  width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_etd}</b></td>
+    
+  	<td class=snvy align=right width=80><b>FAB RCVD. :</b></td>
+  	<td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_shp}</b></td> 
+
+     <td class=snvy align=right nowrap width=80><b>ACC ETA :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_etd}</b></td>
+
+     <td class=snvy align=right nowrap width=80><b>ACC RCVD :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_shp}</b></td>
+ 	</tr>      
+  <tr>	
+    <td class=snvy align=right nowrap><b>SHIP Date :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.shp_date}</b></td>
+    
+  	<td class=snvy align=right><b>SHIP QTY. :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.qty_shp}</b></td> 
+    <td class=snvy align=right nowrap width=80><b>IE :</b></td>			
+    <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.ie1}</b></td>
+ 	</tr> 
+ </table> 
+ <br> 
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#eeeeee height=28>
+    <td class=bgdy align=center nowrap colspan=5><b>異常狀態</b></td>
+ </tr>
+{section name=SEC loop=$state}	
+ <tr>
+    <td class=snvy align=left nowrap><b>{$state[SEC].state}.</b>&nbsp;&nbsp;{$state[SEC].sta_name}</td>
+    <td class=b9 align=left><b>{$state[SEC].org_name}: $ </b>&nbsp;&nbsp; <b>{$state[SEC].org_rec}</b></td>
+    <td class=b9 align=left><b>{$state[SEC].new_name}:</b> &nbsp;&nbsp;<b>{$state[SEC].new_rec}</b></td>
+</tr>
+{/section}
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>  
+
+<table border=0 cellspacing=2 cellpadding=2 width=700 bgcolor=#FFFFFF>
+
+ <tr height=28>
+    <td width=340 bgcolor=#eeeeee class=bgdy align=center nowrap><b>單價改變原因</b></td>
+    <td width=360 bgcolor=#eeeeee class=bgdy align=center nowrap><b>會辦單位</b></td>
+ </tr>
+ <tr>
+   <td class=frnt align=left rowspan=8 valign=top>
+   	{$exc.sys_des}
+   	<hr size=2 width=98%><BR>   
+   	{$exc.exc_des}
+   </td>
+ </tr>
+ {section name=SEC loop=$comm}	 
+ {if $comm[SEC].comm_dept == $dept}  
+  <tr>
+  	<td><b>{$comm[SEC].dept_name}</b></td>
+  </tr>
+  <tr>
+  	<td>&nbsp;<textarea rows=7 cols=60 name="PHP_comm">{$comm[SEC].Comm}</textarea></td>
+  </tr>
+  	<input type="hidden" name="PHP_comm_dept" value="{$comm[SEC].comm_dept}">
+	  <input type="hidden" name="PHP_comm_id" value="{$comm[SEC].id}">
+  {/if}
+  {/section}
+
+ 
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#333333 height=28>
+  <tr>
+    <td  colspan=2 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>    
+ </tr>
+ 
+</table>
+
+<table border=0 cellspacing=0 cellpadding=2 width=690 bgcolor=#ffffff align=center>
+  <tr>
+	<td width=100>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}
+	</td>
+  <td>
+		<input type="hidden" name="PHP_action" value="do_rem_exc_comm_edit">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+	  <input type="hidden" name="PHP_id" value="{$exc.id}">			
+		<input type=submit value="[ 加入]" class=select_e style="cursor:pointer; width=100%" >
+  </td>
+
+ 
+  </tr>
+
+
+
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

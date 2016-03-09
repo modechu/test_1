@@ -1,0 +1,450 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  CAPACITY SEARCH .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script language="JavaScript">
+
+</script>
+{/literal}
+
+</head>
+<body  background=" ">
+<br>
+
+{if $max_notify > 0 }		
+	<table width=700 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}	
+
+
+
+<form METHOD="POST" name="order_lay" action="order_lay.php">
+<input type=hidden name="PHP_action" value="order_lay">
+<input type=hidden name="PHP_status" value="12">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	{if $msg_YES && $sch_msg}
+	<tr>
+		<td>
+			<table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td>
+{if $non_cost <> 1}			
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ <font color=yellow><b>月別訂單成本分析</b></font> ]<font color=#959595></font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy>&nbsp;</td>
+					<td class=snvy><b>Factory：</b>{$factory}</td>
+					<td class=snvy><b>Cust：</b>{$cust}</td>
+					<td class=snvy><b>Order#：</b><input name="PHP_order_num" type="text" size="12" class="select" id="PHP_order_num"></td>
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+				<tr>
+				  <td align="right" class=snvy>&nbsp;</td>
+				  <td align="right" valign="middle" class=snvy><b>Shp date</b></td>
+<!--				  <td class=snvy><b>Shp date From：</b>
+				    <input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+            <img align='top' onMouseDown="javascript:Cal(document.order_lay.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16" style='cursor:hand'></td>
+				  <td class=snvy><b>To：</b>
+				    <input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+            <img align='top' onMouseDown="javascript:Cal(document.order_lay.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16" style='cursor:hand'> </td>
+-->
+					<td class=snvy><b> Year：</b>{$year_1}</td>
+					<td class=snvy><b>Month：</b>{$month_1}</td>
+				  <td align=left>&nbsp;</td>
+				  </tr>
+			</table>
+{/if}
+		</td>	
+	</tr>
+</table>
+
+</form>
+
+
+<form METHOD="POST" name="capacity">
+<table border="1" cellspacing="0" cellpadding=2 cols=1 width="620" bgcolor="#DDDDDD"  align="center">
+	{if $msg_YES}
+	<tr>
+		<td>
+			<table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td>
+			<table border=0 cellspacing=3 cellpadding=1 width=700>
+				<tr>
+					<td bgcolor=#00000 colspan =4 class="des" align=center height=28>[ Factory Monthly <font color=yellow><b>OUT-PUT</b></font> Break-down by Customer LIST]</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory ID：</b>{$factory}</td>
+					<td class=snvy><b>Target Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="out_list">
+					<td width=180 align=left><input type="submit" value=" LIST " class="select_e" style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+
+<form METHOD="POST" name="capacity">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ Production <font color=yellow><b>SUPPORTING STATSUS</b></font> Monthly LIST ]<font color=#959595>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 Months Included</font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory ID：</b>{$factory}</td>
+					<td class=snvy><b>Year：</b>{$year_1}</td>
+					<td class=snvy><b>Month：</b>{$month_1}</td>
+					<input type=hidden name="PHP_action" value="rep_sch_list">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST" name="out_put_ana">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ <font color=yellow><b>Out-Put</b></font> Analysis by style -- In House ]<font color=#959595></font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory :</b>{$factory}</td>
+					<td class=snvy><b>From：</b><input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.out_put_ana.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+
+					<td class=snvy><b>To：</b><input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+						  <img align='top' onmousedown="javascript:Cal(document.out_put_ana.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+
+					</td>
+					<input type=hidden name="PHP_action" value="style_out_search">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST" name="out_put_qty" action="wk_report.php">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ <font color=yellow><b>Out-Put</b></font> Analysis by Quantity -- In House ]<font color=#959595></font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory :</b>{$factory}</td>
+					<td class=snvy><b>From：</b><input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.out_put_qty.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+
+					<td class=snvy><b>To：</b><input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+						  <img align='top' onmousedown="javascript:Cal(document.out_put_qty.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+
+					</td>
+					<input type=hidden name="PHP_action" value="pdtion_qty_search">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST" name="out_qty_cut" action='wk_report.php'>
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ <font color=yellow><b>Order Q'ty </b></font> Analysis ]<font color=#959595></font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory :</b>{$factory}</td>
+					<td class=snvy><b>From：</b><input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.out_qty_cut.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+
+					<td class=snvy><b>To：</b><input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+						  <img align='top' onmousedown="javascript:Cal(document.out_qty_cut.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+
+					</td>
+					<input type=hidden name="PHP_action" value="rpt_ord_dist_search">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST" name="order_day_count" action='wk_report.php'>
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =4 class="des" align=center height=28>ORDER <font color=yellow><b><u>Lead-Time</u></b></font> Analysis by Customer</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>					
+					<td class=snvy><b>Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="rep_day_count">
+					<td class=snvy><b>Factory ID：</b>{$factory}</td>
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST" name="production_line" action="monitor.php">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =4 class="des" align=center height=28>MONTHLY <font color=yellow><b><u>Production</u></b></font>  Analysis by Factory</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>					
+					<td class=snvy><b>Factory ID：</b>{$factory}</td>
+					<td class=snvy><b>Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="production_year_report">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+<!--
+<form METHOD="POST" name="ord_ship_rpt" action="wk_report.php">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#00000" colspan =5 class="des" align=center height=28>[ORDER <font color=yellow><b>BOOKING </b></font> Report ]<font color=#959595></font></td>				
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory :</b>{$factory}</td>
+					<td class=snvy><b>From：</b><input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.ord_ship_rpt.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+
+					<td class=snvy><b>To：</b><input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+						  <img align='top' onmousedown="javascript:Cal(document.ord_ship_rpt.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+
+					</td>
+					<input type=hidden name="PHP_action" value="rpt_ord_book_search">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+-->
+
+<form METHOD="POST" name="order_sample">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =5 class="des" align=center height=28>[Monthly <font color=yellow><b> Sample and Order comparison</b></font> by Customer LIST]</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>					
+					<td width=480 class=snvy><b>Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="rep_oscust_list">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST" name="order_sample">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =5 class="des" align=center height=28>[Monthly <font color=yellow><b> Sample Progress</b></font> by Customer LIST]</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>					
+					<td width=480 class=snvy><b>Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="rep_smplcust_list">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST" name="sample_count">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =2 class="des" align=center height=28>[ <font color=yellow><b> Valid Sample</b></font> Analysis by Customer ]</td>
+				</tr>
+				<tr>					
+					<td width="510" class=snvy></td>					
+					<input type=hidden name="PHP_action" value="rpt_smpl_use_count">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+<!--
+<form METHOD="POST" name="order_sample" action='wk_report.php'>
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =5 class="des" align=center height=28>[ <font color=yellow><b> Sample Progress</b></font> by Factory LIST]</td>
+				</tr>
+				<tr>
+					<td width=200 class=snvy><b>smpl. maker : </b>{$sample}</td>					
+					<td width=150 class=snvy><b>Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="rep_smplfty_list">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+-->
+<form METHOD="POST" name="order_sample_Factory" action='wk_report.php'>
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="1" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =6 class="des" align=center height=28>[ <font color=yellow><b> Sample Progress</b></font> by Factory LIST]</td>
+				</tr>
+				<tr>
+					<td class=snvy nowrap><b>smpl.maker: </b>{$sample}</td>					
+					<!--<td width=100 class=snvy><b>Year：</b>{$year_1}</td> -->
+					<td class=snvy nowrap><b>Dept: </b>{$dept}</td>
+					<td class=snvy nowrap><b>Cust: </b>{$cust}</td>
+					<td class=snvy nowrap><b>From：</b><input name="PHP_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.order_sample_Factory.PHP_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+
+					<td class=snvy nowrap><b>To：</b><input name="PHP_finish" type="text"  value="" size=10 class=select readonly>
+						  <img align='top' onmousedown="javascript:Cal(document.order_sample_Factory.PHP_finish,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+
+					</td>
+					<input type=hidden name="PHP_action" value="rep_smplfty_list">
+					<td width=180 align=left><input type=submit value=" LIST " class=select_e style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+{if $del_flag}
+<a href="wk_report.php?PHP_action=wk_report">*</a>
+{/if}
+<!--
+<a href="receive.php?PHP_action=add_ord_tmp">*</a>
+
+<center>------------------------------------Weekly Report------------------------------------</center>
+
+<form METHOD="POST" name="capacity2">
+<table border="1" cellspacing="0" cellpadding=2 cols=1 width="620" bgcolor="#DDDDDD"  align="center">
+	{if $msg_YES && $outord_msg}
+	<tr>
+		<td>
+			<table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td>
+			<table border=0 cellspacing=3 cellpadding=1 width=700>
+				<tr>
+					<td bgcolor=#00000 colspan =4 class="des" align=center height=28>[ Factory Monthly <font color=yellow><b>QTY</b></font> Break-down by Customer LIST]</td>
+				</tr>
+				<tr>
+					<td width="30" class=snvy></td>
+					<td class=snvy><b>Factory ID：</b>{$factory}</td>
+					<td class=snvy><b>Target Year：</b>{$year_1}</td>
+					<input type=hidden name="PHP_action" value="ord_qty_list">  
+						<input type=hidden name="PHP_action" value="ord_qty_wkly">
+					<td width=180 align=left><input type="submit" value=" LIST " class="select_e" style="cursor:pointer; width=80%"></td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+-->
+<!--------- footer ---------->
+{include file="footer.html"}

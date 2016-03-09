@@ -1,0 +1,589 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ customer data ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript"> 
+	function cunt(names,mm)
+	{
+	 {/literal}
+	 	var sub_ttl = 0;
+	 	var vls = 0;
+	 {section name=SEC loop=$mm_ary}
+			vls = window.document.forms['cust_add'].elements['PHP_f_'+names+'[{$mm_ary[SEC]}]'].value;		
+			if(vls == '') vls = 0;
+			sub_ttl += parseInt(vls);			
+		{/section}
+		window.document.forms['cust_add'].elements['PHP_s_'+names].value = sub_ttl;
+		
+		sub_ttl = 0;
+	 {section name=SEC loop=$txt}
+			vls = window.document.forms['cust_add'].elements['PHP_f_{$txt[SEC]}['+mm+']'].value;		
+			if(vls == '') vls = 0;
+			sub_ttl += parseInt(vls);			
+		{/section}		
+		window.document.forms['cust_add'].elements['PHP_f_ttl['+mm+']'].value = sub_ttl;
+
+		sub_ttl = 0;
+	 {section name=SEC loop=$txt}
+			vls = window.document.forms['cust_add'].elements['PHP_s_{$txt[SEC]}'].value;		
+			if(vls == '') vls = 0;
+			sub_ttl += parseInt(vls);			
+		{/section}		
+		window.document.forms['cust_add'].elements['PHP_s_ttl'].value = sub_ttl;
+
+		
+		{literal}
+	}
+</Script>
+{/literal}	
+</head>
+<body ><form METHOD="POST" name="cust_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#003300>
+	<tr>
+		<td class="des" align=center height=28> [ <span class=sign>Append</span>&nbsp;EXPENSE  record ] </td>
+		<td class="des" align=right height=28 width=100><B> FY : {$f.0.yy}</B></td>
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=2 cellpadding=1 width=1070 bgcolor=#FFFFFF>
+  <tr>
+    <td class=frnt align=right><B>FORECAST</b></td>
+    <td class=frnt align=center><B>合計</b></td>
+    {section name=SEC loop=$mm_ary} 
+    <td class=frnt align=center  width=70 >
+    	<B>{$mm_ary[SEC]}</B>
+    </td>
+    {/section}
+  </tr>
+	<tr>     
+    <td class=snvy align=right >合計: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_ttl" size=7  value="{$item.ttl}">
+    </td>    	
+    {section name=SEC loop=$mm_ary}  
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_ttl[{$mm_ary[SEC]}]" size=8 value="{$f[SEC].ttl}">
+    </td>
+    {/section}  
+  </tr>  
+  <tr>
+    <td class=snvy align=right width=90>預估費用: </td>
+    <td class=frnt align=center  width=70 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_cost" size=7  value="{$item.cost}" readonly >
+    </td>
+    {section name=SEC loop=$mm_ary} 
+    <td class=frnt align=center  width=70 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_cost[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].cost}" onchange="cunt('cost','{$mm_ary[SEC]}')">
+    </td>
+    {/section}
+  </tr>    
+  <tr>
+    <td class=snvy align=right width=90>薪資支出: </td>
+    <td class=frnt align=center  width=70 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_salary" size=7  value="{$item.salary}" readonly >
+    </td>
+    {section name=SEC loop=$mm_ary} 
+    <td class=frnt align=center  width=70 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_salary[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].salary}" onchange="cunt('salary','{$mm_ary[SEC]}')">
+    </td>
+    {/section}
+  </tr>    
+  
+	<tr>
+    <td class=snvy align=right>租金支出: </td>
+    <td class=frnt align=center bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_rent" size=7  value="{$item.rent}" readonly >
+    </td>
+    {section name=SEC loop=$mm_ary} 
+    <td class=frnt align=center bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_rent[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].rent}" onchange="cunt('rent','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}  
+  </tr>
+  <tr> 
+    <td class=snvy align=right>文具用品: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_sationery" size=7   value="{$item.stationery}" readonly >
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_sationery[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].stationery}" onchange="cunt('sationery','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}   
+  </tr>
+  <tr>      
+    <td class=snvy align=right >旅費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_travel" size=7   value="{$item.travel}">
+    </td>     
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_travel[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].travel}" onchange="cunt('travel','{$mm_ary[SEC]}')">
+    </td>     	
+    {/section}
+  </tr>   
+  <tr>
+    <td class=snvy align=right >運費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_freight" size=7  value="{$item.freight}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_freight[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].freight}" onchange="cunt('freight','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}  
+  </tr>
+  <tr> 
+    <td class=snvy align=right >郵電費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_postal" size=7  value="{$item.postal}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_postal[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].postal}" onchange="cunt('postal','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr>
+  <tr> 
+    <td class=snvy align=right >修繕費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_fix" size=7  value="{$item.fix}">
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_fix[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].fix}" onchange="cunt('fix','{$mm_ary[SEC]}')">
+    </td>     	
+  	{/section}
+  </tr>
+  <tr>    
+    <td class=snvy align=right >廣告費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_ad" size=7  value="{$item.ad}">
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_ad[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].ad}" onchange="cunt('ad','{$mm_ary[SEC]}')">
+    </td>       	
+  	{/section}
+  </tr>
+  
+  <tr>
+    <td class=snvy align=right >水電瓦斯: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_water" size=7  value="{$item.water}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_water[{$mm_ary[SEC]}]" size=7  class=select value="{$f[SEC].water}" onchange="cunt('water','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}  
+  </tr>
+  <tr>  
+    <td class=snvy align=right >保險費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_insurance" size=7 value="{$item.insurance}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_insurance[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].insurance}" onchange="cunt('insurance','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>
+  <tr>
+    <td class=snvy align=right >交際費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_communicat" size=7 value="{$item.communicat}">
+    </td>  
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_communicat[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].communicat}" onchange="cunt('communicat','{$mm_ary[SEC]}')">
+    </td>     
+    {/section}
+  </tr>
+  <tr>
+    <td class=snvy align=right >捐贈: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_donate" size=7 value="{$item.donate}">
+    </td> 
+    {section name=SEC loop=$mm_ary}   
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_donate[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].donate}" onchange="cunt('donate','{$mm_ary[SEC]}')">
+    </td>       	
+    {/section}
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >稅捐: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_taxes" size=7 value="{$item.taxes}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_taxes[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].taxes}" onchange="cunt('taxes','{$mm_ary[SEC]}')">
+    </td>  
+   {/section}   
+  </tr>    
+	<tr>
+    <td class=snvy align=right >呆帳損失: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_bed_dabt" size=7 value="{$item.bed_dabt}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_bed_dabt[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].bed_dabt}" onchange="cunt('bed_dabt','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >折舊: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_dpereciation" size=7 value="{$item.depreciation}">
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_dpereciation[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].depreciation}" onchange="cunt('dpereciation','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}   
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >各項攤提: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_other_1" size=7 value="{$item.other_1}">
+    </td>       	
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_1[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].other_1}" onchange="cunt('other_1','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >圖書什誌: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_book" size=7 value="{$item.book}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_book[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].book}" onchange="cunt('book','{$mm_ary[SEC]}')">
+    </td>
+    {/section} 
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >伙食費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_food" size=7 value="{$item.food}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_food[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].food}" onchange="cunt('food','{$mm_ary[SEC]}')">
+    </td>   
+    {/section} 
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >職工福利金: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_welfare" size=7 value="{$item.welfare}">
+    </td> 
+    {section name=SEC loop=$mm_ary}  
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_welfare[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].welfare}" onchange="cunt('welfare','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}    
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >研究發展費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_rd" size=7 value="{$item.rd}">
+    </td> 
+    {section name=SEC loop=$mm_ary}   
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_rd[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].rd}" onchange="cunt('rd','{$mm_ary[SEC]}')">
+    </td>      	
+    {/section}   
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >訓練費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_teach" size=7 value="{$item.teach}">
+    </td>
+    {section name=SEC loop=$mm_ary}   
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_teach[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].teach}" onchange="cunt('teach','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >醫藥費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_medicine" size=7 value="{$item.medicine}">
+    </td>
+    {section name=SEC loop=$mm_ary}   
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_medicine[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].medicine}" onchange="cunt('medicine','{$mm_ary[SEC]}')">
+    </td>   
+    {/section} 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >佣金: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_commission" size=7 value="{$item.commission}">
+    </td> 
+    {section name=SEC loop=$mm_ary}    
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_commission[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].commission}" onchange="cunt('commission','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}   
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >勞務費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_labor_1" size=7 value="{$item.labor_1}">
+    </td>
+    {section name=SEC loop=$mm_ary}       	
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_labor_1[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].labor_1}" onchange="cunt('labor_1','{$mm_ary[SEC]}')">
+    </td>      	
+  	{/section}
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >什費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_other_2" size=7  value="{$item.other_2}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_2[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].other_2}" onchange="cunt('other_2','{$mm_ary[SEC]}')">
+    </td>    	
+		{/section}  
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >什項購置: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_other_3" size=7  value="{$item.other_3}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_3[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].other_3}" onchange="cunt('other_3','{$mm_ary[SEC]}')">
+    </td>    	
+  	{/section}
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >報關費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_customs" size=7  value="{$item.customs}">
+    </td> 
+    {section name=SEC loop=$mm_ary} 
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_customs[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].customs}" onchange="cunt('customs','{$mm_ary[SEC]}')">
+    </td>     	
+  	{/section}
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >樣品費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_sample" size=7  value="{$item.sample}">
+    </td>       	
+  {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_sample[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].sample}" onchange="cunt('sample','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}
+  </tr>  
+   
+  <tr>
+    <td class=snvy align=right >銀行手續費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_bank" size=7 value="{$item.bank}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_bank[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].bank}" onchange="cunt('bank','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >包裝費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_pack" size=7 value="{$item.pack}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_pack[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].pack}" onchange="cunt('pack','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}  
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >勞保費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_labor_2" size=7  value="{$item.labor_2}">
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_labor_2[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].labor_2}" onchange="cunt('labor_2','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr>    
+	<tr>       
+    <td class=snvy align=right >健保費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_health" size=7 value="{$item.health}">
+    </td>     	
+  	{section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_health[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].health}" onchange="cunt('health','{$mm_ary[SEC]}')">
+    </td>     	
+    {/section}
+  </tr>    
+  <tr>
+    <td class=snvy align=right >耗用物料: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_martrial" size=7  value="{$item.material}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_martrial[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].material}" onchange="cunt('martrial','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >費用分攤: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_share" size=7  value="{$item.share}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_share[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].share}" onchange="cunt('share','{$mm_ary[SEC]}')">
+    </td>    	
+  	{/section}
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >年獎提存: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_prize" size=7  value="{$item.prize}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_prize[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].prize}" onchange="cunt('prize','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr>    
+	<tr>       
+    <td class=snvy align=right >退休金準備: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_retire_1" size=7 value="{$item.retire_1}">
+    </td>       	
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_retire_1[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].retire_1}" onchange="cunt('retire_1','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}
+  </tr>  
+  
+  <tr>
+    <td class=snvy align=right >外銷拓展費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_reach_cost" size=7  value="{$item.reach_cost}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_reach_cost[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].reach_cost}" onchange="cunt('reach_cost','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >商港建設費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_build" size=7  value="{$item.build}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_build[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].build}" onchange="cunt('build','{$mm_ary[SEC]}')">
+    </td>    
+    {/section}
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >退休金費用: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_retire_2" size=7  value="{$item.retire_2}">
+    </td> 
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_retire_2[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].retire_2}" onchange="cunt('retire_2','{$mm_ary[SEC]}')">
+    </td>   
+     {/section} 
+  </tr>    
+	<tr>        
+    <td class=snvy align=right >衣服修改費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_cloth_fix" size=7  value="{$item.cloth_fix}">
+    </td>     	
+  	{section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_cloth_fix[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].cloth_fix}" onchange="cunt('cloth_fix','{$mm_ary[SEC]}')">
+    </td>    	
+    {/section}
+  </tr>  
+  
+  <tr>
+    <td class=snvy align=right >員工制服費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_work_cloth" size=7  value="{$item.work_cloth}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_work_cloth[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].work_cloth}" onchange="cunt('work_cloth','{$mm_ary[SEC]}')">
+    </td> 
+    {/section}   
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >管理費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_manage" size=7  value="{$item.manage}">
+    </td>
+    {section name=SEC loop=$mm_ary}
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_manage[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].manage}" onchange="cunt('manage','{$mm_ary[SEC]}')">
+    </td>  
+    {/section}  
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >保全費: </td>
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_s_safty" size=7  value="{$item.safety}">
+    </td>    	
+    {section name=SEC loop=$mm_ary}  
+    <td class=frnt align=center  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_safty[{$mm_ary[SEC]}]" size=7 class=select value="{$f[SEC].safety}" onchange="cunt('safty','{$mm_ary[SEC]}')">
+    </td>
+    <input type="hidden" name="PHP_f_id[{$mm_ary[SEC]}]" value="{$f[SEC].id}">	
+    {/section}  
+  </tr>   
+</table>
+
+<BR>
+			
+			
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+  <tr> 
+    <td align=center>
+        <input type="hidden" name="PHP_action" value="do_expense_update">
+        <input type="hidden" name="PHP_year" value="{$f.0.yy}">
+        <input type="hidden" name="PHP_dept" value="{$f.0.dept}">		
+				<input type=submit value="[ UPDATE expense record ]" class=select_e style="cursor:pointer; width=100%"></form>
+    </td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,341 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>採購進度追蹤表</title>
+<link rel=stylesheet type="text/css" href="./bom.css" />
+<link rel=stylesheet type="text/css" href="./css/jquery.loadmask.css" />
+{literal}
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-left: 17px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/mask/jquery.loadmask.js"></script>
+<script type="text/javascript" src="./js/mask/jquery.blockUI.js"></script>
+
+
+<SCRIPT language=JavaScript>
+<!--Select物件的OnChange屬性用-->
+function mask(){
+	
+	if(document.getElementById('date_start').value=='')
+	{
+		if(document.getElementById('date_end').value=='')
+		{
+			if(document.getElementById('SCH_Po_num').value=='')
+			{
+				today = new Date()
+				alert("未輸入起訖日期\r\n查詢日期從"+today.getMonth()+"/"+today.getDate()+"開始");
+				$('body').mask('Waiting...');
+			}
+			else
+			{
+				$('body').mask('Waiting...');
+			}
+		}
+		else
+		{
+			alert("未輸入查詢的起始日期");
+			return false;
+		}
+	}
+	else
+	{
+		if(document.getElementById('date_end').value=='')
+		{
+			alert("未輸入查詢的結束日期");
+			return false;
+		}
+		else
+		{
+			var date1=document.getElementById('date_start').value;
+			var date2=document.getElementById('date_end').value;
+			if(date1<=date2)
+			{
+				var diff=(new Date(date2.replace(/-/g,"/"))).getTime() - (new Date(date1.replace(/-/g,"/"))).getTime();
+				var day=Math.floor(diff / (1000 * 60 * 60 * 24));
+				if(day>90)
+				{
+					alert("您查詢的資料超過90天\r\n資料量太大\r\n無法提供查詢");
+					return false;
+				}
+				else
+				{
+					$('body').mask('Waiting...');
+				}
+			}
+			else
+			{
+				alert("您選擇的起始日期晚於結束日期\r\n請重新選擇!!");
+				return false;
+			}
+		}
+	}
+	
+}
+function FAB_ACC(rcv_value) {
+
+    <!-- $('body').mask('Waiting...'); -->
+
+	if(rcv_value=='FAB')
+	{
+		<!-- po.php?PHP_action=po_track&option=FAB -->
+		<!-- alert("FAB"); -->
+		window.location="po.php?PHP_action=po_track&option=FAB";
+	}
+	
+	if(rcv_value=='ACC')
+	{
+		<!-- po.php?PHP_action=po_track&option=ACC -->
+		<!-- alert("ACC"); -->
+		window.location="po.php?PHP_action=po_track&option=ACC";
+	}
+}
+<!--Select物件的OnChange屬性用-->
+function Po_Group(rcv_value) {
+
+    <!-- $('body').mask('Waiting...'); -->
+
+	if(rcv_value=='業務一')
+	{
+		<!-- po.php?PHP_action=po_track&option=FAB -->
+		<!-- alert("FAB"); -->
+		<!-- window.location="po.php?PHP_action=po_track&option=FAB"; -->
+	}
+	
+	if(rcv_value=='業務二')
+	{
+		<!-- po.php?PHP_action=po_track&option=ACC -->
+		<!-- alert("ACC"); -->
+		<!-- window.location="po.php?PHP_action=po_track&option=ACC"; -->
+	}
+}
+
+function writeToSupSESlList(supl_s_name,supl_cat) {
+<!-- alert(supl_s_name+","+supl_cat); -->
+	var i=0;
+	window.document.forms['search_sup'].elements['SCH_supl'].value = supl_s_name;
+}
+function writeToSuplList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['add_aply'].elements['PHP_supl'].value = supl_s_name;
+	window.document.forms['add_aply'].elements['PHP_supl_cat'].value = supl_cat;
+}
+
+function list(item){
+	
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item;	
+	style=window.open2(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+function search_po(po_num) {
+
+	var url ="po.php?PHP_action=po_search&PHP_SCH_num=" + po_num;
+
+	var nm = 'po_search';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=1000,height=670, top=20, left=20');
+}
+function received_po(po_num) {
+
+	var url ="receive.php?PHP_action=rcvd_add_search&PHP_po=" + po_num;
+
+	var nm = 'rcvd_add_search';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=1000,height=670, top=20, left=20');
+}
+function check_s_order(po_num,mat_cat,spec) {
+
+	var url ="po.php?PHP_action=po_ship_det&PHP_po=" + po_num +"&mat_cat="+mat_cat+"&special="+spec;
+
+	var nm = 'po_ship_det';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=1000,height=670, top=20, left=20');
+}
+
+(function($){
+	$(document).ready(function(){
+		poid = function(e,po,r){
+        
+            if ( !confirm( 'Are you sure to close P/O :#[ ' + po + ' )！' ) ) {
+                return false;
+            }
+        
+            $('body').mask('Waiting...');
+            
+			var URLs="po.php";
+            
+            $.ajax({
+                url: URLs,
+                data: 'PHP_action=po_close_pa' + '&PHP_id=' + e + '&PHP_po_num=' + po ,
+                type:"POST",
+                dataType:'text',
+                success: function(msg){
+                    alert(msg);
+          			<!-- 刪除點選的row-->
+                    var i=r.parentNode.parentNode.rowIndex; 
+                    document.getElementById('poShow').deleteRow(i);
+                    <!-- ------------ -->
+                    $('body').unmask();
+                    
+                },
+                beforeSend:function(){
+                    <!--alert('資料處理中');-->
+                },
+                complete:function(){
+                    
+                },
+                error:function(xhr, ajaxOptions, thrownError){ 
+                    alert(xhr.status); 
+                    alert(thrownError); 
+                }
+            });
+		}
+	});
+})(jQuery);
+</script>
+
+{/literal}
+<br>
+<body topmargin="10"  style="overflow-x: hidden">
+<form METHOD="get" name="search_sup">
+<table border=0 cellpadding=3 cellspacing=1 bgcolor=#666666  id="poSelect" >
+  <input type="hidden" name="PHP_action" value="po_track">
+  <tr align=center >
+  <td class=ylw10 nowrap bgcolor=#272727>日期區間</td>
+  <td class=ylw10 nowrap colspan="3" bgcolor=#272727>From:<input id="date_start" name="date_start" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.search_sup.date_start,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+						  <!-- </td> -->
+  
+  <!-- <td class=ylw10 nowrap colspan="2"> -->To:<input id="date_end" name="date_end" type="text"  value="" size=10 class=select readonly>
+					      <img align='top' onmousedown="javascript:Cal(document.search_sup.date_end,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+						  </td>
+
+  
+  <td bgcolor=#272727 class=ylw10><b>PO單號</td>
+  <td bgcolor=#272727 class=frnt align=left><b><input type=text name="SCH_Po_num" size=15 class=select value=""></td>
+  <td bgcolor=#272727 rowspan=2><b><input type="submit" value="Search" class=select style="width:50;height:50;cursor:pointer" onClick="return mask();"></td>
+
+  </tr>
+  <!--10/17新增(結束)-->
+  <tr align=center bgcolor=#272727 height=30 >
+  
+    <td class=ylw10  ><b>業務單位</td>
+	<td class=frnt align=center  ><b>{$Group_select}</td>
+	<td class=ylw10  ><b>主副料</td>
+	<td class=frnt align=center  ><b>{$FAB_ACC_select}</td>
+	<td class=ylw10  ><b>供應商</td>
+	<td class=frnt align=left><b><input type=text name="SCH_supl" size=15 class=select value="">
+		<img src="./images/icoSearch.gif" alt="Supplier" onClick="list('search');" style="cursor:pointer"></b></td>
+		
+
+	
+	<!-- <td class=ylw10 colspan="2" ><b><input type="submit" value="Search" class=select style="width:50;cursor:pointer" onClick="return mask();"></td> -->
+	<!-- <td class=ylw10  ><b>訊息</td> -->
+	<!-- <td class=frnt align=center><b>{$FAB_ACC_select}</td> -->
+  </tr>
+</table>
+</form>
+<div id="preview1" style="position:absolute; z-index:1;width:10; filter:revealTrans(duration=0.3); visibility:hidden;"> 
+<!--   -->
+</div>
+<center>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor=#666666  id="poShow" >
+  <tr align=center bgcolor=#272727 height=30 >
+    <td class=ylw10 colspan=8 ><b>採購進度追蹤表</td>
+	<!-- <td class=frnt align=center><b>{$FAB_ACC_select}</td> -->
+  </tr>
+	<tr align="center" bgcolor="#eeeeee">
+		<td width="150"><b>PO #</b></td>
+		
+		<td width="150"><b>Supplier</b></td>
+		<td width="150"><b>PO# Q'ty</b></td>
+		<!-- <td width="150"><b>Revd Q'ty</b></td> -->
+		<td width="150"><b>SHIP# Q'ty</b></td>
+		<td width="150"><b>PO-ETD</b></td>
+		<td width="150"><b>GMT-ETD</b></td>
+		<!-- <td width="60"><b>Status</b></td> -->
+		<td width="80" nowrap><b>LeadTime</b></td>
+		<td width="60" align=center><b>Close</b></td>
+	</tr>
+  {section name=SEC loop=$po}
+  <tr align=center bgcolor="#FFFFE6">
+    <td width="150" align="center"><a href="javascript:search_po('{$po[SEC].po_num}')"><span class='F3'><small>{$po[SEC].po_num}</small></span></a></td>
+    <td width="150" align=center nowrap><small>{$po[SEC].supl_s_name}</small></td>
+    <td width="150" align=center><a href="javascript:check_s_order('{$po[SEC].ap_num}','{$po[SEC].mat_cat}','{$po[SEC].special}')"><small>{if $po[SEC].ydqty > 0 }{$po[SEC].ydqty}<small>(yd)</small> {/if}</small>
+      <small>{if $po[SEC].pcqty > 0 }<br>{$po[SEC].pcqty}<small>(pc)</small> {/if}</small>
+	  <small>{if $po[SEC].meterqty > 0 }<br>{$po[SEC].meterqty}<small>(meter)</small> {/if}</small>
+	  <small>{if $po[SEC].dzqty > 0 }<br>{$po[SEC].dzqty}<small>(dz)</small> {/if}</small>
+	  <small>{if $po[SEC].SFqty > 0 }<br>{$po[SEC].SFqty}<small>(SF)</small> {/if}</small>
+	  <small>{if $po[SEC].grossqty > 0 }<br>{$po[SEC].grossqty}<small>(gross)</small> {/if}</small>
+	  <small>{if $po[SEC].kgqty > 0 }<br>{$po[SEC].kgqty}<small>(kg)</small> {/if}</small>
+	  <small>{if $po[SEC].setqty > 0 }<br>{$po[SEC].setqty}<small>(set)</small> {/if}</small>
+	  <small>{if $po[SEC].unitqty > 0 }<br>{$po[SEC].unitqty}<small>(unit)</small> {/if}</small>
+	  <small>{if $po[SEC].lbqty > 0 }<br>{$po[SEC].lbqty}<small>(lb)</small> {/if}</small>
+	  <small>{if $po[SEC].coneqty > 0 }<br>{$po[SEC].coneqty}<small>(cone)</small> {/if}</small>
+	  <small>{if $po[SEC].inchqty > 0 }<br>{$po[SEC].inchqty}<small>(inch)</small> {/if}</small>
+    </a></td>
+	<td width="150" align=center>
+	  <small>{if $po[SEC].ship_ydqty > 0 }{$po[SEC].ship_ydqty}<small>(yd)</small> {/if}</small>
+      <small>{if $po[SEC].ship_pcqty > 0 }<br>{$po[SEC].ship_pcqty}<small>(pc)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_meterqty > 0 }<br>{$po[SEC].ship_meterqty}<small>(meter)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_dzqty > 0 }<br>{$po[SEC].ship_dzqty}<small>(dz)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_SFqty > 0 }<br>{$po[SEC].ship_SFqty}<small>(SF)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_grossqty > 0 }<br>{$po[SEC].ship_grossqty}<small>(gross)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_kgqty > 0 }<br>{$po[SEC].ship_kgqty}<small>(kg)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_setqty > 0 }<br>{$po[SEC].ship_setqty}<small>(set)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_unitqty > 0 }<br>{$po[SEC].ship_unitqty}<small>(unit)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_lbqty > 0 }<br>{$po[SEC].ship_lbqty}<small>(lb)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_coneqty > 0 }<br>{$po[SEC].ship_coneqty}<small>(cone)</small> {/if}</small>
+	  <small>{if $po[SEC].ship_inchqty > 0 }<br>{$po[SEC].ship_inchqty}<small>(inch)</small> {/if}</small>
+    </td>
+    <!-- <td width="150" align=center> {if $po[SEC].ydqty_rcv > 0 }<a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].ydqty_rcv}</a><small>(yd)</small> {/if}</small>
+      {if $po[SEC].pcqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].pcqty_rcv}</a><small>(pc)</small> {/if}
+	  {if $po[SEC].meterqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].meterqty_rcv}</a><small>(meter)</small> {/if}
+	  {if $po[SEC].dzqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].dzqty_rcv}</a><small>(dz)</small> {/if}
+	  {if $po[SEC].SFqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].SFqty_rcv}</a><small>(SF)</small> {/if}
+	  {if $po[SEC].grossqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].grossqty_rcv}</a><small>(gross)</small> {/if}
+	  {if $po[SEC].kgqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].kgqty_rcv}</a><small>(kg)</small> {/if}
+	  {if $po[SEC].setqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].setqty_rcv}</a><small>(set)</small> {/if}
+	  {if $po[SEC].unitqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].unitqty_rcv}</a><small>(unit)</small> {/if}
+	  {if $po[SEC].lbqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].lbqty_rcv}</a><small>(lb)</small> {/if}
+	  {if $po[SEC].coneqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].coneqty_rcv}</a><small>(cone)</small> {/if}
+	  {if $po[SEC].inchqty_rcv > 0 }<br><a href="javascript:received_po('{$po[SEC].po_num}')">{$po[SEC].inchqty_rcv}</a><small>(inch)</small> {/if}</td> -->
+    <td width="150" align=center><small>
+		{foreach key=key item=item from=$po[SEC].po_eta}
+			{if $key > 0}
+			<br>{$item}
+			{else}
+			{$item}
+			{/if}
+		{/foreach}
+	</small></td>
+    <td width="150" align=center><small>
+		{foreach key=key item=item from=$po[SEC].ord_etd}
+			{if $key > 0}
+			<br>{$item}
+			{else}
+			{$item}
+			{/if}
+		{/foreach}
+	</small></td>	
+    <td width="80" nowrap> 
+      <small> {$po[SEC].sort} </small></td>
+    <td width="60" align=center>{if $add_flag}<input onclick="poid('{$po[SEC].id}','{$po[SEC].po_num}',this)" type='image' src="images/ok01.gif" alt='close PO' border=0 valign=bottom   style='cursor:hand'>{/if}
+    </td>	
+
+  </tr>
+  
+  {/section}
+</table>
+</center>
+<!--------- footer ---------->
+{include file="footer.html"}

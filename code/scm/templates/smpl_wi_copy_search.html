@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  Sample List .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+<script type="text/javascript" src="./js/jquery.js"></script>
+{literal}
+<script language="javascript">
+function Show(id,back_str,copy_search)
+{
+	location.href="index2.php?PHP_action=smpl_wi_copy_view&PHP_id="+id+back_str+copy_search;
+}
+(function($){
+	$(document).ready(function(){
+
+		$("body").live('mousemove', function(e){
+			$("#note").offset({ "top" : e.pageY  , "left" : e.pageX + 30 });
+		});
+	
+		$('.img').hover(function(e){
+			$('#note').html('<img src="./smpl_pic/s_'+$(this).html()+'.jpg" width="120">');
+		},function(){
+			$('#note').html('');
+		});
+
+	});
+})(jQuery);
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background="">&nbsp;
+<!-- ################################################################################# -->
+<form>
+<div id="note" style="position:absolute;"></div>
+<table border cellspacing=0 cellpadding=2 cols=1 width=600 bgcolor=#cccccc  align=center>
+	<tr><td height=35 align=center colspan=6 class=b10> <b>WI LIST -- for <font color=navy><i>COPY WI</i></font></b></td></tr>
+	{section name=SEC loop=$wi} 
+	<tr>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id0}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num0}</td>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id1}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num1}</td>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id2}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num2}</td>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id3}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num3}</td>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id4}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num4}</td>
+		<td width=100 bgcolor=#ffffff>&nbsp;<a class="img" href="javascript:Show('{$wi[SEC].id5}','{$back_str2}','{$copy_search}')" value='view' style='cursor:pointer'>{$wi[SEC].wi_num5}</td>
+	</tr>
+	{/section}
+</table>
+</form>
+
+<table border=0 cellspacing=0 cellpadding=2 width=600 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2><form method=POST name=back>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=smpl_wi_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}</form>
+	</td>
+  </tr>
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

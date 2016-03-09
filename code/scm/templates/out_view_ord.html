@@ -1,0 +1,213 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body topmargin=10 >
+
+<form>
+<center>
+<table width=820 border=1 cellspacing=0 cellpadding=2>
+  <tr class="top16bg"> 
+    <td colspan=14 align=center height=30>
+    <table width="100%">
+      <tr class="top16bg">
+        <td colspan=2 class="txt_B_y_16t">&nbsp;&nbsp;Factory：{$fty}</td>
+        <td colspan=10 align="center" class="top16bg">Monthly ORDER Q'TY by Customer  (su)</td>
+        <td colspan=2 align="right" class="txt_B_y_16t">({$year})&nbsp;&nbsp;</td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+    <tr class="item1"> 
+    <td width=100 align=center>&nbsp;</td>
+    <td width=60 align=center >JAN</td>
+    <td width=60 align=center >FEB</td>
+    <td width=60 align=center >MAR</td>
+    <td width=60 align=center >APR</td>
+    <td width=60 align=center >MAY</td>
+    <td width=60 align=center >JUN</td>
+    <td width=60 align=center >JUL</td>
+    <td width=60 align=center >AUG</td>
+    <td width=60 align=center >SEP</td>
+    <td width=60 align=center >OCT</td>
+    <td width=60 align=center >NOV</td>
+    <td width=60 align=center >DEC</a></td>
+   <td  width=80 align=center>Total</td>
+  </tr>
+  
+   <tr class="txt_B_b10" border="0"> 
+    <td width=80 align=center class="txt_B_b10" >Capacity</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m01 == 0}&nbsp;{else}{$cal.m01|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m02 == 0}&nbsp;{else}{$cal.m02|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m03 == 0}&nbsp;{else}{$cal.m03|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m04 == 0}&nbsp;{else}{$cal.m04|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m05 == 0}&nbsp;{else}{$cal.m05|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m06 == 0}&nbsp;{else}{$cal.m06|number_format}&nbsp;{/if}</td>        
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m07 == 0}&nbsp;{else}{$cal.m07|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m08 == 0}&nbsp;{else}{$cal.m08|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m09 == 0}&nbsp;{else}{$cal.m09|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m10 == 0}&nbsp;{else}{$cal.m10|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m11 == 0}&nbsp;{else}{$cal.m11|number_format}&nbsp;{/if}</td>
+    <td width=60 align=right  class="txt_B_b10">{if $cal.m12 == 0}&nbsp;{else}{$cal.m12|number_format}&nbsp;{/if}</td>
+    <td width=80 align=right  class="txt_B_b10">{$cal.total|number_format}&nbsp;</td>
+  </tr>
+
+
+  <tr class="txt10">  
+    <td rowspan=2 align=center class="txt_B_b10">From Sales</td>         
+   {section name=SEC loop=$sal_mt}
+     <td align=right  class=txt10>{if $sal_mt[SEC] == 0}&nbsp;{else}{$sal_mt[SEC]|number_format}&nbsp;{/if}</td>
+   {/section}
+     <td align=right  class="txt10">{$sal_total|number_format}&nbsp;</td>   
+   </tr>
+  <tr border="0"> 
+  {section name=SEC loop=$sp_m}
+     <td align=right  class=txt10>{$sp_m[SEC]|number_format:"2f"}%</td>
+  {/section}   
+     <td align=right  class=txt10>{$sal_total_p|number_format:"2f"}%&nbsp;</td>
+  </tr>
+  
+  <tr> 
+     <td rowspan=2 align=center class="txt_B_b10">From Factory</td>  
+   {section name=SEC loop=$fty_mt}
+     <td align=right  class=txt10>{if $fty_mt[SEC] == 0}&nbsp;{else}{$fty_mt[SEC]|number_format}&nbsp;{/if}</td>
+   {/section}
+     <td align=right class=txt10>{$total|number_format}&nbsp;</td>
+  </tr>
+  <tr border="0"> 
+  {section name=SEC loop=$fp_m}
+     <td align=right  class=txt10>{$fp_m[SEC]|number_format:"2f"}%</td>
+  {/section}   
+     <td align=right  class=txt10>{$total_p|number_format:"2f"}%&nbsp;</td>
+  </tr>  
+
+   <tr  border="0" bgcolor=#E2E0E0> 
+     <td width=80 align=center nowrap class="txt_B_b10" >Total out-put</td>
+   {section name=SEC loop=$m_tal}
+     <td align=right  class=txt10>{if $m_tal[SEC] == 0}&nbsp;{else}{$m_tal[SEC]|number_format}&nbsp;{/if}</td>
+   {/section}
+    <td align=right class=txt10>{$total_tal|number_format}&nbsp;</td>
+  </tr>
+  <tr border="0" bgcolor=#E2E0E0> 
+    <td width=80 align=center class="txt_B_b10" >[%] / capacity</td>
+  {section name=SEC loop=$pec}
+     <td align=right  class=txt10>{$pec[SEC]|number_format:"2f"}%</td>
+  {/section}  
+
+  </tr>
+</table>
+<br>
+
+
+<table width=820 border=1 cellspacing=0 cellpadding=2>
+<tr class="top16r">
+  <td colspan=14 align=center class="top16r">FROM Sales - ORDER Q'TY </td>
+</tr>
+  <tr class="item1" > 
+    <td  width=80 align=center>CUST</td>
+    <td width=60 align=center >JAN</td>
+    <td width=60 align=center >FEB</td>
+    <td width=60 align=center >MAR</td>
+    <td width=60 align=center >APR</td>
+    <td width=60 align=center >MAY</td>
+    <td width=60 align=center >JUN</td>
+    <td width=60 align=center >JUL</td>
+    <td width=60 align=center >AUG</td>
+    <td width=60 align=center >SEP</td>
+    <td width=60 align=center >OCT</td>
+    <td width=60 align=center >NOV</td>
+    <td width=60 align=center >DEC</a></td>
+   <td  width=80 align=center>Total</td>
+  </tr>
+  {if $sale_msg}<tr><td colspan=14 class='txt_B_r14' align=center>{$sale_msg}</td></tr>{/if}
+    {section name=SEC loop=$sals}
+  <tr> 
+    <td  width=80 align=center>{$sals[SEC].cust_iname}&nbsp;</td>
+    <td class=txt10 align=right>{if $sals[SEC].jan == 0}&nbsp;{else}{$sals[SEC].jan|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].fab == 0}&nbsp;{else}{$sals[SEC].fab|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].mar == 0}&nbsp;{else}{$sals[SEC].mar|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].apl == 0}&nbsp;{else}{$sals[SEC].apl|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].may == 0}&nbsp;{else}{$sals[SEC].may|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].jun == 0}&nbsp;{else}{$sals[SEC].jun|number_format}&nbsp;{/if}</td>        
+    <td class=txt10 align=right>{if $sals[SEC].jly == 0}&nbsp;{else}{$sals[SEC].jly|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].aug == 0}&nbsp;{else}{$sals[SEC].aug|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].sep == 0}&nbsp;{else}{$sals[SEC].sep|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].oct == 0}&nbsp;{else}{$sals[SEC].oct|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].nov == 0}&nbsp;{else}{$sals[SEC].nov|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].dec == 0}&nbsp;{else}{$sals[SEC].dec|number_format}&nbsp;{/if}</td>
+    <td class=txt10 align=right>{if $sals[SEC].total == 0}&nbsp;{else}{$sals[SEC].total|number_format}&nbsp;{/if}</td>
+  </tr>
+  {/section}
+  <tr> 
+    <td   width=80 align=center ></td>
+    <td  class=txt10 width=60 colspan=13 align=right></td>
+
+  </tr>
+    <tr class="total" > 
+     <td align=center >Total</td>
+   {section name=SEC loop=$sal_mt}
+     <td align=right  class=txt10>{if $sal_mt[SEC] == 0}&nbsp;{else}{$sal_mt[SEC]|number_format}&nbsp;{/if}</td>
+   {/section}
+    <td  class=txt10 align=right>{if $sal_total == 0}&nbsp;{else}{$sal_total|number_format}&nbsp;{/if}</td>
+  </tr>
+</table>
+
+
+<table width=820 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+   <td colspan=14 align=center class="top16o">FROM Factory - ORDER Q'TY </td>
+  </tr>
+  <tr class="item1" > 
+    <td  width=80 align=center >CUST</td>
+    <td width=60 align=center >JAN</td>
+    <td width=60 align=center >FEB</td>
+    <td width=60 align=center >MAR</td>
+    <td width=60 align=center >APR</td>
+    <td width=60 align=center >MAY</td>
+    <td width=60 align=center >JUN</td>
+    <td width=60 align=center >JUL</td>
+    <td width=60 align=center >AUG</td>
+    <td width=60 align=center >SEP</td>
+    <td width=60 align=center >OCT</td>
+    <td width=60 align=center >NOV</td>
+    <td width=60 align=center >DEC</a></td>
+    <td  width=80 align=center>Total</td>
+  </tr>
+  {if $OEM_msg}<tr><td colspan=14 class='txt_B_r14' align=center>{$OEM_msg}</td></tr>{/if}    
+  {section name=SEC loop=$prt}
+  <tr > 
+    <td  width=80 align=center>{$prt[SEC].cust_iname}&nbsp;</td>
+    <td {if $bord_m=='01'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].jan == 0}&nbsp;{else}{$prt[SEC].jan|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='02'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].fab == 0}&nbsp;{else}{$prt[SEC].fab|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='03'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].mar == 0}&nbsp;{else}{$prt[SEC].mar|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='04'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].apl == 0}&nbsp;{else}{$prt[SEC].apl|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='05'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].may == 0}&nbsp;{else}{$prt[SEC].may|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='06'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].jun == 0}&nbsp;{else}{$prt[SEC].jun|number_format}&nbsp;{/if}</td>        
+    <td {if $bord_m=='07'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].jly == 0}&nbsp;{else}{$prt[SEC].jly|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='08'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].aug == 0}&nbsp;{else}{$prt[SEC].aug|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='09'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].sep == 0}&nbsp;{else}{$prt[SEC].sep|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='10'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].oct == 0}&nbsp;{else}{$prt[SEC].oct|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='11'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].nov == 0}&nbsp;{else}{$prt[SEC].nov|number_format}&nbsp;{/if}</td>
+    <td {if $bord_m=='12'}class=txt_B_b10{else}class=txt10{/if} width=60 align=right>{if $prt[SEC].dec == 0}&nbsp;{else}{$prt[SEC].dec|number_format}&nbsp;{/if}</td>
+    <td class=txt10 width=60 align=right>{$prt[SEC].total|number_format}&nbsp;</td>
+  </tr>
+  {/section}
+    <tr><td colspan=14></td></tr>
+    <tr class="total" > 
+    <td  width=80 align=center >Total</td>
+   {section name=SEC loop=$fty_mt}
+     <td align=right  class=txt10>{if $fty_mt[SEC] == 0}&nbsp;{else}{$fty_mt[SEC]|number_format}&nbsp;{/if}</td>
+   {/section}
+    <td class=txt10 width=60 align=right>{$total|number_format}&nbsp;</td>
+  </tr>
+</table>
+  <br>
+
+</center>
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

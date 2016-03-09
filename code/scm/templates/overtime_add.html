@@ -1,0 +1,224 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: Tai Yuen ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<Script language="javascript">
+function count_cost(f_name)
+{
+
+		key = eval("window.document.forms[f_name].elements['PHP_rate'].value");
+		rate = eval("window.document.forms[f_name].elements['PHP_rate_value_'+key].value");
+		worker = eval("window.document.forms[f_name].elements['PHP_ot_worker'].value");
+		times = eval("window.document.forms[f_name].elements['PHP_ot_time'].value");
+		st = eval("window.document.forms[f_name].elements['PHP_cost'].value");
+		currency = eval("window.document.forms[f_name].elements['PHP_currency'].value");
+		if (rate == '')rate = 0;
+		if (worker == '')worker = 0;
+		if (times == '')times = 0;
+		
+		  
+		 cost=parseFloat(times)*parseFloat(worker)*parseFloat(rate)*parseFloat(st)/parseFloat(currency);
+		 cost=roundAmount(cost);
+		 window.document.forms[f_name].elements['PHP_ot_cost'].value = cost;	
+}
+
+function   roundAmount(n)   {   
+      var   s   =   ""   +   Math.round(n   *   100)   /   100   
+      var   i   =   s.indexOf('.')   
+      if   (i   <   0)   return   s   +   ".00"   
+      var   t   =   s.substring(0,   i   +   1)   +     
+              s.substring(i   +   1,   i   +   3)   
+      if   (i   +   2   ==   s.length)   t   +=   "0"   
+        
+      return   t   
+  }   
+  
+function del_check(fty,date,id)
+{
+	if ( confirm("Are you sure to delete this overtime record ??")) {
+
+	location.href="overtime.php?PHP_action=overtime_del&PHP_id="+id+"&PHP_FTY="+fty+"&PHP_date="+date;
+  
+	} 
+}  
+
+function add_check()
+{
+	worker = window.document.forms['ot_add'].elements['PHP_worker'].value; 
+	window.document.forms['ot_back'].elements['PHP_worker'].value = worker; 
+}  
+
+ </script>
+{/literal}
+</head>
+<body >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr>
+
+		<td class="des" align=center height=28>
+			[ <b>&nbsp;OVERTIME </b> -- Create]
+		</td>
+	</tr>
+</table>
+
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+<form METHOD="POST" name="ot_add" action="{$PHP_SELF}">
+<table border=1 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+  	<td class="des" align=center width=100 bgcolor=#003300>
+			<b><font color=yellow>FTY : {$ot.fty}</font>
+		</td>
+  	<td><b>DATE : </b>
+  	<input type=text name="PHP_date" size=10  value="{$ot.ot_date}" readonly>
+  	</td>
+  	<td><b>workers : </b>
+  	<input type=text name="PHP_worker" size=10 class=select value="{$ot.worker}">
+  	</td>
+	</tr>
+</table>
+<BR>
+<table border=1 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+	<tr>
+		<td class=frnt  align=center bgcolor=#eeeeee>RATE</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>WORKER</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>TIME</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>COST</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>&nbsp</td>
+	</tr>
+	<tr>
+		<td class=frnt  align=center >{$rate}</td>
+		<td class=frnt  align=center ><input type=text name="PHP_ot_worker" size=10 class=select value="" onChange=count_cost('ot_add')></td>
+		<td class=frnt  align=center ><input type=text name="PHP_ot_time" size=10 class=select value="" onChange=count_cost('ot_add')></td>
+		<td class=frnt  align=center ><input type=text name="PHP_ot_cost" size=20 value="" readonly></td>			
+	  <td align=center>
+			<input type=submit value=" ADD " class=select_e2 style="cursor:pointer; width=100%">
+    </td>
+	</tr>	
+</table>
+	<input type=hidden value="do_ot_add_det" name="PHP_action">
+	<input type=hidden value="{$cost}" name="PHP_cost">		
+	<input type=hidden value="{$ot.fty}" name="PHP_FTY">
+	<input type=hidden value="{$ot.id}" name="PHP_id">	
+	<input type=hidden value="{$currency}" name="PHP_currency">
+	{section name=SEC loop=$rate_key} 
+		<input type=hidden value="{$rate_value[SEC]}" name="PHP_rate_value_{$rate_key[SEC]}">	
+	{/section}
+</form>
+
+<hr SIZE=2 WIDTH=600>
+<table border=1 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+	<tr>
+		<td class=frnt  align=center bgcolor=#eeeeee>RATE</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>WORKER</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>TIME</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>COST</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>&nbsp</td>
+	</tr>
+	{section name=SEC loop=$ot_det} 
+	<form METHOD="POST" name="ot_edit{$ot_det[SEC].id}" action="{$PHP_SELF}">
+		<tr>
+			<td class=frnt  align=center >{$ot_det[SEC].rate_select}</td>
+			<td class=frnt  align=center ><input type=text name="PHP_ot_worker" size=10 class=select value="{$ot_det[SEC].ot_worker}" onChange=count_cost('ot_edit{$ot_det[SEC].id}')></td>
+			<td class=frnt  align=center ><input type=text name="PHP_ot_time" size=10 class=select value="{$ot_det[SEC].ot_time}" onChange=count_cost('ot_edit{$ot_det[SEC].id}')></td>
+			<td class=frnt  align=center ><input type=text name="PHP_ot_cost" size=20 value="{$ot_det[SEC].ot_cost}" readonly></td>			
+	 	 	<td align=center>
+				<input type=submit value=" UPDATE " class=select_e style="cursor:pointer; width=60%">
+				<input type="button" value="DEL" class=select_red style="width:30%" onclick=del_check('{$ot.fty}','{$ot.ot_date}','{$ot_det[SEC].id}')>	
+   		 </td>
+		</tr>	
+		<input type=hidden value="do_ot_edit_det" name="PHP_action">
+		<input type=hidden value="{$ot.ot_date}" name="PHP_date">
+		<input type=hidden value="{$ot.fty}" name="PHP_FTY">	
+		<input type=hidden value="{$cost}" name="PHP_cost">	
+		<input type=hidden value="{$ot_det[SEC].id}" name="PHP_id">
+		{section name=REC loop=$rate_key} 
+			<input type=hidden value="{$rate_value[REC]}" name="PHP_rate_value_{$rate_key[REC]}">	
+		{/section}
+			<input type=hidden value="{$currency}" name="PHP_currency">	
+	</form>
+{/section}
+</table>
+
+<form METHOD="POST" name="ot_back" action="{$PHP_SELF}">
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=600>
+            <tr> 
+              <td align=center>
+              			<input type='hidden' name="PHP_action" value="do_overtime_add" >
+              			<input type=hidden value="{$ot.worker}" name="PHP_worker">
+              			<input type=hidden value="{$ot.ot_date}" name="PHP_date">	
+              			<input type=hidden value="{$ot.fty}" name="PHP_FTY">	
+										<input type=hidden value="{$ot.id}" name="PHP_id">		
+										<input type=submit value=" APPEND ABOVE RECORDS " class=select_e style="cursor:pointer; width=95%" onclick=add_check()>
+              </td>
+   					</tr>
+   					<tr>
+              <td align=left>
+									<font color="#7C7C7C"><small>{$rate_des}<BR>
+										1USD = {$currency}VND&nbsp;&nbsp;&nbsp;&nbsp;daily salary : VND$ {$cost}</small></font>
+              </td>   						
+   					</tr>
+        </table>
+</form>
+<hr SIZE=2 WIDTH=600>
+
+
+
+<table border=1 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr bgcolor=#eeeeee class=frnt>
+		<td align=center width=90 rowspan=2>DATE</td>
+		<td align=center width=70>Regular</td>		
+		<td align=center width=60 rowspan=2>RATE</td>		
+		<td align=center colspan=3>Extra</td>
+		<td align=center width=100 rowspan=2>&nbsp;</td>
+  	
+ 	
+	</tr>
+	<tr bgcolor=#eeeeee class=frnt>
+		<td align=center >worker</td>
+		<td align=center width=70>worker</td>
+		<td align=center width=70>period</td>
+		<td align=center width=130>cost</td>
+	</tr>
+	{section name=SEC loop=$view}
+	<form METHOD="POST" name="ot_update" action="{$PHP_SELF}">
+	<tr>
+		<td class=frnt  align=center ><B>{$view[SEC].ot_date}&nbsp;</B></td>
+		<td class=frnt  align=right ><B>{$view[SEC].worker}&nbsp;</B></td>
+		<td class=frnt  align=center ><B>{if $view[SEC].rate}RATE{$view[SEC].rate}{/if}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].ot_time}&nbsp;</B></td>
+		<td class=frnt  align=right >{$view[SEC].ot_cost|NUMBER_FORMAT:"2f"}</td>			
+  	<td align=center>
+			<input type=submit value=" EDIT " class=select_e style="cursor:pointer; width=90%">  		
+  	</td> 
+	</tr>	
+	<input type=hidden value="overtime_add" name="PHP_action">
+	<input type=hidden value="{$cost}" name="PHP_cost">		
+	<input type=hidden value="{$view[SEC].fty}" name="PHP_FTY">
+	<input type=hidden value="{$view[SEC].ot_date}" name="PHP_date">		
+	<input type=hidden value="{$view[SEC].id}" name="PHP_id">	
+	</form>
+	{/section}
+</table>
+
+	
+
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

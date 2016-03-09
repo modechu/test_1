@@ -1,0 +1,240 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ monthy SHIPPING summary ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function ord_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=50, right=100');
+}
+
+function tblresize() {
+	var dh = 110;
+	var dw = 60;
+	var hh = tblShow.offsetHeight + dh;
+	if ( hh > screen.height - dh )
+	hh = screen.height - dh ;
+  if (tblShow.offsetWidth) window.resizeTo( tblShow.offsetWidth + dw , hh );
+  self.focus();
+}
+
+</script>
+{/literal}
+
+<body topmargin="10" onLoad="tblresize();" />
+<table border="0" cellspacing="0" cellpadding="0" id="tblShow" />
+  <tr>
+    <td>
+ <table width=910 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor=#dddddd><td colspan=17 align=center class=gry height=35><b>monthy UN FINISH summary list  {$title_mk}</b></td></tr>
+  <tr  bgcolor=#dddddd height=25><td colspan=17 align=center class=gry><b>FACTORY : <span class=sign><b>{$fty}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YEAR : <span class=sign><b>{$year}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MONTH : <span class=sign><b>{$mon}</b></td></tr>
+  <tr bgcolor="#0D4368" height=25> 
+    <td class=w9 width=60 align=center bgcolor=#122B3F rowspan=2>ORDER#</td>
+    <td class=w9 width=30 align=center bgcolor=#122B3F rowspan=2><small>Style</small></td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F rowspan=2><small>ORD <br> QTY</small></td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F rowspan=2><small>ORD(su)</small></td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F rowspan=2><small>FINISH<br>(su)</small></td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F rowspan=2><small>Remain<br>(su)</small></td>
+    <td class=w9 width=0 align=center bgcolor=#ffffff rowspan=2>&nbsp;</td> 
+    <td class=sign width=80 align=center bgcolor=#345364 rowspan=2>ETD</td>
+    <td class=sign align=center bgcolor=#345364 colspan=3>FABRIC</td>
+    <td class=sign align=center bgcolor=#345364 colspan=3>ACCESSORY</td>
+    <td class=w9 width=63 align=center bgcolor=#728A9F rowspan=2>SMPL. <br>APVD</td>
+    <td class=w9 width=85 align=center bgcolor=#728A9F rowspan=2>Status</td>
+    <td class=w9 width=10 align=center bgcolor=#728A9F rowspan=2><small>Pd</small></td>
+  </tr>
+  <tr bgcolor="#0D4368" height=25>   
+  	<td class=w9 width=63 align=center bgcolor=#122B3F>ETD</td>  	
+    <td class=w9 width=63 align=center bgcolor=#122B3F>ETA</td>     
+    <td class=w9 width=63 align=center bgcolor=#122B3F>Rcvd.</td>
+    <td class=w9 width=63 align=center bgcolor=#122B3F>ETD</td>
+    <td class=w9 width=63 align=center bgcolor=#122B3F>ETA</td>    
+    <td class=w9 width=63 align=center bgcolor=#122B3F>Rcvd.</td>
+  </tr>  
+{if $record_NONE == 1}
+  <tr bgcolor="#ffffff"><td colspan=15 align=center class=bgdy height=35><b>No Records !</b></td></tr>
+{else}
+{if $ci_ord_qty > 0}
+{section name=SEC loop=$out_i}
+  <tr bgcolor="#ffffff"> 
+
+    <td class=snvy  align=left nowrap><b><a href="javascript:ord_out('{$out_i[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$out_i[SEC].ord_num}{if $out_i[SEC].partial_num > 1} ({$out_i[SEC].mks}){/if}</a></b></td>
+    <td class=bgdy9 align=right><b>{$out_i[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$out_i[SEC].qty|number_format}</b></td>
+    <td class=grn9  align=right><b>{$out_i[SEC].su|number_format}</b></td>
+    <td class=gry9  align=right><b>{if $out_i[SEC].out_su == 0}&nbsp;{else}{$out_i[SEC].out_su|number_format}{/if}</b></td>
+    <td class=gry9  align=right><b>{$out_i[SEC].rem_su|number_format}</b></td>
+    <td class=b9 bgcolor="#ffffff" align=center>&nbsp;</td>
+    <td class=b9 align=center nowrap><b>{$out_i[SEC].etd}</b></td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$out_i[SEC].mat_etd}   {if $out_i[SEC].mat_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$out_i[SEC].mat_eta}   {if $out_i[SEC].mat_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{if $out_i[SEC].mat_shp == '1111-11-11'}------{else}{$out_i[SEC].mat_shp}{/if}   {if $out_i[SEC].mat_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$out_i[SEC].m_acc_etd} {if $out_i[SEC].m_acc_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$out_i[SEC].m_acc_eta} {if $out_i[SEC].m_acc_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{if $out_i[SEC].m_acc_shp == '1111-11-11'}------{else}{$out_i[SEC].m_acc_shp}{/if} {if $out_i[SEC].m_acc_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center>{if $out_i[SEC].smpl_apv == '' || $out_i[SEC].smpl_apv == '0000-00-00' }&nbsp;{else}{$out_i[SEC].smpl_apv}{/if}</td>    
+    <td class=b7 align=left nowrap><small>{$out_i[SEC].status}</small></td>
+    <td class=b9 align=left>I</td>
+  </tr>
+{/section}
+  <tr bgcolor="#F2F2EF"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total(I)</b></td>
+    <td class=b9 align=right><b>{$ci_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$ci_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$ci_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$ci_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>IN House&nbsp;</td>
+
+  </tr>
+
+{/if}
+{if $cc_ord_qty > 0}
+{section name=SEC loop=$out_c}
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy align=left nowrap><b><a href="javascript:ord_out('{$out_c[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$out_c[SEC].ord_num}{if $out_c[SEC].partial_num > 1} ({$out_c[SEC].mks}){/if}</a></b></td>
+    <td class=bgdy9 align=right><b>{$out_c[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$out_c[SEC].qty|number_format}</b></td>
+    <td class=grn9 align=right><b>{$out_c[SEC].su|number_format}</b></td>
+    <td class=gry9 align=right><b>{if $out_c[SEC].out_su == 0}&nbsp;{else}{$out_c[SEC].out_su|number_format}{/if}</b></td>
+    <td class=gry9 align=right><b>{$out_c[SEC].rem_su|number_format}</b></td>
+    <td class=b9 align=center bgcolor="#ffffff">&nbsp;</td>
+    <td class=b9 align=center nowrap><b>{$out_c[SEC].etd}</b></td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$out_c[SEC].mat_etd}   {if $out_c[SEC].mat_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$out_c[SEC].mat_eta}   {if $out_c[SEC].mat_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{if $out_c[SEC].mat_shp == '1111-11-11'}------{else}{$out_c[SEC].mat_shp}{/if}   {if $out_c[SEC].mat_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$out_c[SEC].m_acc_etd} {if $out_c[SEC].m_acc_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$out_c[SEC].m_acc_eta} {if $out_c[SEC].m_acc_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{if $out_c[SEC].m_acc_shp == '1111-11-11'}------{else}{$out_c[SEC].m_acc_shp}{/if} {if $out_c[SEC].m_acc_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center>{if $out_c[SEC].smpl_apv == '' || $out_c[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$out_c[SEC].smpl_apv}{/if}</td>
+    <td class=b7 align=left nowrap><small>{$out_c[SEC].status}</small></td>
+    <td class=b9 align=left>S</td>
+  </tr>
+{/section}
+  <tr bgcolor="#F2F2EF"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total(S)</b></td>
+    <td class=b9 align=right><b>{$cc_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$cc_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$cc_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$cc_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>Sub-con.&nbsp;</td>
+
+  </tr>
+
+{/if}
+{if $cc_ord_qty > 0 || $ci_ord_qty > 0}
+  <tr bgcolor="#E2E2E1"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total</b></td>
+    <td class=b9 align=right><b>{$s_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$s_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$s_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$s_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>available production&nbsp;</td>
+
+  </tr>
+<tr><td></td></tr>
+{/if}
+
+{if $ui_ord_qty > 0}
+{section name=SEC loop=$uout_i}
+  <tr bgcolor="#FFFEE8"> 
+    <td class=snvy align=left nowrap><b><a href="javascript:ord_out('{$uout_i[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$uout_i[SEC].ord_num}{if $uout_i[SEC].partial_num > 1} ({$uout_i[SEC].mks}){/if}</a></b></td>
+    <td class=bgdy9 align=right><b>{$uout_i[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$uout_i[SEC].qty|number_format}</b></td>
+    <td class=grn9 align=right><b>{$uout_i[SEC].su|number_format}</b></td>
+    <td class=gry9 align=right><b>{if $ouut_i[SEC].out_su == 0}&nbsp;{else}{$uout_i[SEC].out_su|number_format}{/if}</b></td>
+    <td class=gry9 align=right><b>{$uout_i[SEC].rem_su|number_format}</b></td>
+    <td class=b9 align=center bgcolor="#ffffff">&nbsp;</td>
+    <td class=b9 align=center nowrap><b>{$uout_i[SEC].etd}</b></td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$uout_i[SEC].mat_etd}  {if $uout_i[SEC].mat_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$uout_i[SEC].mat_eta}  {if $uout_i[SEC].mat_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{if $uout_i[SEC].mat_shp == '1111-11-11'}------{else}{$uout_i[SEC].mat_shp}{/if}  {if $uout_i[SEC].mat_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$uout_i[SEC].m_acc_etd}{if $uout_i[SEC].m_acc_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$uout_i[SEC].m_acc_eta}{if $uout_i[SEC].m_acc_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{if $uout_i[SEC].m_acc_shp == '1111-11-11'}------{else}{$uout_i[SEC].m_acc_shp}{/if}{if $uout_i[SEC].m_acc_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center>{if $uout_i[SEC].smpl_apv == '' || $uout_i[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$uout_i[SEC].smpl_apv}{/if}</td>
+    <td class=b7 align=left nowrap><small>{$uout_i[SEC].status}</small></td>
+    <td class=b9 align=left>I</td>
+  </tr>
+{/section}
+  <tr bgcolor="#F2F2EF"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total(I)</b></td>
+    <td class=b9 align=right><b>{$ui_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$ui_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$ui_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$ui_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>IN House&nbsp;</td>
+
+  </tr>
+
+{/if}
+{if $uc_ord_qty > 0}
+{section name=SEC loop=$uout_c}
+  <tr bgcolor="#FFFEE8"> 
+    <td class=snvy align=left nowrap><b><a href="javascript:ord_out('{$uout_c[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$uout_c[SEC].ord_num}{if $uout_c[SEC].partial_num > 1} ({$uout_c[SEC].mks}){/if}</a></b></td>
+    <td class=bgdy9 align=right><b>{$uout_c[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$uout_c[SEC].qty|number_format}</b></td>
+    <td class=grn9 align=right><b>{$uout_c[SEC].su|number_format}</b></td>
+    <td class=gry9 align=right><b>{if $uout_c[SEC].out_su == 0}&nbsp;{else}{$uout_c[SEC].out_su|number_format}{/if}</b></td>
+    <td class=gry9 align=right><b>{$uout_c[SEC].rem_su|number_format}</b></td>
+    <td class=b9 align=center bgcolor="#ffffff">&nbsp;</td>
+    <td class=b9 align=center nowrap><b>{$uout_c[SEC].etd}</b></td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$uout_c[SEC].mat_etd}    {if $uout_c[SEC].mat_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{$uout_c[SEC].mat_eta}    {if $uout_c[SEC].mat_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EBF6FF'>{if $uout_c[SEC].mat_shp == '1111-11-11'}------{else}{$uout_c[SEC].mat_shp}{/if}    {if $uout_c[SEC].mat_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$uout_c[SEC].m_acc_etd}  {if $uout_c[SEC].m_acc_etd == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{$uout_c[SEC].m_acc_eta}  {if $uout_c[SEC].m_acc_eta == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center bgcolor='#EEFFEB'>{if $uout_c[SEC].m_acc_shp == '1111-11-11'}------{else}{$uout_c[SEC].m_acc_shp}{/if}  {if $uout_c[SEC].m_acc_shp == ''}&nbsp;{/if}</td>
+    <td class=b7 align=center>{if $uout_c[SEC].smpl_apv == '' || $uout_c[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$uout_c[SEC].smpl_apv}{/if}</td>
+    <td class=b7 align=left nowrap><small>{$uout_c[SEC].status}</small></td>
+    <td class=b9 align=left>S</td>
+  </tr>
+{/section}
+  <tr bgcolor="#F2F2EF"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total(S)</b></td>
+    <td class=b9 align=right><b>{$uc_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$uc_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$uc_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$uc_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>Sub-con.&nbsp;</td>
+
+  </tr>
+
+{/if}
+
+{if $uc_ord_qty > 0 || $ui_ord_qty > 0}
+  <tr bgcolor="#E2E2E1"> 
+    <td class=snvy8 align=left colspan=2><b>SUB Total</b></td>
+    <td class=b9 align=right><b>{$us_ord_qty|number_format}</b></td>
+    <td class=b9 align=right><b>{$us_ord_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$us_out_su|number_format}</b></td>
+    <td class=b9 align=right><b>{$us_rem_su|number_format}</b></td>
+    <td class=b9 colspan=11 align=center>UN available production&nbsp;</td>
+
+  </tr>
+
+{/if}
+
+  <tr bgcolor="#D1D1D0"> 
+    <td class=snvy8 align=left colspan=2><b><i>Total</i></b></td>
+    <td class=bgdy9 align=right><b><i>{$ttl_ord_qty|number_format}</i></b></td>
+    <td class=grn9 align=right><b><i>{$ttl_ord_su|number_format}</i></b></td>
+    <td class=gry9 align=right><b><i>{$ttl_out_su|number_format}</i></b></td>
+    <td class=gry9 align=right><b><i>{$ttl_rem_su|number_format}</i></b></td>
+    <td class=b9 colspan=11 align=center>&nbsp;</td>
+
+  </tr>
+  <tr bgcolor="#C2C2C1" height=25>
+    <td class=b9 align=center colspan=17><b>Total UN-FINISH in month <span class=sign><b>&nbsp;{$mon}&nbsp;</b></span>  for volume <span class=bgdy>: {$ttl_rem_su|number_format} su</b>&nbsp;</span>({$ttl_out_qty|number_format} pcs)</td>
+  </tr>
+ {/if}
+</table>
+		</td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

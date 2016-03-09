@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>Marker search</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="JavaScript">
+<!--
+function mk_shs() {
+	var s_ord = document.mk_sh.PHP_num.value;
+	var style = document.mk_sh.PHP_style.value;
+	var factory = document.mk_sh.PHP_factory.value;
+	location.href="marker.php?PHP_action=marker_smpl_list&PHP_num="+s_ord+"&PHP_style="+style+"&PHP_factory="+factory+"&PHP_sr_startno=1";
+}
+
+function mk_ords() {
+	var ord = document.mk_ord.PHP_order_num.value;
+	var style = document.mk_ord.PHP_style.value;
+	var factory = document.mk_ord.PHP_factory.value;
+	var cust = document.mk_ord.PHP_cust.value;
+	location.href="marker.php?PHP_action=marker_ord_list&PHP_order_num="+ord+"&PHP_cust="+cust+"&PHP_style="+style+"&PHP_factory="+factory+"&PHP_sr_startno=1";
+}
+-->
+</script>
+{/literal}
+</head>
+
+<body topmargin="12">
+<!--
+<table border="border" cellspacing="0" cellpadding="4" cols="1" width="620" bgcolor="#cccccc"  align="center">
+  <form method="post" name="search_ord" id="search_ord">
+    <tr>
+      <td><table border="0" cellspacing="0" cellpadding="1" width="100%">
+            <tr>
+              <td colspan="7" class="frnt" align="center"><hr size="2" width="100%" /></td>
+            </tr>
+            <tr>
+              <td class="snvy" align="right"><b>Smaple Order#：</b></td>
+              <td class="frnt" align="left">&nbsp;
+                  <input type="text" name="PHP_smpl_num" size="15" class="select" value="" /></td>
+              <td class="snvy" align="right">&nbsp;</td>
+              <td class="frnt" align="left"><input type="submit" value="[ APPEND ]" class="select_e" style="cursor:pointer; width=20%" />
+              <input type="hidden" name="PHP_action" value="marker_add" /></td>
+            </tr>
+            <tr>
+              <td colspan="4" align="right" class="snvy"><hr size="2" width="100%" /></td>
+            </tr>
+          </table>
+      </td>
+    </tr>
+  </form>
+</table>
+<p>
+-->
+<table border="border" cellspacing="0" cellpadding="4" cols="1" width="620" bgcolor="#cccccc"  align="center">
+<form method="post" name="mk_sh">
+  <tr>
+    <td>
+      <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" cols="1" bgcolor="#003300">
+        <tr>
+          <td width="570" height="28" align="center" class="des">[ SEARCH / LISTING <font color="#FF0000">SAMPLE MARKER</font> ]</td>
+        </tr>
+      </table>
+      <table border="0" cellspacing="0" cellpadding="1" width="100%">
+        <tr>
+          <td colspan="7" class="frnt" align="center"><hr size="2" width="100%" /></td>
+        </tr>
+        <tr>
+          <td class="snvy" align="right"><b>Smaple Order#：</b></td>
+          <td class="frnt" align="left">&nbsp;<input type="text" name="PHP_num" size="15" class="select" value="" /></td>
+          <td class="snvy" align="right"><b>Factory：</b></td>
+          <td class="frnt" align="left">{$factory}</td>		  
+          <td class="snvy" align="right"><b>Style：</b></td>
+          <td class="frnt" align="left">{$style_type_select}</td>
+        </tr>
+        <tr>
+          <td colspan="7" align="right" class="snvy"><hr size="2" width="100%" /></td>
+          </tr>
+      </table>
+      <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center">
+        <tr>
+          <td align="left" class="b9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            ※ 1: search / listing order record ; please use combo selection or/and key field.<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            ※ 2: if entire listing ; keep fields in blank and just click [ SEARCH / LIST MARKER RECORDS ] button. </td>
+        </tr>
+        <tr><td>
+          <hr size="2" width="100%" />
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+                <input type="button" value="[ SEARCH / LIST ORDER RECORDS ]" class="select_e" style="cursor:pointer; width:100%" onclick="mk_shs();"/>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</form>
+</table>
+<p>
+<table border="border" cellspacing="0" cellpadding="4" cols="1" width="620" bgcolor="#cccccc"  align="center">
+<form method="post" name="mk_ord">
+  <tr>
+    <td>
+      <table width="100%" border="1" align="center" cellpadding="4" cellspacing="0" cols="1" bgcolor="#003300">
+        <tr>
+          <td width="570" height="28" align="center" class="des">[ SEARCH / LISTING <font color="#FF0000">ORDER MARKER</font> ]</td>
+        </tr>
+      </table>
+      <table border="0" cellspacing="0" cellpadding="1" width="100%">
+        <tr>
+          <td colspan="8" class="frnt" align="center"><hr size="2" width="100%" /></td>
+        </tr>
+        <tr>
+          <td class="snvy" align="right"><b> Order #：</b></td>
+          <td class="frnt" align="left">&nbsp;<input type="text" name="PHP_order_num" size="15" class="select" value="" /></td>
+          <td class="snvy" align="right"><b>Factory：</b></td>
+          <td class="frnt" align="left">{$factory}</td>
+          <td class="snvy" align="right"><b>Cust.：</b></td>
+          <td class="frnt" align="left">{$cust_select}</td>
+          <td class="snvy" align="right"><b>Style：</b></td>
+          <td class="frnt" align="left">{$style_type_select}</td>
+        </tr>
+        <tr>
+          <td colspan="8" align="right" class="snvy"><hr size="2" width="100%" /></td>
+          </tr>
+      </table>
+      <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center">
+        <tr>
+          <td align="left" class="b9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            ※ 1: search / listing order record ; please use combo selection or/and key field.<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            ※ 2: if entire listing ; keep fields in blank and just click [ SEARCH / LIST MARKER RECORDS ] button. </td>
+        </tr>
+        <tr><td>
+          <hr size="2" width="100%" />
+          </td>
+        </tr>
+        <tr>
+          <td align="center">
+                <input type="button" value="[ SEARCH / LIST ORDER RECORDS ]" class="select_e" style="cursor:pointer; width:100%" onclick="mk_ords();"/>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</form>
+</table>
+</body>
+</html>

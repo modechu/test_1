@@ -1,0 +1,19 @@
+<script language="JavaScript1.2"> 
+   FileSizeLimit=1000;   // 檔案大小限制 ( Bytes ) 
+   FormName=PHP_pttn;         // 上傳檔案的表單名稱 
+   function FileSizeCheckStep1(aa) { 
+      form_sizecheck.action=aa; 
+      form_sizecheck.submit(); 
+      return false; 
+   } 
+   function FileSizeCheckStep2() { 
+      tmp = iframe_sizecheck.document.fileSize; 
+      if ( tmp > FileSizeLimit ){ 
+         alert('檔案大小超過限制！'); 
+      } else if ( tmp > 0 ) { 
+         FormName.submit(); 
+      } 
+   } 
+</script> 
+<iframe src="blank.htm" name="iframe_sizecheck" id="iframe_sizecheck" width="1" height="1" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" onLoad="FileSizeCheckStep2();"></iframe> 
+<form action="" method="post" target="iframe_sizecheck" name="form_sizecheck"></form>

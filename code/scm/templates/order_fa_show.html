@@ -1,0 +1,279 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<Script language="javascript"> 
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+}
+</script>
+{/literal}
+
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width="800" bgcolor=#333333>
+	<tr>
+	  <td class="ylw10" align=center height=28 width=150> {if $order.status == 0}waitt'g for IE rec.
+									{elseif $order.status == 1}wait for submit</span>
+									{elseif $order.status == 2}waitt'g for CFM</span>
+									{elseif $order.status == 3}waitt'g for APV</span>
+									{elseif $order.status == 4}<b>APVED</b></span>
+									{elseif $order.status == 5}<span class=ssign><b>REJECT</b></span>
+									{elseif $order.status == 6}<span class=lgrn><b>SCHDLing</b></span>
+									{elseif $order.status == 7}<span class=des><b>SCHDL CFMed</b></span>
+									{elseif $order.status == 8}<span class=des><b>PRODUCING</b></span>
+									{elseif $order.status == 10}<b>=finished=</b></span>
+									{elseif $order.status == 12}<b>==shipped==</b></span>
+									{else}&nbsp;{/if}</td>
+	  <td class="des" align=center >Fabric/Accessory statement --- <b>{$order.order_num}</b></td>
+
+	  <td class="sign" align=center width=150>
+	   {if $order.revise > 0 }
+			[ <b>REVISE</b> ] : <b><i><span class=ylw10>{$order.revise}</span></i></b>
+	   {else}
+			&nbsp;
+	   {/if}
+	  </td>
+
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width="800">
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width="800" bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=6 class=grn10 align=left><b>&nbsp;&nbsp;{if $order.last_updator}Last update : {$order.last_updator}<small> [ {$order.last_update} ]</small>{/if}</b></td>
+    <td colspan=2 class=frnt align=right><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+  </tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=add_order >
+  <td align=center class=head valign=top rowspan=6>
+			<table width=120 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><input type="image" src="{$main_pic}" name="pic" width=120 border="0" onclick='window.open2("{$main_pic}","","resizable=yes,height=480,width=640")'></td></tr>
+			</table>
+  </td> 	
+    <td class=snvy align=right  nowrap><b>style No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style_num}</b></td>
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.cust}</b></td>
+    <td class=snvy align=right  nowrap><b>Team :</b></td>
+    <td class=bgdy align=left  bgcolor=#dddddd><b>&nbsp;{$order.dept}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right width=90 nowrap><b>cust. ref. :</b></td>
+    <td class=bgdy align=left  width=120 bgcolor=#dddddd><b>&nbsp;<small>{$order.ref}</small></b></td>
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.qty}&nbsp;{$order.unit}</b></td>
+    <td class=snvy align=right nowrap><b>SU :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.f_su}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right  nowrap><b>smpl No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><a href="javascript:smpl_out('{$order.smpl_ord}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order.smpl_ord}</b></a></td>
+
+    <td class=snvy align=right nowrap><b>FOB @ :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.uprice}</b></td>
+    <td class=snvy align=right nowrap><b>Quota Cat. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.quota}</b></td>
+ </tr>       
+ <tr>
+    <td class=snvy align=right nowrap><b>factory :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.factory}</b></td>
+    <td class=snvy align=right nowrap><b>style type :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style}</b></td>
+    <td class=snvy align=right nowrap><b>Size :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.size}</b></td>
+ </tr> 
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etd}</b></td>
+	<td class=snvy align=right nowrap><b>ETP. :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etp}</b></td>
+
+	{if $is_factory == 1 }
+		{if $account_dept == $order.dept}
+		<td class=snvy align=right nowrap><b>calc. IE :</b></td>
+		<td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.ie1}</b></td>
+		{else}
+		<td class=snvy align=right nowrap><b>calc. IE :</b></td>
+		<td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;</b></td>
+		{/if}
+	{else}
+	<td class=snvy align=right nowrap><b>calc. IE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.ie1}</b></td>
+	{/if}
+	 
+	
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border=0 cellspacing=1 cellpadding=1 width="800">
+
+  <tr bgcolor=#C4C3AE height=25>
+  <td class=snvy align=center nowrap width=100><b>Fabric #</b></td>
+  <td class=snvy align=center nowrap width=100><b>Fabric Name</b></td>
+  <td class=snvy colspan=2 align=center nowrap ><b>Placement</b></td>
+  <td class=snvy align=center nowrap ><b>Unit</b></td>
+  <td class=snvy align=center nowrap ><b>Sourcing</b></td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  </tr>
+  {if $fab.msg}
+  <tr bgcolor=#E7E7E7>
+  	<td class=b10 align=center nowrap bgcolor=#E7E7E7 colspan=6><b>&nbsp;{$fab.msg}</b></td>
+ 	</tr> 
+  {else}
+  {section name=SEC loop=$fab}
+  <tr {if $fab[SEC].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if}>
+  	<td class=snvy align=center nowrap ><a href="javascript:Show_fab('{$fab[SEC].lots_code}')" value='ord_out' style='cursor:pointer'>{$fab[SEC].lots_code}</a></td>
+  	<td class=snvy align=left nowrap >{$fab[SEC].lots_name}</td>
+  	<td class=snvy colspan=2 align=left nowrap >{$fab[SEC].use_for}</td>
+  	<td class=snvy align=center nowrap ><!--{$fab[SEC].est_1}-->{$fab[SEC].unit}</td>
+  	<td class=snvy align=center nowrap >&nbsp;
+  		{if $fab[SEC].support == 1}FTY-Sourcing{/if}
+  		{if $fab[SEC].support == 2}CUST-Support{/if}
+  	</td>
+  </tr>
+  <tr {if $fab[SEC].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if}>
+   	<td class=snvy align=left nowrap colspan=6>&nbsp;&nbsp;&nbsp;
+   		<small>
+   		{if $fab[SEC].des}Supplier's # : {$fab[SEC].des}, &nbsp;{/if}
+   		{if $fab[SEC].comp}Content : {$fab[SEC].comp}, &nbsp;{/if}
+   		{if $fab[SEC].width}Width : {$fab[SEC].width}, &nbsp;{/if}
+   		{if $fab[SEC].weight}Width : {$fab[SEC].weight} {/if} 
+   		</small>  		
+   	</td>
+  </tr>  	
+  
+  {/section}
+  {/if}
+  
+  <tr><td></td></tr>
+  
+  <tr>
+  <tr bgcolor=#C4C3AE height=25>
+  <td width=90 class=snvy align=center nowrap ><b>Accessory #</b></td>
+  <td width=150 class=snvy align=center nowrap ><b>Accessory Name</b></td>
+  <td width=240 class=snvy align=center nowrap ><b>Placement</b></td>
+  <td width=50 class=snvy align=center nowrap ><b>Acc cat.</b></td>
+  <td width=70 class=snvy align=center nowrap ><b>Unit</b></td>
+  <td class=snvy align=center nowrap ><b>Sourcing</b></td>
+<!--  <td class=snvy align=center nowrap >ETA</td> -->
+  </tr>
+  {if $acc.msg}
+  <tr bgcolor=#E7E7E7>
+  	<td class=b10 align=center nowrap bgcolor=#E7E7E7 colspan=6><b>&nbsp;{$acc.msg}</b></td>
+	</tr>
+  {else}
+  {section name=SEC loop=$acc}
+  <tr {if $acc[SEC].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if}>
+  	<td class=snvy align=center nowrap ><a href="javascript:Show_acc('{$acc[SEC].acc_code}')" value='ord_out' style='cursor:pointer'>{$acc[SEC].acc_code}</a></td>
+  	<td class=snvy align=left nowrap >{$acc[SEC].acc_name}</td>
+  	<td class=snvy align=left nowrap >{$acc[SEC].use_for}</td>
+  	<td class=snvy align=center nowrap >{if $acc[SEC].acc_cat == 1}Main{else}Other{/if}</td>
+  	<td class=snvy align=center nowrap ><!--{$acc[SEC].est_1}-->{$acc[SEC].unit}</td>
+  	<td class=snvy align=center nowrap >&nbsp;
+  		{if $acc[SEC].support == 1}FTY-Sourcing{/if}
+  		{if $acc[SEC].support == 2}CUST-Support{/if}
+  	</td>
+<!--  	<td class=snvy align=center nowrap >{$acc[SEC].eta}</td> -->
+  	</tr>
+  	<tr {if $acc[SEC].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if}>
+   		<td class=snvy align=left nowrap colspan=6>&nbsp;&nbsp;&nbsp;
+   			<small>
+   			{if $acc[SEC].specify}Construction : {$acc[SEC].des}, &nbsp;{/if}
+   			</small>  		
+  	 	</td>  		
+  	</tr>
+   	
+  {/section}
+  {/if}
+
+  </tr>
+
+</table>
+
+<table border=1 cellspacing=1 cellpadding=1 width="800" align=center>
+  <tr bgcolor=#333333 >
+	<td width=34% class=w9><b>&nbsp;OPEN by : <span class=ylw10></b>{$order.creator}</span>-[{$order.opendate}]</td>
+	<td width=33% class=w9>{if $order.cfmer}&nbsp;<b>CFM by : </b><span class=ylw10>{$order.cfmer}</span>-[{$order.cfm_date}]{else}&nbsp;{/if}</td>
+	<td width=33% class=w9>{if $order.apver}&nbsp;<b>APV by : </b><span class=ylw10>{$order.apver}</span>-[{$order.apv_date}]{else}&nbsp;{/if}</td>
+	</td>
+</table>
+<!---------- SHOW 出 一些訂單歷史記錄 -->  
+{if $log_records}
+	<table border=1 cellspacing=1 cellpadding=1 width="800" align=center>
+	  <tr bgcolor=#666666 >
+	   <td width=120 class=w10 align=center>DateTime</td>
+	   <td width=400 class=w10 align=center>History records</td>
+	   <td width=80 class=w10 align=center>by</td>
+	  </tr>
+	 {section name=SEC loop=$logs}
+	  <tr bgcolor=#eeeeee >
+	   <td class=gry9 align=center><small>{$logs[SEC].k_time}</small></td>
+	   <td class=gry9 align=left>{$logs[SEC].des}</td>
+	   <td class=gry9 align=center>{$logs[SEC].user}</td>
+	  </tr>
+	{/section}
+	</table>
+{/if}
+<!---------- END SHOW   -->  
+
+<table border=0 cellspacing=0 cellpadding=2 width="800" bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2><form method=POST name=back>
+		<input type=button onClick="window.location.href='index2.php?PHP_action=order_fa_search'" value=" << go back " class=select_e style="cursor:pointer; width=99%"></form>
+
+	</td>
+	<td colspan=2><form method=POST name=cfm>
+
+	<td colspan=2><form method=POST name=edit>
+{if $edit_flag && $dept_edit}{if $order.m_status < 3}
+  {if $from_ADD}
+		<input type="hidden" name="from_ADD" value="1">
+		<input type="hidden" name="cgiget" value="">
+		<input type="hidden" name="cgino" value="">
+		<input type="hidden" name="cgi_1" value="">
+		<input type="hidden" name="cgi_2" value="">
+		<input type="hidden" name="cgi_3" value="">
+		<input type="hidden" name="cgi_4" value="">
+		<input type="hidden" name="cgi_5" value="">
+  {else}
+		<input type="hidden" name="from_ADD" value="">
+  {/if}
+		<input type="hidden" name="PHP_action" value="order_fa_edit">
+		<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+		<input type="hidden" name="PHP_cust" value="{$order.cust}">
+		<input type="hidden" name="PHP_id" value="{$order.id}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value="[  Fabric & Accessory EDIT ]" class=select_e style="cursor:pointer; width=99%"></form>
+{/if}
+{else}&nbsp;
+{/if}
+	</td>
+  </tr>
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

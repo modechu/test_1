@@ -1,0 +1,384 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script language="javascript" src="./js/date.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+
+
+<Script language="javascript">
+function fab_ex_add(wi_num,item){
+		window.location='index2.php?PHP_action=apply_ext_add&PHP_wi_num='+wi_num+'&PHP_item='+item+"&PHP_revise={/literal}{$revise}{literal}"; 	
+}
+
+function del_pa (pa_num, back_str,id)
+{
+	if ( confirm("Are you sure to delete "+pa_num+"??")) {
+		window.location='index2.php?PHP_action=do_apply_del&PHP_ap_num='+pa_num+'&PHP_str='+back_str+'&PHP_back_act=apply_ext_bom_view&PHP_id='+id; 	
+		
+	}
+}
+</script>
+{/literal}
+</head>
+
+<body>
+<form method=POST name=aply_wi>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=750 bgcolor=#2E5E73>
+	<tr><td class="des" align=center height=28 >[ <b>BOM </b> -<span class=ylw10><b>{$wi.wi_num}</span> for Extra Purchase Order</b> ] -- STEP 1</td>
+
+</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=750 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+
+  </tr>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=750 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=100 align=center class=back><b>Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=150 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<input type="image" src="{$wi.pic_url}" name="pic" width=100 border="0" onclick='window.open2("{$wi.pic_url}","","height=640,width=480")'>
+	</td>
+	<td class=grn9 align=center>
+	  <a href="javascript:Show_ord('{$wi.smpl_id}','{$wi.style_code}')" value='ord_out' style='cursor:pointer'>
+	<b>&nbsp;{$smpl.order_num}</b></a></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total|number_format}</b></span>&nbsp;pc</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+			{$show_breakdown}
+		</table>
+	</td>
+  </tr>
+</table>
+<br>
+
+
+{if !$dis_lots_NONE}
+<br>
+	<table width=750 border=1 cellspacing=0 cellpadding=1>
+	<!------- 物料預先採購  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td colspan=6  class=b9  align=center><b>前版本己採購主料記錄</b></td>
+	 </tr>	
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100  class=b9  align=center><b>Fabric #</b></td>	
+	    <td width=250  class=b9  align=center><b>Placement</b></td>   
+	  	<td width=150  class=b9  align=center><b>Color/cat.</b></td>
+	  	<td width=100  class=b9  align=center><b>BOM Q'TY</b></td>
+	  	<td width=100  class=b9  align=center><b>PO #</b></td>
+	  	<td width=100  class=b9  align=center><b>Purchas Q'TY</b></td>
+	 </tr>
+	{section name=BOM loop=$dis_lots} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left>&nbsp;<a href="javascript:Show_fab('{$dis_lots[BOM].lots_code}')" value='ord_out' style='cursor:pointer'>{$dis_lots[BOM].lots_code}</a></td>
+		<td class=b9 align=left>&nbsp;{$dis_lots[BOM].use_for}</td>
+		<td class=b9 align=left>&nbsp;{$dis_lots[BOM].color}</td>
+		<td class=b9 align=right>&nbsp;{$dis_lots[BOM].bom_qty}{$dis_lots[BOM].unit}</td>
+		<td class=snvy align=center>&nbsp;<a href="javascript:po_show('{$dis_lots[BOM].ap_num}')">{$dis_lots[BOM].po_num}</a></td>
+	  <td class=snvy align=right>&nbsp;{$dis_lots[BOM].po_qty}{$dis_lots[BOM].po_unit}</td>
+
+	</tr>
+	{/section}
+	</table>
+{/if}
+
+
+
+
+{if !$dis_acc_NONE}
+<br>
+	<table width=750 border=1 cellspacing=0 cellpadding=1>
+	<!------- 物料預先採購  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td colspan=6  class=b9  align=center><b>前版本己採購副料記錄</b></td>
+	 </tr>	
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100  class=b9  align=center><b>Accessory #</b></td>	
+	    <td width=250  class=b9  align=center><b>Placement</b></td>   
+	  	<td width=150  class=b9  align=center><b>Color/cat.</b></td>
+	  	<td width=100  class=b9  align=center><b>BOM Q'TY</b></td>
+	  	<td width=100  class=b9  align=center><b>PO #</b></td>
+	  	<td width=100  class=b9  align=center><b>Purchas Q'TY</b></td>
+	 </tr>
+	{section name=BOM loop=$dis_acc} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left>&nbsp;<a href="javascript:Show_acc('{$dis_acc[BOM].acc_code}')" value='ord_out' style='cursor:pointer'>{$dis_acc[BOM].acc_code}</a></td>
+		<td class=b9 align=left>&nbsp;{$dis_acc[BOM].use_for}</td>
+		<td class=b9 align=left>&nbsp;{$dis_acc[BOM].color}</td>
+		<td class=b9 align=right>&nbsp;{$dis_acc[BOM].bom_qty}{$dis_acc[BOM].unit}</td>
+		<td class=snvy align=center>&nbsp;<a href="javascript:po_show('{$dis_acc[BOM].ap_num}')">{$dis_acc[BOM].po_num}</a></td>
+	  <td class=snvy align=right>&nbsp;{$dis_acc[BOM].po_qty}{$dis_acc[BOM].po_unit}</td>
+
+	</tr>
+	{/section}
+	</table>
+{/if}
+
+<!-------------  BOM table ------------->
+<!-------------  主料 bom ------------->
+<hr size=2 width=750 align=center>
+
+
+<input type=hidden name="PHP_pa_num" value="{$pa_num}">
+<table width=750 border=1 cellspacing=1 cellpadding=1>
+   <tr><td>
+	<table width=750 border=1 cellspacing=0 cellpadding=1>
+	<!------- 主料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=90  class=b9  align=center><b>Fabric #</b></td>
+			<td width=110 class=b9 align=center><b>Name</b></td>
+	    <td width=120  class=b9  align=center><b>Placement</b></td>
+	    <td width=80  class=b9  align=center><b>Q'TY</b></td>
+	  	<td width=90  class=b9 align=center><b>Color/cat.</b></td>
+			<td width=210 class=b9 align=center><b>P / O Detial</b></td>
+			<td width=90 class=b9 align=center><b>ETD</b></td>
+	 </tr>
+
+	<!-------  BOM 主料記錄 --------- -->
+
+	{section name=USE loop=$lots_use}
+	<tr onmouseover="bgColor='#F9E2BB'" onmouseout="bgColor='#ffffff'">
+	  <td class=snvy align=center nowrap><a href="javascript:Show_fab('{$lots_use[USE].lots_code}')" value='ord_out' style='cursor:pointer'><small>{$lots_use[USE].lots_code}&nbsp;</small></a></td>
+	  <td class=snvy ><small>{$lots_use[USE].lots_name}&nbsp;</small></td>
+	  <td class=snvy ><small>{$lots_use[USE].use_for}&nbsp;</small></td>
+	  <td class=snvy align=right><small>{$lots_use[USE].total|number_format:"2f"}{$lots_use[USE].unit}&nbsp;</small></td>
+	  <td class=snvy align=left><small>&nbsp;{$lots_use[USE].color}</small></td>
+		<td class=snvy align=left><small>
+	  			 <a href="javascript:po_show('{$lots_use[USE].ap_mark}')">{$lots_use[USE].po_num}</a>
+	  				{if $lots_use[USE].ap_mark}(	
+	  							{if $lots_use[USE].status == 0}wait P/A submit
+									{elseif $lots_use[USE].status == 2}wait P/A CFM
+									{elseif $lots_use[USE].status == 3}wait P/A APV
+									{elseif $lots_use[USE].status == 4}P/A &nbsp;&nbsp;APVD
+									{elseif $lots_use[USE].status == 5}P/A &nbsp;&nbsp;Reject
+									{elseif $lots_use[USE].status == 6}wait P/O submit
+									{elseif $lots_use[USE].status == 8}wait P/O CFM
+									{elseif $lots_use[USE].status == 10}wait P/O APV
+									{elseif $lots_use[USE].status == 12}P/O &nbsp;&nbsp;APVD
+									{elseif $lots_use[USE].status == 13}P/O &nbsp;&nbsp;Reject						
+									{/if}
+								
+					)&nbsp;
+					 {if $lots_use[USE].status == 0}<img src="images/del.png"   onclick="javascript:del_pa('{$lots_use[USE].ap_mark}','{$back_str}','{$wi.id}')"; width=11 style="cursor:pointer">	{/if}
+					<br>{/if}
+	  			{section name=AP loop=$lots_use[USE].spec_ap}
+ 						  <a href="javascript:po_show('{$lots_use[USE].spec_ap[AP].ap_num}')">{$lots_use[USE].spec_ap[AP].po_num}</a>
+ 	  			(				{if $lots_use[USE].spec_ap[AP].status == 0}wait P/A submit
+									{elseif $lots_use[USE].spec_ap[AP].status == 2}wait P/A CFM
+									{elseif $lots_use[USE].spec_ap[AP].status == 3}wait P/A APV
+									{elseif $lots_use[USE].spec_ap[AP].status == 4}P/A &nbsp;&nbsp;APVD
+									{elseif $lots_use[USE].spec_ap[AP].status == 5}P/A &nbsp;&nbsp;Reject
+									{elseif $lots_use[USE].spec_ap[AP].status == 6}wait P/O submit
+									{elseif $lots_use[USE].spec_ap[AP].status == 8}wait P/O CFM
+									{elseif $lots_use[USE].spec_ap[AP].status == 10}wait P/O APV
+									{elseif $lots_use[USE].spec_ap[AP].status == 12}P/O &nbsp;&nbsp;APVD
+									{elseif $lots_use[USE].spec_ap[AP].status == 13}P/O &nbsp;&nbsp;Reject						
+									{else}&nbsp;{/if}
+					)&nbsp;
+					 {if $lots_use[USE].spec_ap[AP].status == 0}<img src="images/del.png"   onclick="javascript:del_pa('{$lots_use[USE].spec_ap[AP].ap_num}','{$back_str}','{$wi.id}')"; width=11 style="cursor:pointer">	{/if}				
+					<br> 	  			
+ 	  			{/section}</small>&nbsp;
+
+			</td>
+			<td class=snvy align=left valign=top nowrap>
+				<small>{$lots_use[USE].po.eta}<BR>
+				{section name=AP loop=$lots_use[USE].spec_ap}
+					{$lots_use[USE].spec_ap[AP].eta}<BR>
+ 	  		{/section}</small>&nbsp;				
+ 	    </td>
+	</tr>
+	{/section}
+<!--	</table>	-->
+
+<!-------------  副料 ------------->
+<!--	<table width=600 border=0 cellspacing=1 cellpadding=1>	-->
+
+	<!------- 副料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=90 class=b9 align=center><b>Accessory #</b></td>
+			<td width=110 class=b9 align=center><b>Name</b></td>
+	    <td width=120  class=b9  align=center><b>Placement</b></td>
+	    <td width=80  class=b9  align=center><b>Q'TY</b></td>
+	  	<td width=90  class=b9 align=center><b>Color/cat.</b></td>
+			<td width=210 class=b9 align=center><b>P / O Detial</b></td>
+			<td width=90 class=b9 align=center><b>ETD</b></td>
+	 </tr>
+	<!-------  end  Title --------- -->
+
+	<!-------  BOM 副料記錄 --------- -->
+	
+	{section name=USE loop=$acc_use}
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+	  <td class=snvy align=center nowrap><a href="javascript:Show_acc('{$acc_use[USE].acc_code}')" value='ord_out' style='cursor:pointer'><small>{$acc_use[USE].acc_code}&nbsp;</small></a></td>
+	  <td class=snvy ><small>{$acc_use[USE].acc_name}&nbsp;</small></td>
+	  <td class=snvy ><small>{$acc_use[USE].use_for}&nbsp;</small></td>
+		<td class=snvy align=right><small>{$acc_use[USE].total|number_format:"2f"}&nbsp;{$acc_use[USE].unit}&nbsp;</small></td>
+		<td class=snvy align=left><small>&nbsp;{$acc_use[USE].color}&nbsp;</small></td>
+		<td class=snvy align=left><small>
+	  			<a href="javascript:po_show('{$acc_use[USE].ap_mark}')">{$acc_use[USE].po_num}</a>
+	  			{if $acc_use[USE].ap_mark}
+	  			(				{if $acc_use[USE].status == 0}wait P/A submit
+									{elseif $acc_use[USE].status == 2}wait P/A CFM
+									{elseif $acc_use[USE].status == 3}wait P/A APV
+									{elseif $acc_use[USE].status == 4}P/A &nbsp;&nbsp;APVD
+									{elseif $acc_use[USE].status == 5}P/A &nbsp;&nbsp;Reject
+									{elseif $acc_use[USE].status == 6}wait P/O submit
+									{elseif $acc_use[USE].status == 8}wait P/O CFM
+									{elseif $acc_use[USE].status == 10}wait P/O APV
+									{elseif $acc_use[USE].status == 12}P/O &nbsp;&nbsp;APVD
+									{elseif $acc_use[USE].status == 13}P/O &nbsp;&nbsp;Reject						
+									{/if}
+					)	  &nbsp;
+					{if $acc_use[USE].status == 0}<img src="images/del.png"   onclick="javascript:del_pa('{$acc_use[USE].ap_mark}','{$back_str}','{$wi.id}')"; width=11 style="cursor:pointer">	{/if}								
+					<br>{/if}	
+	  			{section name=AP loop=$acc_use[USE].spec_ap}
+ 						  <a href="javascript:pa_show('{$acc_use[USE].spec_ap[AP].ap_num}')">{$acc_use[USE].spec_ap[AP].po_num}</a>
+ 	  			(				{if $acc_use[USE].spec_ap[AP].status == 0}wait P/A submit
+									{elseif $acc_use[USE].spec_ap[AP].status == 2}wait P/A CFM
+									{elseif $acc_use[USE].spec_ap[AP].status == 3}wait P/A APV
+									{elseif $acc_use[USE].spec_ap[AP].status == 4}P/A &nbsp;&nbsp;APVD
+									{elseif $acc_use[USE].spec_ap[AP].status == 5}P/A &nbsp;&nbsp;Reject
+									{elseif $acc_use[USE].spec_ap[AP].status == 6}wait P/O submit
+									{elseif $acc_use[USE].spec_ap[AP].status == 8}wait P/O CFM
+									{elseif $acc_use[USE].spec_ap[AP].status == 10}wait P/O APV
+									{elseif $acc_use[USE].spec_ap[AP].status == 12}P/O &nbsp;&nbsp;APVD
+									{elseif $acc_use[USE].spec_ap[AP].status == 13}P/O &nbsp;&nbsp;Reject						
+									{else}&nbsp;{/if}
+					)&nbsp;
+					{if $acc_use[USE].spec_ap[AP].status == 0}<img src="images/del.png"   onclick="javascript:del_pa('{$acc_use[USE].spec_ap[AP].ap_num}','{$back_str}','{$wi.id}')"; width=11 style="cursor:pointer">	{/if}								
+					<br>					
+ 	  			{/section}</small>&nbsp;
+	 	  </td>
+			<td class=snvy align=left valign=top>
+				<small>{$acc_use[USE].po.eta}<BR>
+				{section name=AP loop=$acc_use[USE].spec_ap}
+					{$acc_use[USE].spec_ap[AP].eta}
+ 	  		{/section}</small>&nbsp;				
+ 	    </td>
+	</tr>
+	{/section}
+
+<!--	</table>	-->
+
+
+
+
+	</table>
+
+
+
+
+   </td></tr>
+</table>
+
+
+{if $ext_mat.0.id}
+<br>
+	<table width=750 border=1 cellspacing=0 cellpadding=1>
+	<!------- 物料補  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td colspan=6  class=b9  align=center><b>Extra Matriel</b></td>
+	 </tr>	
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100  class=b9  align=center><b>Matriel #</b></td>
+	    <td width=200  class=b9  align=center><b>Placement</b></td>
+	  	<td width=100  class=b9  align=center><b>Q'TY</b></td>
+	  	<td width=150  class=b9  align=center><b>PO Detial</b></td>
+	  	<td width=100  class=b9  align=center><b>ETD</b></td>
+	 </tr>
+	{section name=BOM loop=$ext_mat} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left>&nbsp;<a href="javascript:{if $ext_mat[BOM].mat_cat == 'a'}Show_acc{else}Show_fab{/if}('{$ext_mat[BOM].mat_code}')" value='ord_out' style='cursor:pointer'>{$ext_mat[BOM].mat_code}</a></td>
+		<td class=b7 align=left>&nbsp;{$ext_mat[BOM].use_for}</td>
+	  <td class=snvy align=right>&nbsp;{$ext_mat[BOM].ap_qty}&nbsp;{$ext_mat[BOM].unit}</td>
+	  <td class=snvy align=left>&nbsp;<a href="javascript:po_show('{$ext_mat[BOM].ap_num}')">{$ext_mat[BOM].po_num}</a>
+	  	 	  			(				{if $ext_mat[BOM].status == 0}wait P/A submit
+									{elseif $ext_mat[BOM].status == 2}wait P/A CFM
+									{elseif $ext_mat[BOM].status == 3}wait P/A APV
+									{elseif $ext_mat[BOM].status == 4}P/A &nbsp;&nbsp;APVD
+									{elseif $ext_mat[BOM].status == 5}P/A &nbsp;&nbsp;Reject
+									{elseif $ext_mat[BOM].status == 6}wait P/O submit
+									{elseif $ext_mat[BOM].status == 8}wait P/O CFM
+									{elseif $ext_mat[BOM].status == 10}wait P/O APV
+									{elseif $ext_mat[BOM].status == 12}P/O &nbsp;&nbsp;APVD
+									{elseif $ext_mat[BOM].status == 13}P/O &nbsp;&nbsp;Reject						
+									{else}&nbsp;{/if}
+					)&nbsp;
+					{if $ext_mat[BOM].status == 0}<img src="images/del.png"   onclick="javascript:del_pa('{$ext_mat[BOM].ap_num}','{$back_str}','{$wi.id}')"; width=11 style="cursor:pointer">	{/if}
+	  </td>
+	  <td class=snvy align=center>&nbsp;{$ext_mat[BOM].eta}</td>
+	</tr>
+	{/section}
+	</table>
+{/if}
+
+
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=750 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2>
+{if $back_str && $edit_non <> 1}
+		<input type=button onClick="window.location.href='{$PHP_SELF}{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}
+	</td>
+
+	<td colspan=2>
+{if $add_flag || $add_flag}{if $pa_num == '' }
+		<input type=button value="[  Extra Fab. Purchcase Order ]" class="select_red" style="cursor:pointer; width=99%" onclick=fab_ex_add('{$wi.wi_num}','lots')>
+{/if}
+{else}&nbsp;
+{/if}
+	</td>
+
+	<td colspan=2>
+{if $add_flag || $add_flag}{if $pa_num == '' }
+		<input type=button value="[  Extra Acc. Purchase Order ]" class="select_red" style="cursor:pointer; width=99%" onclick=fab_ex_add('{$wi.wi_num}','acc')>
+{/if}
+{else}&nbsp;
+{/if}
+	</td>
+  </tr>
+
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

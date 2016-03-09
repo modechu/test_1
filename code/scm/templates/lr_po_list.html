@@ -1,0 +1,131 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  SCM SYSTEM .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+{literal}
+<script language="javascript">
+	var transaction;
+  var sUrl;
+  var callback = {
+    success: function(o) {
+    	document.getElementById("tbl_msg").style.display='block';    
+    	var response = o.responseText;    	
+    	msg1.innerText  = response; 
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+function close_po(ap_num,special,po_num,r) {
+	if ( confirm("Are you sure to Close Po# : [ "+po_num+" ] ??")) {
+  	var i=r.parentNode.parentNode.rowIndex
+  	document.getElementById('po_table').deleteRow(i)  
+  	
+		sUrl="receive.php?PHP_action=po_close&PHP_po_num="+ap_num+"&PHP_special="+special;
+  	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+  }
+}  
+  
+function Show_ord(id,back_str,pp) {
+	window.location='po.php?PHP_action=po_bom_view&PHP_id='+id+'&PHP_sr_startno='+pp+back_str; 	
+}
+
+
+
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#cccccc  align=center>
+	<tr>
+		<td align=center>
+			<table border=1 cellspacing=0 cellpadding=4 cols=1 width=690 bgcolor=#534A67>
+				<tr><td class=des align=center>.....  <b> Fabric Inspection Report Developing -- Purchase Order List  </b>.......</td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=690 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+		</td>
+	</tr>
+</table>
+<table border cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center id=po_table>
+	 <tr bgcolor="#003333" height=28>
+		<td class=w9 width=95 align=center><b>PO. #</b></td>
+		<td class=w9 width=50 align=center><b>dept.</b></td>
+		<td class=w9 width=50 align=center><b>Cust.</b></td>
+		<td class=w9 width=160 align=center><b>supplier</b></td>
+		<td class=w9 width=80 align=center><b>Receiver</b></td>
+	
+		<td class=w9 width=120 align=center><b>PO Q'TY</b></td>
+		<td class=w9 width=120 align=center><b>RCVD. Q'TY</b></td>
+	</tr>
+	{if $record_NONE}
+  <tr>
+		<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	<form method=POST name=cfm>
+	{section name=SEC loop=$apply} 
+ 	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td class=gry9 align=center nowrap><small>
+			<a href="rcv_rpt.php?PHP_action=lots_add_view&PHP_aply_num={$apply[SEC].ap_num}{$back_str}&PHP_sr_startno={$now_pp}">{$apply[SEC].po_num}</a>
+		</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].dept}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].cust}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].s_name}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{if $apply[SEC].finl_dist}{$apply[SEC].finl_dist}{else}{$apply[SEC].arv_area}{/if}&nbsp;</small></td>		
+		<td class=gry9 align=right>
+			<b>{if $apply[SEC].det_po > 0}{$apply[SEC].det_po|number_format:"2f"}&nbsp;{$apply[SEC].det_unit}{else}{$apply[SEC].spc_po|number_format:"2f"}&nbsp;{$apply[SEC].spc_unit}{/if}</b>
+		</td>
+		<td class=gry9 align=right>
+			<b>{if $apply[SEC].det_rcv > 0}{$apply[SEC].det_rcv|number_format:"2f"}&nbsp;{$apply[SEC].det_unit}{else}{$apply[SEC].spc_rcv|number_format:"2f"}&nbsp;{$apply[SEC].spc_unit}{/if}</b>
+		</td>
+
+		<input type="hidden" name="PHP_action" value="do_bom_cfm">
+	</tr>
+	{/section}
+	</form>
+</table>
+<table border=0 cols=4 width=700 align=center>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;PO record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+		<td align=center width=100>
+		{if $pages[0] > 1}
+		<a href="rcv_rpt.php?PHP_action=lots_add_search&PHP_sr_startno=p{$pages[1]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+		{/if}
+		</td>
+		<td width=300 align=center>
+		{section name=PGE loop=$pages}
+		{if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="rcv_rpt.php?PHP_action=lots_add_search&PHP_sr_startno={$pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+		{/section}
+		</td>
+		<td width=100 align=center>
+		{if $lastpage < $maxpage}
+			<a href="rcv_rpt.php?PHP_action=lots_add_search&PHP_sr_startno=n{$maxpage}{$back_str}">&nbsp;<img src="images/right2.gif" border=0 alt="後12筆資料"></a>
+		{/if} 
+		</td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

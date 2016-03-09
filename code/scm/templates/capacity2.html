@@ -1,0 +1,111 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+
+<!--  {section name=CPT loop=$cpct}	-->
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+    <td align=center class=gry><b>{$cpct[CPT].fty}HJ</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ Production capacity and schedule plan +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>FY{$cpct[CPT].year}2005&nbsp;</b></td>
+    <td class=w9 width=60 align=center>JAN</td>
+    <td class=w9 width=60 align=center>FEB</td>
+    <td class=w9 width=60 align=center>MAR</td>
+    <td class=w9 width=60 align=center>APR</td>
+    <td class=w9 width=60 align=center>MAY</td>
+    <td class=w9 width=60 align=center>JUN</td>
+    <td class=w9 width=60 align=center>JUL</td>
+    <td class=w9 width=60 align=center>AUG</td>
+    <td class=w9 width=60 align=center>SEP</td>
+    <td class=w9 width=60 align=center>OCT</td>
+    <td class=w9 width=60 align=center>NOV</td>
+    <td class=w9 width=60 align=center>DEC</td>
+    <td class=ylw9 width=80 align=center bgcolor=#999999><b>Total</b></td>
+  </tr>
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;CAPACITY</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].01capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].02capacity}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$cpct[CPT].03capacity}340,000&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].04capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].05capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].06capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].07capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].08capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].09capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].10capacity}&nbsp;</td>
+    <td class=b9 width=60 align=right>{$cpct[CPT].11capacity}&nbsp;</td>
+    <td class=bgdy9 width=60 align=right>{$cpct[CPT].12capacity}200,000&nbsp;</td>
+    <td class=bgdy9 width=80 align=right><b>{$cpct[CPT].00capacity}2,000,000&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#DDDDDD"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;ORDER</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=snvy width=60 align=right>340,000&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=snvy width=60 align=right>200,000&nbsp;</td>
+    <td class=snvy width=80 align=right><b>2,000,000&nbsp;</b></td>
+  </tr>
+ 
+ 
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;SCHEDULE</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>340,000&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>200,000&nbsp;</td>
+    <td class=b9 width=80 align=right><b>2,000,000&nbsp;</b></td>
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd>&nbsp;PRODUCED</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=grn9 width=60 align=right>340,000&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=b9 width=60 align=right>&nbsp;</td>
+    <td class=grn9 width=60 align=right>200,000&nbsp;</td>
+    <td class=grn9 width=80 align=right><b>2,000,000&nbsp;</b></td>
+  </tr>
+
+</table>
+<!--  {/section}		-->
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

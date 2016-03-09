@@ -1,0 +1,81 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  SCM SYSTEM .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>        
+{literal}
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=750 bgcolor=#cccccc  align=center>
+	<tr>
+		<td align=center>
+			<table border=1 cellspacing=0 cellpadding=4 cols=1 width=690 bgcolor=#534A67>
+				<tr><td class=des align=center>.....  <b> Fabric Inspection Report List   by order [ {$order} ]</b>.......</td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=690 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+		</td>
+	</tr>
+</table>
+<table border cellspacing=0 cellpadding=2 width=750 bgcolor=#ffffff align=center id=po_table>
+	 <tr bgcolor="#003333" height=28>
+	 	<td class=w9 width=70 align=center rowspan=2><b>PO. #</b></td>
+	 	<td class=w9 width=120 align=center rowspan=2><b>SUPPLIER</b></td>
+		<td class=w9 width=70 align=center rowspan=2><b>REPORT. #</b></td>
+		<td class=w9 width=30 align=center  rowspan=2><b>FTY.</b></td>
+		<td class=w9 align=center colspan=3><b>FABRIC</b></td>
+		<td class=w9 width=100 align=center  rowspan=2><b>PO Q'TY</b></td>
+	</tr>
+	 <tr bgcolor="#003333" height=28>
+	 	<td class=w9 width=100 align=center><b>Number</b></td>
+		<td class=w9 width=100 align=center><b>Name</b></td>
+		<td class=w9 width=80 align=center><b>Color</b></td>
+	</tr>
+	{if $lr.0.id == ''}
+  <tr>
+		<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$lr} 
+ 	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td class=gry9 align=center>
+			<a href="javascript:po_show('{$lr[SEC].ap_num}')">{$lr[SEC].po_num}</a>
+		</td>		
+		<td class=gry9 align=left>&nbsp;{$lr[SEC].supl_name}</td>
+		<td class=gry9 align=center nowrap>
+			{section name=DET loop=$lr[SEC].fr_num} 
+			<a href="javascript:open_lr('{$lr[SEC].fr_id[DET]}')">{$lr[SEC].fr_num[DET]}</a><BR>
+			{/section}
+		</td>
+		<td class=gry9 align=center>{if $lr[SEC].finl_dist}{$lr[SEC].finl_dist}{else}{$lr[SEC].arv_area}{/if}</td>
+		<td class=gry9 align=center>
+			
+			<a href="javascript:Show_fab('{$lr[SEC].lots_code}')">{$lr[SEC].lots_code}</a>
+		</td>
+		<td class=gry9 align=left><small>{$lr[SEC].lots_name}</small></td>
+		<td class=gry9 align=left>{$lr[SEC].color}</td>
+		<td class=gry9 align=right>{$lr[SEC].po_qty} {$lr[SEC].po_unit}</td>
+	</tr>
+	{/section}
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

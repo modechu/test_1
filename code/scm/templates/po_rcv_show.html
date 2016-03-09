@@ -1,0 +1,325 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM System ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+function aply_revise(aply_num,bakc_str,special,id,rev) {
+
+	if ( confirm("are you sure to REVISE P/O :#[ "+aply_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the apply procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		// cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="po.php?PHP_action=po_revise&PHP_aply_num="+aply_num+bakc_str+"&PHP_revise=1&PHP_id="+id+"&PHP_rev_time="+rev;
+	} 
+}
+</script>
+{/literal}
+</head>
+<body >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#003300>
+	<tr>
+		<td class="ylw10" align=center><small>{if $ap.status == 0}waitt'g for submit
+									{elseif $ap.status == 2}<span class=bgdy9><b>waitt'g for PA. CFM</b></span>
+									{elseif $ap.status == 3}<span class=ylw10><b>waitt'g for PA. APV</b></span>
+									{elseif $ap.status == 4}<span class=ylw10><b>PA. APVD</b></span>
+									{elseif $ap.status == 5}<span class=ssign><b>PA. Reject</b></span>
+									{elseif $ap.status == 6}<span class=ylw10><b>waitt'g for PO. submit</b></span>
+									{elseif $ap.status == 8}<span class=bgdy9><b>waitt'g for PO. CFM</b></span>
+									{elseif $ap.status == 10}<span class=ylw10><b>waitt'g for PO. APV</b></span>
+									{elseif $ap.status == 12}<span class=ylw10><b>PO. APVD</b></span>
+									{elseif $ap.status == 13}<span class=ssign><b>PO. Reject</b></span>									
+									{else}&nbsp;{/if}
+									</small></td>
+		<td class="des" align=center width=200 height=28> <span class=ssign>{if $ap.special == 0}<b>Purchase Order </b>{else}<b>Extra Purchase</b>{/if} </td>
+		<td class="des" align=center width=200 height=28> P / O  # <span class=ylw10><b> {$ap.po_num}</b></span> </td>
+
+		<td class="des" align=center>
+	   {if ($ap.status == 8 || $ap.status ==10 || $ap.status ==12) && $edit_flag}
+			<a href="javascript:aply_revise('{$ap.ap_num}','{$back_str}','{$ap.po_num}','{$ap.id}','{$ap.po_rev}')" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER"></a>
+	   {/if}
+	  </td>
+	 	{if $ap.status == 12}
+		<td class="frnt" align=center > 
+    	<a href="po.php?PHP_action=po_print_doc&PHP_aply_num={$ap.ap_num}" target="_blank">
+			<img src="./images/print9.jpg" border=0 alt="PDF: SAVE/PRINT"></a>			
+		</td>
+		{/if}
+		<td class="ylw10" align=center height=28> {if $ap.po_rev}<span class=sign_b>Version : </span> <b>{$ap.po_rev}</b>{else}&nbsp;{/if} </td>
+	
+	</tr>
+</table>
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}
+<hr SIZE=2 WIDTH=690>
+<table border=1 cellspacing=0 cellpadding=0 width="700" bgcolor=#FFFFFF>
+	<tr>
+		<td>
+			<table border=0 cellspacing=1 cellpadding=3 width="700" bgcolor=#FFFFFF>
+				<tr>
+					<td class=snvy width=130 align=right ><b>Supplier : </b></td>
+					<td class=frnt width=130 align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.s_name}</b></td>
+					<td class=snvy width=80  align=right><b>Dept : </b></td>			
+					<td class=frnt width=70  align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.dept}</b></td>
+					<td class=snvy width=90  align=right ><b>Currency: </b></td>
+					<td class=frnt width=70  align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.currency}</b></td>
+					<td class=snvy width=70  align=right><b>Payment : </b></td>
+					<td class=frnt width=60  align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.dm_way}</b></td>
+
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Source area : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6><b>&nbsp;{$ap.country}</b></td>
+					<td class=snvy align=right><b>Ship TO : </b></td>			
+					<td class=frnt align=left bgcolor=#E7E6E6 colspan=5><b>&nbsp;{$ap.ship_name}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Attn. TO : </b></td>			
+					<td class=frnt align=left  bgcolor=#E7E6E6><b>&nbsp;{$ap.ship_attn}</b></td>
+					<td class=snvy align=right><b>Rcver TEL: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.ship_tel}</b></td>
+					<td class=snvy align=right ><b>Rcver FAX : </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=2><b>&nbsp;{$ap.ship_fax}</b></td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>Rcver Addr: </b></td>
+					<td class=frnt align=left  bgcolor=#E7E6E6 colspan=7><b>&nbsp;{$ap.ship_addr}</b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<hr SIZE=2 WIDTH=690>
+{if $ap.special  == 0 || $ap.special  == 1}
+<table border="1" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="80"  class=back align="center"><b>Order #</b></td>		
+		<td width="100" class=back align="center"><b>Material #</b></td>
+		<td width="160" class=back align="center"><b>Color / Cat.</b></td>
+		<td width="70"  class=back align="center"><b>Loss(%)</b></td>
+		<td width="100" class=back align="center"><b>Q'ty</b></td>		
+		<td width="80"  class=back align="center"><b>Price</b></td>
+		<td width="100" class=back align="center"><b>Amount</b></td>
+		<td width="100" class=back align="center"><b>ETD</b></td>
+	</tr>
+	{section name=SEC loop=$ap_det2} 
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td  align="left" nowrap>
+ 	  	{section name=AP loop=$ap_det2[SEC].orders}
+	  	<a href="javascript:po_bom_view('{$ap_det2[SEC].orders[AP]}','{$ap.po_num}')" value='ord_out' style='cursor:pointer'>
+ 	  	{$ap_det2[SEC].orders[AP]}&nbsp;</a>
+ 	  	{/section}
+		</td>
+		<td  align="left" nowrap>
+			<a href="javascript:{if $ap_det2[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap_det2[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$ap_det2[SEC].mat_code}</a>
+		</td>
+		<td  align="left">{$ap_det2[SEC].color}&nbsp;</td>
+		<td  align="right">{$ap_det2[SEC].range} %</td>
+		<td  align="right">{$ap_det2[SEC].po_qty|number_format:"2f"}&nbsp;{$ap_det2[SEC].po_unit}</td>		
+		<td  align="right">{$ap_det2[SEC].prics|number_format:"2f"}</td>
+		<td  align="right">{$ap_det2[SEC].amount|number_format:"2f"}</td>
+		<td  align="center">{if $ap_det2[SEC].po_eta == '0000-00-00'}{$ap_det2[SEC].eta}{else}{$ap_det2[SEC].po_eta}{/if} </td>		
+	</tr>	
+	{/section}
+	<tr bgColor='#ffffff'>	
+		<td align="center"><b>Total</b></td>	
+		<td align="right" colspan=6><b>{$ap.currency}${$ap.po_total|number_format:"2f"}</b></td>		
+		<td align="center">&nbsp;</td>
+	</tr>
+</table>
+{else}
+<table border="1" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr bgcolor="#003333" height=28>	
+		<td width="80" class=back align="center"><b>Order</b></td>	
+		<td width="100" class=back align="center"><b>Material #</b></td>		
+		<td width="160" class=back align="center"><b>Color/Cat.</b></td>
+		<td width="60"  class=back align="center"><b>Loss(%)</b></td>
+		<td width="100"  class=back align="center"><b>Q'ty</b></td>		
+		<td width="80" class=back align="center"><b>Price</b></td>
+		<td width="80" class=back align="center"><b>Amount</b></td>
+		<td width="100"  class=back align="center"><b>ETD</b></td>
+	</tr>
+	{section name=SEC loop=$ap_spec} 
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td  align="left">			
+	  	<a href="javascript:po_bom_view('{$ap_spec[SEC].ord_num}','{$ap.po_num}')" value='ord_out' style='cursor:pointer'>
+ 	  	{$ap_spec[SEC].ord_num}&nbsp;</a>
+		</td>	
+		<td  align="left">			
+			<a href="javascript:{if $ap_spec[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap_spec[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$ap_spec[SEC].mat_code}</a>
+		</td>		<td  align="left">{$ap_spec[SEC].color}&nbsp;</td>
+		<td  align="right">{$ap_spec[SEC].range}&nbsp;%</td>
+		<td  align="right">{$ap_spec[SEC].po_qty|number_format:"2f"}&nbsp;{$ap_spec[SEC].po_unit}</td>				
+		<td  align="right">{$ap_spec[SEC].prics|number_format:"2f"}&nbsp;</td>
+		<td  align="right">{$ap_spec[SEC].amount|number_format:"2f"}&nbsp;</td>
+		<td  align="center">{if $ap_spec[SEC].po_eta == '0000-00-00'}{$ap_spec[SEC].eta}{else}{$ap_spec[SEC].po_eta}{/if} </td>		
+	</tr>	
+	{/section}
+	<tr bgColor='#ffffff'>	
+		<td align="center"><b>Total</b></td>	
+		<td align="right" colspan=6><b>{$ap.currency}${$ap.po_total|number_format:"2f"}</b></td>		
+		<td align="center">&nbsp;</td>
+	</tr>
+
+</table>
+{/if}
+
+<table border="0" cellspacing=0 cellpadding=2 width=700>	
+	<tr height=28>
+		<td align="Left"><b>&nbsp;Acceptable Tolerance : {$ap.toler} % ( + - )</b></td>
+	</tr>
+</table>
+
+<hr SIZE=2 WIDTH=690>
+	
+<!---------- SHOW 出 一些訂單歷史記錄   -->
+{if $apply_special}  
+<table border=1 cellspacing=0 cellpadding=0 width=690 align=center>
+	<tr bgcolor=#A49587 height=25>
+		<td colspan=5 align=center class=nvy9><b>Reason for Special Purchase</b></td>
+	</tr>
+	<tr bgcolor=#54473B height=25>
+		<td width=100 class=w10 align=center>Date</td>
+		<td width=80 class=w10 align=center>Item</td>
+		<td width=300 class=w10 align=center>History records</td>
+		<td width=80 class=w10 align=center>by</td>
+	</tr>
+	{section name=SEC loop=$apply_special}
+	<tr bgcolor=#E2D9D1 >
+		<td class=gry9 align=center><small>{$apply_special[SEC].k_date}</small></td>
+		<td class=gry9 align=left>{$apply_special[SEC].item}</td>
+		<td class=gry9 align=left>{$apply_special[SEC].des}</td>
+		<td class=gry9 align=center>{$apply_special[SEC].user}</td>
+	</tr>
+	{/section}
+</table>
+<br>
+{/if}  
+
+{if $apply_log}  
+<table border=1 cellspacing=0 cellpadding=0 width=690 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=5 align=center class=nvy9><b>Remark Records</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Date</td>
+		<td width=80 class=w10 align=center>Item</td>
+		<td width=300 class=w10 align=center>History records</td>
+		<td width=80 class=w10 align=center>by</td>
+	</tr>
+	{section name=SEC loop=$apply_log}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center><small>{$apply_log[SEC].k_date}</small></td>
+		<td class=gry9 align=left>{$apply_log[SEC].item}</td>
+		<td class=gry9 align=left>{$apply_log[SEC].des}</td>
+		<td class=gry9 align=center>{$apply_log[SEC].user}</td>
+	</tr>
+	{/section}
+</table>
+{/if}   	
+	
+<table border="0" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr>
+		<td width="140" class=snvy align="Right">Submit : </td>
+		<td width="120"  class=frnt align="left"><small>&nbsp;{if $ap.po_sub_date > '0000-00-00'}{$ap.po_sub_date}{else}NO{/if}</small></td>
+		<td width="100"  class=snvy align="Right">Confirm : </td>
+		<td width="170"  class=frnt align="left"><small>&nbsp;{if $ap.po_cfm_user}{$ap.po_cfm_user}&nbsp;/&nbsp;{$ap.po_cfm_date}{else}NO{/if}</small></td>
+		<td width="100"  class=snvy align="Right">Approval : </td>
+		<td width="170"  class=frnt align="left"><small>&nbsp;{if $ap.po_apv_user}{$ap.po_apv_user}&nbsp;/&nbsp;{$ap.po_apv_date}{else}NO{/if}</small></td>
+		<td width="100"  class=snvy align="left">Apply by : </td>
+		<td width="170"  class=frnt align="left"><small>{$ap.po_user}&nbsp;/&nbsp;{$ap.po_date}</small></td>
+
+	</tr>
+</table> 
+{if $add_flag && $ap.status != 12}
+<!---------- sample logs form   -->
+<table border=1 cellspacing=0 cellpadding=0 width=690 align=center>
+<form method=POST name=smpl_logs>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=3 align=center class=nvy9><b>Adding  Remark</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=70 class=w10 align=center>Item</td>
+		<td width=450 class=w10 align=center>Remark</td>
+		<td width=70 class=w10 align=center>&nbsp;</td>
+	</tr>
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center>{$rmk_item}</td>
+		<td class=gry9 align=left>
+		<textarea name="PHP_des" rows=2 cols=100 class=select>{$smpl_log.des}</textarea></td>
+		<td class=ylw9 align=center valign=center>
+		<input type=submit value="save" class=select_e style="cursor:pointer; width=55; height=35" onClick=this.width=0;></td>
+		<input type="hidden" name="PHP_action" value="do_apply_logs_add">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_aply_num" value="{$ap.ap_num}">
+		<input type="hidden" name="PHP_id" value="{$ap.id}">
+	<!--		<input type="hidden" name="PHP_back_str" value="{$back_str2}">    -->
+	</tr>
+</form>
+</table>
+<br>
+{/if}
+
+<hr SIZE=2 WIDTH=690>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+	<tr>
+			{if $back_str}
+		<td valign=top width=100>
+			<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=po_search{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=99"></form>
+		</td>
+			{/if} 
+
+		{if $edit_flag && ($ap.status < 8 || $ap.status == 13)}
+		<td>
+		<form METHOD="POST" name="apply_add" action="{$PHP_SELF}">
+			<input type="hidden" name="PHP_action" value="po_submit">
+			<input type="hidden" name="PHP_id" value="{$ap.id}">
+			<input type="hidden" name="PHP_aply_num" value="{$ap.ap_num}">
+				<input type="hidden" name="PHP_po_num" value="{$ap.po_num}">
+			<input type="hidden" name="PHP_back_str" value="{$back_str}">
+			<input type=submit value="submit Confirmation" class=select_e style="cursor:pointer; width=90%">
+		
+		</form>
+		</td>
+		{/if}
+		
+		{if $edit_flag && ($ap.status < 8 || $ap.status == 13)}
+		<td>
+		<form METHOD="POST" name="apply_add" action="{$PHP_SELF}">
+			<input type="hidden" name="PHP_action" value="po_edit">
+			<input type="hidden" name="PHP_id" value="{$ap.id}">
+			<input type="hidden" name="PHP_aply_num" value="{$ap.ap_num}">
+				<input type="hidden" name="PHP_po_num" value="{$ap.po_num}">
+			<input type="hidden" name="PHP_back_str" value="{$back_str}">
+			<input type=submit value="[ EDIT ]" class=select_e style="cursor:pointer; width=90%"></form>		
+		</form>
+		</td>
+		{/if}
+
+<!--	
+  {if $ap.status == 12}
+  <td class="frnt" align=center>  <b>PDF for 對內採購單 : </b> 
+    <a href="po.php?PHP_action=po_print&PHP_aply_num={$ap.ap_num}" target="_blank">
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+	</td>
+	{/if}
+			
+	{if $ap.status == 12}
+	<td class="frnt" align=center >  <b>PDF for 對外採購單 : </b> 
+    <a href="po.php?PHP_action=po_print_doc&PHP_aply_num={$ap.ap_num}" target="_blank">
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>			
+	</td>
+	{/if}
+	-->
+	</tr>
+</table> 
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,157 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 研發布料記錄 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript">
+var $old ="";
+function cfm_img() {
+		var $old ="";
+		$old = document.pic.src;
+		document.pic.src = document.adding.PHP_pic.value;
+	if ( !confirm ("確定這個相片是正確的相片?")){
+		document.pic.src = $old;
+	} else {
+		document.adding.PHP_pic_upload.value ="1";
+	}
+}
+function wait(){
+	alert ("如果您有傳圖上主機時時，將會花上一段時間!!\r\r請在等待[視窗自動更新]前,不要再按任何按扭。 \r最佳的方法，請將您的圖檔盡可能設定與系統要求相同大小    \r\r因為系統接受圖檔後，會自動將圖再format成固定大小 !  ");
+}
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+}
+</script>
+{/literal}</head>
+<body onLoad="refreshIt();">
+<form method=POST name=adding enctype="multipart/form-data">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <span class=sign>更新</span>&nbsp;研發布料記錄 ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right nowrap>布樣編號 :</td>
+    <td class=bgdy9 align=left bgcolor=#CEE4E3><b>&nbsp;&nbsp;{$fabric.art_code}</b></td>
+    <td class=snvy align=right nowrap>名稱 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;
+		<input type=text name="PHP_name" size=50 class=select value="{$fabric.name}"></td>
+  </tr>
+  <tr>
+
+        <td align=center class=head valign=top rowspan=7 colspan=2>
+			<table width=200 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><img src="{$main_pic}" name="pic" width=200><td></tr>
+				<tr><td align=center valign=top class=head>
+					<input name="PHP_pic" type="file" onChange="cfm_img()" value="{$pic}" size=10>
+					<input type="hidden" name="PHP_pic_upload" value="">
+					</td>
+				</tr>
+			</table>
+		</td>
+	
+	
+	
+    <td class=snvy align=right>成份 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;
+		<input type=text name="PHP_content" size=50 class=select value="{$fabric.content}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>規格 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;
+		<input type=text name="PHP_construct" size=50 class=select value="{$fabric.construct}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>後整 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;
+		<input type=text name="PHP_finish" size=50 class=select value="{$fabric.finish}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>供應商 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$select_supl}</td>
+    <td class=snvy align=right nowrap>&nbsp;&nbsp;供應商布號 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;
+		<input type=text name="PHP_supl_ref" size=10 class=select value="{$fabric.supl_ref}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>分類 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$select_cat}</td>
+    <td class=snvy align=right>&nbsp;&nbsp;<b>C/O</b> :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$select_co}</td>
+  </tr>
+   <tr>
+    <td class=snvy align=right>寬幅 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;
+		<input type=text name="PHP_width" size=6 class=select value="{$fabric.width}">{$select_unit_width}</td>
+    <td class=snvy align=right>&nbsp;&nbsp;碼重 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;
+		<input type=text name="PHP_weight" size=4 class=select value="{$fabric.weight}">{$select_unit_wt}</td>
+  </tr>
+
+  <tr><td class=snvy align=right colspan=4> 
+  
+  			<table width="350" border=1 cellspacing=0 cellpadding=1>
+				<tr>
+				  <td width=100% height=24 bgcolor=#31657B align=center class=ylw10>Remark</td>
+				</tr>
+				<tr>
+					<td class=ylw9 align=center>
+						<textarea name="PHP_remark" rows=4 cols=60 class=select >{$fabric.remark}</textarea></td>
+				</tr>
+			</table>
+  </td></tr>
+  
+  
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr bgcolor=#31657B height=24>
+    <td class=ylw9 align=center colspan=3 nowrap>單價</td>
+    <td class=ylw9 align=center colspan=2 nowrap>供應條件</td>
+    <td class=ylw9 align=center nowrap>Lead Time</td>
+  </tr>
+  <tr bgcolor=#cccccc>
+    <td class=w10 align=center colspan=3 nowrap>&nbsp;
+		{$select_currency}
+		<input type=text name="PHP_price" size=4 class=select value="{$fabric.price}">
+		{$select_unit_price}</td>
+    <td class=w10 align=center colspan=2>&nbsp;
+		{$select_term}{$select_location}</td>
+    <td class=b9 align=center><input type=text name="PHP_leadtime" size=4 class=select value="{$fabric.leadtime}">&nbsp;<b>days</b>&nbsp;</td>
+  </tr> 
+
+</table>
+		<hr SIZE=2 WIDTH=600>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=600>
+            <tr> 
+            	<td align=center width=150>
+						    <input type=button onClick="window.location.href='fabric.php?&PHP_action=fabric_search'" value="<< GO BACK " class=select_e style="width:98%">  		
+            	</td>
+              <td align=center>
+                <input type="hidden" name="PHP_id" value="{$fabric.id}">
+                <input type="hidden" name="PHP_art_code" value="{$fabric.art_code}">
+                <input type="hidden" name="PHP_back_str" value="{$back_str}">
+                <input type="hidden" name="PHP_action" value="do_fabric_edit">
+								<input type=submit onClick="wait()"value="[ 更新 開發布料記錄 ]" class=select_e style="cursor:pointer; width=98%">
+              </td>
+			</tr>
+          </table>
+</form>          
+<!--------- footer ---------->
+{include file="footer.html"}

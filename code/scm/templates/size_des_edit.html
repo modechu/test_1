@@ -1,0 +1,110 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 尺碼記錄 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body ><form METHOD="POST" name="size_des_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <b><span class=sign>UPDATE</span>&nbsp;SIZE RECORD OF CUSTOMER</b>  ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right width=100>Dept. : </td>
+			<input type="hidden" name="PHP_id" value="{$size_des.id}">
+			<input type="hidden" name="PHP_dept_code" value="{$size_des.dept}">
+    <td class=bgdy align=left  width=100><b>&nbsp;&nbsp;{$size_des.dept}</b></td>
+    <td class=snvy align=right width=100>Customer : </td>
+    <td class=frnt align=left  width=250><b>&nbsp;{$size_des.cust}</b></td>
+			<input type="hidden" name="PHP_cust" value="{$size_des.cust}">
+    <td class=snvy align=right width=100>Base size : </td>
+    <td class=frnt align=left  width=250><input type='text' name="PHP_base_size" size=10 class=select value="{$size_des.base_size}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+  </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=7 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+   <tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>1</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>2</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>3</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>4</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>5</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>6</b></td>
+    <td class=ylw10 align=center bgcolor=#666666 width=90><b>7</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[0]" size=10 class=select value="{$size_des.size.0}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[1]" size=10 class=select value="{$size_des.size.1}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[2]" size=10 class=select value="{$size_des.size.2}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[3]" size=10 class=select value="{$size_des.size.3}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[4]" size=10 class=select value="{$size_des.size.4}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[5]" size=10 class=select value="{$size_des.size.5}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[6]" size=10 class=select value="{$size_des.size.6}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+ </tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666><b>8</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>9</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>10</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>11</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>12</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>13</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>14</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[7]" size=10 class=select value="{$size_des.size.7}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[8]" size=10 class=select value="{$size_des.size.8}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[9]" size=10 class=select value="{$size_des.size.9}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[10]" size=10 class=select value="{$size_des.size.10}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[11]" size=10 class=select value="{$size_des.size.11}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[12]" size=10 class=select value="{$size_des.size.12}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[13]" size=10 class=select value="{$size_des.size.13}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+ </tr>
+  <tr>
+    <td class=ylw10 align=center bgcolor=#666666><b>15</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>16</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>17</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>18</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>19</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>20</b></td>
+    <td class=ylw10 align=center bgcolor=#666666><b>21</b></td>
+  </tr>
+  <tr>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[14]" size=10 class=select value="{$size_des.size.14}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[15]" size=10 class=select value="{$size_des.size.15}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[16]" size=10 class=select value="{$size_des.size.16}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[17]" size=10 class=select value="{$size_des.size.17}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[18]" size=10 class=select value="{$size_des.size.18}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[19]" size=10 class=select value="{$size_des.size.19}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+    <td class=frnt align=center bgcolor=#CEE4E3>&nbsp;<input type='text' name="PHP_size[20]" size=10 class=select value="{$size_des.size.20}" style=text-align:center onkeyup=value=value.replace(/[^\w\u4e00-\u9fa5\.\*\s]/ig,'') maxlength="8"></td>
+ </tr>
+
+
+</table>
+		<hr SIZE=2 WIDTH=600>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=600>
+            <tr> 
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="do_size_des_edit">
+                <input type="hidden" name="PHP_ex_edit" value="{$ex_edit}">
+                <input type="hidden" name="PHP_sr_startno" value="{$now_pp}">
+				<input type=submit value="[ Update Above Size record for customer ]" class=select_e style="cursor:pointer; width=100%"></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,266 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: 積物料輔助系統 [ 驗收 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+{literal}
+<style type="text/css">
+<!--
+#Layer1 {
+background: #333333;
+opacity:0.45;
+filter: alpha(opacity=26);
+position:absolute;
+top:0px;
+left:0px; 
+height:expression(window.document.body.clientHeight);
+}
+-->
+</style>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+
+<Script language="javascript">
+  
+function roundAmount(n)   {   
+	var s = "" + Math.round(n * 100) /   100   
+	var i = s.indexOf('.')   
+	if (i < 0) return s + ".00"   
+	var t = s.substring(0, i + 1) + s.substring(i + 1, i + 3)   
+	if (i + 2 == s.length) t += "0"   
+	return t   
+}
+
+function roundAmount2(n)   {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s
+	var t = s.substring( 0 , i )
+		return t   
+}  
+  
+function check(r,ship_qty)
+{
+	ship_qty = parseFloat(ship_qty);
+	// 輸入值
+	var rcv = r.value;
+	
+	if (rcv > ship_qty)
+	{
+		r.value = prompt("Export Q'TY : " + ship_qty +
+								"  but Receive Q'TY : " + parseFloat( rcv ) + "  Pls re-input for Receive Q'TY : " , ship_qty);
+	}
+	return;
+}
+
+function show_rcvd_qty(ship_num,id,unit,ap_num)
+{
+	var url ="receive.php?PHP_action=recv_qty_show&PHP_ship_num="+ship_num+"&PHP_id="+id+"&PHP_unit="+unit+"&PHP_ap_num="+ap_num;
+	var nm = 'rcvd';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=500,height=500 top=50, left=100');
+}
+
+function disabled_append(){
+    var cq = 0;
+    $("input[id^=un_qty]").each(function(i, elm) {
+        if ( $(elm).val() > '0' && $(elm).val() != '0.00' ) {
+            cq++;
+        }
+    });
+    
+    if ( cq == 0 ) {
+        alert('Data error!!!');
+        return false;
+    }
+
+	$.blockUI({ message: '<div><h4>Appending...</h4></div>'});
+	//document.getElementById("Layer1").style.display='block';
+}
+
+$(document).ready(function() {
+    select_checkbox = function(status){
+        if ( status == 'Reply' ) {
+            $("input[id^=un_qty]").each(function(i, elm) {
+                $(elm).val($("#MK_"+$(elm).attr("id")).val());
+            });
+            invoice();
+        } else {
+            $("input[id^=un_qty]").each(function(i, elm) {
+                $(elm).val('0');
+            });
+            invoice();
+        }
+    }
+    
+    Ditto = function(id){
+        $("#un_qty_"+id).val($("#MK_un_qty_"+id).val());
+    }
+});
+</script>
+{/literal}
+<body topmargin="10" >
+<div id="Layer1" style="display : none;" ><table width="100%" height="100%"><tr><td align="center" valign="middle" ><img src="./images/ajpk.gif" border=0 width="66" height="66"></td></tr></table></div>
+
+<form METHOD="POST" name="rcvd_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr><td class="des" align=center height=28>[<b> Receiving&nbsp; <span class=ylw10>Append&nbsp;</span>Record </b> ] </td></tr>
+</table>
+
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=900>
+      <tr bgcolor=#ffffff>
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+
+<table border=0 cellspacing=2 cellpadding=2 width=900 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=10 class=frnt align=center><hr size=2 width=98%></td>
+    
+  </tr>
+  <tr>
+		<td width=100 class=snvy align=right bgcolor=#E9F7E8><b>Receiving # : </b> &nbsp;</td>
+		<td width=120 align=left>&nbsp;	<b>{$rcv_num}</b></td>
+		<td width=60 class=snvy align=right bgcolor=#E9F7E8><b>Dept : </b> &nbsp;</td>
+		<td width=60 align=left>&nbsp; <b>{$dept}　</b></td>
+		<td width=120 class=snvy align=right bgcolor=#E9F7E8><b>Receiver : </b> &nbsp;</td>
+		<td width=240 align=left>&nbsp;	<b>{$user}</b></td>
+	</tr>
+	<tr>
+		<td width=100 class=snvy  align=right bgcolor=#E9F7E8><b>Ship invoice : </b> &nbsp;</td>
+		<td width=120 align=left>&nbsp; <b>{$po_ship.ship_inv}</b>
+			<input type="hidden" name="PHP_ship_inv" value="{$po_ship.ship_inv}">
+		</td>
+		<td width=60 class=snvy align=right bgcolor=#E9F7E8><b>Ship : </b> &nbsp;</td>
+		<td width=60 align=left>&nbsp; <b>{$po_ship.dist}</b>
+			<input type="hidden" name="PHP_ship" class=select value="{$po_ship.dist}">
+		</td>
+		<td width=120 class=snvy  align=right bgcolor=#E9F7E8><b>Ship num : </b> &nbsp;</td>
+		<td width=240 align=left>&nbsp; <b>{$po_ship.num}　</b>
+			<input type="hidden" name="PHP_ship_num" value="{$po_ship.num}">
+		</td>
+		<input type="hidden" name="PHP_dept" value="{$dept}">
+  </tr>
+  <tr>
+    <td colspan=10 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Clear');"/> Clear All Receive Q'ty 
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Reply');"/> Reply All Receive Q'ty 
+
+<table border="2" width="900" cellspacing=0 cellpadding=5 id="table1">	
+	<tr bgcolor="#584E5C" height=30>
+		<td width="110" class=back align="center"><b>Invoice #</b></td>
+		<td width="70"  class=back align="center"><b>Order #</b></td>
+		<td width="90"  class=back align="center"><b>P / O #</b></td>
+		<td width="100" class=back align="center"><b>Material #</b></td>		
+		<td width="120" class=back align="center"><b>color/cat</b></td>		
+		<td width="90"  class=back align="center"><b>Export Q'ty</b></td>		
+		<td width="90" class=back align="center"><b>Rcvd. Q'ty</b></td>	
+		<td width="70" class=back align="center"><b>Remain</b></td>		
+		<td width="80" class=back align="center"><b>Receive</b></td>
+	</tr>
+{section name=PUR_D loop=$ship}
+	<tr {if $ship[PUR_D].un_qty <= 0} bgcolor= "#D0D0D0"{else}onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"{/if}>
+		<td align="center"><input type=text name="PHP_inv[{$ship[PUR_D].i}]" size=15 class=select value="{$ship[PUR_D].inv_num}" readonly></td>
+		<td  align="left" nowrap>
+ 	  	{section name=AP loop=$ship[PUR_D].ord_num}
+ 	 	  	<a href="javascript:po_bom_view('{$ship[PUR_D].ord_num[AP]}','{$ship.po_num}')" style='cursor:pointer'>{$ship[PUR_D].ord_num[AP]}</a>&nbsp;<br>
+ 	  	{/section}
+		</td>
+		<td align="center" nowrap><a href="javascript:po_show('{$ship[PUR_D].ap_num}','')" value='ord_out' style='cursor:pointer'><b>{$ship[PUR_D].po_num}&nbsp;</b></a>
+		</td>
+		<td align="center" nowrap>
+			  <a href="javascript:{if $ship[PUR_D].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ship[PUR_D].mat_code}')" value='ord_out' style='cursor:pointer'>{$ship[PUR_D].mat_code}</a>
+		</td>
+		<td align="left"><small>{$ship[PUR_D].color}</small>&nbsp;</td>
+		<td align="right" nowrap><small>{$ship[PUR_D].qty|number_format:"2f"} {$ship[PUR_D].po_unit}</small></td>
+		<td align="right" nowrap>
+			<a href="javascript:show_rcvd_qty('{$po_ship.num}','{$ship[PUR_D].po_id}','{$ship[PUR_D].po_unit}','{$ship[PUR_D].ap_num}')" style='cursor:pointer'>
+			<small>{$ship[PUR_D].rcv_qty|number_format:"2f"} {$ship[PUR_D].po_unit}</small></a>
+		</td>	
+		<td align="right" nowrap>
+			<font color={if $ship[PUR_D].un_qty >= 0}navy{/if} {if $ship[PUR_D].un_qty < 0}red{/if}>
+			<b>{$ship[PUR_D].un_qty|number_format:"2f"}</b></font>
+		</td>
+		<td align="center" nowrap>	 <a href="javascript:Ditto('{$ship[PUR_D].i}');">=></a> 
+		<input type=text id="un_qty_{$ship[PUR_D].i}" name="PHP_rcv[{$ship[PUR_D].i}]" size=8 class=select value="{$ship[PUR_D].un_qty}" onkeyup="check(this,'{$ship[PUR_D].un_qty}');this.value=this.value.replace(/[^\d\.]/g,'');" onblur="this.value=this.value.replace(/[^\d\.]/g,'');" {if $ship[PUR_D].un_qty <= 0}readonly{/if} style=text-align:center>
+		<input type="hidden" id="MK_un_qty_{$ship[PUR_D].i}" name="MK_un_qty[{$ship[PUR_D].i}]" value="{$ship[PUR_D].un_qty}">
+		<input type="hidden" name="PHP_reason[{$ship[PUR_D].i}]" value="">
+		</td>
+			<input type="hidden" name="PHP_mat_code[{$ship[PUR_D].i}]" value="{$ship[PUR_D].mat_code}">
+			<input type="hidden" name="PHP_ap_num[{$ship[PUR_D].i}]" value="{$ship[PUR_D].ap_num}">
+			<input type="hidden" name="PHP_po_qty[{$ship[PUR_D].i}]" value="{$ship[PUR_D].po_qty}">	
+			<input type="hidden" name="PHP_po_unit[{$ship[PUR_D].i}]" value="{$ship[PUR_D].po_unit}">
+			<input type="hidden" name="PHP_price[{$ship[PUR_D].i}]" value="{$ship[PUR_D].prics}">
+			<input type="hidden" name="PHP_rcv_qty[{$ship[PUR_D].i}]" value="{$ship[PUR_D].rcv_qty}">
+			<input type="hidden" name="PHP_un_qty[{$ship[PUR_D].i}]" value="{$ship[PUR_D].un_qty}">
+			<input type="hidden" name="PHP_ids[{$ship[PUR_D].i}]" value="{$ship[PUR_D].po_id}">
+			<input type="hidden" name="PHP_color[{$ship[PUR_D].i}]" value="{$ship[PUR_D].color}">
+			<input type="hidden" name="PHP_sup_no[{$ship[PUR_D].i}]" value="{$ship[PUR_D].sup_code}">
+			<input type="hidden" name="PHP_special[{$ship[PUR_D].i}]" value="{$ship[PUR_D].special}">
+			<input type="hidden" name="PHP_det_id[{$ship[PUR_D].i}]" value="{$ship[PUR_D].id}">
+            <input type="hidden" name="PHP_mat_cat[{$ship[PUR_D].i}]" value="{$ship[PUR_D].mat_cat}">
+            <input type="hidden" name="PHP_wi_id[{$ship[PUR_D].i}]" value="{$ship[PUR_D].wi_id}">            
+	</tr>
+	<tr>
+		<td colspan=8>
+			{if $ship[PUR_D].mat_name}Name : {$ship[PUR_D].mat_name} ; {/if}
+			{if $ship[PUR_D].width}C.width : {$ship[PUR_D].width} ; {/if}
+			{if $ship[PUR_D].weight}Weight : {$ship[PUR_D].weight} ; {/if}
+			{if $ship[PUR_D].mile}Supplier's # : {$ship[PUR_D].mile} ; {/if}
+			{if $ship[PUR_D].mile_name}Supplier's Name : {$ship[PUR_D].mile_name} ; {/if}
+			{if $ship[PUR_D].con1}{$ship[PUR_D].con1} ; {/if}
+			{if $ship[PUR_D].con2}{$ship[PUR_D].con2}  {/if}&nbsp;
+		</td>
+	</tr>	
+	<tr>
+		<td colspan="8"><span id="reasons{$ship[PUR_D].i}" ></span>	</td>
+	</tr>
+{/section}
+</table>
+<br>
+
+
+<input type="hidden" name="PHP_arv_areas"  value="">
+<input type="hidden" name="PHP_chkacc_user" value={$user}>
+<input type="hidden" name="PHP_chkacc_date" value={$dates}>
+<input type="hidden" name="PHP_S_date"  value="">
+<input type="hidden" name="PHP_E_date"  value="">
+<table width="900" border="0" cellspacing="6" cellpadding="6">
+  <tr>
+    <td>&nbsp;</td>
+    <td width="10%" align="right" nowrap>Receiving Date：<b>{$date}</b></td>
+    <td width="10%" align="right" nowrap>User：<font color="#0000FF"><b>{$user}</b></font></td>
+  </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+ <tr> 
+ 	<td>
+	{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=rcvd_add_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+	{else}&nbsp;
+	{/if}
+	</td>
+  <td align=center>
+  	<input type="hidden" name="PHP_back_str" value="{$back_str}">
+    <input type="hidden" name="PHP_aply_num" value="{$po_ship.inv_num}">
+    <input type="hidden" name="PHP_action" value="do_rcv_add">
+    	
+		<input type=submit value="[ Append above record ]" class=select_e style="cursor:pointer; width=95%" onClick="return disabled_append()">
+
+   </td>
+ </tr>
+</table>
+</form>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

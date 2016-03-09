@@ -1,0 +1,133 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  OFFER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=10 align=center class=gry><b>OFFER  sheet LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=80 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=num" style="cursor:pointer">
+    	<font color=#FFFFFF><b>offer #</b></font>
+    	</a>
+    </td>
+    <td class=w9 width=90 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=buyer" style="cursor:pointer">
+	    	<font color=#FFFFFF><b>Cust.</b></font>
+	    </a>
+    </td>
+    <td class=w9 width=30 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=agent" style="cursor:pointer">
+				<font color=#FFFFFF><b>Agent</b></font>
+    	</a>
+    </td>
+    <td class=w9 width=90 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=style" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>style#</b></font>
+    	</a>
+    </td>
+    <td class=w9 width=30 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=style_type" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>style</b></font>
+    	</a>
+    </td>    
+    <td class=w9 width=180 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=des" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>description</b></font>
+    	</a>
+    </td>
+   <!-- 
+    <td class=w9 width=50 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=tt_cost" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>Total<br> Cost</b></font>
+    	</a>
+    </td>
+    -->
+{if $non_cost <> 1}    
+    <td class=w9 width=50 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=gm_rate" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>Mark<br> UP</b></font>
+    	</a>
+    </td>    
+    <td class=w9 width=50 align=center>
+      <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing=deal" style="cursor:pointer">    	
+    		<font color=#FFFFFF><b>Offer<br>Price</b></font>
+    	</a>
+    </td>  
+{/if}      
+    <td class=w9 width=90 align=center><small>Status</small></td>
+
+  </tr>
+{section name=SEC loop=$of}
+{if $super_flag ||  $of[SEC].status == 0 || $of[SEC].status == 5}
+  <tr {if $of[SEC].status == 3}bgcolor='#eeeeee'{/if}onmouseover="bgColor='#FCF4A4'" onmouseout="{if $of[SEC].status == 3}bgcolor='#eeeeee'{else}bgColor='#ffffff'{/if}"></a>
+   <td class=gry9 align=center nowrap><b><a href="{$PHP_SELF}?PHP_action=offer_view&PHP_id={$of[SEC].id}&cgiget= {$cgistr_get}&PHP_sr_startno={$now_pp}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_cust={$cgi.buyer}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&PHP_sourcing={$cgi.source}&SCH_style_type={$cgi.style_type}">{$of[SEC].num}</a></b></td>
+   <td class=gry9 align=left>{$of[SEC].cust_ini}&nbsp;</td>
+   <td class=gry9 align=left>{$of[SEC].agent}&nbsp;</td>
+   <td class=gry9 align=left><small>&nbsp;{$of[SEC].style}</small></td>
+   <td class=gry9 align=left>&nbsp;{$of[SEC].style_type}</td>
+   <td class=gry9 align=left><small>&nbsp;{$of[SEC].des}</small></td>
+   <!--<td class=gry9 align=Right><b>{$of[SEC].tt_cost}</b>&nbsp;</td>-->
+{if $non_cost <> 1}
+   <td class=gry9 align=Right><b>{$of[SEC].gm_rate}%</b>&nbsp;</td>
+   <td class=gry9 align=Right><b>{$of[SEC].deal}</b>&nbsp;</td>
+{/if}   
+   <td class=gry9 align=Center>
+   		{if $of[SEC].status == 0}<small>Wait for submit</small>{/if}
+   		{if $of[SEC].status == 1}Wait for APV{/if}
+   	  {if $of[SEC].status == 3}<b>APVD</b>{/if}
+   	  {if $of[SEC].status == 5}<font color=red><b>Reject</b></font>{/if}
+   		&nbsp;
+   </td>
+
+  </tr>
+{/if}  
+  {/section}
+</table>
+<br>
+<table width=650 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above listing {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno=p{$pages[0]}&PHP_sourcing={$cgi.source}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno={$pages[PGE]}&PHP_sourcing={$cgi.source}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+        
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.buyer}&PHP_dept_code={$cgi.dept}&PHP_num={$cgi.num}&PHP_style={$cgi.style}&SCH_agt={$cgi.agt}&SCH_str={$cgi.str}&SCH_end={$cgi.end}&SCH_style_type={$cgi.style_type}&PHP_sr_startno=n{$lastpage}&PHP_sourcing={$cgi.source}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td></form>
+
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

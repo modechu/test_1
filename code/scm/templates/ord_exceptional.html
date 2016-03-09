@@ -1,0 +1,313 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>ORDER</title>
+<link rel=stylesheet type="text/css" href="./bom.css" />
+{literal}
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-left: 17px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<SCRIPT language=JavaScript>
+<!--
+function smpl_out2(smpl_num) {
+  var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num;
+  var nm = 'sample';
+  window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function ord_out(ord_num) {
+	var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	var nm = 'order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function prd_out(ord_num) {
+	var url ="monitor.php?PHP_action=saw_ord_pic&PHP_ord_num="+ord_num;
+	var nm = 'Output';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=400 top=50, left=100');
+}
+
+function FabBox(pttn_date,wi_date){		
+  var num = document.getElementById("pre1_tb").rows.length;  
+  for(i =0; i< num; i=i+1)
+  {
+    document.getElementById("pre1_tb").deleteRow(-1);
+  }
+
+  r=pre1_tb.insertRow();
+  c1 = r.insertCell();
+  c1.noWrap = true; 
+  c1.innerHTML	= 'ws submit : ';
+  c2 = r.insertCell();
+  c2.noWrap = true; 
+  c2.innerHTML	= unescape(wi_date);
+
+  r=pre1_tb.insertRow();
+  c1 = r.insertCell();
+  c1.noWrap = true; 
+  c1.innerHTML	= 'order pattern : ';
+  c2 = r.insertCell();
+  c2.noWrap = true; 
+  c2.innerHTML	= unescape(pttn_date);	
+}
+
+
+function overTip(boxObj) { 
+	boxObj.style.visibility = "visible";
+	if((event.clientX + boxObj.offsetWidth) > (document.body.offsetWidth + 20) ){
+		boxObj.style.left = event.clientX + document.body.scrollLeft - boxObj.offsetWidth - 180 + 'px';
+	} else {
+		boxObj.style.left = event.clientX + document.body.scrollLeft + 20 + 'px';
+	}
+	if((event.clientY + boxObj.offsetHeight) > (document.body.offsetHeight - 20) ){
+		boxObj.style.top = event.clientY + document.body.scrollTop - boxObj.offsetHeight - 20 + 'px';
+	} else {
+		boxObj.style.top = event.clientY + document.body.scrollTop + 20 + 'px';
+	}	
+}
+
+function outTip(boxObj) { 
+	boxObj.style.visibility = "hidden"; 
+}
+function Lots_Rmk(ord_num)
+{
+	var num = document.getElementById("pre1_tb").rows.length;  
+	for(i =0; i< num; i=i+1)	document.getElementById("pre1_tb").deleteRow(-1);
+  sUrl = "po.php?PHP_action=get_ship_rmk&PHP_ord_num="+ord_num+"&PHP_cat=l";
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, rmkback, null);
+}
+
+function Acc_Rmk(ord_num)
+{
+	var num = document.getElementById("pre1_tb").rows.length;  
+	for(i =0; i< num; i=i+1)	document.getElementById("pre1_tb").deleteRow(-1);
+  sUrl = "po.php?PHP_action=get_ship_rmk&PHP_ord_num="+ord_num+"&PHP_cat=a";
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, rmkback, null);
+}
+
+function schedule_view (ord_num)
+{
+	var num = document.getElementById("pre1_tb").rows.length;  
+	for(i =0; i< num; i=i+1)	document.getElementById("pre1_tb").deleteRow(-1);
+  sUrl = "schedule.php?PHP_action=get_ord_schedule&PHP_ord_num="+ord_num;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, rmkback, null);
+}
+
+var rmkback = {
+  success: function(o) {
+    var num = document.getElementById("pre1_tb").rows.length;
+    for(i =0; i< num; i=i+1)	document.getElementById("pre1_tb").deleteRow(-1);
+    var response = o.responseText.split("|");
+    for(i=0; i < response.length; i=i+1)
+    {
+      r=pre1_tb.insertRow();
+      c1 = r.insertCell();
+      c1.noWrap = true;
+      c1.innerHTML	= response[i];
+    }
+  },
+  failure: function(o) {
+    alert("Error：Can't get data");
+  }
+};
+
+function QtyBox(qty_cut){
+  var num = document.getElementById("pre1_tb").rows.length;
+  for(i =0; i< num; i=i+1)
+  {
+    document.getElementById("pre1_tb").deleteRow(-1);
+  }
+
+  r=pre1_tb.insertRow();
+  c1 = r.insertCell();
+  c1.noWrap = true; 
+  c1.innerHTML	= 'CUTTING : ';
+  c2 = r.insertCell();
+  c2.noWrap = true; 
+  c2.innerHTML	= unescape(qty_cut);
+}
+
+function ord_cuttingout(num) {
+  var url ="cutting.php?PHP_action=cutting_ord_search&PHP_ord_num="+num;
+  var nm = 'order';
+  window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function tblresize() {
+	var dh = 110;
+	var dw = 60;
+	var hh = tblShow.offsetHeight + dh;
+	if ( hh > screen.height - dh )
+	hh = screen.height - dh ;
+  if (tblShow.offsetWidth) window.resizeTo( tblShow.offsetWidth + dw , hh );
+  self.focus();
+}
+-->
+</SCRIPT>
+{/literal}
+<br>
+<body topmargin="10" onLoad="tblresize();" style="overflow-x: hidden">
+<div id="preview1" style="position:absolute; z-index:1;width:10; filter:revealTrans(duration=0.3); visibility:hidden;"> 
+<table border="0" cellspacing="0" cellpadding="0" align="center" width=100%>
+  <tr>
+    <td width="9" height="9"><img src="images/t_l.png" width="9" height="9"></td>
+    <td width="5" height="9" align="left" background="images/t_m.png"><img src="images/t_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/t_m.png"></td>
+    <td width="5" height="9" align="right" background="images/t_m.png"><img src="images/t_mr.png" width="5" height="9"></td>
+    <td><img src="images/t_r.png" width="9" height="9"></td>
+  </tr>
+  <tr>
+    <td width="9" valign="top" background="images/m_l.png"><img src="images/m_lt.png" width="9" height="5"></td>
+    <td colspan="3" rowspan="3" bgcolor="#FFFFFF">
+      <table border="0" cellpadding="3" cellspacing="1" >
+        <tr>
+          <td>
+            <table width="100%" border="0" cellpadding="1" cellspacing="1" id='pre1_tb'>
+            <!--        	
+              <tr>
+                <td align="right" class="B" nowrap>ws submit：</td>
+                <td nowrap>&nbsp;<span id="wi_submit" ></span></td>
+              </tr>
+              <tr>
+                <td align="right" class="B" nowrap>order pattern：</td>
+                <td nowrap>&nbsp;<span id="ord_pttn" ></span></td>
+              </tr>
+            -->           
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td width="9" valign="top" background="images/m_r.png"><img src="images/m_rt.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td height="99%" background="images/m_l.png"></td>
+    <td height="99%" background="images/m_r.png"></td>
+  </tr>
+  <tr>
+    <td width="9" height="5" valign="bottom" background="images/m_l.png"><img src="images/m_lb.png" width="9" height="5"></td>
+    <td width="9" valign="bottom" background="images/m_r.png"><img src="images/m_rb.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td width="9" height="9"><img src="images/b_l.png" width="9" height="9"></td>
+    <td height="9" align="left" background="images/b_m.png"><img src="images/b_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/b_m.png"></td>
+    <td height="9" align="right" background="images/b_m.png"><img src="images/b_mr.png" width="5" height="9"></td>
+    <td width="9" height="9"><img src="images/b_r.png" width="9" height="9"></td>
+  </tr>
+</table>
+</div>
+<center>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor=#666666  id="tblShow" >
+  <tr align=center bgcolor=#272727 height=30 >
+    <td class=ylw10 colspan=16 ><b>未出貨，異常單總表</td>
+  </tr>
+	<tr align="center" bgcolor="#eeeeee">
+		<td width="70"><b>Order #</b></td>
+		<td width="17"><small><a href="?PHP_action=ord_prd_tal_main&PHP_target=style" target="mainFrame">sty</a></small></td>
+		<td width="40"><b>Q'ty</b><br /><small>(PCs)</small></td>
+		<td width="60"><b>ETD</b></td>
+		<td width="17"><small>fty</small></td>
+		<td width="90" style="border-right:2px solid #666666;"><b>status</b></td>
+		<td width="60" style="width:60"><b>Fab<br/>ETA</b></td>
+		<td width="80" style="border-right:2px solid #666666;"><b>Fab<br/>RCVD</b></td>
+		<td width="60" style="width:60"><b>Acc<br/>ETA</b></td>
+		<td width="80" style="border-right:2px solid #666666;"><b>Acc<br/>RCVD</b></td>
+		<td width="60" style="border-right:2px solid #666666;"><b>SMPL<br/>APV</b></td>
+		<td width="60"><b>ETS</b></td>
+		<td width="60"><b>ETF</b></td>
+		<td width="50"><b><small>Out-put<br />(PCs)</small></b></td>
+		<td width="33"><b><a href="?PHP_action=ord_prd_tal_main&PHP_target=leadtime" target="mainFrame">Lead<br />Time</a></b></td>
+		<td width="10">&nbsp;</td>
+	</tr>
+  {section name=SEC loop=$rpt}
+  <tr align=center bgcolor="#FFFFE6">
+    <td width="70" align="left" nowrap><a href="javascript:ord_out('{$rpt[SEC].order_num}')"><span class='F3'><small>{$rpt[SEC].order_num}({$rpt[SEC].mks})</small></span></a></td>
+    <td width="17" align=left {if $rpt[SEC].memo == 'T'}bgcolor="#C1EBB9"{/if}><small>{$rpt[SEC].style}</small></td>
+    <td width="40" align=right onMouseOver="overTip(preview1);QtyBox('{$rpt[SEC].qty_cut}');" onMouseOut="outTip (preview1)">
+      <a href="javascript:ord_cuttingout('{$rpt[SEC].order_num}')" style='cursor:pointer'>
+      <small>{$rpt[SEC].qty|number_format}</small>
+      </a>
+    </td>
+    <td width="60" class=snvy {if $today > $rpt[SEC].etd} bgcolor=#FFB0B6{/if}><small>{$rpt[SEC].etd}</small></td>
+    <td width="17"><small>{$rpt[SEC].factory}</small></td>
+    <td width="90" align=left style="border-right:2px solid #666666; "><small>{$rpt[SEC].rmk}</small></td>
+    <a href="javascript:po_bom_view('{$rpt[SEC].order_num}','x')" style='cursor:pointer'>			
+    <td width="60" {if $today > $rpt[SEC].mat_eta && $rpt[SEC].mat_shp == ''} bgcolor=#FFB0B6{else}bgcolor="#EEFDFF"{/if} style='cursor:pointer' > <!--onMouseOver="overTip(preview1);Lots_Rmk('{$rpt[SEC].order_num}');" onMouseOut="outTip (preview1)"-->
+      <small>{$rpt[SEC].mat_eta}</small></td>
+    <td width="80" style="border-right:2px solid #666666; " style='cursor:pointer' {if $rpt[SEC].mat_rcv && $rpt[SEC].mat_shp < '0000-00-00'} bgcolor="#000000" class="des" {else} bgcolor="#EEFDFF" {/if}>
+      {if $rpt[SEC].mat_rcv && $rpt[SEC].mat_shp < '0000-00-00'} 
+      <img border="0" src="images/{$rpt[SEC].mat_ship_way}.png"> <small>{$rpt[SEC].mat_rcv}</small>
+      {else}
+        {if $rpt[SEC].mat_shp == '1111-11-11'} 
+          ---------
+        {else}
+          <small>{$rpt[SEC].mat_shp}</small>
+        {/if}
+      {/if}
+    </td>			
+    <td width="60" {if $today > $rpt[SEC].m_acc_eta && $rpt[SEC].m_acc_shp == ''} bgcolor=#FFB0B6{else}bgcolor="#EEFDFF"{/if} style='cursor:pointer' > <!--onMouseOver="overTip(preview1);Acc_Rmk('{$rpt[SEC].order_num}');" onMouseOut="outTip (preview1)"-->
+      <small>{$rpt[SEC].m_acc_eta}</small></td>
+    <td width="80" style="border-right:2px solid #666666; " style='cursor:pointer' {if $rpt[SEC].m_acc_rcv && $rpt[SEC].m_acc_shp < '000-00-00'} bgcolor="#000000" class="des" {else} bgcolor="#EEFDFF" {/if}>
+      {if $rpt[SEC].m_acc_rcv && $rpt[SEC].m_acc_shp < '000-00-00'} 
+      <img border="0" src="images/{$rpt[SEC].m_acc_ship_way}.png"> <small>{$rpt[SEC].m_acc_rcv}</small>
+      {else} 
+        {if $rpt[SEC].m_acc_shp == '1111-11-11'}
+          ---------
+        {else}
+          <small>{$rpt[SEC].m_acc_shp}</small>
+        {/if}
+      {/if}
+    </td>
+    </a>
+    <td width="60" style="border-right:2px solid #666666; " onMouseOver="overTip(preview1);FabBox('{if $rpt[SEC].ptn_upload == '0000-00-00'}NONE{else}{$rpt[SEC].ptn_upload|escape:"html"}{/if}','{if $rpt[SEC].ti_cfm == '' || $rpt[SEC].ti_cfm == '0000-00-00'}NONE{else}{$rpt[SEC].ti_cfm|escape:"html"}{/if}');" onMouseOut="outTip (preview1)">
+      <a href="javascript:smpl_out2('{$rpt[SEC].smpl_ord}')" value='sample' style='cursor:pointer'>
+      <small>
+      {if $rpt[SEC].smpl_apv == '0000-00-00'}<u>&nbsp;</u>{else}{$rpt[SEC].smpl_apv}{/if}
+      </small>
+      </a>
+    </td>
+    <td width="60" >
+      <small>{if $rpt[SEC].ets == '0000-00-00'}&nbsp;{else}{$rpt[SEC].ets}{/if}</small></td>	
+    <td width="60" {if $rpt[SEC].etd < $rpt[SEC].etf} bgcolor=#FFB0B6{/if}><small>{if $rpt[SEC].etf == '0000-00-00'}&nbsp;{else}{$rpt[SEC].etf}{/if}</small></td>
+    <td width="50" >
+      {if $rpt[SEC].qty_done > 0}
+      <a href="javascript:prd_out('{$rpt[SEC].order_num}')" style="cursor:pointer">										
+      <small>{$rpt[SEC].qty_done}</small>
+      </a>
+      {else}
+			{/if}
+    </td>
+    <td width="33" {if $rpt[SEC].lead < 0}class=sign{/if} {if $rpt[SEC].memo == 'T'}bgcolor="#C1EBB9"{/if}><small>{$rpt[SEC].lead}</small></td>
+    <td width="10" onMouseOver="overTip(preview1);schedule_view('{$rpt[SEC].order_num}');" onMouseOut="outTip (preview1)">
+      <small>{if $rpt[SEC].in_house == 1}I{/if}{if $rpt[SEC].sub_con == 1}S{/if}</small>
+    </td>
+  </tr>
+  {if $rpt[SEC].ln_mk == 1}
+  <tr bgcolor="#FFFFE6" height=25>
+    <td colspan=2 align=Center><b> Total  </b></td>
+    <td colspan=3><b>Q'ty : {$rpt[SEC].qty_tal} Pcs </b></td>
+    <td colspan=3><b>SU : {$rpt[SEC].su_tal} su </b></td>
+    <td colspan=10><b>Orders : {$rpt[SEC].count} </b></td>
+  </tr>
+  <tr><td></td></tr>
+  {/if}
+  {if $rpt[SEC].ln_mon == 1}
+  <tr><td></td></tr>
+  {/if}
+  {/section}
+</table>
+</center>
+<!--------- footer ---------->
+{include file="footer.html"}

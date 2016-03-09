@@ -1,0 +1,212 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  Accessory search / list .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript">
+function updateParentList(order,style,ie,qty,saw_qty,p_id,qty_cut,sd_id,p_qty,sch_out_qty,mks,o_num) {
+    
+    self.opener.writeToOrdList(order,style,ie,qty,saw_qty,p_id,qty_cut,sd_id,p_qty,sch_out_qty,mks,o_num);
+}
+
+
+function cfm(order,style,ie1,ie2,qty,saw_qty,p_id,qty_cut,sd_id,p_qty,sch_out_qty,s_qty,pdt_qty,mks,o_num,rel_ets,rel_etf,i) {
+    ie=(ie2>0)?ie2:ie1;
+	if ( confirm("Are you sure add Accessory:["+order+"] ??") ) {
+        var mkss = ( o_num > 1 ) ? '('+mks+')' : '';
+        //alert(' |order= '+order+' |style= '+style+' |ie= '+ie+' |qty= '+qty+' |saw_qty= '+saw_qty+' |p_id= '+p_id+' |qty_cut= '+qty_cut+' |sd_id= '+sd_id+' |p_qty= '+p_qty+' |sch_out_qty= '+sch_out_qty+' |mks= '+mks+' |o_num= '+o_num);
+
+        self.opener.document.forms['mon_add_'+i].elements['PHP_style'].value = style;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_date'].value = rel_ets + ' ~ ' + rel_etf;
+        
+        self.opener.document.forms['mon_add_'+i].elements['PHP_ie'].value = ie;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_id'].value = p_id;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_s_id'].value = sd_id;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_o_id'].value = '';
+        self.opener.document.forms['mon_add_'+i].elements['PHP_order'].value = order;
+
+     
+        self.opener.document.forms['mon_add_'+i].elements['PHP_mks'].value = mkss;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_ord_qty'].value = qty;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_cut_qty'].value = qty_cut;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_sch_qty'].value = s_qty;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_p_out_qty'].value = sch_out_qty;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_s_sch_qty'].value = p_qty;
+        self.opener.document.forms['mon_add_'+i].elements['PHP_s_out_qty'].value = pdt_qty;
+        
+        
+        $ord_rec = '<a href="javascript://" onMouseOver="overTip(preview1,'+order+'); OrdBox(\'mon_add_'+i+'\')" onMouseOut="outTip (preview1)"><b>'+order+'</b></a>';
+        self.opener.document.getElementById("ord_view"+i).innerHTML = $ord_rec;
+        window.close();
+        //window.close();
+		//updateParentList(order,style,ie,qty,saw_qty,p_id,qty_cut,sd_id,p_qty,sch_out_qty,mks,o_num);
+	}
+}
+
+function Show_ord(id,ord_num) {
+	var url ='index2.php?PHP_action=order_view&PHP_id='+id+'&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=&cgi_6=&PHP_ord_num='+ord_num; 	
+	var nm = 'Order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">
+<!-- ################################################################################# -->
+
+<table border cellspacing="0" cellpadding="2" cols=1 width="820" bgcolor=#cccccc  align="center">
+<tr><td>
+<form METHOD="POST" name="search_ord">
+<table cellspacing=1 cellpadding="4" cols=1 width="820" bgcolor=#003300 align="center">
+	<tr>
+		<td class="des" align="center" height=28>[ SEARCH/LISTING&nbsp;ORDER ]</td>
+	</tr>
+</table>
+<table border=0 cellspacing="0" cellpadding=1 width="820">
+  <tr>
+    <td colspan=6 class=frnt align="center"><hr size=2 width=98%></td>
+  <tr>
+  <tr><input type="hidden" name="PHP_dept_code" value='{$dept}'>
+    <td class=snvy align=right><b>Order No. : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="PHP_order_num" size=10 class=select value=""></td>
+    <td class=snvy align=right><b>Customer : </b></td>
+    <td class=frnt align=left>&nbsp;{$cust_select}</td>
+    <td class=frnt align=left>&nbsp;<input type="checkbox" name="PHP_finish" value="1" ><b>Includes Finish</b></td>
+  </tr>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>customer ref. : </b></td>
+    <td class=frnt align=left><b>&nbsp;<input type=text name="PHP_ref" size=10 class=select value=""></td>
+    <td class=snvy align=right><b>Factory : </b></td>
+    <td class=frnt align=left><b>&nbsp;{$PHP_fty}</b></td>
+    <td class=frnt align=left>&nbsp;<input type="checkbox" name="PHP_ship" value="1" ><b>Includes Shipping</b></td>
+   </tr>
+
+</table>
+
+<table border=0 cellspacing="0" cellpadding=0 width="820" align="center">
+	<tr><hr SIZE=2 WIDTH=97%></tr>
+	<tr> 
+	  <td align="center">
+		<input type="hidden" name="PHP_ln_id" value="{$PHP_ln_id}">
+		<input type="hidden" name="sch_ln_id" value="{$sch_ln_id}">
+		<input type="hidden" name="PHP_fty" value="{$PHP_fty}">
+		<input type="hidden" name="PHP_action" value="do_order_search">
+		<input type=submit value="[ SEARCH / LIST ORDER RECORDS ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+	  </td>
+	</tr>
+</table></form>
+
+	</td>
+</tr>
+</table>
+<br>
+<table border cellspacing="0" cellpadding="2" cols=1 width="820" bgcolor=#cccccc  align="center">
+    <tr>
+        <td align="center">
+            <table border="1" cellspacing="0" cellpadding="4" cols=1 width="820" bgcolor=#534A67>
+                <tr><td class=des align="center">..... Order LIST&nbsp;&nbsp;<span class=ylw10>[Choice Order]</span> ......</td></tr>
+            </table>
+            <hr size=2 width=98%>
+            <table border cellspacing="0" cellpadding="2" width="820" bgcolor="#ffffff" align="center">
+                <tr bgcolor="#003333" height="28">
+                    <td class="w9" align="center" rowspan="2">order#</td>
+<!--                     <td class="w9" align="center" rowspan="2">ETS</td>
+                    <td class="w9" align="center" rowspan="2">ETF</td> -->
+                    <td class="w9" align="center" colspan="5">Order Production Total Q'ty</td>
+                    <td class="w9" align="center" colspan="2">Schedule Q'ty</td>
+                    <td class="w9" align="center" rowspan="2">cust.</td>
+                    <td class="w9" align="center" rowspan="2">style#</td>
+                    <td class="w9" align="center" rowspan="2">Customer. ref</td>
+                    <td class="w9" align="center" rowspan="2">IE</td>
+                    <td class="w9" align="center" rowspan="2">FTY</td>
+                    <td nowrap align="center" class="ylw9" rowspan="2">Choice</td>
+                </tr>
+                <tr bgcolor="#003333" height="28">
+                    <td class="w9" align="center">Order<br>Q'ty</td>
+                    <td class="w9" align="center">Schedule<br>Q'ty</td>
+                    <td class="w9" align="center">Cutting<br>Q'ty</td>
+                    <td class="w9" align="center">Output<br>Q'ty</td>
+                    <td class="w9" align="center">Remain<br>Q'ty</td>
+                    <td class="w9" align="center">Schedule<br>Q'ty</td>
+                    <td class="w9" align="center">Output<br>Q'ty</td>
+                </tr>
+                {if $record_NONE}
+              <tr>
+                <td colspan=16 align="center" class=ssign><br>No Records!<br><br>
+              </tr>
+                {/if}
+                {section name=SEC loop=$sorder} 
+              <tr><form>
+                    <td class=gry9 align="center" nowrap>
+                <a href="javascript:Show_ord('{$sorder[SEC].s_id}','{$sorder[SEC].order_num}')" value='ord_out' style='cursor:pointer'>
+                <b>{$sorder[SEC].order_num}{if $sorder[SEC].partial_num > 1} ({$sorder[SEC].mks}){/if}</b></a>
+                    </td>
+<!--                     <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].rel_ets}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].rel_etf}</small></td> -->
+                    <!-- <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].p_qty}</small></td> -->
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].p_ord_qty}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].p_sch_qty}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].p_cut_qty}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].p_out_qty}</small></td>
+                    <td class=ssign align=left nowrap>&nbsp;{assign var="Remain" value=$sorder[SEC].p_cut_qty-$sorder[SEC].p_out_qty}{$Remain}</td>
+                    <td class=snvy align=left nowrap bgcolor="#CEE4E3">&nbsp;{$sorder[SEC].s_sch_qty}</td>
+                    <td class=snvy align=left nowrap bgcolor="#CEE4E3">&nbsp;{$sorder[SEC].pdt_qty}</td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].cust_iname}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].style_num}</small></td>
+                    <td class=gry9 align=left nowrap><small>&nbsp;{$sorder[SEC].ref}</small></td>
+                    <td class=gry9 align=right nowrap>{$sorder[SEC].ie2}&nbsp;</td>
+                    <td class=gry9 align="center" nowrap><b>{$sorder[SEC].factory}</b></td>
+                    <td align="center" nowrap class=gry9>&nbsp;
+                    <img src="images/handar.gif" alt="Choice" border=0 valign=bottom onClick="cfm('{$sorder[SEC].order_num}','{$sorder[SEC].style_num}','{$sorder[SEC].ie1}','{$sorder[SEC].ie2}','{$sorder[SEC].p_ord_qty}','{$sorder[SEC].saw_qty}','{$sorder[SEC].p_id}','{$sorder[SEC].p_cut_qty}','{$sorder[SEC].sd_id}','{$sorder[SEC].s_sch_qty}','{$sorder[SEC].p_out_qty}','{$sorder[SEC].p_sch_qty}','{$sorder[SEC].pdt_qty}','{$sorder[SEC].mks}','{$sorder[SEC].partial_num}','{$sorder[SEC].rel_ets}','{$sorder[SEC].rel_etf}','{$PHP_ln_id}');" style="cursor:pointer">
+                    </td>
+              </tr>
+              {/section} 
+            </table>
+        </td>
+    </tr>
+</table>
+<table border=0 cols=4 width="820" align="center">
+  <tr>
+    <td class="w9" colspan=4 align="center"><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+     <td align="center" width=180><form name="form5" method="post">
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_fty={$cgi.factory}&PHP_factory={$cgi.factory}&PHP_sr_startno=p{$pages[0]}&PHP_ship={$cgi.ship}&PHP_finish={$cgi.finish}&PHP_dept_code={$dept}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align="center" width=260>
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_fty={$cgi.factory}&PHP_factory={$cgi.factory}&PHP_sr_startno={$pages[PGE]}&PHP_ship={$cgi.ship}&PHP_finish={$cgi.finish}&PHP_dept_code={$dept}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align="center" width=180>
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_fty={$cgi.factory}&PHP_factory={$cgi.factory}&PHP_sr_startno=n{$lastpage}&PHP_ship={$cgi.ship}&PHP_finish={$cgi.finish}&PHP_dept_code={$dept}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->
+    </td></form>
+  </tr>
+</table>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,97 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function tp(url) { parent.top.location.href=url }
+ function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+	location.href=doit;
+	}
+ }
+
+function ord_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+ <table width=670 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=9 align=center class=gry><b>APPROVED ORDER LIST ( status )</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=60 align=center>order#</td>
+    <td class=w9 width=60 align=center>cust.</td>
+    <td class=w9 width=70 align=center>ETD</td>
+    <td class=w9 width=70 align=center>ETP</td>
+    <td class=w9 width=60 align=center>q'ty</td>
+    <td class=w9 width=70 align=center>m.fab.ETA</td>
+    <td class=w9 width=70 align=center>m.acc.ETA</td>
+    <td class=w9 width=70 align=center>ETS</td>
+    <td class=w9 width=30 align=center>FTY</td>
+  </tr>
+{section name=SEC loop=$sorder}
+{if $sorder[SEC].status > 7}
+  <tr bgColor='#eeeeee'></a>
+{elseif  $sorder[SEC].status > 11}
+  <tr bgColor='#dddddd'></a>
+{else}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+{/if}
+   <td class=gry9 align=center><small><a href="javascript:ord_out('{$sorder[SEC].order_num}')" value='ord_out' style='cursor:pointer'>{$sorder[SEC].order_num}</a></small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].cust_iname}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].etd}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].etp}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].qty}&nbsp;{$sorder[SEC].unit}</small></td>
+   <td class=ssign align=center><small>{$sorder[SEC].mat_etd}&nbsp;</small></td>
+   <td class=ssign align=center><small>{$sorder[SEC].m_acc_etd}&nbsp;</small></td>
+   <td class=b9 align=center><small>{$sorder[SEC].ets}&nbsp;</small></td>
+   <td class=gry9 align=center><b>{$sorder[SEC].factory}&nbsp;</b></td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+    <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+    
+{if $lastpage < $maxpage}
+    <input type="button" name="Submit6" value="next 10 page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_num}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=n{$lastpage}'">          
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td></form>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

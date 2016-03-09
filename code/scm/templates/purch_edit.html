@@ -1,0 +1,123 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: 積物料輔助系統 [ 請購 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body >
+<br><form METHOD="POST" name="purch_add" action="{$PHP_SELF}">
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#003300>
+	<tr>
+	<td width=100 class="ylw10" align=center><small>{if $apply.status == 0}waitt'g for submit
+									{elseif $apply.status == 2}<span class=bgdy9>waitt'g for APV</span>
+									{elseif $apply.status == 4}<span class="ylw10"><b>waitt'g for pur. submit</b></span>
+									{elseif $apply.status == 5}<span class=ssign><b>APPLY Reject</b></span>
+									{elseif $apply.status == 6}<span class=gry9><b>SCHDL CFMing</b></span>
+									{elseif $apply.status == 7}<span class=b9><b>SCHDL CFMed</b></span>
+									{elseif $apply.status == 8}<span class=b9><b>PRODUCING</b></span>
+									{elseif $apply.status == 10}<span class=b9><b>= FINISHED =</b></span>
+									{elseif $apply.status == 12}<span class=b9><b>== SHIPPED ==</b></span>
+									{else}&nbsp;{/if}
+									</small></td>
+	<td class="des" align=center width=600 height=28> <font color=red>PURCHASE   </font><span class=sign_b>APPLY RECORD</span> # <b>{$apply.aply_num}</b> </td>
+	</tr>
+	
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<hr SIZE=2 WIDTH=690>
+<table border=1 cellspacing=0 cellpadding=0 width="700" bgcolor=#FFFFFF>
+  <tr>
+  <td>
+<table border=0 cellspacing=1 cellpadding=3 width="700" bgcolor=#FFFFFF>
+ <tr>
+  
+    <td class=snvy align=right >Supplier : </td>
+    <td class=frnt align=left ><b>&nbsp;{$apply.supl}</b></td>
+    <td class=snvy align=right>Dept : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$apply.dept}</b></td>
+    <td class=snvy align=right>Factory : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$FACTORY_select}</b></td>
+
+  </tr>
+  <tr>
+    <td class=snvy align=right>Source area : </td>			
+    <td class=frnt align=left ><b>&nbsp;{$COUNTRY_select}</b></td>
+
+    <td class=snvy align=right >Currency: </td>
+    <td class=frnt align=left colspan=3><b>&nbsp;{$CURRENCY_select}</b></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>Apply date : </td>
+    <td class=frnt align=left  ><b>&nbsp;{$apply.date}</b></td>
+    <td class=snvy align=right >Applier : </td>
+    <td class=frnt align=left colspan=3 ><b>&nbsp;{$apply.user}</b></td>
+
+  </tr>
+</table>
+</td>
+  </tr>
+</table>
+<hr SIZE=2 WIDTH=690>
+
+<table border="1" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr bgcolor="#003333" height=28>
+		<td width="280" class=back align="center">Materiel code</td>
+		<td width="120"  class=back align="center">Color</td>
+		<td width="100"  class=back align="center">Apply Q'ty</td>
+		<td width="100"  class=back align="center">Purchase Q'ty</td>
+		<td width="100"  class=back align="center">Cost</td>
+	</tr>
+{section name=SEC loop=$apply_det} 
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+		<td  align="left">&nbsp;{$apply_det[SEC].aply_mat}</td>
+		<td  align="left">&nbsp;{$apply_det[SEC].mat_color}</td>
+		<td  align="right">&nbsp;{$apply_det[SEC].mat_qty} / {$apply_det[SEC].mat_unit}</td>
+		<td  align="center">&nbsp;<input type='text' name="PHP_pur_qty[{$apply_det[SEC].j}]" size=12 value="{if $apply_det[SEC].pur_qty > 0}{$apply_det[SEC].pur_qty}{else}{$apply_det[SEC].mat_qty}{/if}"></td>
+		<td  align="center">&nbsp;<input type='text' name="PHP_pur_cost[{$apply_det[SEC].j}]" size=12 value="{if $apply_det[SEC].mat_cost > 0}{$apply_det[SEC].mat_cost}{else}{$apply_det[SEC].cost}{/if}"></td>		
+		<input type='hidden' name="PHP_aply_id[{$apply_det[SEC].j}]" value="{$apply_det[SEC].id}">
+	</tr>	
+{/section}
+</table>
+
+              <hr SIZE=2 WIDTH=690>
+<table border="0" cellspacing=0 cellpadding=2 width=700 id="table2">	
+	<tr>
+		<td width="460" class=snvy align="Right">Submit date : </td>
+		<td width="120"  class=frnt align="left">&nbsp;{$apply.submit_date}</td>
+		<td width="120"  class=snvy align="Right">Approval date : </td>
+		<td width="120"  class=frnt align="left">&nbsp;{$apply.apv_date}</td>
+		<td width="120"  class=snvy align="Right">Approval user : </td>
+		<td width="120"  class=frnt align="left">&nbsp;{$apply.apv_user}</td>
+	</tr>
+</table> 
+             
+   <hr SIZE=2 WIDTH=690>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+   <tr>
+	<td valign=top width=100>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=purch_search{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=99">
+{else}&nbsp;{/if} 
+</td>
+
+<td valign=top>
+		<input type="hidden" name="PHP_action" value="do_purch_edit">
+		<input type="hidden" name="PHP_id" value="{$apply.id}">
+		<input type="hidden" name="PHP_aply_num" value="{$apply.aply_num}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value="[ EDIT above record]" class=select_e style="cursor:pointer; width=90%"></form>
+</td>
+			</tr>
+			
+       
+          </table> 
+          </form>	
+<!--------- footer ---------->
+{include file="footer.html"}

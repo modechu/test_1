@@ -1,0 +1,183 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: Tai Yuen ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<Script language="javascript">
+
+ </script>
+{/literal}
+</head>
+<body >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=750 bgcolor=#003300>
+	<tr>
+
+		<td class="des" align=center height=28>
+			[ <b>&nbsp;OVERTIME </b> -- VIEW]
+		</td>
+	</tr>
+</table>
+
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=750 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+
+<BR>
+<!--
+{section name=SEC loop=$view}
+
+<table border=1 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+  <tr class="des" bgcolor=#003300>
+  	<td  align=center width=100 >
+			<b><font color=yellow>FTY : {$view[SEC].fty}</font>
+		</td>
+  	<td><b>DATE : </b>{$view[SEC].ot_date}</td>
+  	<td colspan=2><b>workers : </b>{$view[SEC].worker}</td> 	
+	</tr>
+	<tr>
+		<td class=frnt  align=center bgcolor=#eeeeee width=200 >RATE</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>TIME</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>WORKER</td>
+		<td class=frnt  align=center bgcolor=#eeeeee>COST</td>
+	</tr>
+	{section name=REC loop=$view[SEC].det}
+	<tr>
+		<td class=frnt  align=left ><B>{$view[SEC].det[REC].rate_name}</B></td>
+		<td class=frnt  align=center><B>{$view[SEC].det[REC].ot_time}</B></td>
+		<td class=frnt  align=center><B>{$view[SEC].det[REC].ot_worker}</B></td>
+		<td class=frnt  align=right >{$view[SEC].det[REC].ot_cost|NUMBER_FORMAT:"2f"}</td>			
+	</tr>	
+	{/section}
+</table>	
+<BR>
+{/section}
+
+
+<table border=1 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+  <tr bgcolor=#eeeeee class=frnt>
+		<td align=center width=90 rowspan=2>DATE</td>
+		<td align=center width=70>Regular</td>		
+		<td align=center width=60 rowspan=2>RATE</td>		
+		<td align=center colspan=3>Extra</td>
+	</tr>
+	<tr bgcolor=#eeeeee class=frnt>
+		<td align=center >worker</td>
+		<td align=center width=70>worker</td>
+		<td align=center width=70>period</td>
+		<td align=center width=130>cost</td>
+	</tr>
+	{section name=SEC loop=$view}
+	<form METHOD="POST" name="ot_update" action="{$PHP_SELF}">
+	<tr>
+		<td class=frnt  align=center ><B>{$view[SEC].ot_date}&nbsp;</B></td>
+		<td class=frnt  align=right ><B>{$view[SEC].worker}&nbsp;</B></td>
+		<td class=frnt  align=center ><B>{if $view[SEC].rate}RATE{$view[SEC].rate}{/if}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].ot_time}&nbsp;</B></td>
+		<td class=frnt  align=right >{$view[SEC].ot_cost|NUMBER_FORMAT:"2f"}</td>			
+	</tr>	
+	<input type=hidden value="overtime_add" name="PHP_action">
+	<input type=hidden value="{$cost}" name="PHP_cost">		
+	<input type=hidden value="{$view[SEC].fty}" name="PHP_FTY">
+	<input type=hidden value="{$view[SEC].ot_date}" name="PHP_date">		
+	<input type=hidden value="{$view[SEC].id}" name="PHP_id">	
+	</form>
+	{/section}
+</table>
+-->
+
+
+<table border=1 cellspacing=0 cellpadding=1 width=750 bgcolor=#FFFFFF>
+  <tr bgcolor=#eeeeee class=frnt>
+		<td align=center width=100 rowspan=2>DATE</td>
+		<td align=center width=60>Regular</td>		
+		<td align=center colspan=2>RATE1</td>		
+		<td align=center colspan=2>RATE2</td>	
+		<td align=center colspan=2>RATE3</td>	
+		<td align=center colspan=2>RATE4</td>	
+		<td align=center colspan=2>RATE5</td>	
+		<td align=center colspan=2>RATE6</td>	
+		<td align=center>est. Extra</td>
+	</tr>
+	<tr bgcolor=#eeeeee class=frnt>
+		<td align=center >worker</td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=40><small>worker</small></td>
+		<td align=center width=40><small>period</small></td>
+		<td align=center width=100>cost <small>(USD)</small></td>
+	</tr>
+	{section name=SEC loop=$view}
+	<tr>
+		<td class=frnt  align=center ><B>{$view[SEC].ot_date}&nbsp;</B></td>
+		<td class=frnt  align=right ><B>{$view[SEC].worker}&nbsp;</B></td>		
+		<td class=frnt  align=right><B>{$view[SEC].1.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].1.ot_time}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].2.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].2.ot_time}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].3.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].3.ot_time}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$view[SEC].4.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].4.ot_time}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$view[SEC].5.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].5.ot_time}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$view[SEC].6.ot_worker}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$view[SEC].6.ot_time}&nbsp;</B></td>					
+		<td class=frnt  align=right ><B>{$view[SEC].ot_cost|NUMBER_FORMAT}</B></td>			
+	</tr>	
+ {/section}
+	<tr bgcolor="#FFFECD">
+		<td class=frnt  align=center ><B>TOTAL&nbsp;</B></td>
+		<td class=frnt  align=right ><B>{$sum.worker|NUMBER_FORMAT}&nbsp;</B></td>		
+		<td class=frnt  align=right><B>{$sum.r1_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r1_t|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r2_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r2_t|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r3_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r3_t|NUMBER_FORMAT}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$sum.r4_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r4_t|NUMBER_FORMAT}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$sum.r5_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r5_t|NUMBER_FORMAT}&nbsp;</B></td>	
+		<td class=frnt  align=right><B>{$sum.r6_w|NUMBER_FORMAT}&nbsp;</B></td>
+		<td class=frnt  align=right><B>{$sum.r6_t|NUMBER_FORMAT}&nbsp;</B></td>					
+		<td class=frnt  align=right ><B>{$sum.ot_cost|NUMBER_FORMAT}</B></td>			
+	</tr>	
+</table>
+
+<form METHOD="POST" name="ot_back" action="{$PHP_SELF}">
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=750>
+            <tr>
+            	 <td align=left>
+									<font color="#7C7C7C"><small>{$rate_des}<BR>1USD = {$currency}VND&nbsp;&nbsp;&nbsp;&nbsp;daily salary : VND$ {$cost}</small></font>
+              </td>
+            </tr>
+            <tr> 
+              <td align=center>
+              			<input type='hidden' name="PHP_action" value="overtime" >		
+										<input type=submit value=" << GO Back " class=select_e style="cursor:pointer; width=95%" >
+              </td>
+   
+        </table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

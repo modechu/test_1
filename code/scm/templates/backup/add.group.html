@@ -1,0 +1,303 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 系統工作組別權限 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body >
+
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><td class="des" align=center height=28><b>SCM 樣本輔助系統</b> [ 工作群組權限 ] </td></tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=2 class=frnt align=center><b>新增組別工作權限設定 :</b></td>
+    <td colspan=2 class=bgdy align=right>部門別代號 : </td>
+    <td colspan=2 class=frnt align=left><b>{$dept_code}</b></td>
+  </tr>
+  <tr>
+  <tr>
+    <td class=bgdy align=right>組別代號 : </td>
+    <td class=frnt align=left><input type=text name="PHP_team_code" size=15 class=select></td>
+    <td colspan=2 class=bgdy align=right>組別名稱 : </td>
+    <td colspan=2 class=frnt align=left><input type=text name="PHP_team_name" size=20 class=select></td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td width=90 class=ssign align=center>基本資料 : </td>
+    <td width=140 class=b10>[11] 客戶資料</td>
+    <td width=80 class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][1][1]" value=1>查尋</td>
+    <td width=80 class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][1][2]" value=1>新增</td>
+    <td width=80 class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][1][4]" value=1>更新</td>
+    <td width=80 class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[12] 供應商資料</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[13] 布料基本資料</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][3][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][3][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][3][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[14] 副料基本資料</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][4][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][4][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[1][4][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+    <td class=ssign align=center>樣本 : </td>
+    <td class=b10>[21] 樣本基本資料</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][1][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[22] 樣本用料</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][2][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[23] 樣本尺吋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][3][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][3][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][3][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[2][3][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>生產製造 : </td>
+    <td class=b10>[31] 製造令</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][1][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[32] 生產說明</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][2][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[33] comments</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][3][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][3][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][3][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][3][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[34] 確認製造令</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][4][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][4][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6>&nbsp;</td>
+    <td class=frnt bgcolor=#F1F6D6>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[35] 耗料及IE值</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][5][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][5][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][5][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[36] 交期</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][6][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][6][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][6][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[37] 生產進度</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][7][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][7][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[3][7][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>樣本用料 : </td>
+    <td class=b10>[41] 樣本BOM</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][1][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[42] 確認BOM</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[4][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>進出貨 : </td>
+    <td class=b10>[51] 出貨</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][1][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[52] 收貨</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#F1F6D6><input type=checkbox name="PHP_perm_dec[5][2][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>系統管理 : </td>
+    <td class=b10>[61] 工作群組</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][1][8]" value=1>刪除</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[62] 使用者設定</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[63] 系統進出記錄</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[6][3][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3>&nbsp;</td>
+    <td class=frnt bgcolor=#EDE3E3>&nbsp;</td>
+    <td class=frnt bgcolor=#EDE3E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>後勤資料 : </td>
+    <td class=b10>[71] 樣本類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[72] 款式類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][2][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][2][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[73] 供應商類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][3][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][3][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][3][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[74] 季節類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][4][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][4][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][4][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[75] 尺碼類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][5][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][5][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][5][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[76] 部門類別</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][6][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][6][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#CEE4E3><input type=checkbox name="PHP_perm_dec[7][6][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#CEE4E3>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>管理資訊 : </td>
+    <td class=b10>[81] 樣本結案分析</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[8][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=ssign>&nbsp;</td>
+    <td class=b10>[82] 樣本生產統計</td>
+    <td class=frnt bgcolor=#FCE2F8><input type=checkbox name="PHP_perm_dec[8][2][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+    <td class=frnt bgcolor=#FCE2F8>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=ssign align=center>行政事務 : </td>
+    <td class=b10>[91] 業務聯絡單</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[9][1][1]" value=1>查尋</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[9][1][2]" value=1>新增</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[9][1][4]" value=1>更新</td>
+    <td class=frnt bgcolor=#EDE3E3><input type=checkbox name="PHP_perm_dec[9][1][8]" value=1>刪除</td>
+  </tr>
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+            <tr> 
+              <td align=center><form name="add_team">
+                <input type="hidden" name="PHP_action" value="do_team_add">
+				<input type=submit value="[ 新增工作組別 ]" class=select_e style="cursor:pointer; width=100%"></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,78 @@
+{include file="header.html"}
+<div id="jquery_div"></div>
+<form METHOD="POST" id="packing_list" name="packing_list">
+<table id="main" cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td>
+			<table id='carton_standard_info' cellpadding='5' border='1'>
+				<tr>
+					<td>P.O.</td>
+					<td><input type="text" id="txt_po_no" name="po_no" value="" /></td>
+					<td rowspan=4><img src="images/Search_3D_128.png"  id="search" class="search" border="0"></td>
+				</tr>
+				<tr>
+					<td>Ship Date</td>
+					<td>
+					<font size='2' style='cursor:pointer;font-weight:bold;' id='start_calendar-trigger' color='orange'>{$pt_date}</font>
+					<input type='hidden' id='start_calendar-inputField' name='ship_date_start' size='8' value='{$pt_date}' />
+					<font size='2' color='green'>>>>></font>
+					<font size='2' style='cursor:pointer;font-weight:bold;' id='end_calendar-trigger' color='red'>{$pt_date}</font>
+					<input type='hidden' id='end_calendar-inputField' name='ship_date_end' size='8' value='{$pt_date}' />
+					</td>
+				</tr>
+				<tr>
+					<td>Carton NO</td>
+					<td>
+						<input type="text" id="txt_carton_start" name="carton_start" class="cls_static_IntValidate" style="width:50px;" value=""/>
+						<font size='2' color='green'>>>>></font>
+						<input type="text" id="txt_carton_end" name="carton_end" class="cls_static_IntValidate" style="width:50px;" value=""/>
+					</td>
+				</tr>
+				<tr>
+					<td>Ship Way</td>
+					<td>{$ship_way}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+
+</table>
+</form>
+<table>
+<tr><td><div id='carton_edit'></div></td></tr><!--使用者重新編輯箱資料-->
+<tr><td><div id='carton_list'></div></td></tr><!--使用者輸入訂單的列表-->
+<tr><td><div id='test'></div></td></tr><!--測試-->
+</table>
+{literal}
+<div id="jquery_div_4calendar"></div>
+<script type="text/javascript">
+    cal_start = Calendar.setup({
+        weekNumbers : false,
+        trigger     : "start_calendar-trigger",
+        inputField  : "start_calendar-inputField",
+        date        : {/literal}{$pt_dates}{literal} ,
+        selection   : {/literal}{$pt_dates}{literal} ,
+        showTime    : false,
+        onSelect: function() {
+            $('#start_calendar-trigger').html($('#start_calendar-inputField').val());
+            cal_start.hide();
+        }
+    });
+</script>
+<script type="text/javascript">
+    cal_end = Calendar.setup({
+        weekNumbers : false,
+        trigger     : "end_calendar-trigger",
+        inputField  : "end_calendar-inputField",
+        date        : {/literal}{$pt_dates}{literal} ,
+        selection   : {/literal}{$pt_dates}{literal} ,
+        showTime    : false,
+        onSelect: function() {
+            $('#end_calendar-trigger').html($('#end_calendar-inputField').val());
+            cal_end.hide();
+        }
+    });
+</script>
+{/literal}
+{include file="footer.html"}

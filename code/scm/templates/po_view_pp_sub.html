@@ -1,0 +1,218 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM System ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<script language="javascript" src="./js/date.js"></script>
+<script language="javascript" src="./js/col.js"></script>
+<Script language="javascript">
+
+function creat_ap(ap_num,order,mat_cat,used_id,unit,back_str){
+
+	$.blockUI({ message: '<div><br><h4>Waiting...</h4></div>'});
+	
+	var qty = $("#PHP_qty"+used_id).val();
+	var color = $("#PHP_color"+used_id).val();
+	var vendor = $("#PHP_vendor"+used_id).val();
+	
+	if ( qty <= 0 ) {
+		alert("Please Input Qty");
+		$.unblockUI();
+		return;
+	}	
+	
+	$("tr[id^=PHP_tr_"+used_id+"]").remove();
+	
+	$.unblockUI();
+	
+	self.opener.writeToAPAdd(ap_num,order,mat_cat,used_id,color,qty,unit,vendor,back_str);  	
+}
+
+function list_sup(item,cat){
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item+'&PHP_cat='+cat;	
+	style=window.open2(gofile,'supplier','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width="800",height=500, top=100, left=150');
+}
+
+function add_sup(item,cat){
+	var gofile ='index2.php?PHP_action=show_supplier_add&PHP_item='+item+'&PHP_cat='+cat;	
+	style=window.open2(gofile,'supplier','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width="800",height=500, top=100, left=150');
+}
+
+
+function writeToSupItemlList(vndr_no,supl_s_name,supl_cat,item) {
+	var i=0;
+	window.document.forms['apply_add'].elements[item].value = vndr_no;
+}
+
+</script>
+{/literal}
+</head>
+<body>
+<br>
+<form METHOD="POST" name="apply_add" action="{$PHP_SELF}">
+<body topmargin="10" onLoad="tblresize();" />
+<table border=0 cellspacing=0 cellpadding=2 cols=1 align=center id="tblShow">
+	<tr>
+		<td align=center>
+<table cellspacing=1 cellpadding=4 cols=2 width="800" bgcolor=#2E5E73>
+	<tr>
+		<td class="des" align=center height=28 ><b><span class=ylw10>Pre-Purchase	</span> ORDER : <span class=ylw10><b>{if $po_num}{$po_num}{else}POXX-XXXX{/if}</b></span> {if $ap.ap_num} &nbsp;&nbsp; Supplier : <span class=ylw10><b>{$ap.s_name}</b></span>{/if}</b></td>
+	</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width="800" id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width="800" bgcolor=#FFFFFF>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+</table>
+
+<table border cellspacing=0 cellpadding=3 width="800" bgcolor=#ffffff align=center>
+	<tr bgcolor="#003333" height=38> 
+		<td nowrap align=center class=back><b>Picture</b></td>
+		<td nowrap align=center class=back><b>Order #</b></td>
+		<td nowrap align=center class=back><b>Customer</b></td>
+		<td nowrap align=center class=back><b>Department</b></td>
+		<td nowrap align=center class=back><b>Q'ty / Unit</b></td>
+	</tr>
+	<tr bgcolor=#FFFFFF style="height:38px">
+		<td class=g10 align=center rowspan=4>&nbsp;
+			<img type="image" src="{$pic_url}" name="pic" height=120 border="0" onclick='window.open2("{$pic_url}","","height=640,width=480")' style='cursor:pointer'>
+		</td>
+		<td class=grn9 align=center><a href="javascript:Show_ord('{$id}','{$order_num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order_num}</b></a></td>
+		<td class=grn9 align=center><b>&nbsp;{$cust}</b></td>
+		<td class=grn9 align=center><b>&nbsp;{$dept}</b></td>
+		<td class=grn9 align=center><b><span class=bgdy9><b>{$qty|number_format}</b></span>&nbsp;{if $unit}{$unit}{/if}</b></td>
+	</tr>
+	<tr bgcolor="#003333" style="height:38px">
+		<td nowrap align=center class=back><b>Style</b></td>
+		<td nowrap align=center class=back><b>Factory</b></td>
+		<td nowrap align=center class=back><b>ETP</b></td>
+		<td nowrap align=center class=back><b>ETD</b></td>
+	</tr>
+	<tr bgcolor=#FFFFFF  style="height:38px">
+		<td class=grn9 align=center><b>&nbsp;{$style}</b></td>
+		<td class=grn9 align=center><b>&nbsp;{$factory}</b></td>
+		<td class=grn9 align=center><b>&nbsp;{$etp}</b></td>
+		<td class=grn9 align=center><b>&nbsp;{$etd}</b></td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width="800" bgcolor=#FFFFFF>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+</table>
+
+<!-------------  BOM table ------------->
+<!-------------  主料 bom ------------->
+<input type=hidden name="PHP_pa_num" value="{$pa_num}">
+
+<table width="800" border=1 cellspacing=1 cellpadding=1>
+	<tr>
+		<td>
+			<table width="800" border=1 cellspacing=0 cellpadding=1>
+				<!------- 主料 bom  Title --------- -->
+				{if $mat_cate == 'lots' or $mat_cate == 'l'}
+				<tr bgcolor=#D5D5BE>
+					<td class=b9 align=center><b>Fabirc #</b></td>
+					<td class=b9 align=center><b>Name</b></td>
+					<td class=b9 align=center><b><small>Purchased</small></b></td>
+					<td class=b9 align=center><b>Color/cat.</b></td>
+					<td class=b9 align=center width="150"><b>Supplier</b></td>
+					<td class=b9 align=center width="70"><b>Q'ty</b></td>
+					<td class=b9 align=center width="70"><b>Select</b></td>
+				</tr>
+				<!-------  BOM 主料記錄 --------- -->
+				{section name=BOM loop=$bom_lots_list} 
+				<tr onmouseover="bgColor='#F9E2BB'" onmouseout="bgColor='#ffffff'" id="PHP_tr_{$bom_lots_list[BOM].id}">
+					<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_fab('{$bom_lots_list[BOM].lots_code}')" value='ord_out' style='cursor:pointer'><small>{$bom_lots_list[BOM].lots_code}</small></a></td>
+					<td class=b9 align=left nowrap>&nbsp;<small>{$bom_lots_list[BOM].lots_name}</small></td>
+					<td class=b9 align=right>{if $bom_lots_list[BOM].po.po_qty > 0}<small>{$bom_lots_list[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_lots_list[BOM].po.unit}</small>{else}&nbsp;{/if}</td>
+					<td class=b9 align=center width="150px"><input type=text id="PHP_color{$bom_lots_list[BOM].id}" style="width:126px;" class=select value="{$bom_lots_list[BOM].color}"></td>
+					<td class=snvy align=center rowspan=2>&nbsp;
+						<input type=text id="PHP_vendor{$bom_lots_list[BOM].id}" size=12 class=select value="{$ap_supl}" readonly>&nbsp;
+						<img src="./images/icoSearch.gif" alt="Supplier" onClick="list_sup('PHP_vendor{$bom_lots_list[BOM].id}','FABRIC');" style="cursor:pointer" >
+						<img src="./images/add.gif" alt="Supplier ADD" onClick="add_sup('PHP_vendor{$bom_lots_list[BOM].id}','FABRIC');" style="cursor:pointer">
+					</td>					
+					<td class=snvy align=center rowspan=2><input type=text id="PHP_qty{$bom_lots_list[BOM].id}" size=4 class=select value="" style=text-align:center>&nbsp;</td>
+					<td class=snvy align=center rowspan=2><img src="images/pp.jpg" alt="Pre-Purchase" onclick="creat_ap('{$ap_num}','{$order_num}','l','{$bom_lots_list[BOM].id}','{$bom_lots_list[BOM].unit}','{$back_str}')" style='cursor:pointer'></td>
+				</tr>
+				<tr onmouseover="bgColor='#F9E2BB'" onmouseout="bgColor='#ffffff'" id="PHP_tr_{$bom_lots_list[BOM].id}">
+					<td colspan=4 class=b7 align=left>&nbsp;{$bom_lots_list[BOM].use_for}</td>
+				</tr>
+				{/section}
+				{/if}
+				
+				<!------- 副料 bom  Title --------- -->
+				{if $mat_cate == 'acc' or $mat_cate == 'a' }
+				<tr bgcolor=#D5D5BE>
+					<td class=b9 align=center><b>Accessory #</b></td>
+					<td class=b9 align=center><b>Name</b></td>
+					<td class=b9 align=center><b><small>Purchased</small></b></td>
+					<td class=b9 align=center><b>Color/cat.</b></td>
+					<td class=b9 align=center width="150"><b>Supplier</b></td>
+					<td class=b9 align=center width="70"><b>Q'ty</b></td>
+					<td class=b9 align=center width="70"><b>Select</b></td>
+				</tr>
+				<!-------  end  Title --------- -->
+
+				<!-------  BOM 副料記錄 --------- -->
+				{section name=BOM loop=$bom_acc_list} 
+				<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'" id="PHP_tr_{$bom_acc_list[BOM].id}">
+					<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_acc('{$bom_acc_list[BOM].acc_code}')" value='ord_out' style='cursor:pointer'><small>{$bom_acc_list[BOM].acc_code}</small></a></td>
+					<td class=b9 align=left nowrap>&nbsp;<small>{$bom_acc_list[BOM].acc_name}</small></td>
+					<td class=b9 align=right>{if $bom_acc_list[BOM].po.po_qty > 0}<small>{$bom_acc_list[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_acc_list[BOM].po.unit}</small>{else}&nbsp;{/if}</td>
+					<td class=b9 align=center width="150px"><input type=text id="PHP_color{$bom_acc_list[BOM].id}" style="width:126px;" class=select value="{$bom_acc_list[BOM].color}"></td>
+					<td class=snvy align=center rowspan=2>&nbsp;
+						<input type=text id="PHP_vendor{$bom_acc_list[BOM].id}" size=12 class=select value="{$ap_supl}" readonly>&nbsp;
+						<img src="./images/icoSearch.gif" alt="Supplier" onClick="list_sup('PHP_vendor{$bom_acc_list[BOM].id}','ACCESSORY');" style="cursor:pointer">
+						<img src="./images/add.gif" alt="Supplier ADD" onClick="add_sup('PHP_vendor{$bom_acc_list[BOM].id}','ACCESSORY');" style="cursor:pointer">
+					</td>
+					<input type=hidden name="PHP_acc_eta{$bom_acc_list[BOM].id}" value="{$bom_acc_list[BOM].eta}" >
+					<input type=hidden name="PHP_acc_up{$bom_acc_list[BOM].id}"  value="{$bom_acc_list[BOM].price1}" >
+					<input type=hidden name="PHP_acc_code{$bom_acc_list[BOM].id}"  value="{$bom_acc_list[BOM].acc_code}" >
+					<td class=snvy align=center rowspan=2><input type=text id="PHP_qty{$bom_acc_list[BOM].id}" size=3 class=select value=""></td>
+					<td class=snvy align=center rowspan=2><input type=button class=select value="ADD" onclick=creat_ap('{$ap_num}','{$order_num}','a','{$bom_acc_list[BOM].id}','{$bom_acc_list[BOM].unit}','{$back_str}')></td>
+				</tr>
+				<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'" id="PHP_tr_{$bom_acc_list[BOM].id}">
+					<td class=b7 align=left colspan=4><small>&nbsp;{$bom_acc_list[BOM].use_for}</small></td>
+				</tr>
+				{/section}
+				{/if}
+			</table>
+		</td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width="800" bgcolor=#FFFFFF>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=2 cols=2 width="800">
+	<tr>
+		<td>
+			<input type=button onClick="window.location.href='po.php{$back_str}'" value="<< Go Back" class=select_e style="cursor:pointer; width=99%">
+		</td>
+	</tr>			      			
+</table>
+		</td>	
+	</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

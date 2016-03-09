@@ -1,0 +1,108 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+
+<script language="javascript">
+var transaction;
+var sUrl;
+
+function show_rpt(back_str)
+{
+	var su = window.document.forms['mon_rpt'].elements['SCH_su'].checked;
+	var pc = window.document.forms['mon_rpt'].elements['SCH_pc'].checked;
+	if(pc){pc=1}else{pc=0};
+	if(su){su=1}else{su=0};
+	//alert(pc);
+		window.location='monitor.php?PHP_action=dm_view&PHP_excel=0&SCH_su='+su+'&SCH_pc='+pc+back_str;
+}
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form METHOD="POST" name="mon" action="{$PHP_SELF}">
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+ <table width=600 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=14 align=center class=gry><b>MONITOR DAILY OUT-PUT LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=150 align=center><b>Out-Put Date</b></td>
+    <td class=w9 width=150 align=center><b>Factory</b></td>
+    <td class=w9 width=150 align=center><font color=yellow><b>Out-Put (pc.) </b></font></td> 
+    <td class=w9 width=150 align=center><font color=yellow><b>Out-Put (su.) </b></font></td>
+  </tr>
+{section name=SEC loop=$monitor}
+<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+<!--*****--2006.11.16頁碼新增 start	  -->
+   <td class=gry9 align=center nowrap><small><a href="monitor.php?PHP_action=dm_daily_viewe&PHP_date={$monitor[SEC].out_date}&PHP_fty={$monitor[SEC].fty}{$back_str}&PHP_sr_startno={$now_pp}">{$monitor[SEC].out_date}</a></small></td>
+<!--*****--2006.11.16頁碼新增 end	  -->   
+   <td class=gry9 align=center><b>{$monitor[SEC].fty}&nbsp;</b></td>
+   <td class=snvy align=right><b><i>{if $monitor[SEC].holiday == 1}Holiday{else}{$monitor[SEC].sum_qty|number_format}{/if}&nbsp;</i></b></td> 
+   <td class=snvy align=right><b><i>{if $monitor[SEC].holiday == 1}Holiday{else}{$monitor[SEC].sum_su|number_format}{/if}&nbsp;</i></b></td>    
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=7 align=center><span class=bgdy>※ message </font>:above list {if $msg_YES} SEARCH {/if}{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='monitor.php?PHP_action=dm_search{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="monitor.php?PHP_action=dm_search{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='monitor.php?PHP_action=dm_search{$back_str}&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->
+    </td></form>
+    <form METHOD="POST" name="mon_rpt" action="{$PHP_SELF}">
+		<td align=center width=10 class=frnt>							
+			<input type=checkbox value="1" name="SCH_su" checked><b>SU.</b>
+		</td>
+		<td align=center width=10 class=frnt>							
+			<input type=checkbox value="1" name="SCH_pc"><b>PC.</b>
+		</td>
+		<td align=center width=80>							
+				<input type=button onClick="show_rpt('{$back_str}')" value="Report" width=95% {if $disable == 1}disabled=true{else} class=select_e style="cursor:pointer;"{/if}>							
+		</td>
+		 <form>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

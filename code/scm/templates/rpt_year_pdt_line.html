@@ -1,0 +1,361 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function line_det(yy,mm,fty,sex)
+{
+		gofile="monitor.php?PHP_action=line_mm_report&PHP_year1="+yy+"&PHP_mm="+mm+"&PHP_fty="+fty+"&PHP_sex="+sex;
+		window.open(gofile,'_new','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=740,height=600 top=30, left=100');
+}
+function overtime_det(fty,yy,mm)
+{
+		gofile="monitor.php?PHP_action=month_overtime_report&PHP_year="+yy+"&PHP_mm="+mm+"&PHP_fty="+fty;
+		window.open(gofile,'_new','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=740,height=600 top=30, left=100');
+
+}
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77">
+
+
+ <table width=800 border=0 cellspacing=0 cellpadding=2>
+  <tr class="top16bg">  
+    <td width=30>&nbsp;</td>  
+	<td  width=690  align=center class="top16bg"><b>Monthly Production Analysis by [Factory :  {$fty}]</b></td>
+	<td width=60 align=center class="txt_B_y_16t"><b> &nbsp;FY:{$year}&nbsp;&nbsp;</b></td>
+  </tr>
+{if $msg}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+ </table>
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w10 align=center colspan=14><b>{if $fty == 'HJ'}湖嘉{else}立元{/if}廠每月產出</b></td>    
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+  	<td class=w9 width=60 align=center>&nbsp;</td>
+  	{section name=SEC loop=$mon} 
+    	<td class=w9 width=45 align=center>
+    	<a href=javascript:line_det('{$year}','{$nb_mon[SEC]}','{$fty}','')>
+    		<font color='#FFFFFF'>{$mon[SEC]}</font></a>    		
+    	</td>    
+    {/section}
+    <td class=w9 width=45 align=center><font color='#FFFFFF'>SUM</font></td>
+  </tr>
+    <tr>
+    <td class=b9 align=center><b>生產線數(ln)</b></td>	
+    {section name=SEC loop=$line_count}     
+    	<td class=b9 align=right>{if $line_count[SEC] > 0}{$line_count[SEC]}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>生產線月產量(su)</b></td>	
+    {section name=SEC loop=$pdt_line}     
+    	<td class=b9 align=right>{if $line_ttl[SEC] > 0}{$line_ttl[SEC]|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <td class=b9 align=center><b>生產線日平均(su)</b></td>	
+    {section name=SEC loop=$pdt_line}     
+    	<td class=b9 align=right>{if $pdt_line[SEC] > 0}{$pdt_line[SEC]|number_format:"2f"}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>   
+{if $fty == 'LY'}
+    <td class=b9 align=center><b>正常工作產量(su)</b></td>	
+    {section name=SEC loop=$wk_qty}     
+    	<td class=b9 align=right>{if $wk_qty[SEC] > 0}{$wk_qty[SEC]|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>  
+    <td class=b9 align=center><b>加班工作產量(su)</b></td>	
+    {section name=SEC loop=$ot_qty}     
+    	<td class=b9 align=right>{if $ot_qty[SEC] > 0}{$ot_qty[SEC]|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>       
+{/if}
+    <tr>
+    <td class=b9 align=center><b>工人日平均(su)</b></td>	
+    {section name=SEC loop=$pdt_pp}     
+    	<td class=b9 align=right>{if $pdt_pp[SEC] > 0}<B>{$pdt_pp[SEC]|number_format:"2f"}</B>{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>日產量達成比/人</b></td>	
+    {section name=SEC loop=$pp_rate}     
+    	<td class=b9 align=right>{if $pp_rate[SEC] > 0}{$pp_rate[SEC]|number_format:"2f"}%{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+{if $fty == 'LY'}
+    <tr>
+    <td class=b9 align=center><b>加班時間比</b></td>	
+    {section name=SEC loop=$overtime}     
+    	<td class=b9 align=right>&nbsp;{if $overtime[SEC] > 0}<a href="javascript:overtime_det('LY','{$year}','{$mon[SEC]}')">{$overtime[SEC]|number_format:"2f"}% </a>{/if}</td>
+    {/section} 
+    </tr> 
+<!--    
+    <tr>
+    <td class=b9 align=center><b>加班成本比</b></td>	
+    {section name=SEC loop=$overcost}     
+    	<td class=b9 align=right>&nbsp;{if $overcost[SEC] > 0}{$overcost[SEC]|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr>  
+-->    
+    <tr>
+    <td class=b9 align=center><b>達成效率</b></td>	
+    {section name=SEC loop=$overcost}     
+    	<td class=b9 align=right>&nbsp;{if $cost_rate[SEC] > 0 && $overcost[SEC] > 0}{$cost_rate[SEC]|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr>        
+{/if}    
+</table>
+{if $fty == 'HJ'}
+ <table width=800 border=0 cellspacing=0 cellpadding=2>
+  <tr height=30　> 
+		<td align=right><a href="monitor.php?PHP_action=production_year_report_det&PHP_fty={$fty}&PHP_year1={$year}"  style="cursor:pointer">＜＜Detail＞＞</a></td>
+
+  </tr>
+</table>
+{/if}
+
+
+{if $man}
+ <table width=740 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w10 align=center colspan=13><b>{if $fty == 'HJ'}湖嘉{else}立元{/if}廠每月產出  -- 男裝</b></td>    
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+  	<td class=w9 width=60 align=center>&nbsp;</td>
+  	{section name=SEC loop=$mon} 
+    	<td class=w9 width=45 align=center>
+    	<a href=javascript:line_det('{$year}','{$nb_mon[SEC]}','{$fty}','')>
+    		<font color='#FFFFFF'>{$mon[SEC]}</font>
+    	</a>
+    		
+    	</td>    
+    {/section}
+  </tr>
+    <tr>
+    <td class=b9 align=center><b>生產線數</b></td>	
+    {section name=SEC loop=$man}     
+    	<td class=b9 align=right>{$man[SEC].line_count}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>生產線日平均</b></td>	
+    {section name=SEC loop=$man}     
+    	<td class=b9 align=right>{$man[SEC].pdt_line|number_format:"2f"}</td>
+    {/section} 
+    </tr>   
+
+    <tr>
+    <td class=b9 align=center><b>工人日平均</b></td>	
+    {section name=SEC loop=$man}     
+    	<td class=b9 align=right><B>{$man[SEC].pdt_pp|number_format:"2f"}</B></td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>日產量達成比/人</b></td>	
+    {section name=SEC loop=$man}     
+    	<td class=b9 align=right>{$man[SEC].pp_rate|number_format:"2f"}</td>
+    {/section} 
+    </tr> 
+    
+</table>
+{/if}
+
+
+
+{if $girl}
+ <table width=740 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w10 align=center colspan=13><b>{if $fty == 'HJ'}湖嘉{else}立元{/if}廠每月產出  -- 女裝</b></td>    
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+  	<td class=w9 width=60 align=center>&nbsp;</td>
+  	{section name=SEC loop=$mon} 
+    	<td class=w9 width=45 align=center>{$mon[SEC]}</td>    
+    {/section}
+  </tr>
+    <tr>
+    <td class=b9 align=center><b>生產線數</b></td>	
+    {section name=SEC loop=$girl}     
+    	<td class=b9 align=right>{$girl[SEC].line_count}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>生產線日平均</b></td>	
+    {section name=SEC loop=$girl}     
+    	<td class=b9 align=right>{$girl[SEC].pdt_line|number_format:"2f"}</td>
+    {/section} 
+    </tr>   
+
+    <tr>
+    <td class=b9 align=center><b>工人日平均</b></td>	
+    {section name=SEC loop=$girl}     
+    	<td class=b9 align=right><B>{$girl[SEC].pdt_pp|number_format:"2f"}<B></td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>日產量達成比/人</b></td>	
+    {section name=SEC loop=$girl}     
+    	<td class=b9 align=right>{$girl[SEC].pp_rate|number_format:"2f"}</td>
+    {/section} 
+    </tr> 
+    
+</table>
+{/if}
+
+{if $LY}
+<BR>
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w10 align=center colspan=14><b>立元本廠每月產出</b></td>    
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+  	<td class=w9 width=60 align=center>&nbsp;</td>
+  	{section name=SEC loop=$mon} 
+    	<td class=w9 width=45 align=center>
+    	<a href=javascript:line_det('{$year}','{$nb_mon[SEC]}','{$fty}','')>
+    		<font color='#FFFFFF'>{$mon[SEC]}</font></a>    		
+    	</td>    
+    {/section}
+    	<td class=w9 width=45 align=center><font color='#FFFFFF'>SUM</font></td>     
+  </tr>
+    <tr>
+    <td class=b9 align=center><b>生產線數(ln)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].line_count > 0}{$LY[SEC].line_count}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>生產線月產量(su)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].line_ttl > 0}{$LY[SEC].line_ttl|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <td class=b9 align=center><b>生產線日平均(su)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].pdt_line > 0}{$LY[SEC].pdt_line|number_format:"2f"}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>   
+    <td class=b9 align=center><b>正常工作產量(su)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].wk_qty > 0}{$LY[SEC].wk_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>  
+    <td class=b9 align=center><b>加班工作產量(su)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].ot_qty > 0}{$LY[SEC].ot_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>       
+    <tr>
+    <td class=b9 align=center><b>工人日平均(su)</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].pdt_pp > 0}<B>{$LY[SEC].pdt_pp|number_format:"2f"}</B>{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>日產量達成比/人</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>{if $LY[SEC].pp_rate > 0}{$LY[SEC].pp_rate|number_format:"2f"}%{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>加班時間比</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>&nbsp;{if $LY[SEC].overtime > 0}{$LY[SEC].overtime|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr> 
+ 
+    <tr>
+    <td class=b9 align=center><b>達成效率</b></td>	
+    {section name=SEC loop=$LY}     
+    	<td class=b9 align=right>&nbsp;{if $LY[SEC].cost_rate > 0}{$LY[SEC].cost_rate|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr>   
+</table>
+{/if}
+
+
+{if $LA}
+<BR>
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w10 align=center colspan=14><b>隆安廠每月產出</b></td>    
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+  	<td class=w9 width=60 align=center>&nbsp;</td>
+  	{section name=SEC loop=$mon} 
+    	<td class=w9 width=45 align=center>
+    	<a href=javascript:line_det('{$year}','{$nb_mon[SEC]}','{$fty}','')>
+    		<font color='#FFFFFF'>{$mon[SEC]}</font></a>    		
+    	</td>    
+    {/section}
+    <td class=w9 width=45 align=center><font color='#FFFFFF'>SUM</font></td>
+  </tr>
+    <tr>
+    <td class=b9 align=center><b>生產線數(ln)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].line_count > 0}{$LA[SEC].line_count}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>生產線月產量(su)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].line_ttl > 0}{$LA[SEC].line_ttl|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <td class=b9 align=center><b>生產線日平均(su)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].pdt_line > 0}{$LA[SEC].pdt_line|number_format:"2f"}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>   
+    <td class=b9 align=center><b>正常工作產量(su)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].wk_qty > 0}{$LA[SEC].wk_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>  
+    <td class=b9 align=center><b>加班工作產量(su)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].ot_qty > 0}{$LA[SEC].ot_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr>       
+    <tr>
+    <td class=b9 align=center><b>工人日平均(su)</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].pdt_pp > 0}<B>{$LA[SEC].pdt_pp|number_format:"2f"}</B>{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>日產量達成比/人</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>{if $LA[SEC].pp_rate > 0}{$LA[SEC].pp_rate|number_format:"2f"}%{else}&nbsp;{/if}</td>
+    {/section} 
+    </tr> 
+    <tr>
+    <td class=b9 align=center><b>加班時間比</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>&nbsp;{if $LA[SEC].overtime > 0}{$LA[SEC].overtime|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr> 
+ 
+    <tr>
+    <td class=b9 align=center><b>達成效率</b></td>	
+    {section name=SEC loop=$LA}     
+    	<td class=b9 align=right>&nbsp;{if $LA[SEC].cost_rate > 0}{$LA[SEC].cost_rate|number_format:"2f"}%{/if}</td>
+    {/section} 
+    </tr>   
+</table>
+{/if}
+<!--------- footer ---------->
+{include file="footer.html"}

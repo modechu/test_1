@@ -1,0 +1,53 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM  ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+	<script language="javascript">
+  
+	</script>
+	{/literal}
+</head>
+<body>
+
+<table border=0 cellspacing=1 cellpadding=1 width=500 bgcolor=#FFFFFF>
+  <tr bgcolor=#003300>
+     <td class="des" align=center height=30><b>Received Q'TY List</b></td>
+  </tr>
+</table>
+<br>
+<table border=1 cellspacing=1 cellpadding=1 width=500 bgcolor=#FFFFFF>
+  <tr bgcolor=#eeeeee>
+     <td class=frnt align=center width=100><b>Ship #</b></td>
+     <td class=frnt align=center width=100><b>B.L.#</b></td>
+	 <td class=frnt align=center width=80><b>Date</b></td>
+	 <td class=frnt align=center width=30><b>D'L</b></td>
+	 <td class=frnt align=center width=30><b>R no</b></td>
+	 <td class=frnt align=center width=80><b>Q'ty</b></td>
+	 <td class=frnt align=center width=80><b>Apb #</b></td>
+  </tr>
+{section name=SEC loop=$rcvd} 
+  <tr>
+     <td class=frnt align=center>S{$rcvd[SEC].ship_id}</td>
+     <td class=frnt align=center>{$rcvd[SEC].bl_num}</td>
+	 <td class=frnt align=center>{$rcvd[SEC].open_date|date_format:"%Y-%m-%d"}</td>
+	 <td class=frnt align=center>{$rcvd[SEC].l_no}&nbsp;</td>
+	 <td class=frnt align=center>{$rcvd[SEC].r_no}&nbsp;</td>
+     <td class=frnt align=center>{$rcvd[SEC].qty}</td>
+	 <td class=frnt align=center>{$rcvd[SEC].apb_num}&nbsp;</td>
+  </tr>
+{/section}
+</table>
+<br><br>
+<br>
+<table border=0 cellpadding=2 width=450 align=center>
+<tr><td align=center><img src="./images/line6.gif" height=1 width=450></td></tr>
+<tr>
+  <td align=center class=gry9><small class="gry9">&copy;&nbsp;CARNIVAL, COPY Right and All Right Reserved.</small></td>
+</tr>
+</table>
+</body>
+<!--------- footer 
+{include file="footer.html"}
+---------->

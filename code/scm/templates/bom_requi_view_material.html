@@ -1,0 +1,115 @@
+{include file="header_utf8.html"}
+<table cellpadding="0" cellspacing="0" cols="0" class="title_bg">
+	<tr>
+		<td class="title_l"> Materials release ( Factory ) : View Sends the material plan ( Order # <a href="javascript:Show_ord('{$id}','{$order_num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order_num}</b></a> ) </td>
+		<td class="title_m">[ {if $status == 2}{literal}Submit{/literal}{elseif $status == 4}{literal}Confirm{/literal}{else}{literal}UN Submit{/literal}{/if} ]</b></td>
+		<td class="title_r">Version : <b>{$version}</b></td>
+        <td class="title_r">{if $status >= 2}<img id="do_send_material_revise" name="submit_ajax" src='./images/revise21.jpg?' border=0 title="REVISE">{/if}</td>
+	</tr>
+</table>
+<form METHOD="POST" id="do_added_send_material" action="{$PHP_SELF}?PHP_action=do_added_send_material">
+<table cellpadding="0" cellspacing="0" cols="0" class="txt_item">
+	<tr>
+		<td>
+            <table>
+                <tr>
+                    <td valign="top">{$pic_url}</td>
+                    <td valign="top">
+                        <table>
+                            <tr>
+                                <td class="txt_item_r">Cust. : </td>
+                                <td class="txt_item_l">{$cust_iname}</td>
+                                <td class="txt_item_r">Dept. : </td>
+                                <td class="txt_item_l">{$dept}</td>
+                                <td class="txt_item_r">ETD : </td>
+                                <td class="txt_item_l">{$etd}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">Style : </td>
+                                <td class="txt_item_l">{$style}</td>
+                                <td class="txt_item_r">SIZE RANGE : </td>
+                                <td class="txt_item_l">{$size_scale}</td>
+                                <td class="txt_item_r">Q'ty / Unit :</td>
+                                <td class="txt_item_l">{$qty|NUMBER_FORMAT} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"><hr></td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r2">Send No. : </td>
+                                <td class="txt_item_l2">RN{$rn_num}</td>
+                                <input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+                                <td class="txt_item_r2">Line # : </td>
+                                <td class="txt_item_l2">{$line}</td>
+                                <td class="txt_item_r2">SEND Q'ty : </td>
+                                <td class="txt_item_l2">{$send_qty} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <table>
+                                        <tr>
+                                            <td valign="top">{$PHTML}</td>
+                                            <td valign="top">{$CHTML}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <input id="list" type="button" class="submit_ajax" style="width:32%;" value="List">
+                                    {if $status == 0}<input id="do_send_material_submit" type="button" class="submit_ajax" style="width:32%;" value="Submit">{/if}
+                                    {if $admin_flag && $status == 2}<input id="do_send_material_confirm" type="button" class="submit_ajax" style="width:32%;" value="[ Confirm ]">{/if}
+                                    {if $status == 0}<input id="bom_requi_edit_material" type="button" class="submit_ajax" style="width:32%;" value="Edit">{/if}
+                                </td>
+                            </tr>	
+                        </table>
+                        <input type="hidden" name="PHP_factory" value="{$factory}"/>
+                        <input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+                        <input type="hidden" name="PHP_id" value="{$wi_id}"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+	</tr>
+    <tr>
+		<td><hr></td>
+	</tr>
+	<tr>
+		<td>{$BHTML}</td>
+	</tr>
+	<tr>
+		<td align="right" class="txt_status">{if $cfm_user}Confirm：{$cfm_user} ( {$cfm_date|date_format:"%Y-%m-%d"} ) / {/if}  {if $sub_user}Submit：{$sub_user} ( {$sub_date|date_format:"%Y-%m-%d"} ){/if}</td>
+	</tr>
+	<tr>
+		<td><hr></td>
+	</tr>
+    <tr>
+        <td>
+            <input id="list" type="button" class="submit_ajax" style="width:32%;" value="List">
+            {if $status == 0}<input id="do_send_material_submit" type="button" class="submit_ajax" style="width:32%;" value="Submit">{/if}
+            {if $admin_flag && $status == 2 }<input id="do_send_material_confirm" type="button" class="submit_ajax" style="width:32%;" value="[ Confirm ]">{/if}
+            {if $status == 0}<input id="bom_requi_edit_material" type="button" class="submit_ajax" style="width:32%;" value="Edit">{/if}
+        </td>
+    </tr>	
+</table>
+</form>
+<form METHOD="POST" id="list" action="{$PHP_SELF}?PHP_action=bom_mat_release_search"></form>
+<form METHOD="POST" id="do_send_material_submit" action="{$PHP_SELF}?PHP_action=do_send_material_submit">
+<input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+</form>
+<form METHOD="POST" id="do_send_material_confirm" action="{$PHP_SELF}?PHP_action=do_send_material_confirm">
+<input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+</form>
+<form METHOD="POST" id="bom_requi_edit_material" action="{$PHP_SELF}?PHP_action=bom_requi_edit_material">
+<input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+</form>
+<form METHOD="POST" id="do_send_material_revise" action="{$PHP_SELF}?PHP_action=do_send_material_revise">
+<input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+</form>
+<input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+<input type="hidden" name="PHP_id" value="{$wi_id}"/>
+{include file="footer_utf8.html"}

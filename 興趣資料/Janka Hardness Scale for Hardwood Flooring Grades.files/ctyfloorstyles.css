@@ -1,0 +1,201 @@
+body {
+	margin: 3px; padding: 0px; color: rgb(0, 0, 0); font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; background-color: rgb(235, 235, 215);
+}
+img {
+	border: 0px currentColor;
+}
+.keyline {
+	border: 1px solid rgb(0, 0, 0);
+}
+.floater {
+	margin: 6px 0px 6px 12px; float: right;
+}
+.keylinefloat {
+	margin: 6px 0px 6px 12px; border: 1px solid rgb(0, 0, 0); float: right;
+}
+p {
+	color: rgb(0, 0, 0); line-height: 135%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; margin-top: 0px; margin-bottom: 11px;
+}
+td.store {
+	color: rgb(0, 0, 0); line-height: 135%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px;
+}
+th.store {
+	font-size: 12px;
+}
+td {
+	color: rgb(0, 0, 0); line-height: 135%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px;
+}
+div.woodlist {
+	margin: 6px 0px 12px; padding: 3px; width: 144px; float: right; background-color: rgb(204, 204, 153);
+}
+div.wooddesc {
+	width: 384px;
+}
+div.woodspot {
+	margin: 5px; width: 150px;
+}
+h1 {
+	color: rgb(102, 102, 51); line-height: 125%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 16px; font-weight: bold; margin-top: 0px; margin-bottom: 12px;
+}
+h2 {
+	color: rgb(102, 51, 51); text-transform: uppercase; line-height: 130%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; margin-top: 15px; margin-bottom: 6px;
+}
+h3 {
+	color: rgb(0, 0, 0); line-height: 135%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; margin-top: 15px; margin-bottom: 3px;
+}
+h3.subsub {
+	margin: 0px; padding: 6px 0px 0px 144px; color: rgb(102, 102, 102); border-top-color: rgb(153, 153, 153); border-top-width: 1px; border-top-style: dotted;
+}
+h4 {
+	text-align: center; color: rgb(0, 0, 0); text-transform: uppercase; line-height: 130%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold; margin-top: 6px; margin-bottom: 0px;
+}
+h5 {
+	margin: 3px 0px; text-align: center; color: rgb(67, 67, 67); line-height: 16px; padding-bottom: 6px; font-family: Georgia, "Book Antiqua", Palatino, "Palatino Linotype", "Times New Roman", "Times New Roman CE", Times, "New York", "Minion Web", "Zapf Calligraphic", Garamond, serif; font-size: 13px; font-weight: bold; border-bottom-color: rgb(67, 67, 67); border-bottom-width: 1px; border-bottom-style: dotted;
+}
+h6 {
+	margin: 12px 0px; color: rgb(0, 0, 0); line-height: 12px; padding-left: 6px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; border-left-color: rgb(204, 0, 102); border-left-width: 12px; border-left-style: solid;
+}
+ol {
+	color: rgb(0, 0, 0); line-height: 125%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; margin-top: 0px; margin-bottom: 11px;
+}
+ul {
+	color: rgb(0, 0, 0); line-height: 125%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; margin-top: 0px; margin-bottom: 11px; list-style-type: square;
+}
+li {
+	color: rgb(0, 0, 0); line-height: 125%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; margin-top: 0px; margin-bottom: 3px;
+}
+dl {
+	margin: 0px 0px 11px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px;
+}
+dt {
+	margin: 9px 0px 3px; color: rgb(102, 102, 51); line-height: 125%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; font-weight: bold;
+}
+dd {
+	margin: 0px 0px 18px; padding: 0px 0px 6px; color: rgb(0, 0, 0); line-height: 135%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 11px; border-bottom-color: rgb(102, 102, 51); border-bottom-width: 1px; border-bottom-style: solid;
+}
+strong {
+	font-weight: bold;
+}
+em {
+	font-style: italic;
+}
+u {
+	text-decoration: underline;
+}
+sup {
+	line-height: 50%; font-size: 9px;
+}
+sub {
+	line-height: 50%; font-size: 9px;
+}
+p.pullquote {
+	margin: 6px; text-align: center; color: rgb(102, 51, 51); line-height: 150%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold;
+}
+p.caption {
+	margin: 3px 0px; text-align: center; color: rgb(0, 0, 0); line-height: 100%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;
+}
+p.caption {
+	margin: 3px 0px; text-align: center; color: rgb(0, 0, 0); line-height: 100%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold;
+}
+.salesinfo {
+	margin: 3px; text-align: center; line-height: 130%; font-size: 10px;
+}
+.fadetext {
+	color: rgb(102, 102, 102); font-size: 10px;
+}
+.grayout {
+	color: rgb(102, 102, 102);
+}
+a:link {
+	color: rgb(0, 51, 255); text-decoration: none;
+}
+a:visited {
+	color: rgb(153, 51, 255); text-decoration: none;
+}
+a:hover {
+	color: rgb(204, 0, 102); text-decoration: underline;
+}
+a:active {
+	color: rgb(153, 51, 102); text-decoration: underline;
+}
+.bottomnav {
+	margin: 3px 0px; text-align: center; text-transform: uppercase; line-height: 16px; font-size: 9px; font-weight: bold;
+}
+.fineprint {
+	margin: 3px 0px; text-align: center; text-transform: uppercase; line-height: 14px; font-size: 7px; font-weight: bold;
+}
+span.navfooteractive {
+	color: rgb(153, 153, 153);
+}
+a.footernav:link {
+	color: rgb(102, 0, 0); text-decoration: none;
+}
+a.footernav:visited {
+	color: rgb(102, 0, 0); text-decoration: none;
+}
+a.footernav:hover {
+	color: rgb(102, 102, 51); text-decoration: underline;
+}
+a.footernav:active {
+	color: rgb(102, 102, 51); text-decoration: underline;
+}
+p.subnavpara {
+	margin: 6px 0px 9px; text-transform: uppercase; line-height: 9px; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; font-weight: bold;
+}
+a.subnav:link {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(102, 51, 51); text-decoration: none; background-color: rgb(204, 204, 153);
+}
+a.subnav:visited {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(102, 51, 51); text-decoration: none; background-color: rgb(204, 204, 153);
+}
+a.subnav:hover {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: underline; background-color: rgb(102, 51, 51);
+}
+a.subnav:active {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: underline; background-color: rgb(102, 51, 51);
+}
+a.subnavcurrent:link {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: none; background-color: rgb(102, 51, 51);
+}
+a.subnavcurrent:visited {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: none; background-color: rgb(102, 51, 51);
+}
+a.subnavcurrent:hover {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: underline; background-color: rgb(102, 51, 51);
+}
+a.subnavcurrent:active {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(255, 255, 255); text-decoration: underline; background-color: rgb(102, 51, 51);
+}
+span.subnavinactive {
+	border-width: 2px; border-style: solid; border-color: rgb(204, 204, 204) rgb(153, 153, 153) rgb(102, 102, 102) rgb(51, 51, 51); padding: 2px 3px; color: rgb(102, 102, 51); text-decoration: none; background-color: rgb(204, 204, 153);
+}
+ul.listnav {
+	margin: 3px 0px 3px 15px; padding: 0px; text-align: left; color: rgb(0, 0, 0); line-height: 110%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px; list-style-type: square;
+}
+ul.listnav li {
+	line-height: 110%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;
+}
+li.navlist {
+	line-height: 110%; font-family: Verdana, Geneva, Arial, Helvetica, sans-serif; font-size: 9px;
+}
+div.price {
+	color: rgb(102, 102, 51); font-size: 14px; font-weight: bold;
+}
+table#chop {
+	text-align: center; margin-top: 60px; display: block;
+}
+a.aplomb {
+	text-transform: uppercase; font-family: Verdana, Arial, Helvetica, Geneva, sans-serif; font-size: 9px;
+}
+a.aplomb:link {
+	color: rgb(176, 176, 165); text-decoration: none;
+}
+a.aplomb:visited {
+	color: rgb(176, 176, 165); text-decoration: none;
+}
+a.aplomb:hover {
+	color: rgb(176, 176, 165); text-decoration: underline;
+}
+a.aplomb:active {
+	color: rgb(176, 176, 165); text-decoration: underline;
+}

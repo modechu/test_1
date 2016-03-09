@@ -1,0 +1,192 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 主料記錄 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id) {
+	if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 樣本記錄:["+ref+"]??")) {
+	location.href="index2.php?PHP_action=smpl_del&PHP_id="+id;
+	} 
+ }
+function check(){
+}
+
+function list(item,cat){
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item+'&PHP_cat='+cat;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+
+function add_sup(item,cat){
+	var gofile ='index2.php?PHP_action=show_supplier_add&PHP_item='+item+'&PHP_cat='+cat;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+function writeToSupItemlList(vndr_no,supl_s_name,supl_cat,item) {
+	var i=0;
+	if (item == 'vendor1') window.document.forms['lots_add'].elements['PHP_vendor1'].value = vndr_no;
+	if (item == 'vendor2') window.document.forms['lots_add'].elements['PHP_vendor2'].value = vndr_no;
+	if (item == 'vendor3') window.document.forms['lots_add'].elements['PHP_vendor3'].value = vndr_no;
+
+}
+</script>
+{/literal}
+</head>
+<body ><form METHOD="POST" name="lots_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <b><span class=sign>Append</span>&nbsp;Fabric record </b>] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  	<tr><td colspan=4>
+  		<table border=0 cellspacing=0 cellpadding=1 width=500 bgcolor=#FFFFFF>
+  <tr>
+  <td colspan=4 class=snvy align=left><b>FABRIC Category :</b></td>
+  </tr>     
+   <tr>
+   	<td class=snvy align=right><b>Fabric kind : </b></td>
+    <td class=frnt align=left>&nbsp<input type="radio" value="W" name="PHP_cat1">&nbsp;<b>Woven</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="K" name="PHP_cat1">&nbsp;<b>Knit</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="H" name="PHP_cat1">&nbsp;<b>Others</b></td>
+  </tr>
+   <tr>
+   	<td class=snvy align=right><b>Content : </b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="C" name="PHP_cat2">&nbsp;<b>100%Cotton</b></td>
+    <td class=frnt align=left>&nbsp<input type="radio" value="W" name="PHP_cat2">&nbsp;<b>100%Wool</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="P" name="PHP_cat2">&nbsp;<b>100%Poly</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="N" name="PHP_cat2">&nbsp;<b>100%Nylon</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="H" name="PHP_cat2">&nbsp;<b>Others</b></td>
+  </tr>
+</table>
+</td><tr>
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>FABRIC # :</b></td>
+     <td wdith=100 class=frnt align=left bgcolor=#CEE4E3 nowrap >&nbsp;<b>{$lots.lots_code}</b></td>
+    <input type=hidden name="PHP_lots_code" value="{$lots.lots_code}">
+   <td class=snvy align=right><b>Customer# :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$cust_select}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right><b>&nbsp;</b></td>
+     <td wdith=100 class=frnt align=left bgcolor=#CEE4E3 nowrap >&nbsp;</td>    
+   <td class=snvy align=right><b>FABRIC Name :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_lots_name" size=45 class=select value="{$lots.lots_name}" maxlength=20 onkeyup=value=value.replace(/[^\w\-]/ig,'')></td>
+  </tr>  
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>Supplier's code :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_des" size=45 class=select value="{$lots.des}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>Content :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_comp" size=45 class=select value="{$lots.comp}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>Construction :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_specify" size=45 class=select value="{$lots.specify}"></td>
+  </tr>
+    <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>CuttablWidth :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_width" size=45 class=select value="{$lots.width}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>weight :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_weight" size=45 class=select value="{$lots.weight}" onkeyup=value=value.replace(/[^\d]/g,'')></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>Finish :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_cons" size=45 class=select value="{$lots.cons}"></td>
+  </tr>  
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right><b>Remark :</b></td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;<input type=text name="PHP_memo" size=45 class=select value="{$lots.memo}"></td>
+  </tr>   
+  <tr>
+   <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+
+		<table border=1 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr bgcolor=#31657B height=20>
+    <td class=w10 align=center><b>Supplier #</b></td>
+    <td class=w10 align=center><b>Term</b></td>
+    <td class=w10 align=center><b>Price</b></td>
+    <td class=w10 align=center><b>Unit</b></td>
+    <td class=w10 align=center><b>Currency</b></td>
+    
+  </tr>
+  <tr bgcolor=#cccccc>
+    <td class=w10 align=center>&nbsp;
+    	<input type=text name="PHP_vendor1" size=12 class=select value="{$lots.vendor1}" readonly>
+    	<img src="./images/icoSearch.gif" alt="Supplier" onClick="list('vendor1','FABRIC');" style="cursor:pointer">
+    	<img src="./images/add.gif" alt="Supplier" onClick="add_sup('vendor1','FABRIC');" style="cursor:pointer">    
+    </td>
+    <td class=w10 align=center>&nbsp;{$term1}</td>
+    <td class=w10 align=center>&nbsp;<input type=text name="PHP_price1" size=4 class=select value="{$lots.price1}"></td>
+    <td class=w10 align=center>&nbsp;{$unit1}</td>
+    <td class=w10 align=center>&nbsp;{$currency1}</td>
+   </tr> 
+  <tr bgcolor=#cccccc>
+    <td class=w10 align=center>&nbsp;
+    	<input type=text name="PHP_vendor2" size=12 class=select value="{$lots.vendor2}" readonly>
+    	<img src="./images/icoSearch.gif" alt="Supplier" onClick="list('vendor2','FABRIC');" style="cursor:pointer">
+    	<img src="./images/add.gif" alt="Supplier" onClick="add_sup('vendor2','FABRIC');" style="cursor:pointer">    
+    </td>
+    <td class=w10 align=center>&nbsp;{$term2}</td>
+    <td class=w10 align=center>&nbsp;<input type=text name="PHP_price2" size=4 class=select value="{$lots.price2}"></td>
+    <td class=w10 align=center>&nbsp;{$unit2}</td>
+    <td class=w10 align=center>&nbsp;{$currency2}</td>
+  </tr> 
+   <tr bgcolor=#cccccc>
+    <td class=w10 align=center>&nbsp;
+    	<input type=text name="PHP_vendor3" size=12 class=select value="{$lots.vendor3}" readonly>
+    	<img src="./images/icoSearch.gif" alt="Supplier" onClick="list('vendor3','FABRIC');" style="cursor:pointer">
+    	<img src="./images/add.gif" alt="Supplier" onClick="add_sup('vendor3','FABRIC');" style="cursor:pointer">    
+    </td>
+    <td class=w10 align=center>&nbsp;{$term3}</td>
+    <td class=w10 align=center>&nbsp;<input type=text name="PHP_price3" size=4 class=select value="{$lots.price3}"></td>
+    <td class=w10 align=center>&nbsp;{$unit3}</td>
+    <td class=w10 align=center>&nbsp;{$currency3}</td>
+  </tr> 
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+            <tr> 
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="do_lots_add">
+				<input type=submit value="[ Append FABRIC record ]" class=select_e style="cursor:pointer; width=100%"></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

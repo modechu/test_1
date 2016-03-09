@@ -1,0 +1,159 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===...::  Rate ::.....===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function edit_rate(rate_date) {
+	location.href="rate.php?PHP_action=rate_update&PHP_date="+rate_date;
+ }
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<form METHOD="POST" action="{$PHP_SELF}" name="rate_add">
+<table border cellspacing=0 cellpadding=2 cols=1 width=780 bgcolor=#cccccc  align=center>
+  <tr>
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=760 bgcolor=#534A67>
+      <tr><td width=95% class=des align=center><b>.....  Rate .......</b></td></tr>
+     </table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=760>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=97%>
+
+<table border cellspacing=0 cellpadding=2 width=760 bgcolor=#eeeeee align=center>
+
+  <tr bgcolor="#003333" height=28> 	
+	<td nowrap width=80 align=center class=back rowspan=2 ><b>Date</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>USD</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>HKD</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>GBP</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>JPY</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>EUR</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>RMB</b></td>
+	<td nowrap width=70 align=center class=back rowspan=2 ><b>REMARK</b></td>	
+  </tr>
+  <tr bgcolor="#003333" height=28> 	
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+  </tr>
+	{section name=SEC loop=$rate} 
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#eeeeee'">
+    <td align=center class=b9 nowrap><b>{$rate[SEC].date}&nbsp;</b></td>
+    <td align=center class=b9>
+    	{if $rate[SEC].USD > 0}
+				<b>{$rate[SEC].USD}</b>
+    	{else}
+    		&nbsp;    	
+    	{/if}
+    </td>
+    <td align=center class=b9>
+    	{if $rate[SEC].out_USD > 0}
+				<b>{$rate[SEC].out_USD}</b>
+    	{else}
+    		&nbsp;    	
+    	{/if}
+    </td>    
+ 
+    <td align=center class=b9>
+    	{if $rate[SEC].HKD > 0}
+				<b>{$rate[SEC].HKD}</b>
+    	{else}
+	    	&nbsp;
+    	{/if}    	
+    </td>
+    <td align=center class=b9>
+    	{if $rate[SEC].out_HKD > 0}
+				<b>{$rate[SEC].out_HKD}</b>
+    	{else}
+	    	&nbsp;
+    	{/if}    	
+    </td>    
+ 
+    <td align=center class=b9>
+    	{if $rate[SEC].GBP > 0}
+				<b>{$rate[SEC].GBP}</b>
+    	{else}
+ 	   		&nbsp;
+    	{/if} 
+    </td>
+    <td align=center class=b9>
+    	{if $rate[SEC].out_GBP > 0}
+				<b>{$rate[SEC].out_GBP}</b>
+    	{else}
+ 	   		&nbsp;
+    	{/if} 
+    </td>
+
+    <td align=center class=b9>
+    	{if $rate[SEC].JPY > 0}
+				<b>{$rate[SEC].JPY}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>
+    <td align=center class=b9>
+    	{if $rate[SEC].out_JPY > 0}
+				<b>{$rate[SEC].out_JPY}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>    
+    <td align=center class=b9>
+    	{if $rate[SEC].EUR > 0}
+				<b>{$rate[SEC].EUR}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>
+    <td align=center class=b9>
+    	{if $rate[SEC].out_EUR > 0}
+				<b>{$rate[SEC].out_EUR}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>    
+    
+    <td align=center class=b9>
+    	{if $rate[SEC].RMB > 0}
+				<b>{$rate[SEC].RMB}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>	
+    <td align=center class=b9>
+    	{if $rate[SEC].out_RMB > 0}
+				<b>{$rate[SEC].out_RMB}</b>
+    	{else}
+    		&nbsp;
+    	{/if}
+    </td>    	
+    <td align=center>
+			<input type=button value="EDIT" class=select_e style="width:95%;cursor:pointer" onclick=edit_rate('{$rate[SEC].date}')>
+    </td>     
+  </tr>
+
+			{/section} 
+</form>
+
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,191 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System [ BOM for Purchase Order ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+
+
+
+
+
+
+</head>
+
+<body>
+<OBJECT id=factory 
+	classid="CLSID:8856F961-340A-11D0-A96B-00C04FD705A2" height=0 id=wb name=wb width=0></OBJECT>
+<style media="print">.Noprint { DISPLAY: none }</style>
+{/literal}
+<form method=POST name=aply_wi>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=800 bgcolor=#2E5E73>
+	<tr>
+		<td class="des" align=center height=28 width=150 > <b>Order/BOM : </b> <span class=ylw10><b>{$wi.wi_num}</span> </b> </td>
+
+		<td class="des" align=center height=28 >[ <span class=ylw10><b>REMNANT UPDATE</span> </b> ]</td>
+
+</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=800 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+<table border=0 cellspacing=1 cellpadding=1 width=740 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=5 class=grn10 align=left><b>&nbsp;&nbsp;{if $order.last_updator}Last update : {$order.last_updator}<small> [ {$order.last_update} ]</small>{/if}</b></td>
+    <td colspan=2 class=frnt align=right><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+  </tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=add_order >
+    <td class=snvy align=right  nowrap><b>style No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style_num}</b></td>
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.cust}</b></td>
+    <td class=snvy align=right width=90 nowrap><b>customer ref. :</b></td>
+    <td class=bgdy align=left  width=120 bgcolor=#dddddd><b>&nbsp;<small>{$order.ref}</small></b></td>
+    <td class=snvy align=right  nowrap><b>Team :</b></td>
+    <td class=bgdy align=left  bgcolor=#dddddd><b>&nbsp;{$order.dept}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>factory :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.factory}</b></td>
+    <td class=snvy align=right nowrap><b>style type :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style}</b></td>
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.qty|number_format}&nbsp;{$order.unit}</b></td>
+    <td class=snvy align=right nowrap><b>SU :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.f_su}</b></td>
+  </tr>
+ <tr>
+ 	 <td class=snvy align=right nowrap><b>ETD :</b></td>
+		<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etd}</b></td>
+		<td class=snvy align=right nowrap><b>ETP. :</b></td>
+		<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etp}</b></td>
+    <td class=snvy align=right  nowrap><b>smpl ord No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><a href="javascript:smpl_out('{$order.smpl_ord}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order.smpl_ord}</b></a></td>
+		<td class=snvy align=right nowrap><b>calc. IE :</b></td>
+	  <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.ie1}</b></td> 
+  </tr>    
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+<br>
+
+<!-------------  BOM table ------------->
+<!-------------  主料 bom ------------->
+
+<table width=800 border=1 cellspacing=1 cellpadding=1>
+   <tr><td>
+	<table width=800 border=1 cellspacing=0 cellpadding=1>
+	<!------- 主料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=90  class=b9  align=center><b>Fabirc #</b></td>
+	    <td width=120  class=b9  align=center><b>Name</b></td>
+	    <td width=150  class=b9  align=center><b>COLOR</b></td>
+	    <td width=70   class=b9  align=center><b>BOM QTY</b></td>
+	  	<td width=70  class=b9  align=center><b>Received</b></td>
+			<td width=70  class=b9  align=center colspan=2><b>Remnant</b></td>
+			<td width=50  class=b9  align=center>support</td>
+	 </tr>
+
+	<!-------  BOM 主料記錄 --------- -->
+
+	{section name=BOM loop=$bom_lots} 
+	<tr onmouseover="bgColor='#FEFFA8'" onmouseout="bgColor='#ffffff'">	
+		<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_fab('{$bom_lots[BOM].lots_code}')" value='ord_out' style='cursor:pointer'>{$bom_lots[BOM].lots_code}</a></td>
+		<td class=b7 align=left><small>&nbsp;{$bom_lots[BOM].lots_name}</small></td>
+		<td class=b7 align=left><small>&nbsp;{$bom_lots[BOM].color}</small></td>
+	  <td class=snvy align=right><small>&nbsp;{$bom_lots[BOM].total|number_format:"2f"}&nbsp;{$bom_lots[BOM].unit}</small></td>
+		{if $bom_lots[BOM].ap_mark == 'stock'}
+		<td class=snvy align=left> == stock ==</td>
+		{else}
+	  <td class=snvy align=right>{if $bom_lots[BOM].rcv_qty > 0}<small>&nbsp;{$bom_lots[BOM].rcv_qty|number_format:"2f"}&nbsp;{$bom_lots[BOM].po_unit}</small>{else}&nbsp;{/if}</td>
+	  {/if}
+		<td class=snvy align=right>
+			<input type=text name="PHP_lots_rem[{$bom_lots[BOM].id}]" size=5 class=select value="{$bom_lots[BOM].rem_qty}">&nbsp;
+		</td>
+		<td class=snvy align=left width=20>
+			<small>&nbsp;{if $bom_lots[BOM].po_unit}{$bom_lots[BOM].po_unit}{else}{$bom_lots[BOM].unit}{/if}</small>
+		</td>		
+
+		<td class=snvy align=left><small>&nbsp;{if $bom_lots[BOM].support == 1} FTY{/if} {if $bom_lots[BOM].support == 2} CUST{/if}</small></td>
+	</tr>
+	{/section}
+<!--	</table>	-->
+
+<!-------------  副料 ------------->
+<!--	<table width=600 border=0 cellspacing=1 cellpadding=1>	-->
+
+	<!------- 副料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=90   class=b9  align=center><b>Acc. #</b></td>
+	    <td width=120  class=b9  align=center><b>Name</b></td>
+	    <td width=150  class=b9  align=center><b>COLOR</b></td>
+	    <td width=70   class=b9  align=center><b>BOM QTY</b></td>
+	  	<td width=70   class=b9  align=center><b>Received</b></td>
+			<td width=70   class=b9  align=center colspan=2><b>Remnant</b></td>
+			<td width=50   class=b9  align=center>support</td>
+	 </tr>
+	<!-------  end  Title --------- -->
+
+	<!-------  BOM 副料記錄 --------- -->
+	
+	{section name=BOM loop=$bom_acc} 
+	{if $bom_acc[BOM].ln_mk}
+	 <tr bgColor='#FFD5A8'>
+	{else}
+	 <tr onmouseover="bgColor='#FEFFA8'" onmouseout="bgColor='#ffffff'">
+	{/if}	
+		<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_acc('{$bom_acc[BOM].acc_code}')" value='ord_out' style='cursor:pointer'>{$bom_acc[BOM].acc_code}</a></td>
+		<td class=b7 align=left><small>&nbsp;{$bom_acc[BOM].acc_name}</small>
+		</td>	
+		<td class=b7 align=left><small>&nbsp;{$bom_acc[BOM].use_for}</small></td>
+	  <td class=snvy align=right><small>&nbsp;{$bom_acc[BOM].total|number_format:"2f"}&nbsp;{$bom_acc[BOM].unit}</small></td>
+		{if $bom_acc[BOM].ap_mark == 'stock'}
+		<td class=snvy align=left> == stock ==</td>
+		{else}
+	  <td class=snvy align=right>{if $bom_acc[BOM].rcv_qty > 0}<small>&nbsp;{$bom_acc[BOM].rcv_qty|number_format:"2f"}&nbsp;{$bom_acc[BOM].po_unit}</small>{else}&nbsp;{/if}</td>	  
+	  {/if}
+	  <td class=snvy align=right>
+	  	<input type=text name="PHP_acc_rem[{$bom_acc[BOM].id}]" size=5 class=select value="{$bom_acc[BOM].rem_qty}">
+	  </td>
+	  <td class=snvy align=left>
+	  	<small>&nbsp;{if $bom_acc[BOM].po_unit}{$bom_acc[BOM].po_unit}{else}{$bom_acc[BOM].unit}{/if}</small></td>
+		<td class=snvy align=left><small>&nbsp;{if $bom_acc[BOM].support == 1} FTY{/if} {if $bom_acc[BOM].support == 2} CUST{/if}</small></td>
+	</tr>
+	{/section}
+<!--	</table>	-->
+	</table>
+   </td></tr>
+</table>
+
+
+ <table width=800 border=0 cellspacing=1 cellpadding=2>    
+	 <tr>
+	   <td class=gry7 align=right> {literal}Submit: {/literal}&nbsp;&nbsp; {if $wi.bcfm_user}<a href="javascript:message_out('{$wi.bcfm_user_id}')" style="cursor:pointer"><u>{$wi.bcfm_user}</u></a>&nbsp;&nbsp; <U>[ {$wi.bcfm_date} ] </U>{else}[ None ]{/if}</td>
+   </tr>
+ </table>
+
+<table border=0 cellspacing=0 cellpadding=2 width=800 bgcolor=#ffffff align=center>
+  <tr>
+	<td>
+		<input type=button onClick="window.location.href='ord_close.php?PHP_action=remnant_search'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+	</td>
+	<td>
+		<input type=hidden name="PHP_action" value="do_remnant_edit">
+		<input type=hidden name="PHP_ord_num" value="{$wi.wi_num}">
+		<input type=submit value=" UPDATE ABOVE RECORDS " class=select_e style="cursor:pointer; width=99%">
+	</td>	
+  </tr>
+
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

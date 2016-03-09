@@ -1,0 +1,293 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+
+function back(back_str){
+	window.location='po_ship.php?PHP_action=po_ship_search'+back_str; 	
+}
+
+function cfm_revise(id,back_str){
+    window.location='po_ship.php?PHP_action=po_revise&PHP_id='+id+back_str;
+}
+
+function exp_out(url) {
+    var nm = 'express';
+    window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}  
+
+
+function carr_edit(id,num){
+    var carrier = window.document.forms['carr'].elements['PHP_carrier'].value;
+    var sUrl = "po_ship.php?PHP_action=carrier_edit&PHP_num="+num+"&PHP_id="+id+"&PHP_carrier="+carrier;
+    var transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+var callback = {
+success: function(o) {
+    var response = o.responseText.split("|");
+        document.getElementById("tbl_msg").style.display='block';
+        msg1.innerText  = response[0];
+        document.getElementById("car_edit").style.display='none';
+        document.getElementById("car_view").style.display='block';
+        car_view.innerHTML = response[1];
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+};
+
+function del_ship(ship_id,ship_name){
+	if(confirm("Delete SHIP # [ " + ship_name + " ]?")){
+		window.location="po_ship.php?PHP_action=ship_del&PHP_ship_id="+ship_id;
+	}
+}
+
+function del_file(ship_id,file_id,file_name){
+	if(confirm("Delete file [ " + file_name + " ]?")){
+		window.location="po_ship.php?PHP_action=file_del&PHP_ship_id="+ship_id+"&PHP_file_id="+file_id;
+	}
+}
+
+
+function unlock_apb(id,back_str,ship_id,ship_inv){
+    window.location='po_ship.php?PHP_action=unlock_apb&PHP_id='+id+'&PHP_ship_id='+ship_id+'&PHP_ship_inv='+ship_inv+back_str;
+}
+
+function lock_apb(id,back_str,ship_id,ship_inv){
+    window.location='po_ship.php?PHP_action=lock_apb&PHP_id='+id+'&PHP_ship_id='+ship_id+'&PHP_ship_inv='+ship_inv+back_str;
+}
+
+
+</script>
+
+{/literal}
+</head>
+{if $resize}
+<body topmargin="10" onLoad="tblresize();"/>
+{else}
+<body topmargin="10">
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF id="tblShow">
+	<tr>
+		<td>
+
+			<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+				<tr>
+					<td class="ylw10" align=right width=200 height=28><b>material Shipping Advise</b></td>
+					<td class="des" align=center width=400 height=28> SHIP # <span class=ylw10><b>&nbsp;&nbsp;{$po_ship.num}</b></span>  </td>
+					<td class="des" align=center width=100 height=28>{if $po_ship.ver > 0} VER. : {$po_ship.ver}{/if} </td>
+					<td class="des" align=center width=100 height=28>{if $po_ship.status == 0} Wait for Submit {else} <b>Submitted</b>{/if} </td>
+
+				  <td class="des" align=center width=50>
+                    {if $po_ship.status == 2 && $add_flag && $back_str}
+						<a href="javascript:cfm_revise('{$po_ship.id}','{$back_str}')" value='revise' style='cursor:pointer'>
+						<img src='./images/revise21.jpg' border=0 ALT="REVISE"></a>
+                    {else}
+                        {if $ttl_qty == 0}
+                        <img src='./images/del.jpg' border=0 ALT="DELETE" style="cursor:pointer;" onClick="del_ship('{$po_ship.id}','{$po_ship.num}');">
+                        {/if}
+				    {/if}
+				  </td>
+				</tr>
+			</table>
+			<table border=1 cellpadding=4 cellspacing=0 cols=1 width=900 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+				<tr bgcolor=#ffffff>
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+				</tr>
+			</table>
+			<hr SIZE=2 WIDTH=900>
+			<form method=POST name=carr> 	
+			<table border=1 cellspacing=0 cellpadding=0 width="900" bgcolor=#FFFFFF>
+				<tr>
+					<td>
+						<table border=0 cellspacing=1 cellpadding=3 width="900" bgcolor=#FFFFFF>
+							<tr>
+								<td class=snvy align=left colspan=3 ><b>&nbsp;&nbsp;&nbsp;From :&nbsp; {$po_ship.org}&nbsp;&nbsp; TO : &nbsp;{$po_ship.dist}</b> </td>
+								<td class=snvy align=right><b>B.L # : </b> </td>
+								<td class=frnt align=left colspan=2>   
+								<div id="car_view" style="display:block;" >
+									{if $po_ship.carrier_link}
+									<a href="javascript:exp_out('{$po_ship.carrier_link}')"><b>&nbsp;{$po_ship.carrier}</b></a>
+								{else}
+									<b>&nbsp;{$po_ship.carrier}</b>
+								{/if}
+									
+									{if $po_ship.status > 0&& $add_flag}
+										<span style="cursor:hand" onClick="car_edit.style.display='block';car_view.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom"> </span>
+									{/if}
+								</div>   
+								<div id="car_edit" style="display:none;" >
+									<input type='text' name="PHP_carrier" size=10 value="{$po_ship.carrier}" class=select>
+									<input type=button onClick="carr_edit('{$po_ship.id}','{$po_ship.num}')" value="update " class=select_e style="cursor:pointer; width=30%">&nbsp;
+								</div> 			 
+								</td>
+								<td class=snvy width=70 align=right><b>Ship inv #: </b> </td>			
+								<td class=frnt width=140 align=left ><b>{$po_ship.ship_inv}</b></td>
+								{if $po_ship.status == 2}
+								<td class=frnt  align=right rowspan=2>
+												<a href="po_ship.php?PHP_action=ship_print&PHP_id={$po_ship.id}" >
+												<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+												<a href="po_ship.php?PHP_action=ship_excel&PHP_id={$po_ship.id}" style="cursor:pointer">
+												<img src="./images/excel_icon.gif" border=0 ></a>
+									</td>{/if}
+							</tr>
+							<tr>
+								<td class=snvy width=60 align=right><b>SHIP BY : </b> </td>					
+								<td class=frnt width=120 align=left ><b>&nbsp;{$po_ship.ship_way}</b></td>
+								<td class=snvy width=70 align=right><b>SHIP Date : </b> </td>			
+								<td class=frnt width=120 align=left ><b>{$po_ship.ship_date}</b></td>
+								<td class=snvy width=70 align=right><b>ETA : </b> </td>			
+								<td class=frnt width=120 align=left ><b>{$po_ship.ship_eta}</b></td>
+								<td class=snvy width=70 align=right nowrap><b>TW RCV</b> </td>			
+								<td class=frnt width=120 align=left ><b> [ {if $po_ship.tw_rcv} Y {else} N {/if} ]</b></td>
+							</tr>
+							{if $po_ship.ex_cmpy}
+							<tr>
+								<td class=snvy align=left colspan=5>
+									<b>&nbsp;&nbsp;&nbsp;&nbsp;Express Company  : </b>  
+									<b>&nbsp;{$po_ship.ex_cmpy}</b>
+								</td>												
+							</tr>		
+							{/if}	
+						</table>
+					</td>
+			  </tr>
+			</table>
+			<hr SIZE=2 WIDTH=900>
+			<table border="1" cellspacing=0 cellpadding=2 width=900 id="mat_table">	
+				<tr bgcolor="#003333" height=28>
+					<td width="80" class=back align="center"><b>Inv. #</b></td>		
+					<td class=back  align="center"><b>Material</b></td>
+					<td width="70" class=back align="center"><b>Order</b></td>
+					<td width="70" class=back align="center"><b>P / O</b></td>
+					<td width="60" class=back align="center"><b>Tolerance</b></td>
+					<td width="60" class=back align="center"><b>PO Q'TY</b></td>
+					<td width="70" class=back align="center"><b>Export Q'TY</b></td>
+					<td width="70" class=back align="center"><b>Total ship<BR>Q'TY</b></td>
+					<td width="40" class=back align="center"><b>%</b></td>
+                    {if $po_ship.tw_rcv && $po_ship.status == 2 && $add_flag && $back_str}
+                    <td width="55" class=back align="center"><b>APB<br>Status</b></td>
+                    {/if}
+				</tr>
+				{section name=SEC loop=$ship} 
+				{if $ship[SEC].ship_qty > $ship[SEC].toleri_qty}
+                <tr bgcolor='#FF9291' onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#FF9291'">
+				{elseif $ship[SEC].ship_qty < $ship[SEC].tolern_qty}
+                <tr bgcolor='#B0AFFF' onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#B0AFFF'">
+				{else}
+                <tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+				{/if}
+					<td align="left" nowrap>&nbsp;{$ship[SEC].inv_num}</td>
+					<td align="left" >&nbsp;<small>{$ship[SEC].mat_name} : [{$ship[SEC].color} ;{$ship[SEC].con1} ; {$ship[SEC].con2} ]</small></td>
+					<td align="center" nowrap>
+						{section name=ORD loop=$ship[SEC].ord_num}
+                            {if $smarty.section.ORD.index > 0}<br>{/if}
+							<a href="javascript:po_bom_view('{$ship[SEC].ord_num[ORD]}','x')" value='ord_out'>{$ship[SEC].ord_num[ORD]}</a>
+						{/section}
+					</td>
+					<!--<td align="right"><small>{$ship[SEC].currency}${$ship[SEC].prics|number_format:"2f"}/{$ship[SEC].prc_unit}</small></td>-->
+					<td align="center" nowrap><a href="javascript:po_show('{$ship[SEC].ap_num}','')" style='cursor:pointer'>{$ship[SEC].po_num}</a></td>
+					<td align="right">{if $ship[SEC].toler == '0|0'}0{else}+{$ship[SEC].toleri}%{if $ship[SEC].tolern != '0'}~-{$ship[SEC].tolern}%{/if}{/if}</td>
+					<td align="right">{$ship[SEC].po_qty|number_format:"2f"}&nbsp;{$ship[SEC].po_unit}</td>
+					<td align="right">{$ship[SEC].qty}&nbsp;{$ship[SEC].po_unit}</td>
+					<td align="right">{$ship[SEC].ship_qty}&nbsp;</td>
+					<td align="right"><small>{$ship[SEC].percentage}%&nbsp; </small></td>
+                    {if $po_ship.tw_rcv && $po_ship.status == 2 && $add_flag && $back_str}
+                    <td width="55" align="center" nowrap>
+                        <b>
+                        {if $ship[SEC].apb_rmk == 1}
+                            <a href="javascript:unlock_apb('{$po_ship.id}','{$back_str}','{$ship[SEC].id}','{$po_ship.ship_inv}')" value='revise' style='cursor:pointer'>
+                            APB.<br>Lock
+                            </a>
+                        {else}
+                            <a href="javascript:lock_apb('{$po_ship.id}','{$back_str}','{$ship[SEC].id}','{$po_ship.ship_inv}')" value='revise' style='cursor:pointer'>
+                            un-Lock
+                            </a>
+                        {/if}
+                        </b>
+                    </td>
+                    {/if}
+				</tr>	
+				{/section}
+			</table>
+			</form>
+			※紅色底代表超過最大Tolerance數量  ※藍色底代表小於最小Tolerance數量  ※白色底代表符合Tolerance範圍
+			<hr SIZE=2 WIDTH=900>
+                <table width=900 border=1 cellspacing=1 cellpadding=1>
+                <tr bgcolor=#EACEBE height=25>	 
+					<td width=70 align=center><b>Download</b></td>	
+					<td width=250 align=center><b>File name</b></td>
+					<td width=300 align=center><b>Descript</b></td>
+					<td width=20 align=center><b>Del</b></td>
+                </tr>
+                {if $done[0].id}
+                {section name=SEC loop=$done}
+                <tr>	
+					<td align=center valign=top>
+					<a href="download.php?fname={$done[SEC].file_name}&fdir=po_ship_file" title="{$done[SEC].file_name}" target="_blank"><img src='./images/file2.gif' border=0 ALT="download pattern"></a>
+					</td>  	
+					<td class=snvy >{$done[SEC].file_name}</td>
+					<td class=snvy>{$done[SEC].file_des}</td>
+					<td class=snvy align="center">&nbsp;{if $add_flag}<input type='image' style="cursor:pointer;" src="images/del.png" onClick="del_file('{$po_ship.id}',{$done[SEC].id},'{$done[SEC].file_name}');">{/if}</td>
+                </tr>
+                {/section}
+                {/if}
+                {if $back_str}  
+                <tr>
+                    <td colspan=4>
+					<form method=POST name=pattn enctype="multipart/form-data">    
+					<input type="hidden" name="PHP_action" value="upload_file">
+						<input type="hidden" name="PHP_num" value="{$po_ship.num}">
+						<input type="hidden" name="PHP_back_str" value="{$back_str}">
+						<input type="hidden" name="max_size" value="100000">
+						<input type="hidden" name="PHP_id" value="{$po_ship.id}">&nbsp;		
+						<input type='file' name='PHP_pttn' size=20 class=select>&nbsp;&nbsp;
+						Descript : &nbsp;
+						<input type='text' name='PHP_desp' size=40 class=select >&nbsp;&nbsp;
+						<input type='submit' value='upload'>
+                    </form>
+					</td>
+                </tr>
+                {/if}
+            </table>
+
+
+			<hr SIZE=2 WIDTH=900>
+			<form METHOD="POST" name="ship_add" action="{$PHP_SELF}">	
+			<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+				<tr>
+					<td align='right' width=900>Creater : {$po_ship.shipper}</td>
+				</tr>
+			</table>
+			<hr SIZE=2 WIDTH=900>
+			<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+				<tr>
+					<td>{if $back_str}
+								<input type ='button'  value ="Go Back" class=select_e onClick="back('{$back_str}');" style="cursor:pointer; width=95%">
+							{/if}
+					</td>
+					<td width=550>
+						{if $po_ship.status == 0 && $add_flag}
+						<input type=submit value="[ EDIT ]" class=select_e style="cursor:pointer; width=95%"  >
+						{/if}	&nbsp;
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<input type=hidden name="PHP_id" value="{$po_ship.id}">
+<input type=hidden name="PHP_back_str" value="{$back_str}">	
+<input type=hidden name="PHP_action" value="ship_edit">			
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

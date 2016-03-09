@@ -1,0 +1,241 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  SCM System -- RECEIVING .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<script language="javascript">
+	var transaction;
+  var sUrl;
+  var callback = {
+    success: function(o) {
+    	var response = o.responseText;    	
+			sup_show.innerHTML = "Supplier :&nbsp;"+response;
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+  
+ function cfm(ref,id) {
+	if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 樣本記錄:["+ref+"]??")) {
+	location.href="index2.php?PHP_action=smpl_del&PHP_id="+id;
+	} 
+ }
+function check(){
+}
+
+function list(item){
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+function fablist(){
+	var gofile ='index2.php?PHP_action=show_fabric_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ function acclist(){
+	var gofile ='index2.php?PHP_action=show_accessory_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+ function writeToParentList(lots_code,lots_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_fab'].value = lots_code;
+}
+function writeToAccList(acc_code,acc_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_acc'].value = acc_code;
+} 
+ 
+function writeToSuplList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['add_aply'].elements['PHP_supl'].value = supl_s_name;
+	window.document.forms['add_aply'].elements['PHP_supl_cat'].value = supl_cat;
+}
+
+function writeToSupSESlList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_supl'].value = supl_s_name;
+}
+function search_ship(r,item)
+{
+ sup_show.innerHTML ="<img src='./images/ajax-loader_w.gif' alt='Wait' style='cursor:pointe' height=20>";
+ var ship = r.value;
+ sUrl = "receive.php?PHP_action=get_supplier&PHP_ship="+ship+"&PHP_item="+item;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+function add_trans() {
+	var trans_num = window.document.forms['add_aply'].elements['PHP_po'].value ;
+	var ship = window.document.forms['add_aply'].elements['PHP_ship'].value ;
+	var ord_num = window.document.forms['add_aply'].elements['PHP_ord'].value ;
+
+	window.location='trans_rcvd.php?PHP_action=trans_add_search&PHP_trans_num='+trans_num+'&PHP_ship='+ship+"&PHP_ord_num="+ord_num; 	
+
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<br>
+
+{if $max_notify > 0 }		
+	<table width=770 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}
+
+{if $add_flag}
+ 
+<table border cellspacing=0 cellpadding=2 cols=1 width=770 bgcolor=#cccccc  align=center>
+ <tr><form METHOD="POST" name="add_aply">   
+    <td align=center>
+    <table border=0 cellspacing=0 cellpadding=4 width=750 bgcolor=#280004>
+      <tr>
+				<td class=des align=center colspan=4><b>[ Fabric Inspection Report Developing -- Purchase Order Search ]</b></td>
+			</tr>
+			 <tr bgcolor=#cccccc>
+  		  <td colspan=4 align=center><hr size=2 width=98%></td>
+  		</tr>
+  		<tr bgcolor=#cccccc>
+				<td align=center  class=snvy>
+					<b>PO# <!-- / Transport# -->: </b><input type=text name="PHP_po" size=10 class=select value="">
+				</td>
+				{if $manager_flag}
+					<td  class=snvy align=center><b>Receiver :&nbsp;{$fty}</b>
+					</td>
+				{else}
+					<td  class=snvy align=center nowrap>
+						<b>SHIP :&nbsp;<span class=ylw10>{$fty}</span></b>
+					</td>
+				{/if}
+				{if !$manager_flag}<input type="hidden" name="PHP_ship" value="{$fty}">{/if}
+
+				<td  class=snvy align=center><b><div id=sup_show>Supplier :&nbsp;{$sup_no}</div></td>
+				<td  class=snvy align=center><B>Customer :&nbsp;</B>{$cust_select}</td>
+
+			</tr> 
+
+	  	<tr>
+	  		<td class=w9 align=center class=w10 colspan=4 bgcolor=#cccccc>
+					<input type="hidden" name="PHP_action" value="lots_add_search">
+					<input type="submit" value="APPEND  Fabric Inspection Report" class=select_e style="width:99%;cursor:pointer"></td>
+	 		 	</td> 		 	
+	 		</tr>
+     </table>
+</td></tr></form>
+
+{/if}
+{if $msg_YES}
+	 <tr><td>
+     <table border=1 cellpadding=4 cellspacing=0 width=750 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table></td></tr>
+{/if}
+</table>
+		<hr size=1 width=650 align=center>
+
+<br><br>
+<table border cellspacing=0 cellpadding=2 cols=1 width=770 bgcolor=#cccccc  align=center>
+<tr><td>
+<form METHOD="POST" name="search_aply">
+<table cellspacing=1 cellpadding=4 cols=1 width=750 bgcolor=#003300 align=center>
+	<tr>
+		<td class="des" align=center height=28>[ SEARCH/LISTING&nbsp;Fabric Inspection Report ]</td>
+	</tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=750>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr><input type="hidden" name="SCH_fty" value={if $manager_flag}""{else}"{$fty}"{/if}>
+    <td class=snvy align=right><b>Report # : </b></td>
+    <td class=frnt align=left><input type=text name="SCH_num" size=15 class=select value=""></td>
+    <td class=snvy align=right><b>PO # : </b></td>
+    <td class=frnt align=left><input type=text name="SCH_po" size=15 class=select value=""></td>
+    <td class=snvy align=right><b>Supplier : </b></td>
+	  <td class=frnt align=left>{$sup_no}</tr>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>Fabric:</b></td>
+    <td class=frnt align=left>
+   		<input type='text' name="SCH_fab" size=15 class=select value="" >
+    </td>
+    <td class=snvy align=right><b>fty : </b></td>
+	  <td class=frnt align=left>{$fty}</tr>
+	  {if !$manager_flag}<input type="hidden" name="PHP_ship" value="{$fty}">{/if}
+
+<!--
+    <td class=snvy align=right><b>Supplier : </b></td>
+	  <td class=frnt align=left>{$sup_no}</tr>   
+  -->
+  </tr>
+
+</table>
+
+<table border=0 cellspacing=0 cellpadding=0 width=750 align=center>
+	<tr> 
+	  <td align=left class=b9 colspan=2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		※ 1: search / listing Fabric Inspection Report record ; please use combo selection or/and key field.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		※ 2: if entire listing ; keep fields in blank and just click [ SEARCH/LIST Fabric Inspection Report ] button.
+	  </td>
+	</tr>
+	<tr><hr SIZE=2 WIDTH=97%></tr>
+	<tr> 
+	  <td align=center>
+		<input type="hidden" name="PHP_action" value="lots_rpt_search">
+		<input type=submit value="[ SEARCH/LIST Fabric Inspection Report ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+	  </td>  
+	</tr>
+</table></form>
+
+	</td>
+</tr>
+</table>
+
+<br><br>
+<table border cellspacing=0 cellpadding=2 cols=1 width=770 bgcolor=#cccccc  align=center>
+<tr><td>
+<form METHOD="POST" name="search_ord">
+<table cellspacing=1 cellpadding=4 cols=1 width=750 bgcolor=#003300 align=center>
+	<tr>
+		<td class="des" align=center height=28>[ Survey&nbsp;Fabric Inspection Report by order]</td>
+	</tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=750>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>ORDER : </b></td>
+    <td class=frnt align=left><input type=text name="SCH_ord" size=20 class=select value=""></td>
+	  <td align=center>
+		<input type="hidden" name="PHP_action" value="lr_ord_search">
+		<input type=submit value="[ Survery Fabric Inspection Report by Order]" class=select_e style="cursor:pointer; width=80%" onClick=this.width=0;>
+	  </td>  
+  <tr>
+
+
+</table>
+
+</form>
+
+	</td>
+</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

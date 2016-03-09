@@ -1,0 +1,575 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript"> 
+
+</script>
+{/literal}
+
+</head>
+<body>
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=840 bgcolor=#333333>
+	<tr>
+	  <td class="ylw10" align=center width=250><b> INV # :  {$shp.inv_num}</b></td>
+	  <td class="des" align=center width=550><b> UN-CONFIRM SHIPPING INVOICE  </b></td>
+	  <td class="ylw10" align=center width=200><b> 
+			{if $shp.status == 0}wait P/L submit{/if}
+			{if $shp.status == 1}<font color=red>P/L Reject</font>{/if}	
+			{if $shp.status == 2}wait P/L CFM.{/if}						 						
+			{if $shp.status == 4}wait inv. submit{/if}	
+			{if $shp.status == 5}<font color=red>inv. Reject</font>{/if}						 
+			{if $shp.status == 6}wait inv. CFM.{/if}
+			{if $shp.status == 8}<b>CONFORMED</b>{/if}	
+	  </b></td>
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=840 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+<br>     
+  <table border=0 cellspacing=1 cellpadding=1 width=840 bgcolor=#FFFFFF> 	
+ 	<tr>	
+    <td width=80 class=snvy align=right  nowrap><b>Invoice# :</b></td>
+    <td width=150 class=bgdy align=left bgcolor=#dddddd>{$shp.inv_num}</td> 
+    <td width=90  class=snvy align=right  nowrap><b>ship date : </b></td>
+    <td width=150  class=bgdy align=left bgcolor=#dddddd >{$shp.ship_date}</td>   
+
+    <td width=90 class=snvy align=right  nowrap><b>Cust. :</b></td>
+    <td width=130 class=bgdy align=left bgcolor=#dddddd>{$shp.ord_cust}</td> 
+    <td width=30 class=snvy align=right  nowrap><b>FTY : </b></td>
+    <td width=120 class=bgdy align=left bgcolor=#dddddd >{$shp.fty}</td>   
+ </tr>   
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>SHIP TERM :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.ship_term}</td> 
+    <td class=snvy align=right ><b>SHIP VIA : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.ship_via}</td>   
+    <td class=snvy align=right ><b>SHIP BY : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.ship_by}</td>   
+
+  </tr>    
+	<tr>
+    <td class=snvy align=right nowrap><b>FROM : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.ship_from}</td>
+    <td class=snvy align=right nowrap><b>TO : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.ship_to}</td>
+ </tr>  
+
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Payment :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.payment}</td> 
+    <td class=snvy align=right  nowrap><b>CBM(m) :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.cbm}</td> 
+ </tr> 
+ <tr>	
+    <td class=snvy align=right  nowrap><b>Descript :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.des}</td> 
+    <td class=snvy align=right ><b>PACKAGING : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.pack}</td>	
+ </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>FV :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.fv}</td> 
+    <td class=snvy align=right  nowrap><b>ETD </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.fv_etd}</td> 
+    <td class=snvy align=right  nowrap><b>ETA </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.fv_eta}</td> 
+ </tr>  
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>MV :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.mv}</td> 
+    <td class=snvy align=right  nowrap><b>ETD </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.mv_etd}</td> 
+    <td class=snvy align=right  nowrap><b>ETA </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.mv_eta}</td> 
+ </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>L/C NO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.lc_no}</td> 
+    <td class=snvy align=right  nowrap><b>Date :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.lc_date}</td>     
+    <td class=snvy align=right  nowrap><b>L/C BANK </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.lc_bank}</td>  
+ </tr> 
+ <tr>	
+    <td class=snvy align=right  nowrap><b>VENDOR :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7><b>{$shp.vendor_name}</b>&nbsp; {$shp.vendor_addr}</td>    
+ </tr> 
+ <tr>	
+    <td class=snvy align=right  nowrap><b>CONSIGNEE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7><b>{$shp.consignee_name}</b>&nbsp;{$shp.consignee_addr}</td>    
+ </tr> 
+ <tr>	
+    <td class=snvy align=right  nowrap><b>SHIP TO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7><b>{$shp.ship_addr1}</b> {$shp.ship_addr2}</td>    
+ </tr>
+ <tr>	
+    <td class=snvy align=right  nowrap><b>BILL TO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7><b>{$shp.bill_addr1}</b> {$shp.bill_addr2}</td>    
+ </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>M.I.D NO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.mid_no}</td> 
+    <td class=snvy align=right  nowrap><b>Country of Org. </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.country_org}</td>  
+ </tr>     
+ <tr>	
+    <td class=snvy align=right  nowrap><b> Carrier :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3 >{$shp.carrier}</td>    
+    <td class=snvy align=right  nowrap><b> DISCHARGE PORT :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3 >{$shp.dis_port}</td>    
+ </tr>   
+ <tr>	
+    <td class=snvy align=right  nowrap><b> Container :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3 >{$shp.conter_det.name}</td>    
+    <td class=snvy align=right  nowrap><b> Consolidator :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3 >{$shp.constor_det.name}</td>
+ </tr>     
+ <tr>	
+    <td class=snvy align=right  nowrap><b> CBM (m) :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.cbm}</td>    
+    <td class=snvy align=right  nowrap><b> PO Type :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.po_type_value}</td>    
+    <td class=snvy align=right  nowrap><b> Facillity :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.facility_value}</td>    
+    <td class=snvy align=right  nowrap><b> Mode :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.mode_value}</td> 
+ </tr>     
+<!--
+ <tr>	
+    <td class=snvy align=right  nowrap><b> CBM (m) :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.cbm}</td>    
+    <td class=snvy align=right  nowrap><b> PO Type :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.po_type_value}</td>    
+    <td class=snvy align=right  nowrap><b> Facillity :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.facility_value}</td>    
+    <td class=snvy align=right  nowrap><b> Mode :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.mode_value}</td> 
+ </tr> 
+
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Freight :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.freight_date}</td> 
+    <td class=snvy align=right  nowrap><b>Discharg : </b></td>
+    <td  class=bgdy align=left bgcolor=#dddddd >{$shp.dischg_date}</td>   
+    <td class=snvy align=right  nowrap><b>Fty-Ship :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>{$shp.freight_date}</td> 
+    <td class=snvy align=right  nowrap><b>Load : </b></td>
+    <td  class=bgdy align=left bgcolor=#dddddd >{$shp.lod_date}</td> 
+ </tr> 
+ 
+  <tr>	
+	  <td class=snvy align=right  nowrap><b> Container# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.conter_num}</td>    
+	  <td class=snvy align=right  nowrap><b> voyage :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.voyage}</td>    
+
+    <td class=snvy align=right  nowrap><b> freight receipt :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.freight_rcp}</td>    
+  </tr>  
+
+  <tr>	
+	  <td class=snvy align=right  nowrap><b> facility # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.facility_code}</td>    
+	  <td class=snvy align=right  nowrap><b> HBL# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.hbl}</td>    
+
+    <td class=snvy align=right  nowrap><b> facility name :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.facility_name}</td>    
+  </tr>     
+  <tr>	
+	  <td class=snvy align=right  nowrap><b> Ship method :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd >{$shp.method_value}</td>    
+  </tr> 
+ 
+  
+<tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Final TO :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=2>{$shp.fnl_name}</td>    
+    <td class=snvy align=right  nowrap><b>ADDRESS : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=7>{$shp.fnl_addr}</td>  
+  </tr> 
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Style# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.fnl_style}</td> 
+    <td class=snvy align=right  nowrap><b>P/O :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.fnl_po}</td>       
+  </tr>    
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>Description :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.fnl_des}</td>       
+    <td class=snvy align=right  nowrap><b>DEL.DUE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.del_due}</td> 
+  </tr>  
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>DEPT # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.fnl_dept}</td> 
+    <td class=snvy align=right  nowrap><b>DEPT des.:</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.dept_des}</td>       
+  </tr>       
+ 	<tr>	
+    <td class=snvy align=right  nowrap><b>CONTAINER # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.ctn_num}</td> 
+    <td class=snvy align=right  nowrap><b>SEAL # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=3>{$shp.seal} </td>       
+  </tr>
+ 
+ 	<tr>	
+    <td class=snvy align=right  colspan=3><b>HANGING GARMENTS</b></td>
+    <td class=bgdy align=left>
+    	<input type=checkbox name='PHP_que1' value=1 class=select {if $shp.que1}checked{/if} disabled>
+    </td> 
+    <td class=snvy align=right  colspan=3><b>BOXED GARMENT ON HANGER</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que2' value=1 class=select {if $shp.que2}checked{/if} disabled>
+    </td>       
+  </tr>     
+  <tr>
+    <td class=snvy align=right  colspan=3><b>LOOSE CARTONS</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que3' value=1 class=select {if $shp.que3}checked{/if} disabled>
+    </td>       
+    <td class=snvy align=right  colspan=3><b>PALLETISD CARTONS</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que4' value=1 class=select {if $shp.que4}checked{/if} disabled>
+    </td>       
+  </tr>    
+  <tr>
+    <td class=snvy align=right  colspan=3><b>ACCESSORIES</b></td>
+    <td class=bgdy align=left >
+    	<input type=checkbox name='PHP_que5' value=1 class=select {if $shp.que5}checked{/if} disabled >
+    </td>             
+  </tr>    
+--> 
+ <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr> 
+</table> 
+
+<table border=1 cellspacing=1 cellpadding=1 width=820 id='shipmain_table'>
+ <tr bgcolor=#C4C3AE height=25>
+ 	<td class=snvy align=center nowrap colspan=2 ><B>OTHER FIELDS  </B></td>
+	</tr>	
+{section name=SEC loop=$shp.oth_field}
+		<tr>
+			<td class=snvy align=left nowrap>
+				<b>{$shp.oth_field[SEC].f_name}&nbsp;:&nbsp;</b> 
+			</td>	
+			<td class=snvy align=left nowrap>
+				{$shp.oth_field[SEC].f_values}
+			</td>	
+		</tr>
+{/section}	
+</table>
+
+
+<hr size=2 width=98%>
+
+	<table border=1 cellspacing=1 cellpadding=1 width=830 id='ship_table_{$shp_det[SEC].ord_id}'>
+
+  	<tr bgcolor=#C4C3AE height=25>
+  		<td class=snvy align=center nowrap width=90 ><b>Content#</b></td>
+  		<td class=snvy align=center nowrap width=90 ><b>Style#</b></td>
+  		<td class=snvy align=center nowrap width=90 ><b>P.O.#</b></td>
+  		<td class=snvy align=center nowrap width=90 ><b>COLOR</b></td>
+  		<td class=snvy align=center nowrap width=90 ><b>Description</b></td>
+  		<td class=snvy align=center nowrap width=90 ><b>HTS CODE/CAT#</b></td>
+
+  		<td class=snvy align=center nowrap width=80 ><b>Q'TY</b></td>
+  		<td class=snvy align=center nowrap width=80 ><b>PRICE</b></td>
+  		<td class=snvy align=center nowrap width=100 ><b>AMOUNT</b></td>
+  	</tr>  		
+{section name=SEC loop=$shp_det}
+  {if $shp_det[SEC].tb_mk == 1}
+  {section name=OTH loop=$shp_det[SEC].oth_field}
+		<tr>
+			<td class=snvy align=right nowrap bgcolor=#C4C3AE colspan=2><B>OTHER FIELD : </b></td>
+			<td class=snvy align=left nowrap colspan=9>
+				<b>{$shp_det[SEC].oth_field[OTH].f_name}&nbsp;:&nbsp;</b> {$shp_det[SEC].oth_field[OTH].f_values}
+			</td>		
+		</tr>
+		{/section}  
+		{/if}
+  <tr bgcolor="#FFFFFF" onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+	 	<td class=snvy align=left >{$shp_det[SEC].content}&nbsp;</td>
+  	<td class=snvy align=left >{$shp_det[SEC].style_num}&nbsp;</td>
+  {if $shp_det[SEC].tb_mk == 1}
+  	<td class=snvy align=left rowspan={$shp_det[SEC].span}>{$shp_det[SEC].cust_po}&nbsp;</td>
+  {/if}
+  	<td class=snvy align=left>{$shp_det[SEC].color}</td>
+  	<td class=snvy align=left>{$shp_det[SEC].des}&nbsp;</td>
+  	<td class=snvy align=left>{$shp_det[SEC].hts_cat}&nbsp;</td>
+
+  	<td class=snvy align=right nowrap>{$shp_det[SEC].bk_qty|number_format} pcs</td>
+  	<td class=snvy align=right nowrap>$ {if $shp_det[SEC].ship_fob <= 0}{$shp_det[SEC].uprice|number_format:"2f"}{else}{$shp_det[SEC].ship_fob|number_format:"2f"}{/if}/pc</td>
+ 	 	<td class=snvy align=right nowrap>US$ {$shp_det[SEC].amount|number_format:"2f"}</td>
+  </tr>
+{/section}
+
+{section name=SEC loop=$shp_det}
+  {if $shp_det[SEC].tb_mk == 1 && $shp_det[SEC].quota_amt > 0}
+  <tr bgcolor="#FFFFFF" onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+  	<td class=snvy align=left colspan=6>QUOTA CHARGE :( PO NO. {$shp_det[SEC].cust_po} )</td>  
+  	<td class=snvy align=right nowrap>{$shp_det[SEC].f_qty|number_format} pcs</td>
+  	<td class=snvy align=right nowrap>$ {$shp_det[SEC].ship_quota|number_format:"2f"}/pc</td>
+ 	 	<td class=snvy align=right nowrap>US$ {$shp_det[SEC].quota_amt|number_format:"2f"}</td>
+
+  </tr>
+	{/if}  
+{/section}
+  <tr bgcolor="#FFFFFF" onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+  	<td class=snvy align=left colspan=6>&nbsp;<b> TOTAL : </b></td>
+  	<td class=snvy align=right nowrap>{$amt.qty|number_format} pcs</td>
+  	<td class=snvy align=right nowrap>&nbsp;</td>
+ 	 	<td class=snvy align=right nowrap>US$ {$amt.amount|number_format:"2f"}</td>
+  </tr>
+  <tr bgcolor="#FFFFFF" onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+  	<td class=snvy align=left colspan=9><b>&nbsp;SAY US DOLLARS {$amt.eng_amount}</b> </td>
+
+  </tr>
+</table>
+<br>
+{if $shp_charge.0.id}
+<table border=1 cellspacing=1 cellpadding=1 width=800 id="charge_table">
+		
+  	<tr bgcolor=#C4C3AE >
+  		<td class=snvy align=center nowrap width=110 height=25 ><B>Other charge ($)  </B></td>
+  		<td class=snvy align=center nowrap width=690 height=25 ><b>Description</b></td>
+   	</tr>
+ {section name=SEC loop=$shp_charge}	
+  	<tr>
+  		<td class=snvy align=right nowrap >
+  			${$shp_charge[SEC].charge|NUMBER_FORMAT:"2f"}&nbsp;
+  		</td>
+  		<td class=snvy align=left nowrap>
+  			{$shp_charge[SEC].chg_des}&nbsp;
+  		</td>
+  	</tr>   
+ {/section}
+</table>
+{/if}
+<br>
+<table border=0 cellspacing=1 cellpadding=1 width=840 >
+	{if $shp.fab_des}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;Fabric Description : </b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.fab_des}  </td>
+  </tr>  
+  {/if}
+	{if $shp.fty_det}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;MANUFACTURER NAME & ADDRESS : </b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.fty_det}  </td>
+  </tr>  
+  {/if}
+	{if $shp.ship_det}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;SHIPPER FULL NAME & ADDRESS :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.ship_det}  </td>
+  </tr>  
+  {/if}  
+	{if $shp.benf_det}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;BENEFICIARY ACCOUNT DETAIL AS BELOW :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.benf_det}  </td>
+  </tr>  
+  {/if} 
+	{if $shp.ship_mark}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;SHIPPING MARK :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.ship_mark}  </td>
+  </tr>  
+  {/if}  
+	{if $shp.nty_part}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;Notify Party :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.nty_part}  </td>
+  </tr>  
+  {/if}  
+	{if $shp.stmt}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;Statments :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.stmt}  </td>
+  </tr>  
+  {/if}
+	{if $shp.comm}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;Comments :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.comm}  </td>
+  </tr>  
+  {/if} 
+     
+	{if $shp.others}
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=snvy align=left><b>&nbsp;OTHERS :</b> </td>
+  </tr>	
+  <tr>
+  	<td width=100 >&nbsp;</td>
+  	<td class=b10 align=left>{$shp.others}  </td>
+  </tr>  
+  {/if}    
+</table>
+
+{if $shp_log.0.id}
+	<table border=1 cellspacing=1 cellpadding=1 width=800 align=center>
+	  <tr bgcolor=#666666 >
+	   <td width=120 class=w10 align=center>DateTime</td>
+	   <td width=600 class=w10 align=center>History records</td>
+	   <td width=80 class=w10 align=center>by</td>
+	  </tr>
+	 {section name=SEC loop=$shp_log}
+	  <tr bgcolor=#eeeeee >
+	   <td class=gry9 align=center><small>{$shp_log[SEC].k_time}</small></td>
+	   <td class=gry9 align=left>{$shp_log[SEC].des}</td>
+	   <td class=gry9 align=center>{$shp_log[SEC].log_user}</td>
+	  </tr>
+	{/section}
+	</table>
+	<BR>
+{/if}
+
+<table border=0 cellspacing=0 cellpadding=2 width=800 bgcolor=#ffffff align=center>
+	<tr>
+		<td class=snvy align=center width=200>&nbsp;</td>
+	  <td class=snvy align=center width=200> &nbsp;
+	  	{if $shp.status > 4 && $shp.status <> 5}APV : <a href="javascript:message_out('{$shp.apv_id}')" style="cursor:pointer">{$shp.apv_user}</a>[{$shp.apv_date}]{/if}
+	  </td>
+	  <td class=snvy align=center width=200> &nbsp;
+	  	{if $shp.status > 2 && $shp.status <> 5}CFM : <a href="javascript:message_out('{$shp.cfm_id}')" style="cursor:pointer">{$shp.cfm_user}</a>[{$shp.cfm_date}]{/if}
+	  </td>
+	  <td class=snvy align=center width=200> &nbsp;
+	  	{if $shp.status > 0 && $shp.status <> 5}Submit :  <a href="javascript:message_out('{$shp.submit_id}')" style="cursor:pointer">{$shp.submit_user}</a>[{$shp.submit_date}]{/if} 
+	  </td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=2 width=800 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=3 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+
+
+	<td colspan=2 align=center>
+{if $add_flag && $shp.status == 2}
+	<form method=POST name=add_main >
+  <input type=submit class=select_e value='EDIT' style="cursor:pointer; width=98%">	
+	<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+	<input type=hidden class=select name='PHP_action' value='cfm_shipdoc_i_edit'>
+	<input type=hidden class=select name='PHP_back_str' value='{$back_str}'>
+	<input type=hidden class=select name='PHP_inv_num' value=''>	</form>
+{/if}
+	</td>
+<!--	
+	<td width=200>
+{if $add_flag && $shp.status == 2}	
+	<form method=POST name=add_main>
+  <input type=submit class=select_e value='CONFIRM' style="cursor:pointer; width=98%">	
+	<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+	<input type=hidden class=select name='PHP_action' value='do_shipdoc_cfm'>
+	<input type=hidden class=select name='PHP_back_str' value='{$back_str}'>		
+	<input type=hidden class=select name='PHP_inv_num' value='{$shp.inv_num}'>	
+	</form>
+{/if}
+	</td>	
+-->
+<!--
+	<td align=right>
+	<form method=POST name=add_main >
+  <input type=submit class=select_e value='PACKING LIST' style="cursor:pointer; width=98%">	
+	<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+	<input type=hidden class=select name='PHP_inv_num' value='{$shp.inv_num}'>	
+	<input type=hidden class=select name='PHP_action' value='cfm_shipdoc_p_view'>
+	<input type=hidden class=select name='PHP_back_str' value='{$back_str}'>
+	
+	</form>
+	</td>	
+-->	
+  </tr>
+ 
+  <tr>
+	<td width=100>
+	<form method=POST name=back>
+		<input type=button onClick="window.location.href='shipdoc.php?PHP_action=cfm_shipdoc_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=80; height=40"></form>
+	</td>
+
+	<td width=150>
+
+{if $add_flag}
+	<form method=POST name=add_main>
+  <input type=submit class=select_e value='CONFIRM' style="cursor:pointer; width=95%; height=40">	
+	<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+	<input type=hidden class=select name='PHP_action' value='do_shipdoc_cfm'>
+	<input type=hidden class=select name='PHP_back_str' value='{$back_str}'>		
+	<input type=hidden class=select name='PHP_inv_num' value='{$shp.inv_num}'>	
+	</form>
+{/if}
+	</td>
+{if $add_flag}
+	
+
+	<td class=gry10  align=right width=500 ><form method=POST name=reject>remark:
+	    <textarea name="PHP_detail" rows=2 cols=50 class=select>{$order_log.des}</textarea>
+			<input type="hidden" name="PHP_action" value="reject_shipdoc_cfm">
+			<input type=hidden class=select name='PHP_id' value='{$shp.id}'>
+			<input type=hidden class=select name='PHP_back_str' value='{$back_str}'>
+			<input type=hidden class=select name='PHP_inv_num' value='{$shp.inv_num}'>
+				
+			<input type=hidden class=select name='PHP_submit_date' value='{$shp.submit_date}'>	
+			<input type=submit value=" reject " class=select_e style="cursor:pointer; width=60; height=40" onClick=this.width=0;></form>
+	</td>
+
+{/if}	
+	
+
+  </tr>
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

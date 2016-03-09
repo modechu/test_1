@@ -1,0 +1,164 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===...::  Rate ::.....===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<form METHOD="POST" action="{$PHP_SELF}" name="rate_add">
+<table border cellspacing=0 cellpadding=2 cols=1 width=780 bgcolor=#cccccc  align=center>
+  <tr>
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=760 bgcolor=#534A67>
+      <tr><td width=95% class=des align=center><b>.....  Rate .......</b></td></tr>
+     </table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=97%>
+
+<table border cellspacing=0 cellpadding=2 width=600 bgcolor=#eeeeee align=center>
+
+  <tr bgcolor="#003333" height=28> 	
+	<td nowrap width=80 align=center class=back rowspan=2 ><b>Date</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>USD</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>HKD</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>GBP</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>JPY</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>EUR</b></td>
+	<td nowrap align=center class=back colspan=2 ><b>RMB</b></td>	
+  </tr>
+  <tr bgcolor="#003333" height=28> 	
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+		<td nowrap width=40 align=center class=back><b>BUY</b></td>
+		<td nowrap width=40 align=center class=back><b>SELL</b></td>
+
+  </tr>
+	{section name=SEC loop=$rate} 
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#eeeeee'">
+    <td align=center class=b9 nowrap>{$rate[SEC].date}&nbsp;</td>
+    <td align=center>
+    	{if $rate[SEC].USD > 0}
+				<b>{$rate[SEC].USD}</b><input type=hidden  name="PHP_usd[{$rate[SEC].i}]" value='{$rate[SEC].USD}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_usd[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;    	
+    	{/if}
+    </td>
+    <td align=center>
+    	{if $rate[SEC].out_USD > 0}
+				<b>{$rate[SEC].out_USD}</b><input type=hidden  name="PHP_out_usd[{$rate[SEC].i}]" value='{$rate[SEC].out_USD}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_out_usd[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;    	
+    	{/if}
+    </td>    
+ 
+    <td align=center>
+    	{if $rate[SEC].HKD > 0}
+				<b>{$rate[SEC].HKD}</b><input type=hidden  name="PHP_hkd[{$rate[SEC].i}]" value='{$rate[SEC].HKD}'>
+    	{else}
+	    	<input type=text  size=3 name="PHP_hkd[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}    	
+    </td>
+    <td align=center>
+    	{if $rate[SEC].out_HKD > 0}
+				<b>{$rate[SEC].out_HKD}</b><input type=hidden  name="PHP_out_hkd[{$rate[SEC].i}]" value='{$rate[SEC].out_HKD}'>
+    	{else}
+	    	<input type=text  size=3 name="PHP_out_hkd[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}    	
+    </td>    
+ 
+    <td align=center>
+    	{if $rate[SEC].GBP > 0}
+				<b>{$rate[SEC].GBP}</b><input type=hidden  name="PHP_gbp[{$rate[SEC].i}]" value='{$rate[SEC].GBP}'>
+    	{else}
+ 	   		<input type=text  size=3 name="PHP_gbp[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;
+    	{/if} 
+    </td>
+    <td align=center>
+    	{if $rate[SEC].out_GBP > 0}
+				<b>{$rate[SEC].out_GBP}</b><input type=hidden  name="PHP_out_gbp[{$rate[SEC].i}]" value='{$rate[SEC].out_GBP}'>
+    	{else}
+ 	   		<input type=text  size=3 name="PHP_out_gbp[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;
+    	{/if} 
+    </td>
+
+    <td align=center>
+    	{if $rate[SEC].JPY > 0}
+				<b>{$rate[SEC].JPY}</b><input type=hidden  name="PHP_jpy[{$rate[SEC].i}]" value='{$rate[SEC].JPY}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_jpy[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>
+    <td align=center>
+    	{if $rate[SEC].out_JPY > 0}
+				<b>{$rate[SEC].out_JPY}</b><input type=hidden  name="PHP_out_jpy[{$rate[SEC].i}]" value='{$rate[SEC].out_JPY}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_out_jpy[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>    
+    <td align=center>
+    	{if $rate[SEC].EUR > 0}
+				<b>{$rate[SEC].EUR}</b><input type=hidden  name="PHP_eur[{$rate[SEC].i}]" value='{$rate[SEC].EUR}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_eur[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>
+    <td align=center>
+    	{if $rate[SEC].out_EUR > 0}
+				<b>{$rate[SEC].out_EUR}</b><input type=hidden  name="PHP_out_eur[{$rate[SEC].i}]" value='{$rate[SEC].out_EUR}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_out_eur[{$rate[SEC].i}]" class=select value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>    
+    
+    <td align=center>
+    	{if $rate[SEC].RMB > 0}
+				<b>{$rate[SEC].RMB}</b><input type=hidden  name="PHP_rmb[{$rate[SEC].i}]" value='{$rate[SEC].RMB}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_rmb[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>	
+    <td align=center>
+    	{if $rate[SEC].out_RMB > 0}
+				<b>{$rate[SEC].out_RMB}</b><input type=hidden  name="PHP_out_rmb[{$rate[SEC].i}]" value='{$rate[SEC].out_RMB}'>
+    	{else}
+    		<input type=text  size=3 name="PHP_out_rmb[{$rate[SEC].i}]" value=""  style=text-align:center>&nbsp;
+    	{/if}
+    </td>    	
+    
+  </tr>
+	<input type=hidden  name="PHP_date[{$rate[SEC].i}]" value='{$rate[SEC].date}'>
+			{/section} 
+
+<input type=hidden  name="PHP_action" value='{$action_mk}'>
+  <tr>
+    <td align=center class=b9 colspan=14>
+			<input type=submit value="Append" class=select_e style="width:99%;cursor:pointer">	
+		</tr>
+</table>
+
+</form>
+
+<!--------- footer ---------->
+{include file="footer.html"}

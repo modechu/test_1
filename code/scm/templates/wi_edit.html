@@ -1,0 +1,455 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 輔助系統 [ 製造令 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<!--<script src="http://code.jquery.com/jquery-latest.js"></script> -->
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/col.js"></script>
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<script type="text/javascript" src="./js/mask/jquery.loadmask.js"></script>
+<script type="text/javascript" src="./js/mask/jquery.blockUI.js"></script>
+        
+<script language="JavaScript">
+
+(function($){
+	$(document).ready(function(){
+		delete_qty = function(id,color,wi_id,backstr,r,qty,wi_sum,schd_sum){
+			//alert("del_qty");
+            if ( confirm( "Are you sure to delete colorway[ "+color+" ] ??" )  ) 
+			{
+				var myqty = qty.split(","); 
+				var del_qty=0;
+				//alert(wiqty+","+scheduleqty);
+				for(var i=0;i<myqty.length;i++)
+				{
+					del_qty += Number(myqty[i]);
+				}
+				if(!((Number(wi_sum)-del_qty) >= Number(schd_sum)))
+				{
+					alert("Failure!!Scheduling Q'ty over partial Q'ty");
+					return false;
+				}
+                
+            }
+			else
+			{
+				return false;
+			}
+            
+
+			//sUrl="wi.php?PHP_action=edit_del_colorway_ajax&id="+id+"&wi_id="+wi_id+"&colorway="+color+"&del_qty="+del_qty+"&PHP_wi_num={/literal}{$wi.wi_num}{literal}";
+			var URLs="wi.php";
+            $.ajax({
+                url: URLs,
+                data: "PHP_action=edit_del_colorway_ajax&id="+id+"&wi_id="+wi_id+"&colorway="+color+"&del_qty="+del_qty+"&PHP_wi_num={/literal}{$wi.wi_num}{literal}" ,
+                type:"GET",
+                dataType:'text',
+                success: function(msg){
+                    //alert(msg);
+					var response = msg.split("|");
+					//alert(response[2]);
+					//alert(divrep);
+          			<!-- 刪除點選的row-->
+                    var i=r.parentNode.parentNode.rowIndex; 
+                    document.getElementById('size_table').deleteRow(i);
+					if(response[2] == 0)
+					{
+						$("img[name^=delete_icon]").css("display","none");
+					}
+                    <!-- ------------ -->
+                    //$('body').unmask();
+					
+					
+					//var i=r.parentNode.parentNode.rowIndex
+					//document.getElementById('size_table').deleteRow(i)
+					
+					//$('#submit').click(function(e){            e.preventDefault(); // 成功阻擋Enter的submit動作!        });
+                    
+                },
+                beforeSend:function(){
+                    <!--alert('資料處理中');-->
+                },
+                complete:function(){
+                    
+                },
+                error:function(xhr, ajaxOptions, thrownError){ 
+                    alert(xhr.status); 
+                    alert(thrownError); 
+                }
+            });
+		}
+		qty_sum = function(idontknow){
+			
+			alert(idontknow);
+			
+		}
+		
+	});
+})(jQuery);
+
+var transaction;
+  var sUrl;
+  var callback = {
+    success: function(o) {
+    var response = o.responseText.split("|");
+    var divrep=response[0];
+    //alert(response[3]);
+    document.getElementById("msg_show").style.display='block';
+    if (response[1] == 1)
+    {
+    	document.getElementById("size_work").style.display='block';
+    	document.getElementById("size_view").style.display='none';
+    	document.getElementById("qty_none").style.display='block';
+    	
+    }
+	//alert(response[2]);
+	if(response[2] == 0)
+	{
+		//document.getElementByName("delete_icon").style.display='none';
+		$("input[name^=delete_icon]").css("display","none");
+	}
+	//alert(response[3]);
+	if(response[3] == 0)
+	{
+		alert("Failure!!Scheduling Q'ty over partial Q'ty");
+		//document.getElementByName("delete_icon").style.display='none';
+		//$("input[name^=delete_icon]").css("display","none");
+	}
+    m_div1.innerText  = divrep; 
+//  alert(divrep);
+
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+  
+  var sizeback = {
+    success: function(o) {
+    var response = o.responseText.split("|");
+    var divrep=response[0];
+    	
+    document.getElementById("msg_show").style.display='block';
+    m_div1.innerText  = divrep; 
+    size_add_table.innerHTML = response[1];
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };  
+
+function cfm(id,color,wi_id,back_str,r,qty,wiqty,scheduleqty) {
+	var myqty = qty.split(","); 
+	var del_qty=0;
+	//alert(wiqty+","+scheduleqty);
+	for(var i=0;i<myqty.length;i++)
+	{
+		del_qty += Number(myqty[i]);
+	}
+	
+	if ( confirm("Are you sure to delete colorway[ "+color+" ] ??")) {
+		if((Number(wiqty)-del_qty) >= Number(scheduleqty))
+		{
+			var i=r.parentNode.parentNode.rowIndex
+			document.getElementById('size_table').deleteRow(i)
+		
+			sUrl="wi.php?PHP_action=edit_del_colorway_ajax&id="+id+"&wi_id="+wi_id+"&colorway="+color+"&del_qty="+del_qty+"&PHP_wi_num={/literal}{$wi.wi_num}{literal}";
+
+			transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+		
+		}
+		else
+		{
+			alert("Failure!!Scheduling Q'ty over partial Q'ty");
+		}
+  
+	} 
+ }
+ 
+function cfm_add(num) {
+	var qty = new Array();
+	var colorway = '';
+	var test_n;
+	var test_null=0;
+	//colorway = window.document.forms['wi_edit'].elements['PHP_colorway'].value;
+	colorway = document.getElementById('colorway').value;
+	if (!colorway){
+			alert("Please input [ colorway]name or id !");
+			return;
+		}
+	for (i=0;i<num;i++){
+		//test_n = eval("window.document.forms['wi_edit'].elements['PHP_qty"+i+"'].value");
+		test_n = eval("document.getElementById('PHP_qty"+i+"').value");
+		if(/\D/.test(test_n))  
+		{
+			alert("Please input number！");  
+		    return;
+		 }
+		 if ( test_n != '') test_null =1;		 		
+	}
+	if (test_null == 0)
+	{
+		alert("Please input Q'ty！");  
+		return;
+	}
+	for (i=0;i<num;i++){
+		//qty[i] = eval("window.document.forms['wi_edit'].elements['PHP_qty"+i+"'].value");
+		qty[i] = eval("document.getElementById('PHP_qty"+i+"').value");
+	}
+	location.href="wi.php?PHP_action=edit_add_colorway&colorway="+colorway+"&PHP_qty="+qty+"&wi_id="+{/literal}{$wi.id}+"{$back_str2}"{literal};
+
+ }
+function writeToSizeAddList(size,base_size) {	
+	var size_ary = size.split(",");
+	var i=(size_ary.length)-1;
+	var scale=size_ary[0]+'~'+size_ary[i]
+	window.document.forms['wi_edit'].elements['PHP_Size'].value = scale;
+	window.document.forms['wi_edit'].elements['PHP_Size_id'].value = 0;
+	window.document.forms['wi_edit'].elements['PHP_Size_item'].value = size;
+	window.document.forms['wi_edit'].elements['PHP_Size_add'].value = 1;
+	window.document.forms['wi_edit'].elements['PHP_base_size'].value = base_size;
+
+	sUrl="index2.php?PHP_action=wi_size_edit_ajx&PHP_Size="+scale+"&PHP_Size_id=0&PHP_Size_item="+size+"&PHP_base_size="+base_size+"&PHP_cust={/literal}{$wi.cust}&PHP_dept_code={$wi.dept}&PHP_smpl_id={$wi.smpl_id}{literal}";
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, sizeback, null);
+
+
+}
+function writeToSizeList(id,size) {
+	var i=0;
+	window.document.forms['wi_edit'].elements['PHP_Size'].value = size;
+	window.document.forms['wi_edit'].elements['PHP_Size_id'].value = id;
+	window.document.forms['wi_edit'].elements['PHP_Size_add'].value = 1;
+
+	sUrl="index2.php?PHP_action=wi_size_edit_ajx&PHP_Size="+size+"&PHP_Size_id="+id+"&PHP_smpl_id={/literal}{$wi.smpl_id}{literal}";
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, sizeback, null);
+}
+
+function list_size(){
+	var gofile ='index2.php?PHP_action=show_size_search&PHP_dept={/literal}{$wi.dept}{literal}&PHP_cust={/literal}{$wi.cust}{literal}'; 	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=650,height=500, top=100, left=150');
+ }
+
+function etd_check(etd)
+{
+	new_etd=window.document.forms['wi_edit'].elements['PHP_etd'].value;
+	if (etd != new_etd)
+	{
+		if ( confirm("     Original ETD : "+ etd +"     \r\r     New ETD : "+new_etd+"      \r\r     Are you sure exchange ETD??")) {
+			
+		}else{
+			window.document.forms['wi_edit'].elements['PHP_etd'].value = etd;
+		} 
+
+	}
+}
+
+ function count_sum(num)
+ {
+	var qty = 0
+	var s_qty = 0
+	for (i=0;i<num;i++){
+		//s_qty = eval("window.document.forms['wi_edit'].elements['PHP_qty"+i+"'].value");
+		s_qty = eval("document.getElementById('PHP_qty"+i+"').value");
+		if(s_qty == '')s_qty = 0;
+		qty += parseInt(s_qty);
+	}
+	//window.document.forms['wi_edit'].elements['PHP_sum'].value = qty;
+	document.getElementById('qty_sum').value = qty;
+	//window.document.getElementsByName('PHP_sum').value = qty;
+ }
+
+
+</script>
+{/literal}
+
+</head>
+
+<body>
+<form method=POST name="wi_edit" action=wi.php>
+<br>
+<input type="hidden" name="wiqty_sum" value="{$wiqty_sum}">
+{section name=SEC_wiqty loop=$wiqty_detail} 
+<input type="hidden" name="{$wiqty_detail[SEC_wiqty].id}" value="{$wiqty_detail[SEC_wiqty].qty}">
+{/section}
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28 width=440>[ <b><span class=ylw10>EDIT</span> Order W / I : {$wi.wi_num} - Colorway/Q'ty </b>]</td><input type="hidden" name="PHP_wi_num" value="{$wi.wi_num}">
+	<td class="des" align=center height=28 width=140>Verson :<span class=ylw10><b>{$wi.revise}</span></b></td>
+	</tr><input type="hidden" name="PHP_version" value="{$wi.version}">
+</table>
+
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700 id=msg_show {if $msg_YES}style="display : block" {else}style="display : none" {/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='m_div1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+      </tr>
+     </table>
+
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Dept :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left>	
+    {if $smpl.status >= 8}
+   	  {$smpl.etd}
+  	  <input type="hidden" name="PHP_etd" value={$smpl.etd}> 
+    {else}
+    	<input type="text" name="PHP_etd" size="20" value={$smpl.etd} readonly> 
+	<!--	<img align='top' onmousedown="javascript:Cal(document.wi_edit.PHP_etd,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'> -->
+	{/if}
+	</td>
+	<input type="hidden" name="PHP_dept_code" value="{$wi.dept}">
+	<input type="hidden" name="PHP_cust" value="{$wi.cust}">
+	<input type="hidden" name="PHP_smpl_id" value="{$smpl.id}">
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=100 align=center class=back><b>Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=150 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<a href="{$wi.pic_url}" target=_black><img src="{$wi.pic_url}" name="pic" width=85 border=0></a></td>
+	<td class=grn9 align=center><b>&nbsp;{$smpl.order_num}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center>
+    	
+		<input type='hidden' name="PHP_Size_id" value={$smpl.size} >
+		<input type='hidden' name="PHP_Size_item" value='' >
+		<input type='hidden' name="PHP_Size_add" value=0 >
+    <input type='hidden' name="PHP_base_size" value='' >
+
+		<div id="size_work" {if $size_edit} style="display : block" {else} style="display : none"{/if} >
+		<input type='text' name="PHP_Size" size=5 class=select value="{$smpl.size_scale}"  onClick="list_size('{$order.dept}','{$order.cust}')" readonly>
+    </div>
+
+    <div id="size_view" {if $size_edit} style="display : none"  {else} style="display : block"{/if}>
+    	{$smpl.size_scale}
+ 		</div>
+  
+
+    </td>
+    <td class=grn9 align=center><b>&nbsp;Order : {$smpl.qty}{$wi.unit}</b></td>
+    <input type='hidden' name="PHP_unit" value={$wi.unit} >
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center id=size_table>
+		{$show_del_breakdown}
+			<tr  class='sign' align=center id=qty_none style="display : none"><td>No colorway data !</td></tr>
+		</table>
+	<div id=size_add_table>
+		{if $smpl.size_scale == ''}
+			<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+				<tr><td class='sign' align=center>Append SIZE RANGE First!</td></tr>
+			</table>	
+		{else}		  
+			{$edit_breakdown}
+		{/if}
+	</div>	
+	</td>
+  </tr>
+</table>
+<br>
+<!-------------  material range ------------->
+    <table width=700 border=0 cellspacing=1 cellpadding=2>
+     <tr bgcolor=#333333 height=28>
+	  <td width=90 class=ylw9 align=center nowrap><b>Fabirc #</b></td>
+	  <td width=150 class=ylw9 align=center><b>Fabric Name</b></td>
+	  <td width=240 class=ylw9 align=center><b>Placement</b></td>
+<!--	  <td width=70 class=ylw9 align=center><b>consump.</b></td> -->
+	  <td width=50 class=ylw9 align=center><b>Unit</b></td>
+	  <td width=70 class=ylw9 align=center><b>Remark</b></td>
+     </tr>
+
+	{if $lots_NONE}  
+	  <tr>
+		<td colspan=6 align=center class=bgdy9><br>No Fabric data!<br><br>
+		<input type="hidden" name="PHP_lots_est" value="">
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$lots_use} 
+     <tr bgcolor=#eeeeee height=28>
+	  <td class=snvy align=center>{$lots_use[USE].lots_code}&nbsp;</td>
+	  <td class=snvy >{$lots_use[USE].lots_name}&nbsp;</td>
+	  <td class=snvy >{$lots_use[USE].use_for}&nbsp;</td>
+<!--	  <td class=snvy align=center><input type='text' name="PHP_lots_est['{$lots_use[USE].id}']" value="{$lots_use[USE].est_1}" size=3 class=select></td> -->
+	  <td class=snvy align=center>{$lots_use[USE].unit}&nbsp;</td>
+	  <td class=snvy align=center>{$lots_use[USE].use_method}&nbsp;</td>
+	 </tr>
+	{/section} 
+	 
+<!------------------------------------------------>
+<!-------------  accessories range ------------->
+
+     <tr bgcolor=#333333 height=28>
+	  <td width=90 class=ylw9 align=center><b>Accessory #</b></td>
+	  <td width=150 class=ylw9 align=center><b>ACC. Name</b></td>
+	  <td width=240 class=ylw9 align=center><b>Placement</b></td>
+<!--	  <td width=70 class=ylw9 align=center><b>consump.</b></td> -->
+	  <td width=50 class=ylw9 align=center><b>Unit</b></td>
+	  <td width=70 class=ylw9 align=center><b>Remark</b></td>
+     </tr>
+
+	{if $acc_NONE}  
+	  <tr>
+		<td colspan=6 align=center class=bgdy9><br>No Accessory data!<br><br>
+		<input type="hidden" name="PHP_acc_est" value="">
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$acc_use} 
+     <tr bgcolor=#eeeeee height=28>
+	  <td class=snvy align=center nowrap>{$acc_use[USE].acc_code}&nbsp;</td>
+	  <td class=snvy >{$acc_use[USE].acc_name}&nbsp;</td>
+	  <td class=snvy >{$acc_use[USE].use_for}&nbsp;</td>
+<!--	  <td class=snvy align=center><input type='text' name="PHP_acc_est['{$acc_use[USE].id}']" size=3 class=select value="{$acc_use[USE].est_1}"></td> -->
+	  <td class=snvy align=center>{$acc_use[USE].unit}&nbsp;</td>
+	  <td class=snvy align=center>{$acc_use[USE].use_method}&nbsp;</td>
+	 </tr>
+	{/section} 
+    </table>
+<!------------------------------------------------>
+<table border=0 cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=95%></td>
+  </tr>
+  <tr><td colspan=2><small>&nbsp;&nbsp;※ This page for Edit colorway, Q'ty and consumption Only ! </small></td></tr>
+    <tr><td colspan=2><small>&nbsp;&nbsp;※For Fabric and Accessory data Add/Delete please edit from [FAB/ACC] job.</small></td></tr>
+
+	<input type="hidden" name="PHP_wi_id" value="{$wi.id}">
+	<input type="hidden" name="PHP_smpl_id" value="{$wi.smpl_id}">
+
+  <tr>
+  <td>
+		<input type=button onClick="window.location.href='wi.php?PHP_action=wi_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+	</td>
+  <td class=grn9>
+	<input type="hidden" name="PHP_action" value="do_wi_edit">
+	<input type="hidden" name="PHP_back_str" value="{$back_str}">
+	<input type="hidden" name="PHP_back_str2" value="{$back_str2}">
+	<input type=submit value="[ Update above data ]" class=select_e style="cursor:pointer; width=100%" onClick="javascript:etd_check('{$smpl.etd}')";></td></form>
+  </tr>
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

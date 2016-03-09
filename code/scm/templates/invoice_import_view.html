@@ -1,0 +1,214 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>==== ::::::::::  Pack Style Input :::::::::: ====</title>
+ <link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">@import url(js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar.js"></script>
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script language="javascript">
+(function($){
+	$(document).ready(function(){
+		
+		$("#btn_import_csv").click(function(){
+			var fty = $("#fty").find(":selected").val();
+				if(fty !='')
+				{
+				if(fty == 'LY')
+				{
+					$("#PHP_action").val('ly_invoice_import');
+					//alert($("#PHP_action").val());
+				}
+				else
+				{
+					$("#PHP_action").val('cf_invoice_import');
+					//alert($("#PHP_action").val());
+				}
+			}
+			else
+			{
+				alert("Please select FTY");
+			}
+		});
+		$("#import_csv_post").click(function(){
+			var val_null=true;
+			$('input[type=text]').each(function(key,val){
+			
+				if($(val).val() == '')
+				{
+					alert('Please keyin SCM Order Number!!')
+					val_null=false;
+					return false;
+					
+				}
+			});
+			if(!val_null)
+			{
+				return false;
+			}
+			
+		});
+		$(".txt_unitprice").change(function(){
+			//alert("test");
+			var thisid = $(this).attr('id');
+			thisid = thisid.substr(3);
+			var fob = $("#fob"+thisid).val();
+			var qty = $("#qty"+thisid).attr('qty');
+			var newsum = fob * qty;
+			$("#sum"+thisid).html(newsum);
+			//alert(fob * qty );
+		});
+		$(".savebtn").click(function(){
+			//alert("test");
+			var thisid = $(this).attr('id');
+			thisid = thisid.substr(3);
+			var fob = $("#fob"+thisid).val();
+			var qty = $("#qty"+thisid).attr('qty');
+			var rmk = $("#rmk"+thisid).val();
+			var newsum = fob * qty;
+			//alert(fob+","+qty+","+newsum+","+rmk);
+			$.post('./invoice_import.php?PHP_action=invoice_edit',{thisid:thisid,fob:fob,qty:qty,remark:rmk,amount:newsum},function(data) {
+				//$(data).appendTo('#show_message');
+				alert(data);
+			});
+			
+			//alert(fob * qty );
+		});
+		//$('#PHP_csv_file').change(function() {
+		//	var filename = $('#PHP_csv_file').val();
+		//	$('#show_message').html(filename);
+		//});
+		//$('#btn_import_csv').click(function() {
+		//	var filename = $('#PHP_csv_file').val();
+		//	$.post('./invoice_import.php?PHP_action=cf_invoice_import',{file:filename},function(data) {
+		//		$(data).appendTo('#show_message');
+		//	});
+		//});
+		
+	});
+})(jQuery);
+</script>
+{/literal}
+</head>
+<body>
+{if $msg_YES}
+<table cellpadding="0" cellspacing="0" cols="0" >
+	<tr bgcolor=#ffffff> 
+		<td width="90" class="gry10" align="center"><img src="images/alert.gif" border="0"></td>
+		<td class="msg"><b>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}</b><br>{/section}</td>
+	</tr>
+</table>
+{/if}
+<div id='show_message'></div>
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		
+    </tr>
+	<tr>
+		<form method=POST name=import enctype="multipart/form-data" action=invoice_import.php>
+		<input type="hidden" id="PHP_INV_NO" name="PHP_INV_NO" value="{$inv_no}">
+		{if $Invoice_import_list}
+		{foreach from=$Invoice_import_list key=inv item=inv_item name=inv}
+		
+			<table style="border:5px #cccccc solid;"  rules="all" cellpadding='0' cellspacing='0' width=100%>
+				<tr><td colspan='12' align='left'>
+					<font size='4'>SHIP DATE:</font> <font size='4' style="cursor:pointer;font-weight:bold;" id="calendar-trigger" color="blue">{$ship_date}</font> 
+					
+				</td></tr>
+				<tr>
+				<td style='width:80px'>INV No#</td>
+				<!-- <td style='width:80px'>SHIP Date#</td> -->
+				<td style='width:80px'>CUST PO#</td>
+				<td style='width:80px'>STYLE#</td>
+			{if $inv == 'both'}
+				<!--沒有顏色尺碼-->
+			{/if}
+			{if $inv == 'nocolor'}
+				<td>SIZE#</td>
+			{/if}
+			{if $inv == 'nosize'}
+				<td>COLOR#</td>
+			{/if}
+			{if $inv == 'all'}
+				<td>COLOR#</td>
+				<td>SIZE#</td>
+			{/if}
+				<td>SCM NO.</td>
+				<td>Qty(PCS)</td>
+				<td style='width:100px'>Unit Price(US$)</td>	
+				<td style='width:100px'>Amount(US$)</td>
+				<td style='width:230px'>REMARK</td>
+				
+				</tr>
+			{foreach from=$inv_item key=inv_key item=inv_value name=detail}
+				<!-- {$inv}: -->
+				<!-- {$inv_value.id}:{$inv_value.inv_no}:{$inv_value.po}:{$inv_value.style}:{$inv_value.color}:{$inv_value.size}:{$inv_value.qty}:{$inv_value.unit}:{$inv_value.fob}:{$inv_value.dollar_unit}:{$inv_value.amount}:{$inv_value.ord_num}:{$inv_value.remark}<br> -->
+				<tr>
+					<td>{$inv_value.inv_no}</td>
+					<!-- <td>{$inv_value.ship_date}</td> -->
+					<td>{$inv_value.po}</td>
+					<td>{$inv_value.style}</td>
+					
+					{if $inv == 'both'}
+					<!--沒有顏色尺碼-->
+					{else}
+						{if $inv == 'all'}
+							{if $inv_value.color=='nocolor'}
+							<td>&nbsp;</td>
+							{else}
+							<td>{$inv_value.color}</td>
+							{/if}
+							{if $inv_value.size=='nosize'}
+							<td>&nbsp;</td>
+							{else}
+							<td>{$inv_value.size}</td>
+							{/if}
+							<!-- <td>{$inv_value.color}</td> -->
+							<!-- <td>{$inv_value.size}</td> -->
+						{else}
+							{if $inv == 'nocolor'}
+								<td>{$inv_value.size}</td>
+							{/if}
+							{if $inv == 'nosize'}
+								<td>{$inv_value.color}</td>
+							{/if}
+						{/if}
+					{/if}
+	
+					<td>&nbsp;{$inv_value.ord_num}</td>
+					<td id='qty{$inv_value.id}' qty='{$inv_value.qty}'>{$inv_value.qty}</td>
+					<td>{$inv_value.fob}</td>
+					<td>{$inv_value.amount}</td>
+					<td>&nbsp;{$inv_value.remark}</td>
+					
+				</tr>	
+				
+			{/foreach}
+			<tr>{if $inv == 'all'}<td colspan='6' align='right'>{else}{if $inv == 'both'}<td colspan='4' align='right'>{else}<td colspan='5' align='right'>{/if}{/if}Total Qty :</td><td>{$ttl_qty}</td><td>Total Amount :</td><td>{$ttl_amount}</td><td>&nbsp;</td></tr>
+			<tr>{if $inv == 'all'}<td colspan='10' align='center'>{else}{if $inv == 'both'}<td colspan='8' align='center'>{else}<td colspan='9' align='center'>{/if}{/if}{if $inv_status < 2}<input id="import_csv_post" class="select_e" style="cursor:pointer; width=60%"  type='submit' value=' EDIT '>{/if}</td></tr>
+		{/foreach}
+		
+
+		
+		</table>
+		<input type="hidden" id="PHP_action" name="PHP_action" value="edit_invoice">
+		{/if}
+		</form>
+		
+	</tr>
+	
+</table>
+
+{include file="footer.html"}

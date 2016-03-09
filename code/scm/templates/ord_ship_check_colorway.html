@@ -1,0 +1,162 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>=== ...... SCM SYSTEM [ SHIPPING DOCUMENT ADD LIST ] ...... ===</title>
+<link type="text/css" rel="stylesheet" href="./css/shipping.css">
+<script type="text/javascript" src="./js/jquery.js"></script>
+{literal}
+<script language="javascript">
+
+function ord_del(id) {
+	location.href="shipping.php?PHP_action=ord_ship_del&PHP_id="+id;
+}
+
+function add(id,ord,cust,mks,p_id){
+	location.href="shipping.php?PHP_action=ord_ship_add&PHP_id="+id+"&PHP_ord="+ord+"&PHP_cust="+cust+"&PHP_mks="+mks+"&PHP_p_id="+p_id;
+}
+
+$(document).ready(function(){
+
+	$('.mail_msg').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("mail_txt");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("mail_txt");  
+	});
+	
+	$('.title_submit').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+	
+	$('.title_submit2').hover(function(){
+		$(this).animate({ fontSize: '+=5' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ fontSize: '-=5' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+		
+	$('.list_txt , .list_input').hover(function(){
+		$(this).addClass("list_txt_bg");
+	},function(){
+		$(this).removeClass("list_txt_bg");  
+	});
+	
+	$('.title_submit').click(function(){
+		$("#"+$(this).attr('id')).submit();
+	});
+	
+	$("input").keyup(function(){
+		$(this).val($(this).val().toUpperCase());
+		//$(this).val($(this).val().replace(/[()"']+/g,''));
+	});
+
+	ck = function(e){
+		$("input[type='text']").each(function(i) {
+			$(this).val($(this).val().toUpperCase());
+			//$(this).val($(this).val().replace(/[()"']+/g,''));
+		});
+	};
+	
+});
+
+</script>
+{/literal}
+</head>
+<body onload="ck();">
+{if $max_notify > 0 }
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+	<a href="notify.php?PHP_action=notify">
+	<tr height="30" >
+		<td align="center" class="mail_msg" bgcolor="#EEEEEE">
+			<span class="sign" align="center"><b> You have {$max_notify} message un-read</b></span>
+		</td>
+	</tr>
+	</a>
+</table>
+<br>
+{/if}	
+
+<table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+	{if $msg_YES}
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td class="line_t"></td>
+	</tr>
+	<tr>
+		<td class="title_main">[ SHIPPING DOCUMENT DETAIL ~ FOR COLORWAY ]</td>
+	</tr>
+	<tr>
+		<td class="line_spc"></td>
+	</tr>
+	<tr>
+		<td class="line_note">PS：COLORWAY 顏色名稱必須相同，相同 SIZE 的數量才會相加</td>
+	</tr>
+	
+	
+	<tr>
+		<td>
+			<form method="POST" id="uci" name="ord_size_{$ord[ORD].id}"> 
+			{section name=ORD loop=$ord}
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<td class="line_black" colspan="20"></td>
+				</tr>			
+				<tr>
+					<td class="ord_number" colspan="20">{$ord[ORD].num}</td>
+				</tr>			
+				<tr>
+					<td class="cust_po" colspan="20">BUYER PO#：{$ord[ORD].cust_po}</td>
+				</tr>
+				<tr class="list_detail">
+					<td width="300">COLORWAY</td>
+					{section name=SECS loop=$ord[ORD].size}
+					<td>{$ord[ORD].size[SECS]}</td>
+					{/section}	
+				</tr>
+				{section name=CLRC loop=$ord[ORD].colorway}
+				<tr class="{if $ord[ORD].colorway[CLRC].ship_color}list_input_ok{else}list_input{/if}">
+					<td width="300">({$ord[ORD].colorway[CLRC].mks})<input type="text" name="PHP_color_{$ord[ORD].colorway[CLRC].w_id}" value="{if $ord[ORD].colorway[CLRC].ship_color}{$ord[ORD].colorway[CLRC].ship_color|escape:'html'}{else}{$ord[ORD].colorway[CLRC].colorway|escape:'html'}{/if}" size="41" {if $ord[ORD].colorway[CLRC].ship_color != ''}readonly="readonly"{/if}></td>
+					{section name=SEC loop=$ord[ORD].colorway[CLRC].qty}
+					<td>{$ord[ORD].colorway[CLRC].qty[SEC]}</td>		
+					{/section}	
+				</tr>
+				{/section}
+				<tr>
+					<td class="line_black" colspan="20"></td>
+				</tr>
+				<tr>
+					<td class="line_b" colspan="20">&nbsp;</td>
+				</tr>
+			</table>
+			{/section}
+			<input type=hidden name="PHP_action" value="ord_ship_colorway_item_add">
+			</form>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_spc"></td>
+	</tr>
+	<tr>
+		<td class="title_submit" id="uci">[ UPDATE COLORWAY ~ SHIPPING DOCUMENT RECORDS ]</td>
+	</tr>
+	<tr>
+		<td class="line_spc"></td>
+	</tr>
+</table>

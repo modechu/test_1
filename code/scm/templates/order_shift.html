@@ -1,0 +1,273 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+var $old ="";
+var transaction;
+var sUrl;
+
+function cfm_img() {
+		var $old ="";
+		$old = document.pic.src;
+		document.pic.src = document.do_edit.PHP_pic.value;
+	if ( !confirm ("confirm if the picture is correct?")){
+		document.pic.src = $old;
+	} else {
+		document.do_edit.PHP_pic_upload.value ="1";
+	}
+}
+function wait(){
+	alert ("如果您有傳圖上主機時時，將會花上一段時間!!\r\r請在等待[視窗自動更新]前,不要再按任何按扭。 \r最佳的方法，請將您的圖檔盡可能設定與系統要求相同大小    \r\r因為系統接受圖檔後，會自動將圖再format成固定大小 !  ");
+}
+
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+}
+
+function check_po_shift(ord_num) {
+  sUrl = "po.php?PHP_action=check_po_shift&PHP_ord_num="+ord_num;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, checkback, null);
+
+}
+  var checkback = {
+    success: function(o) {
+    	var response = o.responseText.split("|");    	
+			var ord_num = window.document.forms['do_edit'].elements['PHP_ord_num'].value;
+			var fty_org = window.document.forms['do_edit'].elements['PHP_fty_org'].value;
+			var id = window.document.forms['do_edit'].elements['PHP_id'].value;
+			var fty_new = window.document.forms['do_edit'].elements['PHP_fty_new'].value;				
+			if(response[0] == 0)
+			{				
+				window.location='index2.php?PHP_action=do_order_shift&PHP_id='+id+'&PHP_fty_org='+fty_org+
+												'&PHP_ord_num='+ord_num+'&PHP_fty_new='+fty_new; 																	
+			}else{
+				if ( confirm('此訂單移轉將影響 [ '+response[0]+' ] 張採購單, 且其中己驗收之採購單有 [ '+response[1]+' ] \n\n 是否確定要移轉'))
+				{
+					window.location='po.php?PHP_action=do_po_shift&PHP_id='+id+'&PHP_fty_org='+fty_org+
+												'&PHP_ord_num='+ord_num+'&PHP_fty_new='+fty_new; 			
+				}else{
+					return;
+				}
+				
+			}
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+</script>
+{/literal}
+</head>
+{if $re_adding}
+<body onLoad="refreshIt();">
+{else}
+<body onLoad="refreshIt();">
+{/if}
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#333333>
+	<tr>
+	  <td class="ylw10" align=center height=28 width=150> {if $order.status == 0}waitt'g for IE rec.
+									{elseif $order.status == 1}wait for submit</span>
+									{elseif $order.status == 2}waitt'g for CFM</span>
+									{elseif $order.status == 3}waitt'g for APV</span>
+									{elseif $order.status == 4}<b>APVED</b></span>
+									{elseif $order.status == 5}<span class=ssign><b>REJECT</b></span>
+									{elseif $order.status == 6}<span class=lgrn><b>SCHDLing</b></span>
+									{elseif $order.status == 7}<span class=des><b>SCHDL CFMed</b></span>
+									{elseif $order.status == 8}<span class=des><b>PRODUCING</b></span>
+									{elseif $order.status == 10}<b>=finished=</b></span>
+									{elseif $order.status == 12}<b>==shipped==</b></span>
+									{else}&nbsp;{/if}</td>
+		<td class="sign" align=center height=28 width=60%><b>SHIFT  </b> [ <span class=ylw10><b>ORDER</b> record</span> ] -- <b><span class='des'>{$order.order_num}</span></b> </td>
+		{if $order.revise}<td class="ylw10" align=center height=28 width=40%><b>REVISE : </b> [ <span class=sign><b><i>{$order.revise}</i></b></span> ]</td>{/if}
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=8 class=frnt align=right><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+  </tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=do_edit enctype="multipart/form-data" action="po.php">
+    <td class=snvy align=right nowrap><b>Order # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.order_num}</b></td>
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.cust}</b></td>
+    <td class=snvy align=right nowrap><b>customer ref. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;{$order.ref}</td>
+    <td class=snvy align=right nowrap><b>Team :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.dept}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>factory :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$factory}</b></td>
+    <td class=snvy align=right nowrap><b>style :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style}</b></td>
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.qty|number_format}</b></td>
+    <td class=snvy align=right nowrap><b>unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.unit}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>FOB @ :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.uprice}</b></td>
+    <td class=snvy align=right nowrap><b>Quota Cat. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.quota}</b></td>
+    <td class=snvy align=right nowrap><b>smpl ord #:</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b><small>&nbsp;{$order.smpl_ord}</small></b></td>
+    <td class=snvy align=right nowrap><b>style #:</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b><small>&nbsp;{$order.style_num}</small></b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>pattern # :</b></td>
+	<td class=b9 align=left colspan=2 bgcolor=#dddddd><b>&nbsp;{$order.patt_num}</b></td>
+    <td class=snvy align=right nowrap colspan=3>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>cal. IE :</b></td>
+	<td class=b9 align=left bgcolor=#dddddd><b>&nbsp;{$order.ie1}</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd colspan=3><b>&nbsp;{$order.etd}</b></td>
+	<td class=snvy align=right nowrap><b>ETP. :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd colspan=3><b>&nbsp;{$order.etp}</b></td>
+  </tr>
+	
+	<td><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>picture</b></i></td>
+	<td><hr size=2 width=96%></td>
+	<td colspan=2><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>unit cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+
+ <tr>
+
+        <td align=center class=head valign=top rowspan=12 colspan=3>
+			<table width=190 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><img src="{$main_pic}" name="pic" width=190><td></tr>
+			</table>
+		</td>
+	
+    <td class=snvy align=right nowrap colspan=4><b>main fabric Q'ty required per unit :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>&nbsp;&nbsp;{$order.mat_useage}&nbsp;&nbsp;</b></td>
+  </tr>
+  <tr>
+	<td class=snvy align=right nowrap colspan=4><b>main fabric unit price :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>$&nbsp;{$order.mat_u_cost}&nbsp;&nbsp;</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>accessory cost per unit :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>$&nbsp;{$order.acc_u_cost}&nbsp;&nbsp;</b></td>
+ </tr>
+ </tr>
+    <td class=snvy align=right nowrap colspan=4><b>quota charge per unit [if any] :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>$&nbsp;{$order.quota_fee}&nbsp;&nbsp;</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>commission per unit [if any] :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>$&nbsp;{$order.comm_fee}&nbsp;&nbsp;</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>C.M. estimate per unit :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>$&nbsp;{$order.cm}&nbsp;&nbsp;</b></td>
+  </tr>
+
+  <tr>
+	<td align=right><hr size=2 width=92%></td>
+	<td colspan=2 class=bgdy align=center><i><b>special treatment cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>embroidery :</b></td>
+	<td colspan=3 class=b9 align=left bgcolor=#dddddd>{if $order.emb}$ {$order.emb}{/if}&nbsp;</td>
+ </tr>
+  <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>garment wash :</b></td>
+	<td colspan=3 class=b9 align=left bgcolor=#dddddd>{if $order.wash}$ {$order.wash}{/if}&nbsp;</td>
+  </tr>
+ <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>other treatment :</b></td>
+	<td class=b9 align=left bgcolor=#dddddd>{if $order.oth}$ {$order.oth}{/if}&nbsp;</td>
+    <td colspan=2 class=snvy align=left nowrap bgcolor=#dddddd>&nbsp;{$order.oth_treat}</td>
+  </tr>
+
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=2><b>sample cost :</b></td>
+    <td class=grn10 align=left bgcolor=#dddddd><b>$&nbsp;{$order.smpl_fee}</b></td>
+    <td class=snvy align=right nowrap><b>G.M.% :</b></td>
+    <td class=bgdy align=right bgcolor=#dddddd><b>&nbsp;{$order.gmr} %&nbsp;&nbsp;</b></td>
+</tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=2 width=590 bgcolor=#ffffff align=center>
+  <tr>
+	<td colspan=2>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$back_str}'" value="<< go back " class=select_e style="cursor:pointer; width=98%">&nbsp;
+{else}&nbsp;
+{/if}
+	</td>
+	<td colspan=4>
+		<input type="hidden" name="PHP_status" value="{$order.status}">
+		<input type="hidden" name="PHP_fty_org" value="{$order.factory}">
+		<input type="hidden" name="PHP_ord_num" value="{$order.order_num}">
+  {if $from_ADD}
+		<input type="hidden" name="from_shift" value="1">
+		<input type="hidden" name="cgiget" value="">
+		<input type="hidden" name="cgino" value="">
+		<input type="hidden" name="cgi_1" value="">
+		<input type="hidden" name="cgi_2" value="">
+		<input type="hidden" name="cgi_3" value="">
+		<input type="hidden" name="cgi_4" value="">
+		<input type="hidden" name="cgi_5" value="">
+  {else}
+		<input type="hidden" name="from_shift" value="">
+  {/if}
+		<!--<input type="hidden" name="PHP_action" value="do_po_shift"> -->
+		<input type="hidden" name="PHP_action" value="do_order_shift">
+		<input type="hidden" name="PHP_id" value="{$order.id}">
+		<input type="hidden" name="PHP_ord_num" value="{$order.order_num}">
+		<input type="hidden" name="PHP_dept" value="{$order.dept}">
+		<input type="hidden" name="PHP_ie1" value="{$order.ie1}">
+		<input type="hidden" name="PHP_cust" value="{$order.cust}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=button value="[ SHIFT ORDER to new factory as above ]" class=select_e style="cursor:pointer; width=98%" onClick=check_po_shift('{$order.order_num}')></form>
+	</td>
+  </tr>
+  <tr>
+    <td class=bgdy valign=top><b>NOTE :</b></td>
+    <td colspan=5 class=bgdy>after revise, All the process done before will be be erased, some order process will restart from the beginning.<br>some data may need be deleted, thus,it will take a few more seconds, please be patient.<br>NEVER DOUBLE , TRIPLE or KEEP CLICKING the button while you're waitting !<Br> just one click and genteely wait.</td>
+  </tr>
+
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

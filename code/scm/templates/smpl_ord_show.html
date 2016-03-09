@@ -1,0 +1,636 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+	
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script type="text/javascript" src="./js/marker.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+ 
+function smpl_case_close(id, num,back_str) {
+//alert "here!!!";
+	if ( confirm("are you sure to close this sample case ?")) {
+		cgistr="&cgiget={/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+
+		location.href="index2.php?PHP_action=smpl_case_close&PHP_id="+id+"&PHP_num="+num+cgistr+back_str+"&PHP_patternName=sample_ord_show";
+	} 
+}
+
+function Show_smpl_out(smpl_num) {
+	var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num+"&PHP_old_ver=1";
+	var nm = 'sample';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+} 
+ 
+function smpl_order_follow(id, num) {
+	if ( confirm("are you sure to CREATE following order from this :#[ "+num+" ] ?")) {
+		location.href="index2.php?PHP_action=smpl_follow_order&PHP_id="+id+"&PHP_num="+num;
+	} 
+}
+ 
+function cfm_shift(ord_num,status) {
+	if ( confirm("are you sure to SHIFT order :#[ "+ord_num+" ] ?\r\rTo other factory ?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.op_str}{literal}&cgi_7={/literal}{$cgi.op_fsh}{literal}&cgi_8={/literal}{$cgi.wi}{literal}&cgi_9={/literal}{$cgi.close}{literal}&cgi_10={/literal}{$cgi.pend}{literal}";
+		location.href="index2.php?PHP_action=shift_order&PHP_ord_num="+ord_num+"&PHP_status="+status;
+	} 
+}
+
+function smpl_appval(id, num, orders, spt) {
+	if ( confirm("are you sure this SAMPLE APPRIVAL OK?")) {
+		cgiget="{/literal}index2.php?PHP_action=smpl_ord_search{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_8={/literal}{$cgi.wi}{literal}&cgi_9={/literal}{$cgi.close}{literal}&cgi_10={/literal}{$cgi.pend}{literal}&cgi_6={/literal}{$cgi.op_str}{literal}&cgi_7={/literal}{$cgi.op_fsh}{literal}";
+		location.href="index2.php?PHP_action=smpl_appval&PHP_id="+id+"&PHP_order_num="+orders+"&PHP_num="+num+"&PHP_back="+cgiget+"&PHP_SPT="+spt;
+	} 
+}
+
+
+function Show_ord_wi(id) {
+	var url ='index2.php?PHP_action=smpl_wi_view&PHP_ex_order=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_num=&PHP_cust=&PHP_ref=&PHP_factory=&PHP_etdstr=&PHP_etdfsh='; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function Show_ord_ti(id) {
+	var url ='index2.php?PHP_action=smpl_wi_view&PHP_ex_order=1&PHP_ti=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_num=&PHP_cust=&PHP_ref=&PHP_factory=&PHP_etdstr=&PHP_etdfsh='; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function Show_ord_bom(id) {
+	var url ='index2.php?PHP_action=smpl_bom_view&PHP_ex_order=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_etdstr=&PHP_cust=&PHP_wi_num=&PHP_etdfsh='; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function down_marker(num) {
+	if ( confirm("download this style MARKER file?")) {
+		location.href="marker.php?PHP_action=smpl_marker_download&PHP_num="+num;
+	} 
+}
+
+function overTip(boxObj) { 
+	boxObj.style.visibility = "visible";
+	boxObj.style.left = ( document.body.clientWidth / 2 ) - ( tblShow.offsetWidth / 2 );
+	boxObj.style.top = ( document.body.clientHeight / 2 ) - ( tblShow.offsetHeight / 2 );
+}
+
+function outTip(boxObj) { 
+	boxObj.style.visibility = "hidden"; 
+}
+
+function del_full(num,id,wi_id) {
+	location.href="index2.php?PHP_action=smpl_ord_del_full&PHP_num="+num+"&PHP_id="+id+"&PHP_wi_id="+wi_id;
+}
+
+function down_marker2(id, num) {
+	if ( confirm("download this style MARKER file?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.op_str}{literal}&cgi_7={/literal}{$cgi.op_fsh}{literal}&cgi_8={/literal}{$cgi.wi}{literal}&cgi_9={/literal}{$cgi.close}{literal}&cgi_10={/literal}{$cgi.pend}{literal}";
+		location.href="index2.php?PHP_action=smpl_marker_download&PHP_id="+id+"&PHP_num="+num;
+	} 
+}
+
+function refreshIt()  {
+	if (!document.images) return;
+	pic.src = pic.src+'?'+ Math.random();		
+}
+
+function down_pttn(id, num,back_str) {
+	if ( confirm("download this style pattern file?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="./smpl_pttn/"+num+".mdl";
+//		location.href="index2.php?PHP_action=smpl_pttn_download&PHP_id="+id+"&PHP_num="+num;
+	} 
+}
+
+
+function chk_etd(){
+
+	var now = new Date();
+	today_year = now.getYear();
+	today_month = now.getMonth();
+	today_date = now.getDate();
+
+	if ( DateDiff( $("#PHP_etd").val() , today_year+'-'+(today_month+1)+'-'+today_date ) < 14 ) {
+		alert('ETD 必須大於今天 14 天，請重新輸入！');
+		return false;
+	}
+
+}
+
+function DateDiff( sDate1, sDate2){  
+
+    var aDate , oDate1 , oDate2 , iDays
+    aDate  = sDate1.split( "-")
+    oDate1 = new Date(aDate[1] +
+    '-' + aDate[2] +
+    '-' + aDate[0])  
+
+    aDate  = sDate2.split( "-" )
+    oDate2 = new Date(aDate[1] +
+    '-' + aDate[2] +  
+    '-' + aDate[0])
+
+    iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24 ) 
+
+    return iDays
+}
+
+function copy_smpl_order(id, num, cust, wi_id) {
+	if ( confirm("Are you sure to COPY sample order from this :#[ "+num+" ] ?")) {
+		location.href="sample.php?PHP_action=copy_smpl_order&PHP_id="+id+"&PHP_num="+num+"&PHP_cust="+cust+"&PHP_wi_id="+wi_id;
+	} 
+}
+</script>
+
+{/literal}
+
+<body onLoad="refreshIt();">
+<div id="marker_out" style="position:absolute; z-index:1;width:10; filter:revealTrans(duration=0.3); visibility:hidden;filter: alpha(opacity=90);"><span id="m_div1"></span></div>
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=720 bgcolor=#333333>
+	<tr height=28>
+		<td>
+			{if $del_flag}
+			<a href="javascript:del_full('{$order.num}','{$order.id}','{$order.wi_id}')" value='del' style='cursor:pointer'>
+				<img src='images/del.png' border=0>
+			</a>
+			{/if}
+        </td>
+		<td class="des" align=center width=100>
+			{if $order.apv_date == '0000-00-00' and $dept_edit && $add_flag}
+			<a href="javascript:smpl_order_follow({$order.id},'{$order.num}')" value='smpl' style='cursor:pointer'>
+			<img src='./images/following02.gif' border=0 ALT="open new following Order" width=25>
+			</a>
+			{/if}
+			{if ($order.apv_date <> '0000-00-00' or $order.status == 10) and $dept_edit && $add_flag}
+			<a href="javascript:copy_smpl_order({$order.id},'{$order.num}','{$order.cust}','{$order.wi_id}')" value='smpl' style='cursor:pointer'>
+			<img src='./images/follow_copy.gif' border=0 ALT="copy sample order (include Fab/Acc、W/I、W/S)" width=25>
+			</a>2
+			{/if}
+		</td>
+		<td class="des" align=center width=400> [ <b>SAMPLE ORDER # {$order.num}</b> ] </td>
+		<td class="ylw10" align=center width=200>status:<b>
+			{if $order.status == -2}<font color=#CBM6F5>Wait Confirm</font>
+			{elseif $order.status == -1}<font color=#CBB4F5>Wait submit</font>
+			{elseif $order.status == 0}W/I expect
+			{elseif $order.status == 1}<span class=ssign>PTTN. expect</span>
+			{elseif $order.status == 2}<span class=ssign>FAB. expect</span>
+			{elseif $order.status == 3}<span class=ssign>ACC. expect</span>
+			{elseif $order.status == 4}<span class=lgrn>PTTN schdle</span>
+			{elseif $order.status == 5}<span class=lgrn>SMPL schdle</span>
+			{elseif $order.status == 6}<span class=grn9>DEVELOPING</span>
+			{elseif $order.status == 7}<span class=ssign>* PENDING *</span>
+			{elseif $order.status == 10}<span class=des>= case close =</span>
+			{else}&nbsp;{/if}</b>
+		</td>
+		{if $order.status <> -1 && $order.apv_date == '0000-00-00' && $edit_flag}
+		<td class="des" align=center width=100><a href="javascript:smpl_appval({$order.id},'{$order.num}','{$order.orders}','{$order.spt}')" value='smpl' style='cursor:pointer'>
+		<img src='./images/approval06.gif' border=0 ALT="SMPLE APPROVAL OK today!"></td>
+		{/if}
+		{if $edit_flag and $order.status < 10 }
+		<td class=bgdy align=center colspan=2 nowrap>&nbsp;
+		<b><a href="javascript:smpl_case_close({$order.id},'{$order.num}','{$sub_back_str}')" value='close' style='cursor:pointer'><img src='./images/close05.gif' border=0 ALT="Case Close">
+		</a></b>
+		</td>
+		{/if}
+   </tr>
+</table>
+{if $msg_YES}
+<table border=1 cellpadding=1 cellspacing=0 cols=1 width=720>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=2 width=720 bgcolor=#FFFFFF>
+	<tr>
+		<td align=center class=head valign=top rowspan=4>
+			<table width=120 border=0 cellspacing=3 cellpadding=0>
+				<tr>
+					<td align=center>
+						<table border=1 cellspacing=0 cellpadding=0>
+						<tr>
+						<td align=center>
+						<input type="image" src="{$main_pic}" name="pic" {if $height == 1}height=150{else}width=120{/if} border="0" {if $main_pic 
+						<> 'http://scm-b.carnival.com.tw/images/graydot.gif'}onclick='window.open2("{$main_pic}","","resizable=yes,height=480,width=640")'{/if}>
+						</td>
+						</tr>
+						</table>
+					</td>
+				</tr>
+				{if $order.stype}
+				<tr>
+					<td class=snvy align=left><b>GARMENT FINISH：</b></td>
+				</tr>
+				<tr>
+					<td align=left>{$order.stype}</td>
+				</tr>
+				<tr>
+					<td class=snvy align=left>&nbsp;</td>
+				</tr>
+				{/if}
+				{if $order.des}
+				<tr>
+					<td class=snvy align=left><b>NOTE：</b></td>
+				</tr>
+				<tr>
+					<td align=left width=120 style="word-break:break-all">{$order.des}</td>
+				</tr>
+				{/if}
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=7 class=frnt align=center>
+			<table width="100%" border="0" cellspacing="3" cellpadding="3">
+				<tr bgcolor="#FFFFFF">
+					<td class=snvy align=right width="77" nowrap><b>S-Order # :</b></td>
+					<td class=bgdy align=left><b>{$order.num}</b></td>
+					<td class=snvy align=right width="77" nowrap><b>Customer :</b></td>
+					<input type="hidden" name="PHP_cust" value="{$cust_id}">
+					<td class=bgdy align=left><b>{$order.cust_iname}</b></td>
+					<td class=snvy align=right width="77" nowrap><b>work Team :</b></td>
+					<input type="hidden" name="PHP_dept" value="{$dept_id}">
+					<td class=bgdy align=left><b>{$order.dept}</b></td>
+				</tr>
+				<tr bgcolor="#FFFFFF">
+					<td class=snvy align=right nowrap><b>smpl type :</b></td>
+					<td class=bgdy align=left><b>{$order.smpl_type}</b></td>
+					<td class=snvy align=right nowrap><b>style # :</b></td>
+					<td class=bgdy align=left><small>{$order.ref}</small></td>
+					<td class=snvy align=right nowrap><b>style cat. :</b></td>
+					<td class=bgdy align=left><b>{$order.style_cat}</b></td>
+				</tr>
+				<tr bgcolor="#FFFFFF">
+					<td class=snvy align=right nowrap><b>ETD :</b></td>
+					<td class=bgdy align=left><div id="etd_view" style="display:block;" > <b>{$order.etd}</b> {if $order.status < 10 && $edit_flag} <span style="cursor:hand" onClick="etd_edit.style.display='block';etd_view.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom"> </span> {/if} </div>
+						<div id="etd_edit" style="display:none;">
+						  <form method="POST" name="smpl_etd" enctype="multipart/form-data">
+							<input type="text" id="PHP_etd" name="PHP_etd" size="8" class=select value="{$order.etd}" readonly>
+							<img align='top' onmousedown="javascript:Cal(document.smpl_etd.PHP_etd,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+							<input type="submit" value="[ EDIT ]" class="select_e"  width="50" onClick="this.width=0;return chk_etd();">
+							<input type="hidden" name="PHP_action" value="do_smpl_etd_edit">
+							<input type="hidden" name="PHP_num" value="{$order.num}">
+							<input type="hidden" name="PHP_wi_id" value="{$order.wi_id}">
+							<input type="hidden" name="PHP_id" value="{$order.id}">
+						  </form>
+						</div></td>
+					<td class=snvy align=right nowrap><b>style type :</b></td>
+					<td class=bgdy align=left><b>{$order.style}</b></td>
+					<td class=snvy align=right nowrap><b>IE :</b></td>
+					<td class=b9 align=left><b>{$order.ie}</b></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td colspan=7 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+	
+	<tr>
+		<td colspan=7 class=frnt align=right>
+			<table border="0" cellspacing="1" cellpadding="3">
+				<tr bgcolor=#cccccc>
+					<td class=snvy width="85" bgcolor=#ffffff>&nbsp;</td>
+					<td class=b9 width="85" align=center><b>ETA</b></td>
+					<td class=b9 width="85" align=center><b>RECEIVED</b></td>
+					<td class=snvy width="85" bgcolor=#ffffff>&nbsp;</td>
+					<td class=b9 width="85" align=center><b>ETA</b></td>
+					<td class=b9 width="85" align=center><b>RECEIVED</b></td>
+				</tr>
+				<tr bgcolor=#eeeeee>
+					<td class=snvy align=right nowrap bgcolor=#cccccc><b>cust. pattn. :</b></td>
+					<td class=bgdy align=center><b>{if $order.pttn_suppt}{if $order.peta <> '0000-00-00'}{$order.peta}{else}N/A{/if}{else}<span class=b9>not support</span>{/if}</td>
+					<td class=b9 align=center><b>{if $order.pttn_suppt}{if $order.rcvd_pttn <> '0000-00-00'}{$order.rcvd_pttn}</b>{else}N/A{/if}{else}<span class=b9>no need</span>{/if}</td>
+					<td class=snvy align=right nowrap bgcolor=#cccccc><b>Fabric :</b></td>
+					<td class=bgdy align=center><b>{if $order.fab_substu}<span class=b9>substitude</span>{else}{if $order.feta <> '0000-00-00'}{$order.feta}{else}N/A{/if}{/if}</b></td>
+					<td class=b9 align=center><b>{if $order.fab_substu}<span class=b9>no need</span>{else}{if $order.rcvd_fab <> '0000-00-00'}{$order.rcvd_fab}{else}N/A{/if}{/if}</b></td>
+				</tr>
+				<tr bgcolor=#eeeeee>
+					<td class=snvy align=right nowrap bgcolor=#cccccc><b>W / I : </b></td>
+					<td class=bgdy align=center><b> {if $order.wi_date <> '0000-00-00'}
+					  {if $order.wi_id} <a href="javascript:Show_ord_wi('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.wi_date}</a> {else}
+					  {$order.wi_date}
+					  {/if}
+					  {else}N/A{/if}</b></td>
+					<td class=b9 align=center><b>&nbsp;maker : <span class=ssign>{$order.factory}&nbsp;</b></td>
+					<td class=snvy align=right nowrap bgcolor=#cccccc><b>Accessory :</b></td>
+					<td class=bgdy align=center><b>{if $order.acc_substu}<span class=b9>substitude</span>{else}{if $order.aeta <> '0000-00-00'}{$order.aeta}{else}N/A{/if}{/if}</td>
+					<td class=b9 align=center><b>{if $order.acc_substu}<span class=b9>no need</span>{else}{if $order.rcvd_acc <> '0000-00-00'}{$order.rcvd_acc}</b>{else}N/A{/if}{/if}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class=snvy align=right colspan=8>
+			Required Qty : {$order.rq} {$order.unit}  /  Backup Qty : {$order.backup} {$order.unit}
+		</td>
+	</tr>
+	{if $order.des_fab}
+	<tr>
+		<td colspan=8>
+			<table border=0 cellspacing=1 cellpadding=2 >
+				<tr>
+					<td class=snvy align=left><b>面布 ( Shell )：</b></td>
+				</tr>
+				<tr><td align=left>{$order.des_fab|nl2br}</td></tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+
+	<tr>
+		<td colspan=9>
+			<table border=0 cellspacing=0 cellpadding=3 align=center width=100%>
+				<tr>
+					<td class=snvy align=center >&nbsp;
+						{if $order.marker_date <> '0000-00-00'}
+						<a href="javascript://" onClick="get_marker('{$order.id}','view');" value='ord_out' style='cursor:pointer'><img src='./images/yyMarker.png' border="0" /></a> 
+						<a href="javascript:down_marker2({$order.id},'{$order.num}')" value='smpl' style='cursor:pointer'> on : {$order.marker_date}</a>
+						{else}
+						<img src='./images/no-yyMarker.png' border="0" />
+						{/if}
+					</td>
+					<td class=snvy align=center nowrap>&nbsp; Sample Pattern： 
+						{if $order.done_pttn <> '0000-00-00'}&nbsp;&nbsp;<a href="javascript:down_pttn({$order.id},'{$order.num}','{$sub_back_str}')" value='smpl' style='cursor:pointer'><img src='./images/file2.gif' border=0 ALT="download pattern"></a> on :
+							<b>{$order.done_pttn}&nbsp;&nbsp;{else}<b>no pattern upload</b>
+						{/if}
+
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+	<tr>
+		<td colspan=9>
+			<table border=0 cellspacing=0 cellpadding=3 align=center width=100%>
+				<tr>
+					<td class=snvy align=right><b>WorkSheet : </b></td>
+					{if $order.ws_date == '0000-00-00' ||  $order.ws_date == ''}
+					<td class=snvy align=left><b><span class=bgdy>&nbsp; N/A</span></b></td>
+					{else}
+					<td class=snvy align=left>&nbsp; <b>
+					<a href="javascript:Show_ord_ti('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.ws_date}</a>  	 	 
+					</b></td>
+					{/if}
+
+					<td class=snvy align=right><b>BOM : </b></td>
+					{if $order.bom_date == '0000-00-00' ||  $order.bom_date == ''}
+					<td class=snvy align=left><b><span class=bgdy>&nbsp; N/A</span></b></td>
+					{else}
+					<td class=snvy align=left>&nbsp; <b>
+					<a href="javascript:Show_ord_bom('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.bom_date}</a>  	 	 
+					</b></td>
+					{/if}
+
+					<td class=snvy align=right><b>Sample Approval : </b></td>
+					{if $order.apv_date == '0000-00-00'}
+					<td class=snvy align=left><b><span class=bgdy>no approval</span></b></td>
+					{else}
+					<td class=snvy align=left bgcolor=#FFFF66><b><span class=bgdy>{$order.apv_date}</span></b></td>
+					{/if}
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+	<tr>
+		<td colspan=9 class=frnt align=center>
+			<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
+				<tr>
+					<td class=snvy align=center nowrap>&nbsp;
+						<b>Confirm date : <span class=bgdy>{$order.cfm_date}&nbsp;</span></b> 
+						[ <a href="javascript:message_out('{$order.cfm_id}')" style="cursor:pointer">{$order.cfm_user}</a> ]
+					</td>
+					<td class=snvy align=center nowrap>&nbsp;
+						<b>open date : <span class=bgdy>{$order.open_date}&nbsp;</span></b> 
+						[ <a href="javascript:message_out('{$order.creator_id}')" style="cursor:pointer">{$order.creator}</a> ]
+					</td>
+					<td class=snvy align=center nowrap>&nbsp;
+						<b>last update : <span class=bgdy>{$order.last_update}&nbsp;</span></b> 
+						[ <a href="javascript:message_out('{$order.updator_id}')" style="cursor:pointer">{$order.updator}</a> ]
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+	</tr>
+</table>
+
+{if $add_flag}
+<!---------- sample logs form   -->
+<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+<form method=POST name=smpl_logs>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=3 align=center class=nvy9><b>Adding  logs</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Subject</td>
+		<td width=520 class=w10 align=center>logs describs</td>
+		<td width=70 class=w10 align=center>&nbsp;</td>
+	</tr>
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center>{$logs_subj}</td>
+		<td class=gry9 align=left>
+		<textarea name="PHP_des" rows=3 cols=100 class=select>{$smpl_log.des}</textarea></td>
+		<td class=ylw9 align=center valign=center>
+		<input type=submit value="save" class=select_e style="cursor:pointer; width=55; height=45" onClick=this.width=0;></td>
+		<input type="hidden" name="PHP_action" value="do_smpl_logs_add">
+		<input type="hidden" name="back_action" value="smpl_ord_view">
+		<input type="hidden" name="PHP_num" value="{$order.num}">
+		<input type="hidden" name="PHP_id" value="{$order.id}">
+		<!-- <input type="hidden" name="PHP_back_str" value="{$back_str2}">    -->
+	</tr>
+</form>
+</table>
+<br>
+{/if}
+
+<!---------- SHOW 出 一些訂單歷史記錄   -->
+{if $log_records}  
+<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=4 align=center class=nvy9><b>History logs</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Date</td>
+		<td width=100 class=w10 align=center>Subject</td>
+		<td width=400 class=w10 align=center>History records</td>
+		<td width=80 class=w10 align=center>by</td>
+	</tr>
+	{section name=SEC loop=$logs}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center><small>{$logs[SEC].k_time}</small></td>
+		<td class=gry9 align=center><small>{$logs[SEC].subj}</small></td>
+		<td class=gry9 align=left>{$logs[SEC].des}</td>
+		<td class=gry9 align=center>{$logs[SEC].user}</td>
+	</tr>
+	{/section}
+</table>
+{/if}   
+<!-------- END SHOW   -->  
+<br>
+<!---------- SHOW 出 一些大貨訂單Link   -->
+{if !$ord_link_non}  
+<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=6 align=center class=nvy9><b>Order Reference</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Order #</td>
+		<td width=100 class=w10 align=center>Q'ty</td>
+		<td width=100 class=w10 align=center>SU</td>
+		<td width=100 class=w10 align=center>ETP</td>
+		<td width=100 class=w10 align=center>ETD</td>
+		<td width=100 class=w10 align=center>Open</td>	   
+	</tr>
+	{section name=SEC loop=$ord_link}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center>
+		<a href="javascript:show_order_rec('{$ord_link[SEC].id}','{$ord_link[SEC].order_num}')" value='ord_out' style='cursor:pointer'>
+		{$ord_link[SEC].order_num}</a>
+		</td>
+		<td class=gry9 align=center>{$ord_link[SEC].qty}</td>
+		<td class=gry9 align=center>{$ord_link[SEC].su}</td>
+		<td class=gry9 align=center>{$ord_link[SEC].etp}</td>
+		<td class=gry9 align=center>{$ord_link[SEC].etd}</td>	
+		<td class=gry9 align=center>{$ord_link[SEC].opendate}</td>   
+	</tr>
+	{/section}
+</table>
+{/if}  
+<br>
+{if $smpl_ref}
+	<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=6 align=center class=nvy9><b>Sample repeat</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=180 class=w10 align=center>Order #</td>
+		<td width=180 class=w10 align=center>Q'ty</td>
+		<td width=180 class=w10 align=center>ETD</td>
+		<td width=180 class=w10 align=center>Open</td>	   
+	</tr>
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center>
+		<a href="javascript:Show_smpl_ord('{$smpl_ref.id}')" value='ord_out' style='cursor:pointer'>
+		{$smpl_ref.num}</a>
+		</td>
+		<td class=gry9 align=center>{$smpl_ref.qty}</td>
+		<td class=gry9 align=center>{$smpl_ref.etd}</td>	
+		<td class=gry9 align=center>{$smpl_ref.open_date}</td>   
+	</tr>
+</table>
+{/if}
+
+<br><br>
+{if $copy_ref}
+	<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=6 align=center class=nvy9><b>Sample Reference</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=180 class=w10 align=center>Order #</td>
+		<td width=180 class=w10 align=center>Q'ty</td>
+		<td width=180 class=w10 align=center>ETD</td>
+		<td width=180 class=w10 align=center>Open</td>	   
+	</tr>
+	{section  name=SEC loop=$copy_ref}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center>
+			<a href="javascript:Show_smpl_ord('{$copy_ref[SEC].id}')" value='ord_out' style='cursor:pointer'>
+			{$copy_ref[SEC].num}</a>
+		</td>
+		<td class=gry9 align=center>{$copy_ref[SEC].qty}</td>
+		<td class=gry9 align=center>{$copy_ref[SEC].etd}</td>	
+		<td class=gry9 align=center>{$copy_ref[SEC].open_date}</td>   
+	</tr>
+	{/section}
+</table>
+{/if}
+
+<br>
+{if $ver_show}
+<table border=1 cellspacing=0 cellpadding=0 width=720 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan={$ver_show} align=center class=nvy9><b>Sample Order  -- for Other Version</b></td>
+	</tr>
+	<tr bgcolor=#eeeeee >
+		{section name=SEC loop=$ver_num}
+		<td class=gry9 align=center>
+		<a href="javascript:Show_smpl_out('{$ver_num[SEC]}')" value='ord_out' style='cursor:pointer'>
+		{$ver_num[SEC]}</a>
+		</td>
+		{/section}
+	</tr>
+</table>
+  {/if} 
+<!-------- END SHOW   -->  
+<!--    order version -->
+<table border=0 cellspacing=0 cellpadding=2 width=720 bgcolor=#ffffff align=center>
+    <tr>
+        <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+    </tr>
+	<tr>
+		<td colspan=2>
+			<form method=POST name=back>
+			<input type=button onClick="window.location.href='index2.php?PHP_action=smpl_ord_search'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+			</form>
+		</td>
+		<td colspan=2>
+		<form method=POST name=add_new>
+		{if $add_flag and $dept_edit}
+		<input type="hidden" name="PHP_action" value="smpl_ord_add">
+		<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+		<input type="hidden" name="PHP_cust" value="{$order.cust}">
+		<input type=submit value=" Append another new for same customer" class=select_e style="cursor:pointer; width=99%" onClick=this.width=0;>
+		</form>
+		{else}&nbsp;
+		{/if}
+		</td>
+
+		{if $edit_flag && $order.status < 0 && $order.status <> -2 && $main_pic <> './images/graydot.gif'}
+		<td colspan=2>
+			<form method=POST name=edit>
+			<input type="hidden" name="PHP_action" value="smpl_ord_sumb">
+			<input type="hidden" name="PHP_id" value="{$order.id}">
+			<input type="hidden" name="PHP_dept" value="{$order.dept}">
+			<input type="hidden" name="PHP_cust" value="{$order.cust}">		
+			<input type=submit value="[  Subimt  ]" class=select_e style="cursor:pointer; width=99%">
+			</form>
+		</td>
+		{/if}
+
+		{if $edit_flag and  $order.status < 5 and $dept_edit}
+		<td colspan=2>
+			<form method=POST name=edit>
+			<input type="hidden" name="PHP_action" value="smpl_ord_edit">
+			<input type="hidden" name="PHP_id" value="{$order.id}">
+			<input type="hidden" name="PHP_dept" value="{$order.dept}">
+			<input type="hidden" name="PHP_cust" value="{$order.cust}">
+			<input type=submit value="[  Edit  ]" class=select_e style="cursor:pointer; width=99%">
+			</form>
+		</td>
+		{/if}
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

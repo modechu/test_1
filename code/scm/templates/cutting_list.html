@@ -1,0 +1,226 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script language="javascript">
+
+function mask(){
+    $("body").append('<div id="mask"></div>').css({'overflow-y':'hidden','overflow-x':'hidden'});
+    $("#mask").css({
+        "background-color" : "#000000" ,  
+        "width" : $(document).width() , 
+        "height" : $(document).height() , 
+        "position": "absolute" , 
+        "opacity": 0.6 , 
+        "top": -1 , 
+        "left": -1 , 
+        "z-index": "1000" 
+    });
+}
+
+function cfm_add(p_id,ord_num,unit,qty,factory,finish) {
+    
+    mask();
+
+	var T = '';
+	T = window.document.forms['add'].elements['qty_'+p_id].value;
+	C = window.document.forms['add'].elements['cut_'+p_id].value;
+	var m_qty = parseInt(qty) + parseInt((qty*20/100));
+
+	var done = parseInt(C)+parseInt(T);
+	//alert(m_qty+'--'+done);
+	if(m_qty < done) {
+		alert("Cannot Accept Your Input Q'ty. \rTotal Cutting q'ty exceed 20% then original order Q'ty. \rPlease Contaet Sales division if needed.");
+        document.getElementById("tbl_msg").style.display='block';
+        msg1.innerHTML = "<b>Cannot Accept Your Input Q'ty. <br>  Total Cutting q'ty exceed 20% then original order Q'ty. <br> Please Contaet Sales division if needed. </b>";
+	}
+	if ( confirm("are you sure to add #[ "+ord_num+" ] \rin quantity ["+T+"] "+unit+"\rfor today's cutting")) {
+		location.href="cutting.php?PHP_action=add_cutting&PHP_p_id="+p_id+"&PHP_ord_num="+ord_num+"&PHP_qty="+T+"&PHP_factory="+factory+"&PHP_finish="+finish;
+	} else {
+        $("#mask").remove();
+    }
+}
+
+
+
+function cfm_del_out(ord_num, qty, unit, id, p_id , finish) {
+
+    mask();
+    
+	if ( confirm("are you sure to CANCEL today's output record :\r\r #[ "+ord_num+" ] in quantity ["+qty+"] "+unit)) {
+		location.href="cutting.php?PHP_action=del_cutting&PHP_daily_id="+id+"&PHP_ord_num="+ord_num+"&PHP_qty="+qty+"&PHP_p_id="+p_id+"&PHP_finish="+finish;
+	} else {
+        $("#mask").remove();
+    }
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form name='add'>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=690 id='tbl_msg' style="display : none">
+    <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'></div></td>        
+    </tr>
+</table>
+<table width=730 border=1 cellspacing=0 cellpadding=2>
+    <tr><td colspan=13 align=center class=gry title="只要有排產就能搜尋到資料，2011/10/20前是訂單必須要排完才可以搜尋到資料，2015/01/08調整分Partial輸入裁剪量，產出不能大於裁剪。"><b>CUTTING ORDER LIST</b></td></tr>
+<!----------
+{if $msg_YES}
+ <TR><TD colspan=10>
+     <table border=0 cellpadding=3 cellspacing=0 cols=1 width=690>
+      <tr bgcolor=#ffffff>
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </TD></TR>
+{/if}
+------>
+    <tr bgcolor="#0D4368"> 
+        <td class=w9 align=center colspan="2">Order # / Partial</td>
+        <td class=w9 width=60 align=center>Cust.</td>
+        <td class=w9 width=70 align=center>ETD</td>
+        <td class=w9 width=130 align=center>STYEL#</td>
+        <td class=w9 width=60 align=center>Order <br> Q'ty</td>
+        <td class=w9 width=60 align=center>Cutting<br>Q'ty</td>
+        <td class=w9 width=130 align=center colspan=2>Cutting</td>
+        <td class=w9 width=30 align=center>FTY</td>
+    </tr>
+    {section name=SEC loop=$sorder}
+    {if $sorder[SEC].status > 9}
+    <tr bgColor='#dddddd'>
+    {else}
+    {if $sorder[SEC].sub_con == 1}
+    <tr bgColor='#FFFFDF'></a>
+    {else}
+    <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+    {/if}
+    {/if}
+        <td class=gry9 align=center nowrap><small>{$sorder[SEC].order_num}</small></td>
+        <td class=gry9 align=left>&nbsp;<small>{if $sorder[SEC].partial_num > 1}({$sorder[SEC].mks}){/if}&nbsp;{$sorder[SEC].remark}</small></td>
+        <td class=gry9 align=center><small>{$sorder[SEC].cust_iname}&nbsp;</small></td>
+        <td class=gry9 align=center><small>{$sorder[SEC].p_etd}&nbsp;</small></td>
+        <td class=gry9 align=center><small>{$sorder[SEC].style_num}&nbsp;</small></td>
+        <td class=gry9 align=right>{$sorder[SEC].p_qty|number_format}&nbsp;{$sorder[SEC].unit}</td>
+        <td class=ssign align=right>{$sorder[SEC].cut_qty|number_format}&nbsp;{if $sorder[SEC].cut_qty}{$sorder[SEC].unit}{/if}
+		<input type=hidden name="cut_{$sorder[SEC].p_id}" value="{$sorder[SEC].cut_qty}">
+		<input type=hidden name="id_{$sorder[SEC].p_id}" value="{$sorder[SEC].p_id}">
+        </td>
+    {if $add_flag && $sorder[SEC].del_mk == 0}
+        <!--*****-???s?Wstart -->
+        <td class=ssign align=center><b>
+		<input type=text name="qty_{$sorder[SEC].p_id}" size=5 class=select value="{$sorder[SEC].today}" style='text-align:center'></td>
+		<td class=b9 align=center>
+		<a href="javascript:cfm_add({$sorder[SEC].p_id},'{$sorder[SEC].order_num}','{$sorder[SEC].unit}','{$sorder[SEC].p_qty}','{$sorder[SEC].factory}','{$finish}')" value='add' style='cursor:pointer'>
+		<img src='./images/done.jpg' border=0 ALT="produced Today"></a></td>
+	{else}
+        <td class=b9 align=center colspan=2>&nbsp;</td>
+    {/if}
+        <!--*****-???s?Wend -->
+
+        <td class=gry9 align=center><b>{$sorder[SEC].factory}&nbsp;</b></td>
+    </tr>
+    {/section}
+    <tr>
+        <td colspan=5 align=right class=gry>Total：</td>
+        <td align=right class=bgdy9><span class=snvy><b>{$total_ord_qty|number_format}</b></span></td>
+        <td align=right class=bgdy9><span class=snvy><b>{$total_cut_qty|number_format}</b></span></td>
+        <td colspan=4 align=center class=bgdy9>&nbsp;</td>
+    </tr>
+</table>
+<br>
+<table width=730 border=0 cellspacing=0 cellpadding=1>
+    <tr>
+        <td class=w9 colspan=3 align=center><span class=bgdy>* </font>above listing {if $msg_YES}{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}{/if}&nbsp;order records!&nbsp;&nbsp;<span class=bgdy9>[ total :{$max_no} entries ]</font></td>
+    </tr>
+    <tr>
+        <td align=center width=180><form name="form5" method="post">    
+        <!--*****--2006.11.16-??X·s?W start	  -->  
+        {if $pages[0] > 1}
+        <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_startno=p{$pages[0]}'">
+        {/if}
+        &nbsp;
+        </td>
+        <td align=center width=260>    
+        {section name=PGE loop=$pages}
+        {if $pages[PGE] <= $maxpage }
+        {if $pages[PGE] == $now_pp}
+        <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+        {else}
+        <a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+        {/if}
+        {/if}   
+        {/section}
+        &nbsp;</td>
+        <td  align=center width=180>
+        {if $lastpage < $maxpage}
+        <input type="button" name="Submit6" value="next 10 page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_startno=n{$lastpage}'">
+        {/if}
+        <!--*****--2006.11.16-??X·s?W end	  -->    
+        </td>
+        </form>
+    </tr>
+</table>
+<br>
+<!----------------------------------------------------------->
+<!--====================  ?μ?砲￡￥X??q |Ca?------------->
+<table width=730 border=1 cellspacing=0 cellpadding=2>
+    <tr>
+        <td colspan=11 align=center class=gry><b>+++ CUTTING records of {if $order_num} [ {$order_num} ] {else} TODAY ( {$smarty.now|date_format:"%Y / %m / %d"}{/if} ) ++++</b></td>
+    </tr>
+    <tr bgcolor="#0D4368"> 
+        <td class=w9 align=center colspan="2">Order# / Partial</td>
+        <td class=w9 width=60 align=center>Cust.</td>
+        <td class=w9 width=70 align=center>ETD</td>
+        <td class=w9 width=60 align=center>Order<br>Q'ty</td>
+        <td class=w9 width=60 align=center>Cutting<br>Q'ty</td>
+        <td class=w9 width=60 align=center>S.U.</td>
+        <td class=w9 width=80 align=center>User</td>
+        <td class=w9 width=100 align=center>Date</td>          
+        <td class=w9 width=50 align=center>Remark</td>
+        <td class=w9 width=30 align=center>FTY</td>
+    </tr>
+    {section name=TODAY loop=$pdt}
+    <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+        <td class=gry9 align=center nowrap><small>{$pdt[TODAY].ord_num}</small></td>
+        <td class=gry9 align=left nowrap><small>&nbsp;{if $pdt[TODAY].partial_num > 1}({$pdt[TODAY].mks}){/if}&nbsp;{$pdt[TODAY].remark}</small></td>
+        <td class=gry9 align=center><small>{$pdt[TODAY].cust_iname}&nbsp;</small></td>
+        <td class=gry9 align=center><small>{$pdt[TODAY].p_etd}&nbsp;</small></td>
+        <td class=gry9 align=right>{$pdt[TODAY].p_qty|number_format}&nbsp;{$pdt[TODAY].unit}</td>
+        <td class=ssign align=right>{$pdt[TODAY].qty|number_format}&nbsp;{$pdt[TODAY].unit}</td>
+        <td class=gry9 align=right>{$pdt[TODAY].su|number_format}&nbsp;</td>
+        <td class=gry9 align=center>{$pdt[TODAY].name}&nbsp;</td>
+        <td class=gry9 align=center>{$pdt[TODAY].k_date}&nbsp;</td>        
+        <td class=gry9 align=center>
+        {if $add_flag}
+        <!--*****-???s?Wstart -->
+		<a href="javascript:cfm_del_out('{$pdt[TODAY].ord_num}',{$pdt[TODAY].qty},'{$pdt[TODAY].unit}','{$pdt[TODAY].id}','{$pdt[TODAY].p_id}','{$finish}')" value='del' style='cursor:pointer'>
+		<img src='./images/x07.jpg' border=0 ALT="cancel output">{/if}&nbsp;</td>
+        <td class=gry9 align=center>{$pdt[TODAY].factory}&nbsp;</td>
+    </tr>
+    <!--*****-???s?Wend -->
+    {/section}
+
+    
+    
+    {if !$daily_records}
+    <tr>
+        <td class=bgdy align=center colspan=7>+++ none CUTTING Records for today currently +++</td>
+    </tr>
+    {else}
+    <tr>
+        <td colspan=5 align=right class=gry>Total：</td>
+        <!-- <td align=right class=bgdy9><span class=snvy><b>{$today_ord_qty|number_format}</b></span></td> -->
+        <td align=right class=bgdy9><span class=snvy><b>{$today_cut_qty|number_format}</b></span></td>
+        <td align=right class=bgdy9><span class=snvy><b>{$today_su|number_format}</b></span></td>
+        <td colspan=4 align=center class=bgdy9>&nbsp;</td>
+    </tr>
+    {/if}
+</table>
+<!----------------------------------------------------------->
+<!--------- footer ---------->
+{include file="footer.html"}

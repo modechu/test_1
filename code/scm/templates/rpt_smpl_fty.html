@@ -1,0 +1,301 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SAMPLE ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function smpl_out2(smpl_num) {
+	 var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num;
+	 var nm = 'sample';
+	 window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+function smpl_out3(smpl_num) {
+	 var url ="index2.php?PHP_action=smpl_output_view&PHP_id="+smpl_num;
+	 var nm = 'sample';
+	 window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+{section name=Total loop=$rpt_full}
+{if $rpt_full[Total].check eq "Start"}
+<table width=720 border=1 cellspacing=0 cellpadding=2>
+	<tr bgcolor="#0D4368" height=20> 
+		<td class=w9 width=40 align=center><a name="Top">FTY</a></td>
+		<td class=w9 width=40 align=center>Month</td>
+		<td class=w9 width=80 align=center>Top Qty</td>
+		<td class=w9 width=80 align=center>Top Finish</td>
+		<td class=w9 width=80 align=center>BTM Qty</td>
+		<td class=w9 width=80 align=center>BTM Finish</td>
+		<td class=w9 width=130 align=center>sample order count</td>
+	</tr>
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" height=20> 
+		<td class=gry9 width=40 align=center><a href="#{$rpt_full[Total].fty}">{$rpt_full[Total].fty}</a></td>
+		<td class=gry9 width=40 align=center>{$rpt_full[Total].YearMonth}</td>
+	
+		<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_qty}</td>
+		<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_done}</td>
+		<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_qty}</td>
+		<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_done}</td>
+		<td class=gry9 width=130 align=center >{$rpt_full[Total].monthsum}</td>
+	</tr>
+	{if $rpt_full[Total].FTY_Finish eq "YES"}
+		<tr bgColor='#E9FECB'>
+			<td class=gry9 align=center colspan= 2>SUB TOTAL :[{$rpt_full[Total].fty}]</td>
+
+	
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_Sum}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_Down_Sum}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_Sum}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_Down_Sum}</td>
+			<td class=gry9 width=130 align=center >{$rpt_full[Total].FTY_Sum}</td>
+		</tr> 
+	{/if}
+{else}
+	{if $rpt_full[Total].check eq "End"}
+		<tr bgColor='#E9FECB'>
+			<td class=gry9 align=center colspan= 2>TOTAL :</td>
+
+	
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_Full}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].TopDown_Full}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_Full}</td>
+			<td class=gry9 width=80 align=center>{$rpt_full[Total].BTMDown_Full}</td>
+			<td class=gry9 width=130 align=center >{$rpt_full[Total].MonthSum_Full}</td>
+		</tr> 
+		</table><br><br><br>
+	{else}
+		{if $rpt_full[Total].FTY_Finish eq "YES"}
+			<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" height=20> 
+				<td class=gry9 width=40 align=center><a href="#{$rpt_full[Total].fty}">{$rpt_full[Total].fty}</a></td>
+				<td class=gry9 width=40 align=center>{$rpt_full[Total].YearMonth}</td>
+	
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_qty}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_done}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_qty}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_done}</td>
+				<td class=gry9 width=130 align=center >{$rpt_full[Total].monthsum}</td>
+			</tr>
+			<tr bgColor='#E9FECB'>
+				<td class=gry9 align=center colspan= 2>SUB TOTAL :[{$rpt_full[Total].fty}]</td>
+
+	
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_Sum}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_Down_Sum}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_Sum}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_Down_Sum}</td>
+				<td class=gry9 width=130 align=center >{$rpt_full[Total].FTY_Sum}</td>
+			</tr> 
+		{else}
+			<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" height=20> 
+				<td class=gry9 width=40 align=center><a href="#{$rpt_full[Total].fty}">{$rpt_full[Total].fty}</a></td>
+				<td class=gry9 width=40 align=center>{$rpt_full[Total].YearMonth}</td>
+	
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_qty}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].Top_done}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_qty}</td>
+				<td class=gry9 width=80 align=center>{$rpt_full[Total].BTM_done}</td>
+				<td class=gry9 width=130 align=center >{$rpt_full[Total].monthsum}</td>
+			</tr>
+		{/if}
+		
+	{/if}
+{/if}
+	
+{/section}
+<a name='CL_DET'>	
+{section name=SEC loop=$rpt_cl_new}
+{assign var=fty value=$rpt_cl_new[SEC].fty}
+
+{if $rpt_cl_new[SEC].check eq "Header"}
+
+<table width=720 border=1 cellspacing=0 cellpadding=2>
+  <tr class="top16g">
+  	<td colspan=2 align=center class="txt_B_y_16t"><b><a name="{$fty}"> &nbsp;FTY:{$fty}&nbsp;&nbsp;</a></b></td>
+  	<td colspan=8 align="center" class="top16g" nowrap><b> Sample Progress by Factory LIST</b></td>
+	<td align="center" class="top16g" nowrap><b><a href="#Top"><font color="white">↑Top↑</font></a></b></td>
+  </tr>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w9 width=100 align=center>sample order #</td>
+    <!-- <td class=w9 width=40 align=center><a href="javascript:column_sort('{$dateStart}','{$dateEnd}','{$fty}','{$dept}','type')" value='sortType' style='cursor:pointer'>type</a></td> -->
+	<td class=w9 width=40 align=center>type</td>
+    <td class=w9 width=40 align=center>style</td>
+	<td class=w9 width=130 align=center>style#</td>
+	<td class=w9 width=50 align=center>q'ty</td>
+	<td class=w9 width=50 align=center nowrap>finish</td>
+	<!--<td class=w9 width=50 align=center>remain</td> -->
+	<td class=w9 width=70 align=center>ETD</td>
+	<td class=w9 width=70 align=center>ptn-ETF</td>
+	<td class=w9 width=70 align=center>smpl-ETF</td>
+	<td class=w9 width=70 align=center>smpl-down</td>
+	
+	<td class=w9 width=90 align=center>status</td>
+	
+    <!--<td class=w9 width=40 align=center>cust</td>-->
+    
+<!--     <td class=w9 width=70 align=center>ETF</td> -->
+  </tr>
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" height=30> 
+	<td class=gry9 width=120 align=center nowrap><a href="javascript:smpl_out2('{$rpt_cl_new[SEC].order}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$rpt_cl_new[SEC].order}</b></a></td>
+	<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].smpl_type}</td>
+	<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].style}</td>
+	
+	<td class=gry9 width=130 align=center>{$rpt_cl_new[SEC].ref}</td>
+	<td class=gry9 width=50 align=center>{$rpt_cl_new[SEC].qty}</td>
+	<td class=gry9 width=70 align=center >{$rpt_cl_new[SEC].qty_down}</td>
+	<!--<td class=gry9 width=50 align=center>{$rpt_cl_new[SEC].rem}</td>-->
+	<td class=gry9 width=80 align=center nowrap>{$rpt_cl_new[SEC].etd}</td>
+	<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].p_etf <> '0000-00-00'}{$rpt_cl_new[SEC].p_etf}{else}N/A{/if}</td>
+	<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].s_etf <> '0000-00-00'}{$rpt_cl_new[SEC].s_etf}{else}N/A{/if}</td>
+	<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].sample_down <> '0000-00-00'}{$rpt_cl_new[SEC].sample_down}{else}N/A{/if}</td>
+	
+	<td class=gry9 width=90 align=center nowrap> <small><b>
+		<a href="javascript:smpl_out3('{$rpt_cl_new[SEC].id}')" value='ord_out' style='cursor:pointer'>
+		{if $rpt_cl_new[SEC].status == -1}Wait submt
+		{elseif $rpt_cl_new[SEC].status == 0}W/I expect
+		{elseif $rpt_cl_new[SEC].status == 1}<span class=gry9><small>PTTN expect</span>
+		{elseif $rpt_cl_new[SEC].status == 2}<span class=gry9><small>FAB expect</span>
+		{elseif $rpt_cl_new[SEC].status == 3}<span class=gry9><small>ACC expect</span>
+		{elseif $rpt_cl_new[SEC].status == 4}<span class=gry9><small>PTTN schdle</span>
+		{elseif $rpt_cl_new[SEC].status == 5}<span class=gry9><small>SMPL schdle</span>
+		{elseif $rpt_cl_new[SEC].status == 6}<span class=gry9><small>DEVELOPING</span>
+		{elseif $rpt_cl_new[SEC].status == 7}<span class=gry9><small>* PENDING *</span>
+		{elseif $rpt_cl_new[SEC].status == 10}<span class=gry9><small>= case close =</span>
+		{else}&nbsp;{/if}
+		</a>
+	</b></small></td>
+	
+	<!--<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].cust}</td>-->
+				
+	<!-- <td class=gry9 width=70 align=center>{$rpt_cl_new[SEC].schd_smpl}</td> -->
+			</tr>
+ 
+ 
+{else}
+	{if $rpt_cl_new[SEC].check eq "Footer"}
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [上身]&nbsp;{$rpt_cl_new[SEC].YearMonth}<!-- <BR>(JK、BS、BZ、DR、TP、VS) --></b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].Top_qty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].Top_done}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+	<td class=gry9 align=left colspan= 5 rowspan=3><b>&nbsp;Sample order Count:&nbsp;{$rpt_cl_new[SEC].monthsum} </b></td>
+	</tr> 
+		
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [下身]&nbsp;{$rpt_cl_new[SEC].YearMonth}<!-- <BR>(PT、SH、SK、SO) --></b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].BTM_qty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].BTM_done}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+	<!-- <td class=gry9 align=left colspan= 4></td> -->
+	</tr> 
+	
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [{$rpt_cl_new[SEC].fty}]&nbsp;{$rpt_cl_new[SEC].YearMonth}</b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_qty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].s_done}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td>-->
+	<!-- <td class=gry9 align=left colspan= 4><b>&nbsp;Sample order Count:&nbsp;{$rpt_cl_new[SEC].monthsum} </b></td> -->
+	</tr> 
+
+
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>{$rpt_cl_new[SEC].fty} [上身] TOTAL : </b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].Top_Total_qty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].Top_Total_done}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+	<td class=gry9 align=left colspan= 5 rowspan=3><b>&nbsp;Sample order Count:&nbsp;{$rpt_cl_new[SEC].factorysum} </b></td>
+	</tr> 
+		
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>{$rpt_cl_new[SEC].fty} [下身] TOTAL : </b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].BTM_Total_qty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].BTM_Total_done}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+	<!-- <td class=gry9 align=left colspan= 4></td> -->
+	</tr> 	
+	
+	<tr bgColor='#E9FECB'>
+	<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>{$rpt_cl_new[SEC].fty} TOTAL : </b></a></td>
+	<td class=gry9 align=center><b>{$rpt_cl_new[SEC].factoryqty}</b></td>
+	<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].factorydone}</b></td>
+	<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].factoryrem}</b></td>-->
+	<!-- <td class=gry9 align=left colspan= 4></td> -->
+	</tr> 
+	</table>
+		
+	{else}
+		{if $rpt_cl_new[SEC].last eq "YES"}
+		<tr bgColor='#E9FECB'>
+		<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [上身]&nbsp;{$rpt_cl_new[SEC].YearMonth}</b></a></td>
+		<td class=gry9 align=center><b>{$rpt_cl_new[SEC].Top_qty}</b></td>
+		<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].Top_done}</b></td>
+		<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+		<td class=gry9 align=left colspan= 5 rowspan=3><b>&nbsp;Sample order Count:&nbsp;{$rpt_cl_new[SEC].monthsum} </b></td>
+		</tr> 
+		
+		<tr bgColor='#E9FECB'>
+		<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [下身]&nbsp;{$rpt_cl_new[SEC].YearMonth}</b></a></td>
+		<td class=gry9 align=center><b>{$rpt_cl_new[SEC].BTM_qty}</b></td>
+		<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].BTM_done}</b></td>
+		<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+		<!-- <td class=gry9 align=left colspan= 4></td> -->
+		</tr> 
+		
+		<tr bgColor='#E9FECB'>
+		<td class=gry9 align=center colspan= 4><a href='#LY_DET' style='cursor:pointer'><b>SUB TOTAL : [{$rpt_cl_new[SEC].fty}]&nbsp;{$rpt_cl_new[SEC].YearMonth}</b></a></td>
+		<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_qty}</b></td>
+		<td class=gry9 align=center ><b>{$rpt_cl_new[SEC].s_done}</b></td>
+		<!--<td class=gry9 align=center><b>{$rpt_cl_new[SEC].s_rem}</b></td> -->
+		<!-- <td class=gry9 align=left colspan= 4></td> -->
+		</tr> 	
+		{else}
+			<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"height=30> 
+				<td class=gry9 width=120 align=center nowrap><a href="javascript:smpl_out2('{$rpt_cl_new[SEC].order}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$rpt_cl_new[SEC].order}</b></a></td>
+				<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].smpl_type}</td>
+				<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].style}</td>
+	
+				<td class=gry9 width=130 align=center>{$rpt_cl_new[SEC].ref}</td>
+				<td class=gry9 width=50 align=center>{$rpt_cl_new[SEC].qty}</td>
+				<td class=gry9 width=70 align=center >{$rpt_cl_new[SEC].qty_down}</td>
+				<!--<td class=gry9 width=50 align=center>{$rpt_cl_new[SEC].rem}</td> -->
+				<td class=gry9 width=80 align=center nowrap>{$rpt_cl_new[SEC].etd}</td>
+				<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].p_etf <> '0000-00-00'}{$rpt_cl_new[SEC].p_etf}{else}N/A{/if}</td>
+				<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].s_etf <> '0000-00-00'}{$rpt_cl_new[SEC].s_etf}{else}N/A{/if}</td>
+			<td class=gry9 width=80 align=center nowrap>{if $rpt_cl_new[SEC].sample_down <>'0000-00-00'}{$rpt_cl_new[SEC].sample_down}{else}N/A{/if}</td>
+				
+				<td class=gry9 width=90 align=center nowrap><small><b>
+					<a href="javascript:smpl_out3('{$rpt_cl_new[SEC].id}')" value='ord_out' style='cursor:pointer'>
+					{if $rpt_cl_new[SEC].status == -1}Wait submt
+					{elseif $rpt_cl_new[SEC].status == 0}W/I expect
+					{elseif $rpt_cl_new[SEC].status == 1}<span class=gry9><small>PTTN expect</span>
+					{elseif $rpt_cl_new[SEC].status == 2}<span class=gry9><small>FAB expect</span>
+					{elseif $rpt_cl_new[SEC].status == 3}<span class=gry9><small>ACC expect</span>
+					{elseif $rpt_cl_new[SEC].status == 4}<span class=gry9><small>PTTN schdle</span>
+					{elseif $rpt_cl_new[SEC].status == 5}<span class=gry9><small>SMPL schdle</span>
+					{elseif $rpt_cl_new[SEC].status == 6}<span class=gry9><small>DEVELOPING</span>
+					{elseif $rpt_cl_new[SEC].status == 7}<span class=gry9><small>* PENDING *</span>
+					{elseif $rpt_cl_new[SEC].status == 10}<span class=gry9><small>= case close =</span>
+					{else}&nbsp;{/if}
+					</a>
+				</b></small></td>
+	
+				<!--<td class=gry9 width=40 align=center>{$rpt_cl_new[SEC].cust}</td> -->
+				
+				<!-- <td class=gry9 width=70 align=center>{$rpt_cl_new[SEC].schd_smpl}</td> -->
+			</tr>
+		
+		{/if}
+	{/if}
+
+
+{/if}
+
+{/section}
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}
+

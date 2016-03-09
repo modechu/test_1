@@ -1,0 +1,103 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function tp(url) { parent.top.location.href=url }
+function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+		location.href=doit;
+	}
+}
+function del_pa (pa_num, back_str,pp)
+{
+	if ( confirm("Are you sure to delete "+pa_num+"??")) {
+		window.location='index2.php?PHP_action=do_apply_del&PHP_ap_num='+pa_num+'&PHP_str='+back_str+"&PHP_back_act=apply_search&PHP_sr_startno="+pp; 	
+	}
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=660>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}	
+<table width=660 border=1 cellspacing=0 cellpadding=2>
+	<tr>
+		<td colspan=10 align=center class=gry height=30><b>Purchase Application List</b></td></tr>
+		<tr bgcolor="#003333" height=25> 
+		<td class=w9 width=95 align=center><b>P / O  #</b></td>
+		<td class=w9 width=80 align=center><b>dept</b>.</td>
+		<td class=w9 width=160 align=center><b>supplier</b></td>
+		<td class=w9 width=80 align=center><b>source area</b></td>
+		<td class=w9 width=70 align=center><b>currency</b></td>
+		<td class=w9 width=70 align=center><b>ETD</b></td>
+		<td class=w9 width=150 align=center><b>status</b></td>
+		<td class=w9 width=20 align=center><b>DEL</b></td>
+	</tr>
+	{section name=SEC loop=$apply}
+	{if $apply[SEC].status >=4 &&  $apply[SEC].status != 5}
+	<tr bgColor='#dddddd'>
+	{else}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+	{/if}
+		<td class=gry9 align=center nowrap><small><a href="{$PHP_SELF}?PHP_action=apply_view&PHP_aply_num={$apply[SEC].ap_num}{$back_str}&PHP_sr_startno={$now_pp}">{$apply[SEC].ap_num}</a></small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].dept}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].s_name}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].country}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].currency}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$apply[SEC].eta}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{if $apply[SEC].status == 0}waitt'g for PA submit									
+									{elseif $apply[SEC].status == 2}<span class=bgdy9>waitt'g for PA CFM</span>
+									{elseif $apply[SEC].status == 3}<span class=grn9>waitt'g for PA APV</span>
+									{elseif $apply[SEC].status == 4}<span class=b9><b>PA APV</b></span>
+									{elseif $apply[SEC].status == 5}<span class=ssign><b>PA Rejeck</b></span>
+									{elseif $apply[SEC].status == 6}waitt'g for PO submit
+									{elseif $apply[SEC].status == 8}<span class=bgdy9>waitt'g PO for CFM</span>
+									{elseif $apply[SEC].status == 10}<span class=grn9>waitt'g PO for APV</span>
+									{elseif $apply[SEC].status == 12}<span class=b9><b>PO APV</b></span>
+									{elseif $apply[SEC].status == 13}<span class=ssign><b>PO Rejeck</b></span>
+									{else}&nbsp;{/if}
+									</small></td>
+		<td class=gry9 align=center>{if $apply[SEC].status == 0}<small><input type='image' src="images/del.gif"   onclick=del_pa('{$apply[SEC].ap_num}','{$back_str}','{$now_pp}') width=15></small>{/if}&nbsp;</td>
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

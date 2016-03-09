@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>ORDER</title>
+<link rel=stylesheet type="text/css" href="./bom.css" />
+{literal}
+<style type="text/css">
+<!--
+body {
+	margin-top: 0px;
+	margin-left: 16px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<script language="javascript" src="./js/open_detial.js"></script>
+<SCRIPT language=JavaScript>
+	function rcv_add(ap_num)	
+	{
+		var url = "receive.php?PHP_action=rcvd_add&PHP_aply_num="+ap_num;
+		var nm = 'po_un_rcv';
+		window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=500, top=20, left=20');
+			
+//		self.opener.purchase_receive(ap_num);
+	}
+
+function exp_out(id) {
+	 var url ='po_ship.php?PHP_action=ship_view&PHP_id='+id; 	
+
+	 var nm = 'express';
+	 window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}  
+</SCRIPT>
+{/literal}
+<body> 
+	<BR>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor=#666666 width=680 >
+		<tr align=center bgcolor=#272727 height=30 ><td class=ylw10 colspan=15 ><b>  [ 未驗收採購單 ] </b> &nbsp;&nbsp;&nbsp;</td></tr>
+		<tr align=center bgcolor=#eeeeee>
+			<td width=100 ><b>Carrier #</b></td>
+			<td width=80 ><b>Shipper</b></td>
+			<td width=90 ><b>Arrive</b></td>
+			<td width=100 ><b>PO #</b></td>
+			<td ><b>Order #</b></td>
+			<td width=40 ><b>Mat.</b></td>
+			<td width=90 ><b>SHIP date</b></td>
+			<td width=50 ><b>SHIP TO</b></td>
+			<td width=80 ><b>SHIP BY</b></td>
+		</tr>	
+		{section name=SEC loop=$un_rcv}
+		<tr align=center  bgcolor="#FFFFE6">
+			<td class=snvy align=left nowrap><small><a href="javascript:exp_out('{$un_rcv[SEC].ship_id}')" style='cursor:pointer'>{$un_rcv[SEC].carrier}</a></small></td>
+			<td class=snvy align=left nowrap><small><a href="javascript:exp_out('{$un_rcv[SEC].ship_id}')" style='cursor:pointer'>{$un_rcv[SEC].shipper}</a></small></td>
+			<td class=snvy align=left nowrap><small>{$un_rcv[SEC].ship_eta}</small></td>
+			<td class=snvy nowrap><small>
+				<a href="javascript:rcv_add('{$un_rcv[SEC].ap_num}')">{$un_rcv[SEC].po_num}</a>	</small></td>
+
+			<td class=snvy align=left><small>{$un_rcv[SEC].ords}</small></td>
+			<td align=left nowrap><small>{if $un_rcv[SEC].mat_cat == 'a'}Acc.{else}Fab.{/if}</small></td>
+			<td class=snvy align=left nowrap><small>{$un_rcv[SEC].ship_date}</small></td>
+			<td align=center nowrap><small>{if $un_rcv[SEC].finl_dist}{$un_rcv[SEC].finl_dist}{else}{$un_rcv[SEC].arv_area}{/if}</small></td>
+			<td class=snvy align=left><small>{$un_rcv[SEC].ship_way}</small></td>
+			</tr>	
+		{/section}
+		</table>
+		<br>
+	
+		<!--------- footer ---------->
+{include file="footer.html"}

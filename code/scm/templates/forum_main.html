@@ -1,0 +1,106 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>{$lang.head}</title>
+<link rel=stylesheet type="text/css" href="css/mode.css">
+<link rel=stylesheet type="text/css" href="css/style.css">
+<script language="javascript" src="./js/open_detial.js"></script>
+</head>
+<body>
+<TR vAlign=top>
+  <TD><table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0" >
+    <tbody>
+      <tr>
+        <td style="BORDER-TOP: #eeeeee 1px solid; BORDER-LEFT: #eeeeee 1px solid; BORDER-BOTTOM: #eeeeee 1px solid" valign="top" width="" height=""><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+              <tr>
+                <td valign="top"><table cellspacing="0" cellpadding="0" width="100%" border="0">
+                    <tbody>
+                      <tr>
+                        <td><table height="23" cellspacing="0" cellpadding="0" width="100%" border="0">
+                            <tbody>
+                              <tr>
+                                <td style="PADDING-LEFT: 10px; FONT-SIZE: 8pt; COLOR: #aaaaaa" bgcolor="#f4f4f4" height="22"><table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                    <tr>
+                                      <td height="22" nowrap bgcolor="#f4f4f4" style="PADDING-LEFT: 10px; FONT-SIZE: 8pt; COLOR: #aaaaaa"> [ <a title="{$forum_name}" style="COLOR: slategray" href="forum.php"><b> <font color="darkslategray">{$forum_name}</font></b> </a> ] {$pp} </td>
+                                      <td width="20%" align="right">{if $msg}{section name=SEC_MSG loop=$msg}{$msg[SEC_MSG]}<br>{/section}{/if}</td>
+                                      <td width="60%" align="right"><a href="./doc/forum.doc" target="_blank" >討論版操作手冊</a></td>
+                                      <td align="right" nowrap>{if $admin_flag} | <a href="forum.php?Ac=forum_manager">討論版主題維護</a>{/if}</td>
+                                    </tr>
+                                </table></td>
+                              </tr>
+                              <tr>
+                                <td bgcolor="#eeeeee" height="1"></td>
+                              </tr>
+                            </tbody>
+                        </table></td>
+                      </tr>
+                      <tr>
+                        <td><table width="90%" border="0" align="center" cellpadding="6" cellspacing="0">
+                            <tr>
+                              <td align="center" valign="top"><table width="100%" cellspacing="2" cellpadding="2" border="0">
+                                  <tr>
+                                    <td align="left" valign="bottom" nowrap="nowrap"><span class="nav"><a href="forum.php?Ac=forum_post&group_id={$group_id}&main_id={$main_id}"><img src="images/post.gif" border="0" alt="發表新主題" align="middle" /></a>&nbsp;&nbsp;&nbsp;<a href="forum.php?Ac=forum_re_post&serial={$post.serial}&group_id={$group_id}"></a></span></td>
+                                    <td align="left" valign="middle" width="100%"><span class="nav">&nbsp;&nbsp;&nbsp;{$main_title} -> <a href="forum.php?Ac=forum_main&group_id={$group_id}&main_id={$main_id}" class="nav">{$post_title}</a></span></td>
+                                  </tr>
+                                </table>
+                                  <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                    <tr>
+                                      <td>{$page_num}</td>
+                                      <td>&nbsp;</td>
+                                      {$select_main}
+                                    </tr>
+                                  </table>
+                                <table border="0" cellpadding="4" cellspacing="1" width="100%" class="forumline">
+                                    <tr>
+                                      <th colspan="2" align="center" height="25" class="thCornerL" nowrap="nowrap">主題</th>
+                                      <th width="50" align="center" class="thTop" nowrap="nowrap">回覆</th>
+                                      <th width="100" align="center" class="thTop" nowrap="nowrap">發表人</th>
+                                      <th width="50" align="center" class="thTop" nowrap="nowrap">觀看</th>
+                                      <th align="center" class="thCornerR" nowrap="nowrap">最後發表</th>
+                                    </tr>
+                                  {section name=SEC loop=$pages}
+                                  <tr onmouseover="bgColor='#FEFEFE'" onmouseout="bgColor='#EEEEEE'" bgcolor="#EEEEEE">
+                                    <td align="center" valign="middle" width="20"><img src="images/folder.gif" width="19" height="18" alt="" title="" /></td>
+                                    <td width="100%"><a href='forum.php?Ac=forum_view&serial={$pages[SEC].serial}&group_id={$group_id}&main_id={$main_id}' title="{$pages[SEC].content}" >{$pages[SEC].title}</a></td>
+                                    <td class="row2" align="center" valign="middle">{$pages[SEC].re_count}</td>
+                                    <td class="row3" align="center" valign="middle"><span class="postdetails">{$pages[SEC].name}</span></td>
+                                    <td class="row2" align="center" valign="middle">{$pages[SEC].count}</td>
+                                    <td class="row3Right" align="center" valign="middle" nowrap="nowrap"><span class="postdetails" style="cursor:pointer" title="{$pages[SEC].LAST_POST.content}"><span class="gensmall">{$pages[SEC].LAST_POST.time|truncate:10:''}<br>
+                                      {$pages[SEC].LAST_POST.name}</span></span></td>
+                                  </tr>
+                                  {/section}
+                                  <tr>
+                                    <td class="row1" colspan="6" align="center" valign="middle">&nbsp;</td>
+                                  </tr>
+                                  </table>
+                                <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                    <tr>
+                                      <td>&nbsp;</td>
+                                      <td>&nbsp;</td>
+                                      <td align="right">{$page_num}</td>
+                                    </tr>
+                                  </table>
+                                <table width="100%" cellspacing="2" cellpadding="2" border="0">
+                                    <tr>
+                                      <td align="left" valign="bottom" nowrap="nowrap"><span class="nav"><a href="forum.php?Ac=forum_post&group_id={$group_id}"><img src="images/post.gif" border="0" alt="發表新主題" align="middle" /></a>&nbsp;&nbsp;&nbsp;<a href="forum.php?Ac=forum_re_post&serial={$post.serial}&group_id={$group_id}"></a></span></td>
+                                      <td align="left" valign="middle" width="100%">&nbsp;</td>
+                                    </tr>
+                                </table></td>
+                            </tr>
+                            <tr>
+                              <td></td>
+                            </tr>
+                        </table></td>
+                      </tr>
+                    </tbody>
+                </table></td>
+              </tr>
+            </tbody>
+        </table></td>
+      </tr>
+    </tbody>
+  </table></TD>
+</TR>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<Script language="javascript">
+function check_qty(qty,r)
+{
+	var rcv_qty = r.value;
+	if(rcv_qty > qty)
+	{
+		alert("Receive qty must small than ship qty!");
+		r.value = '';
+	}
+}
+</script>
+
+{/literal}
+</head>
+<body >
+<form METHOD="POST" name="ship_edit" action="{$PHP_SELF}">
+
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr>
+		<td class="ylw10" align=center width=400 height=28><b>RCVEIVE SAMPLE SHIPPING </b> </td>
+	</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=600 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+			<table border=0 cellspacing=1 cellpadding=3 width="600" bgcolor=#FFFFFF>
+				<tr>
+					<td class=snvy align=left colspan=3><b>RECEIVE# :&nbsp; {$shp.rcv_num}</b></td>	
+				</tr>
+				<tr>
+					<td class=snvy align=left ><b>SHIP# :&nbsp; {$shp.ship_num}</b></td>
+
+					<td class=snvy align=left ><b>SHIPPER :&nbsp; {$shp.fty}</b></td>
+					<td class=snvy align=left ><b>RECEIVER :&nbsp; {$shp.dept}</b></td>
+	
+				</tr>
+			</table>
+
+
+<hr SIZE=2 WIDTH=600>
+
+
+<table border="1" cellspacing=0 cellpadding=2 width=600 id="mat_table" bgColor='#000000'>	
+	<tr bgcolor="#003333" height=28>
+		<td width="100" class=back align="center"><b>Sample #</b></td>		
+		<td width="100" class=back align="center"><b>style#</b></td>		
+		<td width="50" class=back align="center"><b>style</b></td>		
+		<td width="80" class=back align="center"><b>size</b></td>
+		<td width="80" class=back align="center"><b>qty</b></td>
+		<td width="80" class=back align="center"><b>Receive</b></td>
+	</tr>
+	
+	<tr></tr>
+	{section name=SEC loop=$shp_det} 
+	<tr bgColor='#ffffff'>
+		<td  align="center" nowrap>&nbsp;{$shp_det[SEC].smpl_num}</td>
+		<td  align="center" nowrap>&nbsp;{$shp_det[SEC].ref}</td>
+		<td  align="center" nowrap>&nbsp;{$shp_det[SEC].style}</td>
+		<td  align="center" nowrap>&nbsp;{$shp_det[SEC].size}</td>
+		<td  align="center" nowrap>&nbsp;{$shp_det[SEC].ship_qty}</td>
+		<td  align="center" nowrap><input type=text name="PHP_qty[{$shp_det[SEC].id}]" size=8 class=select value="" onchange=check_qty({$shp_det[SEC].ship_qty},this)></td>		
+	</tr>	
+	{/section}
+</table>
+
+<hr SIZE=2 WIDTH=600>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=600>
+	<tr>
+		<td>
+		<input type=button onClick="window.location.href='smpl_ship.php?PHP_action=rcvd_add_list'" value=" << go back " class=select_e style="cursor:pointer; width=80%">
+
+		</td>
+		<td width=250>
+			<input type=submit value="[ ADD above record ]" class=select_e style="cursor:pointer; width=98%"  >
+	  	<input type=hidden name="PHP_id" value="{$shp.id}">	  	
+			<input type=hidden name="PHP_action" value="do_rcvd_add">
+
+		</td>		
+	</tr>
+</table>
+		</form>
+<!--------- footer ---------->
+{include file="footer.html"}

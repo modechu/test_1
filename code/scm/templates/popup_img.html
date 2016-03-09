@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=big5" />
+<title>{$title}</title>
+{literal}
+<script src="./js/pngfix.js"></script>
+<style type="text/css">
+<!--
+#Layer1 {
+	position:absolute;
+	left:17px;
+	top:23px;
+	width:43px;
+	height:18px;
+	z-index:1;
+}
+#Layer2 {
+	position:absolute;
+	left: -60px;
+	top: -60px;
+	z-index:2;
+}
+#Layer3 {
+	position:absolute;
+	left:20px;
+	top:45px;
+	width:expression(window.document.images[3].width-15);
+	height:90%;
+	z-index:3;
+}
+#Layer4 {
+	position:absolute;
+	z-index:5;
+	left: -60px;
+	top: -60px;
+}
+#Layer5 {
+	position:absolute;
+	z-index:5;
+	left: -60px;
+	top: -60px;
+}
+.txt {
+	color: #330000;
+	font-size:12px;
+	font-weight: lighter;
+}
+.txt_close {
+	color: #FF0000;
+	font-size:7pt;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.txt_blue {
+	color: #0033FF;
+	font-size:10px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+-->
+</style>
+<script language="javascript">
+<!--
+var i=0;
+function resize() {
+	if (document.images[5]) window.resizeTo(document.images[5].width +36, document.images[5].height+66-i);
+	document.all['Layer2'].style.left=document.images[5].width-12;
+	document.all['Layer2'].style.top=22;
+
+	document.all['Layer4'].style.left=document.images[5].width/2-30;
+	document.all['Layer4'].style.top=document.images[5].height-10;
+
+	document.all['Layer5'].style.left=document.images[5].width/2+30 ;
+	document.all['Layer5'].style.top=document.images[5].height-10;
+	self.focus();
+}
+//-->
+
+//預設原圖大小為100%
+var percent = 100;
+//縮放圖片用，參數obj為欲被縮放的圖片id
+function zoomPic(obj){
+	//判斷滾輪是往上滾則加10%
+	if (event.wheelDelta >= 120)	percent +=10;
+	//若是往下滾則減10%，但最小是10%
+	else if (event.wheelDelta <= -120  && percent >10)	percent -=10; 
+	//縮放圖片用zoon
+	document.getElementById(obj).style.zoom = percent + "%";
+	//顯示目前是幾%用的
+	//document.getElementById("perc").innerText = percent + "%"; 
+	//回傳false好讓頁面不會跟著滾輪上下滾
+	return false;
+}
+</script>
+{/literal}
+</head>
+<body onLoad="resize();" OnResize="resize()">
+<div id="Layer2"><a href="javascript:window.close()"><img src="images/del.gif" width="16" height="18" border="0" /></a></div>
+<div id="Layer4" {if !$perv}style="display:none"{/if}><a href="{$perv}"><img src="images/perv.jpg" width="20" height="16" border="0" alt="上一張" /></a></div>
+<div id="Layer5" {if !$next}style="display:none"{/if}><a href="{$next}"><img src="images/next.jpg" width="20" height="16" border="0" alt="下一張"/></a></div>
+<table id="t_img" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td><img src="images/P_1.jpg" width="3" height="3"></td>
+		<td background="images/P_2.jpg"></td>
+		<td><img src="images/P_3.jpg" width="3" height="3"></td>
+	</tr>
+	<tr>
+		<td background="images/P_4.jpg"></td>
+		<td><img id="pic" src="{$main_pic}" alt="Detail" border="0" onmousewheel="return zoomPic('pic');" /></td>
+		<td valign="top" background="images/P_6.jpg"><img src="images/P_5.jpg" width="3" height="3"></td>
+	</tr>
+	<tr>
+		<td><img src="images/P_7.jpg" width="3" height="3"></td>
+		<td background="images/P_9.jpg"><img src="images/P_8.jpg" width="3" height="3"></td>
+		<td><img src="images/P_10.jpg" width="3" height="3"></td>
+	</tr>
+</table>
+</body>
+</html>

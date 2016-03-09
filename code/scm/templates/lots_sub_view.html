@@ -1,0 +1,125 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System [ Fabric VIEW ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+	
+{literal}
+<script language="javascript">
+  self.opener.writeToParentList({/literal}'{$lots.lots_code}','{$lots.lots_name}','{$lots.unit1}','{$lots.id}'{literal});
+  window.close();
+
+</script>
+{/literal}	
+	
+</head>
+<body ><form METHOD="POST" name="lots_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <b><font color=yellow>{$lots.lots_code}</font>&nbsp;Fabric record </b>] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right>FABRIC # :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=15% nowrap>&nbsp;{$lots.lots_code}</td>
+    <td class=snvy align=right>FABRIC Name :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=50%>&nbsp;{$lots.lots_name}</td>
+  </tr>
+    <tr>
+    <td class=snvy align=right>Description :</td>
+    <td colspan=3 class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.des}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Content :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.comp}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Construction :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.specify}</td>
+  </tr>
+    <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Width :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.width}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Weight :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.weight}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Finish :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.cons}</td>
+  </tr>  
+   <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+
+		<table border=1 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr bgcolor=#31657B height=25>
+    <td class=w10 align=center>Supplier #</td>
+    <td class=w10 align=center>Term</td>
+    <td class=w10 align=center>Price</td>
+    <td class=w10 align=center>Unit</td>
+    <td class=w10 align=center>Currency</td>
+  </tr>
+  <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;{$lots.vendor1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.term1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency1}</td>
+  </tr> 
+  <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;{$lots.vendor2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.term2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency2}</td>
+  </tr> 
+   <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;{$lots.vendor3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.term3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency3}</td>
+  </tr> 
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+            <tr> 
+   <form METHOD="POST" name="acc_edit" action="{$PHP_SELF}">           
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="lots_edit">
+<!--2006.11.14 頁碼記錄 start-->                
+                <input type="hidden" name="PHP_sr_startno" value={$now_pp}>
+                <input type="hidden" name="PHP_back_str" value={$back_str}>
+                <input type="hidden" name="PHP_id" value={$lots.id}>
+<!--2006.11.14 頁碼記錄 end-->
+				<input type=button value=" CLOSE " class=select_e style="cursor:pointer; width=95%" onClick="cfm('{$lots.lots_code}','{$lots.lots_name}','{$lots.unit1}','{$lots.unit2}','{$lots.unit3}','{$lots.id}')";></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

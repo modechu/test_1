@@ -1,0 +1,81 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SAMPLE ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+ <table width=600 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=13 align=center class=gry><b>SAMPLE SHIP LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=100 align=center>ship #</td>
+    <td class=w9 width=70 align=center>ship from</td>
+    <td class=w9 width=200 align=center>ship to</td>
+    <td class=w9 width=90 align=center>ship date</td>
+    <td class=w9 width=90 align=center>status</td>
+  </tr>
+{section name=SEC loop=$ship}
+{if $ship[SEC].status == 6}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#dddddd'">
+{else}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+{/if}
+   <td class=gry9 align=center><b><a href=smpl_ship.php?PHP_action=s_ship_view&PHP_id={$ship[SEC].id}&PHP_sr_startno={$now_pp}">{$ship[SEC].ship_num}</a></b></td>
+   <td class=gry9 align=center>{$ship[SEC].dept}&nbsp;</td>
+   <td class=gry9 align=center>{if $ship[SEC].ship_to == $ship[SEC].cust}{$ship[SEC].cust_name}{else}{$ship[SEC].ship_to}{/if}&nbsp;</td>
+   <td class=gry9 align=center>{if $ship[SEC].sub_date <> '0000-00-00'}{$ship[SEC].sub_date}{/if}&nbsp;</td>
+   <td class=gry9 align=center>
+			<small><b> {if $ship[SEC].status == 0}<font color=#CBB4F5>Wait submt</font>
+			{elseif $ship[SEC].status == 2}<span class=ssign><small>Submit</span>
+			{elseif $ship[SEC].status == 6}<span class=ssign><small>RCVD</span>
+
+			{else}&nbsp;{/if}</b>
+			</small></td>
+  </tr>
+
+  {/section}
+</table>
+<br>
+<table width=750 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ </font>sample ship list : {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=250><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:50%" onClick="window.location='smpl_ship.php?PHP_action=ship_list&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=250>    
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="smpl_ship.php?PHP_action=ship_list&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=250>    
+    
+{if $lastpage < $maxpage}
+         <input type="button" name="Submit6" value="next 10 page >" class=select_e style="cursor:pointer; width:50%" onClick="window.location='smpl_ship.php?PHP_action=ship_list&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

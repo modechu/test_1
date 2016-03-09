@@ -1,0 +1,104 @@
+{include file="header.html"}
+<script type="text/javascript">
+    var $ppd = '{$select_express}';
+</script>
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">SHIPPING - FOR SUPPLIER</td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+            <table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+                {if $add_flag}
+                <tr>
+                    <td class="line_t"></td>
+                </tr>
+				<tr>
+                    <td class="item_title">Import csv file&nbsp;<a href="./ship template.csv"><small>匯入格式檔</small></a></td>
+                </tr>
+				<tr>
+					<td>
+						<form id="import_csv" method=POST name=pattn enctype="multipart/form-data">    
+						檔案：<input type="hidden" name="PHP_action" value="import_csv_file">
+							<input type='file' name='PHP_csv_file' size=20 class=select>&nbsp;&nbsp;
+							<input id="import_csv" class="title_submit" type='submit' value=' upload '>
+						</form>
+					</td>
+				</tr>
+                <tr>
+                    <td class="item_title">Developing</td>
+                </tr>
+                <tr>
+                    <td class="line_spc"></td>
+                </tr>
+				<tr>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="POST" id="dvlp" action="?PHP_action=search_po">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">P.O. # : </td>
+                                <td class="txt_l"><input type="text" name="M_po_num" size="15" class="select" value=""></td>
+                                <td class="txt_r">Supplier : </td>
+                                <td class="txt_l">{$select_supl}</td>
+                            </tr>
+                            <tr class="title_menu_bg">
+                                <td class="txt_r"></td>
+                                <td class="txt_l"></td>
+                                <td class="txt_r">Ship To : </td>
+                                <td class="txt_l">{$select_fty}</td>
+                            </tr> 
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title_submit" id="dvlp">Append Purchase Order By Shipping List</td>
+                </tr>
+                {/if}
+                <tr>
+                    <td class="line_t"></td>
+                </tr>
+               <tr>
+                    <td class="item_title">Search</td>
+                </tr>
+                <tr>
+                    <td class="line_spc"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="POST" id="box_sch" action="?PHP_action=search_ship">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">SHIPPING #：</td>
+                                <td class="txt_l"><input type="text" id="M_ship" name="M_ship" value="" /></td>
+                                <td class="txt_r"></td>
+                                <td class="txt_l"></td>
+                            </tr>
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">B.L. #：</td>
+                                <td class="txt_l"><input type="text" id="M_bl_num" name="M_bl_num" value="" /></td>
+                                <td class="txt_r">From：</td>
+                                <td class="txt_l">{$select_from}</td>
+                            </tr> 
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">P.O. # : </td>
+                                <td class="txt_l"><input type="text" id="M_po_num" name="M_po_num" value="" /></td>
+                                <td class="txt_r">Ship To：</td>
+                                <td class="txt_l">{$select_to}</td>
+                            </tr> 
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title_submit" id="box_sch">Search</td>
+                </tr>
+                </form>
+            </table>
+        </td>
+    </tr>
+</table>
+{include file="footer.html"}

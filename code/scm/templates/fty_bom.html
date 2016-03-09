@@ -1,0 +1,112 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  Scm System .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function fab_pa(id,num) {
+	var url ='index2.php?PHP_action=pa_bom_det&PHP_id='+id+'&PHP_num='+num; 	
+	var nm = 'fabpa';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+function acc_pa(id,num) {
+	var url ='index2.php?PHP_action=pa_bom_det&PHP_id='+id+'&PHP_num='+num; 	
+	var nm = 'fabpa';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" " >&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=600 bgcolor=#cccccc  align=center>
+ <tr><form METHOD="POST" name="wi_list">  
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=700 bgcolor=#534A67>
+		 <tr><td class=des align=center>.....  <b>Working Instrcution LIST[ for ORDER BOM ]</b>.......</td></tr>
+     </table></td></tr>
+</table></form>
+<table border cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>W I #</b></td>
+	<td nowrap width=100 align=center class=back><b>Customer</b></td>
+	<td nowrap width=100 align=center class=back><b>ETD</b></td>
+	<td nowrap width=60 align=center class=back><b>FAB. PA</b></td>
+	<td nowrap width=60 align=center class=back><b>ACC. PA</b></td>
+	<td nowrap width=130 align=center class=back><b>BOM Status</b></td>
+	<td nowrap width=50 align=center class=back><b>Factory</b></td>
+	<td nowrap width=100 align=center class=back><b>Remark</b></td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=8 align=center class=ssign><br>NO Rcords!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$wi} 
+  <tr><form>
+	<td class=g10 align=center nowrap>
+      <a href="{$PHP_SELF}?PHP_action=fty_bom_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}&PHP_fty_chk={$wi[SEC].fty_chk}">
+      		<b>{$wi[SEC].wi_num}&nbsp;</b></a></td>
+    <td class=gry9 align=center>{$wi[SEC].cust_iname}&nbsp;</td>
+    <td align=center class=gry9>{$wi[SEC].etd}&nbsp;</td>
+	<td align=center class=gry9>&nbsp;{if $wi[SEC].lots_ap == 1}
+			<a href="javascript:fab_pa('{$wi[SEC].id}','{$wi[SEC].wi_num}')" value='Search FAB. PA' style='cursor:pointer'>
+			<img src="images/yes.gif" border=0 width=15 valign=bottom>
+			</a>
+	{/if}&nbsp;</td> 
+	<td align=center class=gry9>&nbsp;{if $wi[SEC].acc_ap == 1}
+		<a href="javascript:acc_pa('{$wi[SEC].id}','{$wi[SEC].wi_num}')" value='Search ACC. PA' style='cursor:pointer'>
+		<img src="images/yes.gif" border=0 width=15 valign=bottom></a>
+	{/if}&nbsp;</td> 
+
+    <td align=left class=gry9>{if $wi[SEC].status == 0}Wait WI Submit{/if}    							
+    							{if $wi[SEC].status == 1 && $wi[SEC].bom_status == 0}Wait 4 Submit{/if}
+    							{if $wi[SEC].status == 1 && $wi[SEC].bom_status == 2}Wait 4 Confirm{/if}
+    							{if $wi[SEC].status == 2}CONFIRM{/if}    							
+    </td>
+    <td align=center class=gry9>{$wi[SEC].factory}&nbsp;</td>
+    <td align=left nowrap class=gry9>&nbsp;
+		{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=fty_bom_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}&PHP_fty_chk={$wi[SEC].fty_chk}"  style="cursor:pointer"><img src="images/search.gif" alt="Veiw BOM" border=0 valign=bottom></a>
+		{/if}
+		</td>
+  </tr>
+			{/section} 
+</table>
+<table border=0 cols=4 width=700 align=center>
+	<tr>
+    <td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;wi record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+  </tr>
+   <tr align=center>
+    <td align=center width=100>
+    {if $pages[0] > 1}
+   <a href="{$cgistr_get}&PHP_sr_startno=p{$pages[1]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="Top 12 Records"></a>
+   {/if}
+   </td>
+   <td width=300 align=center>
+   {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+     <a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    </td>
+    <td width=100>
+    {if $lastpage < $maxpage}
+    <a href="{$cgistr_get}&PHP_sr_startno=n{$lastpage}{$back_str}">&nbsp;<img src="images/right2.gif" border=0 alt="Back 12 Records"></a>
+    {/if} 
+    </td>
+
+  </tr>
+</table>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,220 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: Tai Yuen ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript">
+
+ </script>
+{/literal}
+</head>
+<body >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1>
+<tr><td width=100%>
+<table cellspacing=1 cellpadding=4 cols=1 bgcolor=#003300>
+	<tr>
+		<td align=center width=5% rowspan=2>
+			<a href="monitor.php?PHP_action=dm_view{$back_str}&PHP_excel=1&SCH_su=1&SCH_pc=1" style="cursor:pointer">
+			<img src="./images/excel_icon.gif" border=0 alt="windows [Excel] File"></a>
+		</td>
+		<td class="des" align=center height=28 colspan=2>
+			[ <b>&nbsp;Production OUT-PUT daily by Prodcution Line</b> ]
+		</td>
+	</tr>
+	<tr>
+		<td class="des" align=left height=28 width=45%>
+			<b><font color=yellow>{$title}</font></b>
+		</td>
+		<td class="des" align=right height=28 width=45%>
+			<b><font color=yellow>{$title_d}&nbsp;</font></b>
+		</td>
+	</tr>
+</table>
+</td></tr>
+<tr><td>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+</td></tr>
+<tr><td align=left>
+<table border=1 cellspacing=0 cellpadding=1 bgcolor=#000000>
+	<tr>
+		<td class=frnt align=center bgcolor=#CEE4E3 colspan=2><b>LINE #</b></td>
+		<td width=50 class=frnt align=center bgcolor=#CEE4E3>&nbsp;<b>SUM</b></td>
+		{section name=SEC loop=$out_date} 
+		<td class=frnt align=center {if $g_ttl.hdy[SEC] == 1}bgcolor='#000000'{else}bgcolor='#CEE4E3'{/if}><b>{if $g_ttl.hdy[SEC] <> 1}{$out_date[SEC].out_date|date_format:"%m/%d"}{else}{/if}</b></td>
+		{/section}
+	</tr>
+
+	<tr bgColor='#FFC4F3'>
+		<td class=frnt align=center nowrap bgcolor=#FD66DF width=70>
+			<b>CUTTING</b>
+		</td>
+		<td class=frnt align=center nowrap bgcolor=#FD66DF width=10>pc.</td> 
+		<td class=frnt align=right bgColor='#FD66DF'><b>{$cut_sum|number_format}</b> </td>
+		{section name=SEC loop=$cut}     
+		<td class=frnt align=right>    	
+    	{if $cut[SEC].qty > 0}{$cut[SEC].qty|number_format}{else if $cut[SEC].qty == 0}&nbsp;{/if}
+		</td>
+		{/section}
+	</tr>    
+	<tr><td></td></tr>
+  
+	<tr>
+		<td class=frnt align=center nowrap rowspan=2 bgcolor=#CEE4E3 width=70>   	
+			<b>{$g_ttl.line}&nbsp;</b>			
+		</td>
+		<td class=frnt align=center nowrap bgcolor=#CEE4E width=10>pc.</td>
+		<td class=frnt align=right bgColor='#F4F8CA'><b>{$g_ttl.sum_qty|number_format}</b></td>
+		{section name=QT loop=$g_ttl.qty}     
+		<td class=frnt align=right {if $g_ttl.hdy[QT] == 1}bgColor='#000000' width=0{else}bgColor='#F4F8CA'{/if}>    	
+			<b>{if $g_ttl.qty[QT] > 0}{$g_ttl.qty[QT]|number_format}{else if $g_ttl.hdy[QT] == 0}&nbsp;{/if}</b>
+		</td>
+		{/section} 
+	</tr> 
+	
+	
+	<tr>
+		<td class=frnt align=center nowrap bgcolor=#CEE4E width=10>su.</td>
+		<td class=frnt align=right bgColor='#F4F8CA'><b>{$g_ttl.sum_su|number_format}</b></td>
+		{section name=QT loop=$g_ttl.su}     
+		<td class=frnt align=right {if $g_ttl.hdy[QT] == 1}bgColor='#000000' width=0{else}bgColor='#F4F8CA'{/if}>    	
+			<b>{if $g_ttl.su[QT] > 0}{$g_ttl.su[QT]|number_format}{else if $g_ttl.hdy[QT] == 0}&nbsp;{/if}</b>		
+		</td>
+		{/section} 
+	</tr>
+	
+	<tr><td></td></tr>
+	
+{section name=SEC loop=$saw} 
+{if $saw[SEC].sum_su >0}
+  <tr>
+    <td class=frnt align=center nowrap rowspan=2 bgcolor=#CEE4E3 width=70>
+			<b>{$saw[SEC].line}</b>&nbsp;{if $saw[SEC].line == 'TOTAL'}<b>({$fty})</b>{else}- <small>[{$saw[SEC].day_avg}]</small>{/if}
+    </td>
+    <td class=frnt align=center nowrap bgcolor=#CEE4E3 width=10>pc.</td> 
+    <td class=frnt align=right bgColor='#F4F8CA'><b>{$saw[SEC].sum_qty|number_format}</b> </td>
+	 {section name=QT loop=$saw[SEC].qty}     
+    <td  class=frnt align=right {if $saw[SEC].hdy[QT] == 1} bgColor='#000000' width=0{elseif $saw[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40{else} bgColor='#ffffff'  width=40{/if}>    	
+    	{if $saw[SEC].line =='TOTAL'}<b>{/if}
+    		
+    	{if $saw[SEC].qty[QT] > 0}{$saw[SEC].qty[QT]|number_format}{else if $saw[SEC].hdy[QT] == 0}&nbsp;{/if}
+	
+			{if $saw[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section}
+   </tr>
+   <tr>
+   	 <td class=frnt align=center nowrap bgcolor=#CEE4E3>su.</td>
+     <td class=frnt align=right bgColor='#F4F8CA'><b>{$saw[SEC].sum_su|number_format}</b></td>
+	 {section name=QT loop=$saw[SEC].su}     
+    <td class=frnt align=right {if $saw[SEC].hdy[QT] == 1}bgColor='#000000' width=0{elseif $saw[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40 {else} bgColor='#ffffff' width=40{/if}>    	
+    	{if $saw[SEC].line =='TOTAL'}<b>{/if}
+    	{if $saw[SEC].su[QT] > 0}{$saw[SEC].su[QT]|number_format}{else if $saw[SEC].hdy[QT] == 0}&nbsp;{/if}
+		{if $saw[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section} 
+	</tr>
+	{/if}
+	{if $smarty.section.SEC.index == 0}<tr><td></td></tr>{/if}	
+{/section}
+
+
+{section name=SEC loop=$s_la} 
+{if $s_la[SEC].sum_su >0}
+  <tr>
+    <td class=frnt align=center nowrap rowspan=2 bgcolor=#CEE4E3 width=70>
+			<b>{$s_la[SEC].line}</b>&nbsp;{if $s_la[SEC].line == 'TOTAL'}<b>(LA)</b>{else}- <small>[{$s_la[SEC].day_avg}]</small>{/if}</a>
+    </td>
+    <td class=frnt align=center nowrap bgcolor=#CEE4E3 width=10>pc.</td> 
+    <td class=frnt align=right bgColor='#F4F8CA'><b>{$s_la[SEC].sum_qty|number_format}</b> </td>
+	 {section name=QT loop=$s_la[SEC].qty}     
+    <td  class=frnt align=right {if $s_la[SEC].hdy[QT] == 1} bgColor='#000000' width=0{elseif $s_la[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40{else} bgColor='#ffffff'  width=40{/if}>    	
+    	{if $s_la[SEC].line =='TOTAL'}<b>{/if}
+    		
+    	{if $s_la[SEC].qty[QT] > 0}{$s_la[SEC].qty[QT]|number_format}{else if $s_la[SEC].hdy[QT] == 0}&nbsp;{/if}
+	
+			{if $s_la[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section}
+   </tr>
+   <tr>
+   	 <td class=frnt align=center nowrap bgcolor=#CEE4E3>su.</td>
+     <td class=frnt align=right bgColor='#F4F8CA'><b>{$s_la[SEC].sum_su|number_format}</b></td>
+	 {section name=QT loop=$s_la[SEC].su}     
+    <td class=frnt align=right {if $s_la[SEC].hdy[QT] == 1}bgColor='#000000' width=0{elseif $s_la[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40 {else} bgColor='#ffffff' width=40{/if}>    	
+    	{if $s_la[SEC].line =='TOTAL'}<b>{/if}
+    	{if $s_la[SEC].su[QT] > 0}{$s_la[SEC].su[QT]|number_format}{else if $s_la[SEC].hdy[QT] == 0}&nbsp;{/if}
+		{if $s_la[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section} 
+	</tr>
+	{/if}
+	{if $smarty.section.SEC.index == 0}<tr><td></td></tr>{/if}	
+{/section}
+
+{section name=SEC loop=$sc_saw} 
+ {if $smarty.section.SEC.index == 0}<tr><td></td></tr>{/if}
+  <tr onMouseOver="bgColor='#FCF4A4'" onMouseOut=" bgColor='#ffffff'">
+    <td class=frnt align=center nowrap rowspan=2 bgcolor=#CEE4E3 width=70>
+			<b>{$sc_saw[SEC].line}&nbsp;{if $sc_saw[SEC].line == 'TOTAL'}(S){/if}</b>
+    </td>
+    <td class=frnt align=center nowrap bgcolor=#CEE4E3 width=10>pc.</td> 
+    <td class=frnt align=right bgColor='#F4F8CA'><b>{$sc_saw[SEC].sum_qty|number_format}</b> </td>
+	 {section name=QT loop=$sc_saw[SEC].qty}     
+    <td  class=frnt align=right {if $sc_saw[SEC].hdy[QT] == 1} bgColor='#000000' width=0{elseif $sc_saw[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40{else}bgColor='#FFFFFF' width=40{/if}>    	
+    	{if $sc_saw[SEC].line =='TOTAL'}<b>{/if}
+    		
+    	{if $sc_saw[SEC].qty[QT] > 0}{$sc_saw[SEC].qty[QT]|number_format}{else if $sc_saw[SEC].hdy[QT] == 0}&nbsp;{/if}
+	
+			{if $sc_saw[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section}
+   </tr>
+   <tr>
+   	 <td class=frnt align=center nowrap bgcolor=#CEE4E3>su.</td>
+     <td class=frnt align=right bgColor='#F4F8CA'><b>{$sc_saw[SEC].sum_su|number_format}</b></td>
+	 {section name=QT loop=$sc_saw[SEC].su}     
+    <td class=frnt align=right {if $sc_saw[SEC].hdy[QT] == 1}bgColor='#000000' width=0{elseif $sc_saw[SEC].line =='TOTAL'}bgColor='#F4F8CA' width=40 {else}bgColor='#FFFFFF' width=40{/if}>    	
+    	{if $sc_saw[SEC].line =='TOTAL'}<b>{/if}
+    	{if $sc_saw[SEC].su[QT] > 0}{$sc_saw[SEC].su[QT]|number_format}{else if $sc_saw[SEC].hdy[QT] == 0}&nbsp;{/if}
+
+		{if $sc_saw[SEC].line =='TOTAL'}</b>{/if}
+    </td>
+	 {/section} 
+	</tr>
+	{if $smarty.section.SEC.index == 0}<tr><td></td></tr>{/if}
+{/section}
+
+
+</table>
+</td></tr>
+<tr><td>
+
+
+<form METHOD="POST" name="mon_back" action="{$PHP_SELF}">
+		<hr SIZE=2 WIDTH=98%>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 100%>
+            <tr> 
+            	{if $back_str}
+							<td align=center width=100%>							
+								<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=dm_search{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=98%">							
+							</td>
+							{/if}   
+        </table>
+	<input type='hidden' name="PHP_action" value="dm_daily_edit" >
+	<input type='hidden' name="PHP_fty" value="{$mon.fty}" >
+	<input type='hidden' name="PHP_date" value="{$mon.date}" >
+	<input type='hidden' name="PHP_back_str" value="{$back_str}" >
+
+</form>
+</td></tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

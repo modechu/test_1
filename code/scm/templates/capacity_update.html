@@ -1,0 +1,155 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+<br><br><form METHOD="POST" name="capacity">
+
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+	<td colspan=13 align=center class=gry><b> +++++++++ UPDATE Production capacity +++++++++&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=bgdy9>unit: S.U.</span></b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=13>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#0D4368"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>{$fty}&nbsp</b></td>
+    <td class=w9 width=60 align=center>JAN</td>
+    <td class=w9 width=60 align=center>FEB</td>
+    <td class=w9 width=60 align=center>MAR</td>
+    <td class=w9 width=60 align=center>APR</td>
+    <td class=w9 width=60 align=center>MAY</td>
+    <td class=w9 width=60 align=center>JUN</td>
+    <td class=w9 width=60 align=center>JUL</td>
+    <td class=w9 width=60 align=center>AUG</td>
+    <td class=w9 width=60 align=center>SEP</td>
+    <td class=w9 width=60 align=center>OCT</td>
+    <td class=w9 width=60 align=center>NOV</td>
+    <td class=w9 width=60 align=center>DEC</td>
+  </tr>
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>FY-{$year1}&nbsp;</b></td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_01" size=4 value="{$c1.m01}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_02" size=4 value="{$c1.m02}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_03" size=4 value="{$c1.m03}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_04" size=4 value="{$c1.m04}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_05" size=4 value="{$c1.m05}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_06" size=4 value="{$c1.m06}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_07" size=4 value="{$c1.m07}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_08" size=4 value="{$c1.m08}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_09" size=4 value="{$c1.m09}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_10" size=4 value="{$c1.m10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_11" size=4 value="{$c1.m11}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y1_12" size=4 value="{$c1.m12}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+ {if $year2}
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>FY-{$year2}&nbsp;</b></td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_01" size=4 value="{$c2.m01}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_02" size=4 value="{$c2.m02}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_03" size=4 value="{$c2.m03}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_04" size=4 value="{$c2.m04}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_05" size=4 value="{$c2.m05}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_06" size=4 value="{$c2.m06}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_07" size=4 value="{$c2.m07}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_08" size=4 value="{$c2.m08}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_09" size=4 value="{$c2.m09}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_10" size=4 value="{$c2.m10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_11" size=4 value="{$c2.m11}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y2_12" size=4 value="{$c2.m12}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+{/if}
+ {if $year3}
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>FY-{$year3}&nbsp;</b></td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_01" size=4 value="{$c3.m01}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_02" size=4 value="{$c3.m02}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_03" size=4 value="{$c3.m03}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_04" size=4 value="{$c3.m04}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_05" size=4 value="{$c3.m05}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_06" size=4 value="{$c3.m06}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_07" size=4 value="{$c3.m07}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_08" size=4 value="{$c3.m08}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_09" size=4 value="{$c3.m09}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_10" size=4 value="{$c3.m10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_11" size=4 value="{$c3.m11}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 width=60 align=right>
+		<input type='text' name="PHP_y3_12" size=4 value="{$c3.m12}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+{/if}
+</table>
+<br><br><br>
+{if $edit_flag}
+    <table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+      <tr> 
+        <td class=gry9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			# be sure key-in all the fields above are only numeric acceptable; not any [ , ], [ . ] or even [space]  !
+        </td>
+      <tr> 
+        <td align=center>
+			<input type="hidden" name="PHP_action" value="do_capacity_edit">
+			<input type="hidden" name="PHP_fty" value="{$fty}">
+			<input type="hidden" name="PHP_y1_id" value="{$c1.id}">
+			<input type="hidden" name="PHP_y2_id" value="{$c2.id}">
+			<input type="hidden" name="PHP_y3_id" value="{$c3.id}">
+			<input type="hidden" name="PHP_year1" value="{$year1}">
+			<input type="hidden" name="PHP_year2" value="{$year2}">
+			<input type="hidden" name="PHP_year3" value="{$year3}">
+			<input type=submit value="[ UPDATE CAPACITY record as above ]" class=select_e2 style="cursor:pointer; width=100%"></form>
+        </td>
+	  </tr>
+    </table>
+{/if}
+
+<!--------- footer ---------->
+{include file="footer.html"}

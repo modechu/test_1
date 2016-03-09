@@ -1,0 +1,83 @@
+{include file="header_utf8.html"}
+<table cellpadding="0" cellspacing="0" cols="0" class="title_bg">
+	<tr>
+		<td class="title_l"> Materials release ( Factory ) : Edit Sends the material plan 修改領、發料件數 ( Order # <a href="javascript:Show_ord('{$id}','{$order_num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order_num}</b></a> ) </td>
+	</tr>
+</table>
+<table cellpadding="0" cellspacing="0" cols="0" class="txt_item">
+	<tr>
+		<td>
+            <table>
+                <tr>
+                    <td valign="top">{$pic_url}</td>
+                    <td valign="top">
+                        <form METHOD="POST" id="do_bom_requi_edit_material" action="{$PHP_SELF}?PHP_action=do_bom_requi_edit_material">
+                        <table>
+                            <tr>
+                                <td class="txt_item_r">Cust. : </td>
+                                <td class="txt_item_l">{$cust_iname}</td>
+                                <td class="txt_item_r">Dept. : </td>
+                                <td class="txt_item_l">{$dept}</td>
+                                <td class="txt_item_r">ETD : </td>
+                                <td class="txt_item_l">{$etd}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">Style : </td>
+                                <td class="txt_item_l">{$style}</td>
+                                <td class="txt_item_r">SIZE RANGE : </td>
+                                <td class="txt_item_l">{$size_scale}</td>
+                                <td class="txt_item_r">Q'ty / Unit :</td>
+                                <td class="txt_item_l">{$qty|NUMBER_FORMAT} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"><hr></td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r2">Send No. : </td>
+                                <td class="txt_item_l2">RN{$rn_num}</td>
+                                <td class="txt_item_r2">Line # : </td>
+                                <td class="txt_item_l2">{$line_select}</td>
+                                <td class="txt_item_r2"></td>
+                                <td class="txt_item_r2"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <table>
+                                        <tr>
+                                            <td valign="top">{$PHTML}</td>
+                                            <td valign="top">{$CHTML}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <input id="list" type="button" class="submit_ajax" style="width:23%;" value="List">
+                                    <input id="bom_requi_view_material" type="button" class="submit_ajax" style="width:23%;" value="View">
+                                    <input id="do_bom_requi_edit_material" type="button" class="submit_ajax" style="width:50%;" value="Edit & NEXT STEP to set send material">
+                                </td>
+                            </tr>
+                        </table>
+                        <input type="hidden" name="PHP_factory" value="{$factory}"/>
+                        <input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+                        <input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+                        <input type="hidden" name="PHP_id" value="{$wi_id}"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+	</tr>
+    <tr>
+		<td><hr></td>
+	</tr>
+</table>
+<form METHOD="POST" id="list" action="{$PHP_SELF}?PHP_action=bom_mat_release_search"></form>
+<form METHOD="POST" id="bom_requi_view_material" action="{$PHP_SELF}?PHP_action=bom_requi_view_material">
+<input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+</form>
+{include file="footer_utf8.html"}

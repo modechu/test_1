@@ -1,0 +1,665 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">@import url(./js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/calendar/calendar.js"></script>
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+var dm_way = {/literal} '{$apb.payment}' {literal}
+$(document).ready(function() {
+	rate = function (rcv_num,i,p){
+		$.ajax({
+			url: 'apb.php?PHP_action=check_rate',
+			type: 'GET',
+			data: {
+				PHP_rcv_date: $("#date").val() ,
+				PHP_cury: $("#PHP_currency"+rcv_num+i).val()
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				var price = Number(0);
+				if ( response != 0 ) {
+					$('#currency'+rcv_num+i ).html(response);
+					old_price = roundAmount($("#price"+rcv_num+i).text());
+					tmp_rate = roundAmount5($("#PHP_uprices"+rcv_num+i ).val() * response);
+					$("#PHP_uprice"+rcv_num+i).val( tmp_rate );
+					
+					if(dm_way == 'T/T after shipment'){
+						if ( Number($("#rcvd_qty"+rcv_num+i).val()) > Number($("#toler_qty"+rcv_num+i).val()) ){
+							new_price = roundAmount($("#PHP_ORI_price"+rcv_num+i).val() * ($("#toler_qty"+rcv_num+i).val() * 100 / 100));
+						}else{
+							new_price = roundAmount(Number($("#PHP_ORI_price"+rcv_num+i).val()) * Number($("#rcvd_qty"+rcv_num+i).val()));
+						}
+						$("#price"+rcv_num+i).text( roundAmount(new_price) );
+						
+						$("span[id^=price"+rcv_num+"]").each(function(i,elm) {
+							price += Number($("#price"+rcv_num+i).text());
+						});
+						$("#PHP_uprice"+rcv_num+i).val( tmp_rate=roundAmount5(tmp_rate) );
+						$("#amount"+rcv_num).val(roundAmount(price));
+					}else if(dm_way == 'L/C'){
+					
+					}else{ //30% 70%
+						var price=0;
+						new_price = roundAmount(tmp_rate * ($("#rcv_qty"+rcv_num+i).val() * 100 / 100));
+						$("#price"+rcv_num+i).text( roundAmount(new_price) );
+						
+						$("span[id^=price"+rcv_num+"]").each(function(n,elm) {
+							price += Number($("#price"+rcv_num+n).text());
+						});
+						
+						$("#uprice"+rcv_num+i).val( tmp_rate=roundAmount5(tmp_rate) );
+						tmp_price = $("#amount"+p).val() * 100 / 100;
+						$("#amount"+p).val(roundAmount(price));
+					}
+				} else {
+					if ( $("#PHP_currency").val() == 'NTD' ) {
+						$("#currency").html('1:1');
+					} else {
+						$("#currency").html('沒有此匯率！');
+					}
+				}
+				
+				if($("#PHP_checkbox"+rcv_num).attr("checked")) invoice();
+				//rcv();
+			}
+		});
+	};
+    
+    select_checkbox = function(status){
+        if ( status == 'Select' ) {
+            $("input[id^=PHP_checkbox]").each(function(i, elm) {
+                $(elm).attr("checked",true);
+            });
+            invoice();
+        } else {
+            $("input[id^=PHP_checkbox]").each(function(i, elm) {
+                $(elm).attr("checked",'');
+            });
+            invoice();
+        }
+    }
+});
+
+function rcv(rcv_num){
+	var apb=price= Number(0);
+	$("input[id^=rcvd_qty" + rcv_num + "]").each(function(i,elm) {
+		str = $(elm).attr("id").split("rcvd_qty");
+		//判斷是否超過tolerance
+		if($("#PHP_select_po_ids"+str[1]).attr("checked")){
+			if( Number($(elm).val()) > Number($("#toler_qty"+str[1]).val()) ){
+				alert("APB數量超過 Tolerance數量 " + Number($("#toler_qty"+str[1]).val()) + " ，將用 " + Number($("#toler_qty"+str[1]).val()) + " 計算");
+				$(elm).val($("#toler_qty"+str[1]).val());
+				$("#price"+str[1]).text( roundAmount($("#toler_qty"+str[1]).val() * $("#PHP_uprice"+str[1]).val()));
+			}else{
+				$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprice"+str[1]).val()));
+			}
+		}else{
+			$("#price"+str[1]).text( 0 );
+		}
+		
+		if(str[1].indexOf(rcv_num) != -1){
+			price += Number(roundAmount($("#price"+str[1]).text()));
+		}
+	});
+	$("#amount"+rcv_num).val( price );
+	$("#PHP_checkbox"+rcv_num).val( price );
+	invoice();
+}
+
+function invoice(){
+	var price = Number(0);
+	//var price_num = {/literal}{$apb_det|@count}{literal}
+	
+	$("input[id^=PHP_checkbox]").each(function(i,elm) {
+		str = $(elm).attr("id").split("PHP_checkbox");
+		if($(elm).attr("checked")){
+			$("#amount" + str[1] ).parent().parent().css("background-color","#f5d226");
+			price += Number($("#amount" + str[1] ).val());
+		}else{
+			$("#amount"+ str[1] ).parent().parent().css("background-color","#DBC9F2");
+		}
+	});
+	
+	$("input[id^=oth_cost]").each(function(i,elm) {
+		price += Number(roundAmount($(elm).val()));
+	});
+	
+	$("input[id^=apb_oth_cost]").each(function(i,elm) {
+		price += Number(roundAmount($(elm).val()));
+	});
+	
+	if ( $("#inv_num").val() != "" ) {
+		$("#vat").val( Math.round(price*.05) );
+	}
+	
+	if($("#PHP_select_currency").val()=="NTD")
+		Number($("#inv_amt").val( Math.round(price)));
+	else
+		Number($("#inv_amt").val(price));
+	
+	price = price + Number($("#vat").val()) - Number($("#discount").val()) - Number($("#off_duty").val());
+	
+	if($("#PHP_select_currency").val()=="NTD")
+		Number($("#inv_price").val( Math.round(price)));
+	else
+		Number($("#inv_price").val(price));
+		
+}
+
+function roundAmount(n) {
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s + ".00"
+	var t = s.substring( 0 , i + 1 ) +     
+	s.substring( i + 1 , i + 3 )   
+	if (i + 2 == s.length) t += "0"   
+		return t   
+} 
+
+function roundAmount2(n) {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s
+	var t = s.substring( 0 , i )
+		return t   
+}
+
+function roundAmount5(n) {   
+	var s = "" + Math.round( n * 100000 ) / 100000   
+	var i = s.indexOf('.')  
+	
+	if ( i < 0 ) return s + ".00000"
+	var t = s.substring( 0 , i + 1 ) +     
+	s.substring( i + 1 , i + 6 )   
+	if (i + 5 == s.length) t += "0"   
+		return t   
+}
+
+var transaction;
+var sUrl; 
+var callback = {
+	success: function(o) {
+		document.getElementById("tbl_msg").style.display='block';    
+		var response = o.responseText.split("|");    	
+		msg1.innerText  = response[0]; 
+		window.document.forms['rcv_edit'].elements['PHP_del_mk'].value = response[1];
+	},
+	failure: function(o) {
+		alert("Error癒GCan't get data");
+	}
+};
+ 
+function check(r,po_qty,rcv_qty,apb_qty,toler,now_qty)
+{
+	if( rcv_qty == '' ) rcv_qty = 0;
+	if( apb_qty == '' ) apb_qty = 0;
+	
+	// 計算 toler 最大值
+	if ( toler == '0|0' ) {
+		var total_qty = parseFloat( po_qty );
+		total_qty = rcv_qty > total_qty ? rcv_qty : total_qty ;
+	} else {
+		var tolers = toler.split("|"); 
+		var total_qty = parseFloat( po_qty ) + parseFloat( ( po_qty * (tolers[0] ) / 100 ) );
+		total_qty = roundAmount( total_qty );
+		total_qty = rcv_qty > total_qty ? rcv_qty : total_qty ;
+	}
+	
+	// 輸入值
+	var rcv = r.value;
+	
+	// 計算已驗收和目前驗收的值 - 最大值
+	var apb_qty = parseFloat(apb_qty);
+	var qty = parseFloat(rcv_qty) - parseFloat(apb_qty) - parseFloat(rcv);	
+	qty = roundAmount(qty);
+
+	var reason;
+	if ( qty < 0 ) {
+	
+		r.value = '';
+		// 判別是否有分批驗收
+		var rcvMK = '';
+		var t_qty = 0;
+		if ( apb_qty > 0 ) {
+			rcvMK = parseFloat( apb_qty ) + ' + ' + parseFloat( rcv ) + ' = ';
+			t_qty = roundAmount(parseFloat( rcv_qty ) - parseFloat( apb_qty ));
+			if ( t_qty < 0 ) t_qty = 0;
+		} else {
+			t_qty = parseFloat( rcv_qty );
+		}
+		if(confirm(	"++++++ Receive is illegial!! ++++++\r" +
+								"\r                       PO Q'TY : " + po_qty +
+								"\r   Tolerence PO Q'TY : " + total_qty +
+								"\r                  RCVD Q'TY : " + rcv_qty +
+								"\r-------------------------------------------"+
+								"\r       but Receive Q'TY : " + rcvMK + ( parseFloat( apb_qty ) +  parseFloat( rcv ) ) +
+								"\r               Overbalance : " + qty + 
+								"\r\rClick Yes. Receive Q'TY = " + t_qty + 
+								"\rClick No. input reason for Receive Q'TY" ) ) {
+			if ( apb_qty > 0 )
+				r.value = t_qty;
+			else
+				r.value = total_qty;
+		} else {
+			if(reason = prompt("Tolerence PO Q'TY : " + total_qty +
+												 "  but Receive Q'TY : " + ( parseFloat( rcv_qty ) +  parseFloat( rcv ) ) +
+												 "  \rOverbalance : "+qty+ "  Pls input reason for Receive Q'TY",''))
+			{
+				if(reason)
+				{
+					r.value = reason;
+					if ( parseFloat(reason) > parseFloat(t_qty) ) {
+						alert( " Receive is illegial!! ");
+						r.value = '';
+						// reason = mat_code + " overbalance : " + roundAmount( reason - total_qty );
+						// window.document.forms['rcvd_add'].elements['PHP_reason['+i+']'].value = reason;
+						// window.document.getElementById('reasons'+i).innerHTML = "<font color='red'>"+reason+"</font>"; 
+					} 
+				}
+			}
+		}
+		return;
+	}
+	// window.document.getElementById('reasons'+i).innerHTML = "";
+	// window.document.forms['rcvd_add'].elements['PHP_reason['+i+']'].value = "";
+}
+
+function cal_amount(rcv_num){
+	ttl = Number($("#inv_price").val());
+	price = Number($("#amount"+rcv_num).val());
+	
+	if ($("#PHP_checkbox"+rcv_num).attr("checked")){
+		$("#inv_price").val(Math.round(ttl+price));
+		$("#amount"+rcv_num).parent().parent().css("background-color","#f5d226");
+	}else{
+		$("#inv_price").val(Math.round(ttl-price));
+		$("#amount"+rcv_num).parent().parent().css("background-color","#DBC9F2");
+		
+	}
+	
+	if ( $("#inv_num").val() != "" ) {
+		$("#vat").val( Math.round($("#inv_price").val()*.05) );
+	}
+	
+}
+
+var tmp_i=0;
+function add_oth_cost(t){
+	var ap_num = t.value.replace("PO","PA");
+	
+	document.getElementById('add_oth_cost_tbl').style.display = '';
+	scroll(0,document.body.scrollHeight);
+	r = add_oth_cost_tbl.insertRow();
+	r.insertCell().innerHTML = "<tr bgcolor=#eeeeee><td class=gry9 align=left><input type='text' size='10' name='PHP_ap_num[" + t.value + "][]' class=select value='" + ap_num + "'></td>";
+	r.insertCell().innerHTML = "<td class=gry9 align=left><input type='text' size='100' name='PHP_des[" + ap_num + "][]' class=select></td>";
+	r.insertCell().innerHTML = "<td class=ylw9 align=center><input type='text' size='10' id='apb_oth_cost" + tmp_i +"' name='PHP_cost[" + ap_num + "][]' class=select onkeyup=\"" + "this.value.replace(/[^\d\.]/g,'');invoice()" + "\"" + ";></td>";
+	r.insertCell().innerHTML = "<td class=ylw9 align=center>&nbsp;<image src='images/del.png' onClick=del_cost(this); style='cursor: pointer;'>&nbsp;</td>";
+	r.insertCell().innerHTML = "</tr>";
+}
+
+function del_cost(id,r){
+	if(confirm("確定刪除?")){
+		$.ajax({
+			url: 'apb.php?PHP_action=del_apb_cost',
+			type: 'GET',
+			data: {
+				PHP_id: id
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				document.getElementById('cost_tbl').deleteRow(r.parentNode.parentNode.rowIndex);
+				invoice();
+			}
+		});
+	}
+}
+
+function update_cost(id,r){
+	if(confirm("確定不納入此次付款?")){
+		$.ajax({
+			url: 'apb.php?PHP_action=update_ap_cost',
+			type: 'GET',
+			data: {
+				PHP_id: id
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				document.getElementById('cost_tbl').deleteRow(r.parentNode.parentNode.rowIndex);
+				invoice();
+			}
+		});
+	}
+}
+
+function change_currency(NTD){
+	if(NTD==undefined){
+		var currency = $("#PHP_select_currency").val();
+	}else{
+		$("#PHP_select_currency").val("NTD");
+		var currency = "NTD";
+	}
+	
+	$("span[id^=cury]").each(function(i,elm) {
+		$(elm).text(currency);
+	});
+
+	$("select[id^=PHP_currency]").each(function(i,elm) {
+		$(elm).val(currency).change()
+	});
+	
+	invoice();
+}
+
+function cal_amt(rcv_num){
+	var currency = $("#PHP_select_currency").val();
+	var price = 0;
+	$("input[id^=rcvd_qty" + rcv_num + "]").each(function(i,elm) {
+		str = $(elm).attr("id").split("rcvd_qty");
+		if( $("#PHP_select_po_ids"+str[1]).attr('checked') ){
+			$("#PHP_uprice"+str[1]).val( roundAmount5($("#PHP_uprices"+str[1]).val() * $("#PHP_rate"+str[1]).val()) )
+			if(currency=="NTD")
+				$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprice"+str[1]).val()));
+			else
+				$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprices"+str[1]).val()));
+			price += Number($("#price"+str[1]).text())
+		}
+	});
+	
+	$("#amount" + rcv_num).val(roundAmount(price));
+	invoice();
+}
+</script>
+{/literal}
+</head>
+<body topmargin="10" onLoad="invoice()">
+<form METHOD="POST" name="rcv_edit" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr>
+	<td class="des" align=center width=100>{if $chkacc.status ==0}<b>Waiting for submit</b>{/if}</td>
+	<td class="des" align=center width=400>驗收付款單&nbsp; # <span class=ylw10><b>{$apb.rcv_num}</b></span>  Record </td>
+	<td class="des" align=center width=50 height=28>{if $chkacc.status == 1 && $check_flag==1} <a href="{$PHP_SELF}?PHP_action=chkacc_chack&PHP_chkacc_nos={$chkacc.chkacc_no}&PHP_inv_chk={if $chkacc.chkacc_inv}1{else}0{/if}{$cgi_link}" value="簧皏i" style="cursor:pointer"><img src="images/approval06.gif" alt="簧皏i" border=0 valign=bottom>{/if}</td>		
+	</tr>
+</table>
+
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=900 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+
+<table border=0 cellspacing=2 cellpadding=2 width=900 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>驗收單號 :</b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.rcv_num}</b></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>付款方式 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>{$apb.payment}</b><input type="hidden" name="PHP_payment" value="{$apb.payment}"></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>付款幣別 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$currency}</b></td>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>合計金額 : </b></td>
+		<td align=left class=des ><input type=text id="inv_amt" size=15 class=select value="" readonly="readonly" style="text-align:right"></td>
+	</tr>	
+  <tr>
+		<td class=snvy align=right bgcolor=#E9F7E8 nowrap><b>供應商代號 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.sup_no}</b></td>
+		<td  align=right nowrap bgcolor=#E9F7E8 class=snvy><b>請購單位 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.dept}</b></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>請款日期 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.rcv_date}</b></td>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>營業稅 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input type=text id="vat" name="PHP_vat" size=15 class=select value="{$apb.vat}" style="text-align:right" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');" ></td>
+	</tr>
+	<tr>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>供應商名稱 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.s_name}</b></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>統一發票 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input type=text id="inv_num" name="PHP_inv_num" size=15 class=select value="{$apb.inv_num}" onchange="change_currency('NTD');"></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>發票日期 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input name="PHP_inv_date" type="text" class="select" style="width:72px;" id="inv_date" value="{$apb.inv_date}" readonly="readonly" /></td>
+        {literal}
+        <script type="text/javascript">Calendar.setup({inputField:"inv_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+        {/literal}        
+		<td class=snvy  align=right bgcolor=#E9F7E8><b>折讓 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input type=text id="discount" name="PHP_discount" size=15 class=select value="{$apb.discount}" style="text-align:right" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');"></td>
+	</tr>
+  <tr>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>供應商統編 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.uni_no}</b></td>
+		<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>INVOICE # : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input type=text name="PHP_foreign_inv_num" size=15 class=select value="{$apb.foreign_inv_num}"></td>
+		<td></td>
+		<td></td>
+		<td class=snvy align=right bgcolor=#E9F7E8><b>折稅 : </b></td>
+		<td align=left bgcolor="#EEEEEE"><input type=text id="off_duty" name="PHP_off_duty" size=15 class=select value="{$apb.off_duty}" style="text-align:right" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');"></td>
+  </tr>
+  <tr>
+		<td class=snvy  align=right bgcolor=#E9F7E8 colspan=7><b>總合計金額 : </b></td>
+		<td align=left bgcolor="#FF0000" class=des ><input type=text id="inv_price" name="PHP_inv_price" size=15 class=select value="{$apb.inv_price}" style="text-align:right" readonly="readonly"></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Select');"/> Select All 
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Clear');"/> Clear All
+{section name=CHK_D loop=$apb_det}
+	<table width="900" border=0 cellpadding=6 cellspacing=0>
+	  <tr class=snvy bgcolor=#f5d226>
+		<td align=left nowrap>
+			<input type="checkbox" id="PHP_checkbox{$apb_det[CHK_D].rcv_num}" name="PHP_checkbox[{$apb_det[CHK_D].rcv_num}]" onclick="invoice()" value="{$apb_det[CHK_D].amount}" checked>
+			<input type="text" size=10 id="amount{$apb_det[CHK_D].rcv_num}" value="{$apb_det[CHK_D].amount}">
+		</td>
+		<td align=right nowrap><b>Ship num # :</b></td>
+		<td align=left nowrap><b>{$apb_det[CHK_D].ship_num}&nbsp;</b></td>
+		<td align=right nowrap><b>Rcv num # : </b></td>
+		<td align=left nowrap><b>&nbsp;{$apb_det[CHK_D].rcv_num}&nbsp;</b></td>
+		<td align=right nowrap><b>Rcv date : </b></td>
+		<td align=left nowrap><b>{$apb_det[CHK_D].rcv_date}&nbsp;</b></td>
+	  </tr>
+	</table>
+	<table border="1" cellspacing=0 cellpadding=3 width="900">	
+		<tr bgcolor="#584E5C" height=30>
+			<td cellpadding=2 class=back align="center" nowrap><b>Invoice #</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>Order #</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>Material #</b></td>	
+			<td cellpadding=2 class=back align="center" nowrap><b>Color/cat</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>P / O #</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>%</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>P / O<br>Q'ty</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>Rcv.<br>Q'ty</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>APB.<br>Q'ty</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>FOC</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>原幣單價</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b><span id="cury{$apb_det[CHK_D].rcv_num}">{$apb.currency}</span>單價</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>匯率</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>小計</b></td>
+			<td cellpadding=2 class=back align="center" nowrap><b>Other<br>Cost</b></td>
+		</tr>
+
+		{section name=DET_D loop=$apb_det[CHK_D].det}
+			<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+				<td align="left" nowrap>
+					<input type="checkbox" id="PHP_select_po_ids{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_select_po_ids[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].po_id}" checked onclick="rcv('{$apb_det[CHK_D].rcv_num}')">
+					{$apb_det[CHK_D].det[DET_D].inv_num}&nbsp;
+				</td>
+				<td align="center" nowrap>
+				{section name=AP loop=$apb_det[CHK_D].det[DET_D].order}
+					<a href="javascript:po_bom_view('{$apb_det[CHK_D].det[DET_D].order[AP]}','{$apb_det[CHK_D].det[DET_D].po.po_num}')" style='cursor:pointer'>{$apb_det[CHK_D].det[DET_D].order[AP]}</a>&nbsp;<br>
+				{/section}
+				</td>
+				<td align="center" nowrap>
+					<a href="javascript:{if $apb_det[CHK_D].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$apb_det[CHK_D].det[DET_D].mat_code}')" value='ord_out' style='cursor:pointer'>{$apb_det[CHK_D].det[DET_D].mat_code}</a>
+					<input type="hidden" name="PHP_mat_code[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].mat_code}">
+				</td>
+				<td align="left" nowrap>{$apb_det[CHK_D].det[DET_D].color}&nbsp;</td>
+				<td align="center" nowrap>
+					<a href="javascript:po_show('{$apb_det[CHK_D].det[DET_D].po.ap_num}','')" value='ord_out' style='cursor:pointer'>{$apb_det[CHK_D].det[DET_D].po.po_num}</a>&nbsp;
+				</td>
+				<td align="center" nowrap>{if $apb_det[CHK_D].det[DET_D].po.toler == '0|0'}0{else} +{$apb_det[CHK_D].det[DET_D].po.toleri}%{if $apb_det[CHK_D].det[DET_D].po.tolern != '0'}~ -{$apb_det[CHK_D].det[DET_D].po.tolern} % {/if}{/if}</td>
+				<td cellpadding=2 align="right" nowrap>
+					{$apb_det[CHK_D].det[DET_D].po.po_qty|number_format:"2f"} {$apb_det[CHK_D].det[DET_D].po.po_unit}
+					<input type="hidden" id="po_qty{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_po_qty[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size="2" value="{$apb_det[CHK_D].det[DET_D].po.po_qty}">
+					<input type="hidden" name="PHP_po_unit[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size="2" value="{$apb_det[CHK_D].det[DET_D].po.po_unit}">
+					<input type="hidden" name="PHP_prc_unit[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size="2" value="{$apb_det[CHK_D].det[DET_D].po.prc_unit}">
+				</td>
+				<td align="center" nowrap>{$apb_det[CHK_D].det[DET_D].rcv_qty|number_format:"2f"}&nbsp;</td>
+				<td align="right" nowrap>
+					<input type="text" size=6 class=select id="rcvd_qty{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_rcv_qty[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].qty}" onchange="rcv('{$apb_det[CHK_D].rcv_num}')">
+					<input type="hidden" size=5 id="toler_qty{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" value="{$apb_det[CHK_D].det[DET_D].toler_qty}">
+				</td>	
+				<td cellpadding=2 align="right" nowrap>
+					<input type=text id="foc{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_foc[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size=5 class=select style="text-align:center" value="{$apb_det[CHK_D].det[DET_D].foc}">
+				</td>
+				<td align="right" nowrap>
+					<input type="text" id="PHP_uprices{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_uprices[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size=5  value="{$apb_det[CHK_D].det[DET_D].uprices}" onChange="this.value=roundAmount5(this.value.replace(/[^\d\.]/g,''));">
+					<input type="hidden" name="PHP_price[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" size="2" value="{$apb_det[CHK_D].det[DET_D].po.prics}">
+				</td>
+				<td align="right" nowrap>
+					<input type="text" size=8 id="PHP_uprice{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_uprice[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].uprices}" onChange="this.value=roundAmount5(this.value.replace(/[^\d\.]/g,''));rcv('{$apb_det[CHK_D].rcv_num}');" class="select">
+				</td>
+				<td align="center" nowrap>
+					<input type="text" size=8 id="PHP_rate{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" name="PHP_rate[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].rate}" class="select" onchange="cal_amt('{$apb_det[CHK_D].rcv_num}')" style="text-align:center">
+				</td>
+				<td align="right">
+                    <small>
+					<span id="price{$apb_det[CHK_D].det[DET_D].rcvd_num}{$apb_det[CHK_D].det[DET_D].i}">{$apb_det[CHK_D].det[DET_D].price|number_format:2:'':''}&nbsp;</span>
+                    </small>
+				</td>
+				<td align="right">
+                    <img src="./images/icon_newest_reply.gif" style="cursor: pointer" value="{$apb_det[CHK_D].det[DET_D].po.po_num}" onclick="add_oth_cost(this)">
+				</td>
+			</tr>
+			<input type="hidden" id="PHP_ORI_price{$apb_det[CHK_D].rcv_num}{$apb_det[CHK_D].det[DET_D].i}" value="{$apb_det[CHK_D].det[DET_D].po.ORI_price}">
+			<input type="hidden" name="PHP_special[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].po.special}">
+			<input type="hidden" name="PHP_det_id[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].id}">
+			<input type="hidden" name="PHP_po_ids[{$apb_det[CHK_D].rcv_num}][{$apb_det[CHK_D].det[DET_D].i}]" value="{$apb_det[CHK_D].det[DET_D].po_id}">
+			<input type="hidden" id="no" value="{$apb_det[CHK_D].i}">
+			<input type="hidden" id="po_s{$apb_det[CHK_D].i}" value="{$apb_det[CHK_D].po_qty}">
+			<input type="hidden" id="rcvd_s{$apb_det[CHK_D].i}" value="{$apb_det[CHK_D].rcv_qty}">
+			<input type="hidden" id="apbd_s{$apb_det[CHK_D].i}" value="{$apb_det[CHK_D].apb_qty}">
+			<input type="hidden" id="apb_s{$apb_det[CHK_D].i}" value="{$apb_det[CHK_D].qty}">
+			<input type="hidden" id="foc_s{$apb_det[CHK_D].i}" value="{$apb_det[CHK_D].foc}">
+			
+		{/section}
+		<!--<tr>
+			<td colspan=7 align="center">合計</td>	
+			<td cellpadding=2 align="right"><b><span id="po_sum">po_sum</span></b></td>
+			<td cellpadding=2 align="right"><b><span id="apb_sum">apb_sum</span></b></td>
+			<td cellpadding=2 align="right"><b><span id="foc_sum">foc_sum</span></b></td>
+			<td cellpadding=2 align="right"><b>&nbsp;</b></td>
+			<td cellpadding=2 align="right"><b>&nbsp;</b></td>
+		</tr>-->
+	</table>
+<br>
+{/section}
+
+{if $ap_oth_cost or $apb_oth_cost}
+<table border=1 cellspacing=0 cellpadding=0 width=900 align=center id="cost_tbl">
+	<tr bgcolor=#A49587 height=25>
+		<td colspan=5 align=center class=nvy9><b>Other cost</b></td>
+	</tr>
+	<tr bgcolor=#54473B height=25>
+		<td width=150 class=w10 align=center>P/O #</td>
+		<td width=410 class=w10 align=center>History records</td>
+		<td width=100 class=w10 align=center>Cost</td>
+		<td width=40 class=w10 align=center></td>
+	</tr>
+	{section name=SEC loop=$ap_oth_cost}
+		<tr bgcolor=#E2D9D1 >
+			<td class=gry9 align=center>{$ap_oth_cost[SEC].ap_num}</td>
+			<td class=gry9 align=left>{$ap_oth_cost[SEC].item}</td>
+			<td class=gry9 align=left>
+				<input type="text" id="oth_cost{$ap_oth_cost[SEC].id}" name="oth_cost{$pb_oth_cost[SEC].id}" value="{$ap_oth_cost[SEC].cost}" readonly>
+			</td>
+			<td class=ylw9 align=center>
+				&nbsp;<image src="images/del.png" onClick="update_cost('{$ap_oth_cost[SEC].id}',this);" alt="delete" style="cursor: pointer">&nbsp;
+			</td>
+		</tr>
+	{/section}
+	{section name=SEC loop=$apb_oth_cost}
+		<tr bgcolor=#E2D9D1 >
+			<td class=gry9 align=center>{$apb_oth_cost[SEC].ap_num}</td>
+			<td class=gry9 align=left>
+				<input type="text" class=select name="PHP_oth_item[{$apb_oth_cost[SEC].id}]" value="{$apb_oth_cost[SEC].item}" size="100%">
+			</td>
+			<td class=gry9 align=left>
+				<input type="text" class=select id="oth_cost{$apb_oth_cost[SEC].id}" name="PHP_oth_cost[{$apb_oth_cost[SEC].id}]" value="{$apb_oth_cost[SEC].cost}" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'');invoice()">
+			</td>
+			<td class=ylw9 align=center>
+				&nbsp;<image src="images/del.png" onClick="del_cost('{$apb_oth_cost[SEC].id}',this);" alt="delete" style="cursor: pointer">&nbsp;
+			</td>
+		</tr>
+	{/section}
+</table>
+{/if}
+
+<br>
+<table border=1 cellspacing=0 cellpadding=0 width=600 align=center id="add_oth_cost_tbl" style="display:none;">
+		<tr bgcolor=#bbbbbb height=25>
+			<td colspan=4 align=center class=nvy9><b>ADD Other Cost</b></td>
+		</tr>
+		<tr bgcolor=#666666 height=25>
+			<td width=100 class=w10 align=center>P/O #</td>
+			<td width=400 class=w10 align=center>Remark</td>
+			<td width=80 class=w10 align=center>Cost</td>
+			<td width=20 class=w10 align=center></td>
+		</tr>
+</table>
+<br>
+<table border=0 cellspacing=0 cellpadding=2 width=900>
+	<tr>
+		<td WIDTH="60%" align=right><font size=1 >Submit : </font> </td>
+		<td align="left"><font size=1 >{if $apb.rcv_sub_user}{$apb.rcv_sub_user} / {$apb.rcv_sub_date}{/if}&nbsp;</font></td>
+    <td width="10%" align="right" nowrap>日期：<b>{$apb.rcv_date}</b><input type="hidden" value="{$apb.rcv_date}"></td>
+    <td width="10%" align="right" nowrap>經辦：<font color="#0000FF"><b>{$apb.rcv_user}</b></font></td>		
+	</tr>
+</table>
+<br>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+	<tr>       
+		{if $back_str}     	
+		<td width=100>			
+			<input type="button" onClick="window.location.href='{$PHP_SELF}?PHP_action=rcvd_search{$back_str}'" value=" << back " class=select_e  style="cursor:pointer; width:95%" >
+		</td>
+		{/if}
+		<td align=center width=200>	
+		{if $edit_flag && $apb.status == 0}				
+			<input type="submit"  value=" [ Update above data ] " class=select_e  style="cursor:pointer; width:95%" onClick="" >
+		{/if}		
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="PHP_action" value="do_rcvd_edit">
+<input type="hidden" name="PHP_rcv_num" value="{$apb.rcv_num}">
+<input type="hidden" name="PHP_back_str" value="{$back_str}">
+<input type="hidden" name="PHP_revise" value="{$revise}">
+<input type="hidden" id="date" value="{$date}">
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

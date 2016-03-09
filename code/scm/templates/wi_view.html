@@ -1,0 +1,234 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System [ Working Instruction for Order ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+</head>
+{literal}
+<script type="text/javascript" src="js/open_detial.js"></script>
+<script>
+
+function cfm_revise(wi_num,id,status,back_str,back_str2) {
+	if ( confirm("are you sure to REVISE wi :#[ "+wi_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the wi procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="wi.php?PHP_action=revise_wi&PHP_status_chk=status_open&PHP_id="+id+"&PHP_status="+status+"&PHP_back_str2="+back_str2+"&PHP_back_str2="+back_str2;
+	} 
+}
+
+function rev_wi_po(wi_num,id, rev, bom_rev ) {
+	if ( confirm("are you sure to REVISE wi :#[ "+wi_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the wi procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		location.href="wi.php?PHP_action=rev_wi_with_po&PHP_id="+id+"&PHP_wi_num="+wi_num+"&PHP_rev="+rev+"&PHP_bom_rev="+bom_rev;
+	} 
+}
+
+function down_pttn(id, num) {
+	if ( confirm("download this style pattern file?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="./order_pttn/"+num+".mdl";
+	} 
+}
+</script>
+{/literal}
+<body topmargin="10">
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28 width=320>[ <b><span class=ylw10>VIEW </span>Order W / I</b> : <b>{$wi.wi_num}</b>]</td>
+	<td class="ylw10" align=center height=28 width=100>{if $wi.status >= 1}<b>[ {literal}SUBMIT{/literal} ]{else}[{literal} UN SUBMIT{/literal} ]{/if}</b></td>
+	<td class="des" align=center height=28 width=100>Version :<span class=ylw10><b>{$wi.revise}</b></span></td>
+	<td class="des" align=center width=140>{if $wi.status >= 1 && $wi.bom_status == 0 && $edit_non <> 1 && $edit_flag && $po_check == 1}
+			<a href="javascript:cfm_revise('{$wi.wi_num}','{$wi.id}','{$wi.status}','{$back_str}','{$back_str2}')" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER"></a>
+	   {else}
+		&nbsp;
+	   {/if}
+	  </td>
+	<td class="des" align=center width=140>{if $wi.status >= 1 && $wi.bom_status == 0 && $edit_non <> 1 && $edit_flag && $po_check == 0}
+			<a href="javascript:rev_wi_po('{$wi.wi_num}','{$wi.id}','{$wi.revise}','{$wi.bom_rev}')" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER"></a>
+	   {else}
+		&nbsp;
+	   {/if}
+	  </td>	  
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+    <td nowrap width=10 align=center class=back>
+    {if $wi.status >= 1}
+    <a href="wi.php?PHP_action=wi_print&PHP_id={$wi.wi_num}" >
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+			{else}&nbsp;{/if}
+	</td>
+  </tr>
+  
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=100 align=center class=back><b>Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=150 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<input type="image" src="{$wi.pic_url}" name="pic" width=100 border="0" onclick='window.open2("{$wi.pic_url}","","resizable=yes,height=480,width=640")'>
+	</td>
+	<td class=grn9 align=center>
+	  <a href="javascript:Show_ord('{$wi.smpl_id}','{$wi.style_code}')" value='ord_out' style='cursor:pointer'>
+	<b>&nbsp;{$smpl.order_num}</b></a></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total}</b></span>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9><UnInput></span>{/if} (Order : {$smpl.qty}{$wi.unit})</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+			{section name=USE loop=$show_breakdown}
+				{$show_breakdown[USE]}
+			{/section}
+			{if $size_ttl}
+			<TR>
+				<td class=grn9 align=center bgcolor=#DDDDDD colspan="2"><b>&nbsp;G-TTL</b></td>
+			{section name=USE loop=$size_ttl}
+				<td class=b9 align=center bgcolor=#DDDDDD>&nbsp;<b><i>{$size_ttl[USE]|NUMBER_FORMAT}</b></td>
+			{/section}
+			  <td class=b9 align=right bgcolor=#DDDDDD>&nbsp;<b><i>{$g_ttl|NUMBER_FORMAT}</b></td>
+			<TR>
+			{/if}
+		</table>
+	</td>
+  </tr>
+</table>
+
+
+<!-------------  material range ------------->
+<br>
+	<table width=700 border=0 cellspacing=1 cellpadding=2>
+		<tr bgcolor=#333333 height=28>
+			<td width=150 class=ylw9 align=center><b>Fabric Name</b></td>
+			<td width=500 class=ylw9 align=center><b>Placement</b></td>
+			<!-- <td width=70 class=ylw9 align=center><b>consump.</b></td> -->
+			<td width=50 class=ylw9 align=center><b>Unit</b></td>
+		</tr>
+
+	{if $lots_NONE}  
+	<tr>
+		<td colspan=4 align=center class=ssign><br>NO Fabric data!<br><br>
+	</tr>
+	{/if}
+	
+	{section name=USE loop=$lots_use}
+  <tr {if $lots_use[USE].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if} height=28>
+	  <td class=snvy ><a href="javascript:Show_fab('{$lots_use[USE].lots_code}')" value='ord_out' style='cursor:pointer' title='{$lots_use[USE].lots_code}'>{$lots_use[USE].lots_name}</a>&nbsp;</td>
+	  <td class=snvy >{$lots_use[USE].use_for}&nbsp;</td>
+<!--	  <td class=snvy align=center>{$lots_use[USE].est_1}&nbsp;</td>	-->
+	  <td class=snvy align=center>{$lots_use[USE].unit}&nbsp;</td>
+	 </tr>
+	 <tr {if $lots_use[USE].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if} height=28>
+		 <td colspan="3" nowrap class=snvy>
+		 {if $lots_use[USE].des}Supplier's # : {$lots_use[USE].des|escape:"html"},&nbsp;{/if}
+		 {if $lots_use[USE].comp}Content : {$lots_use[USE].comp|escape:"html"},&nbsp;{/if}
+		 {if $lots_use[USE].width}Width : {$lots_use[USE].width|escape:"html"},&nbsp;{/if}
+		 {if $lots_use[USE].weight}Weight : {$lots_use[USE].weight|escape:"html"}.&nbsp;{/if}
+		 </td>
+	</tr>
+	{/section} 
+<!------------------------------------------------>
+<!-------------  accessories range ------------->
+     <tr bgcolor=#333333 height=28>
+	  <td width=150 class=ylw9 align=center><b>ACC. Name</b></td>
+	  <td width=500 class=ylw9 align=center><b>Placement</b></td>
+<!--	  <td width=70 class=ylw9 align=center><b>consump.</b></td> -->
+	  <td width=50 class=ylw9 align=center><b>Unit</b></td>
+     </tr>
+
+	{if $acc_NONE}  
+	  <tr>
+		<td colspan=4 align=center class=ssign><br>NO Accessory data!<br><br>
+		<input type="hidden" name="PHP_acc_est" value="">
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$acc_use}
+   <tr {if $acc_use[USE].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if} height=28>
+	  <td class=snvy ><a href="javascript:Show_acc('{$acc_use[USE].acc_code}')" value='ord_out' style='cursor:pointer' title='{$acc_use[USE].acc_code}'>{$acc_use[USE].acc_name}</a>&nbsp;</td>
+	  <td class=snvy >{$acc_use[USE].use_for|escape:"html"}&nbsp;</td>
+<!--	  <td class=snvy align=center>{$acc_use[USE].est_1}&nbsp;</td>	-->
+	  <td class=snvy align=center>{$acc_use[USE].unit}&nbsp;</td>
+	 </tr>
+		<tr {if $acc_use[USE].i is odd}bgcolor=#E7E7E7{else}bgcolor='#D2F3D4'{/if} height=28>
+	 <td colspan="4" nowrap bgcolor="{php}echo $bg;{/php}" class=snvy>
+	 {if $acc_use[USE].specify}Construction : {$acc_use[USE].specify}&nbsp;{/if}		</td>
+	</tr>
+	{/section} 
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ </table>
+    <table width=700 border=0 cellspacing=1 cellpadding=2>
+      <tr bgcolor=#ffffff>
+        <td class=gry9 align=center>
+        <font color=black>Open: </font>
+				<a href="javascript:message_out('{$wi.creator_id}')" style="cursor:pointer"><u>{$wi.creator}</u></a>					        	
+        	&nbsp;&nbsp;<u>{$wi.open_date}</u>&nbsp;&nbsp;&nbsp;&nbsp;
+        <font color=black>Last Update : </font>
+        {if $wi.updator}<a href="javascript:message_out('{$wi.updator_id}')" style="cursor:pointer"><u>{$wi.updator}</u></a>
+        &nbsp;&nbsp;<u>{$wi.last_update}</u>&nbsp;&nbsp;&nbsp;&nbsp;{else}[ None ]{/if}
+        <font color=black>{literal}Submit: {/literal}</font>
+        {if $wi.confirmer}<a href="javascript:message_out('{$wi.confirmer_id}')" style="cursor:pointer"><u>{$wi.confirmer}</u></a>
+        &nbsp;&nbsp;<u>{$wi.cfm_date}</u>{else}[ None ]{/if}
+        </td>
+      </tr>
+    </table>
+    <!--------- wi data end ---------->
+<table border=0 cellspacing=0 cellpadding=2 width=690 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2><form method=POST name=back>
+{if  $edit_non <> 1}
+		<input type=button onClick="window.location.href='wi.php?PHP_action=wi_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}</form>
+	</td>
+
+	<td><form method=POST name=edit action=wi.php>
+{if $edit_flag  && $edit_non <> 1}{if $wi.status ==0 }
+ 
+		<input type="hidden" name="PHP_action" value="wi_edit">
+		<input type="hidden" name="PHP_id" value="{$wi.id}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_back_str2" value="{$back_str2}">
+		<input type=submit value="[  Edit  ]" class=select_e style="cursor:pointer; width=99%">
+{/if}
+{else}&nbsp;
+{/if}</form>
+	</td>
+  </tr>
+
+</table>
+{include file="footer.html"}

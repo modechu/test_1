@@ -1,0 +1,130 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  樣本款式 列表 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id) {
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+ref+"]??")) {
+	location.href="index2.php?PHP_action=wi_del&PHP_id="+id;
+	} 
+ }
+
+function tp(url) { parent.top.location.href=url }
+
+function input(form){
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (val ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  } else {
+//    alert(newval);
+  return true;
+  }
+}
+
+function check() {
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (field.value ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  } else {
+//    alert(newval);
+  return true;
+  }
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=600 bgcolor=#cccccc  align=center>
+ <tr><form METHOD="POST" name="wi_list">  
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=600 bgcolor=#534A67>
+		 <tr><td class=des align=center>.....  WI LIST .......</td></tr>
+     </table></td></tr>
+</table></form>
+<table border cellspacing=0 cellpadding=2 width=600 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=130 align=center class=back>WI #</td>
+	<td nowrap width=70 align=center class=back>Customer</td>
+	<td nowrap width=70 align=center class=back>Order #</td>
+	<td nowrap width=50 align=center class=back>ETD</td>
+	<td nowrap width=50 align=center class=back>Status</td>
+	<td nowrap width=70 align=center class=back>Remark</td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$wi} 
+  <tr><form>
+	<td class=g10 align=center>
+      <a href="{$PHP_SELF}?PHP_action=wi_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}{$back_str}&PHP_sr={$now_pp}">
+      		<b>{$wi[SEC].wi_num}&nbsp;</b></a></td>
+    <td class=gry9 align=center>{$wi[SEC].cust}&nbsp;</td>
+    <td align=center class=grn9><b>{$wi[SEC].style_code}</b>&nbsp;</td>    
+    <td align=center class=gry9>{$wi[SEC].etd}&nbsp;</td>
+    <td align=center class=gry9>{if $wi[SEC].status == 0}Wait WI Submit{/if}
+    							{if $wi[SEC].status == 1}wait BOM Submit{/if}    							
+    							{if $wi[SEC].status == 2}BOM Submit{/if}    							
+    </td>
+    <td align=left nowrap class=gry9>&nbsp;
+		{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=wi_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+		{/if}
+		{if $edit_flag && $wi[SEC].status == 0}
+		<a href="{$PHP_SELF}?PHP_action=wi_edit&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+		{/if}
+		{if $manager_flag && $wi[SEC].status == 0}
+	    <a href="javascript:cfm('{$wi[SEC].wi_num}','{$wi[SEC].id}')" value="DEL" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+		{/if}
+		<br><b><span class=bgdy>{$smpl[SEC].marked}</span></b>
+		</td>
+  </tr>
+			{/section} 
+</table>
+
+<table border=0 cols=4 width=600 align=center>
+	<tr>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;wi record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+  </tr>
+
+  <tr>
+    <td align=center width=100>
+		{if $pages[0] > 1}
+		<a href="{$cgistr_get}&PHP_sr_startno=p{$pages[1]}&PHP_dept_code={$cgi.dept_code}&PHP_cust={$cgi.cust}&PHP_wi_num={$cgi.wi_num}&PHP_smpl_type={$cgi.smpl_type}&PHP_style_code={$cgi.style_code}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+		{/if}
+		</td>
+   	<td width=300 align=center>
+   	{section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+     <a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}&PHP_dept_code={$cgi.dept_code}&PHP_cust={$cgi.cust}&PHP_wi_num={$cgi.wi_num}&PHP_smpl_type={$cgi.smpl_type}&PHP_style_code={$cgi.style_code}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    </td>
+    <td width=100 align=center>
+    {if $lastpage < $maxpage}
+    <a href="{$cgistr_get}&PHP_sr_startno=n{$maxpage}&PHP_dept_code={$cgi.dept_code}&PHP_cust={$cgi.cust}&PHP_wi_num={$cgi.wi_num}&PHP_smpl_type={$cgi.smpl_type}&PHP_style_code={$cgi.style_code}">&nbsp;<img src="images/right2.gif" border=0 alt="後12筆資料"></a>
+    {/if} 
+    </td>
+  </tr>
+</table>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}
