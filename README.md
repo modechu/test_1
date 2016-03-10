@@ -1,6 +1,6 @@
 # test_1
 
-ªì©l»yªk
+åˆå§‹èªæ³•
 
 echo "# test_1" >> README.md
 git init
@@ -9,7 +9,7 @@ git commit -m "first commit"
 git remote add origin https://github.com/modechu/test_1.git
 git push -u origin master
 
-µLª©±±ªº±¡ªp¤U
-¦b Local ºİ¸ê®Æ§¨­×§ï§¹©Ò¦³ªºÀÉ®×«á
-«ö¤U  GitHub ©³¤Uªº Commit to master
-§¹¦¨«á¦A«ö¤U GitHub ¥k¤Wªº Sync ¦P¨B§ó·s»·ºİªº¸ê®Æ
+ç„¡ç‰ˆæ§çš„æƒ…æ³ä¸‹
+åœ¨ Local ç«¯è³‡æ–™å¤¾ä¿®æ”¹å®Œæ‰€æœ‰çš„æª”æ¡ˆå¾Œ
+æŒ‰ä¸‹  GitHub åº•ä¸‹çš„ Commit to master
+å®Œæˆå¾Œå†æŒ‰ä¸‹ GitHub å³ä¸Šçš„ Sync åŒæ­¥æ›´æ–°é ç«¯çš„è³‡æ–™
