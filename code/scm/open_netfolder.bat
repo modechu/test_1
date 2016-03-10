@@ -1,1 +1,0 @@
-net use M: \\192.168.1.48\wipone$ /user:mode 6699 /persistent:no
