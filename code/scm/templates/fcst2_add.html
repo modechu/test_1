@@ -1,0 +1,99 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+<br><br><form METHOD="POST" name="capacity">
+
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+	<td colspan=13 align=center class=gry><b> ==== CREATE SALES FORECAST ====&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=bgdy9>for customer :<i> {$cust}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factory :<i> {$fty}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year :<i> {$year}</i></span></b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=13>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#0D4368"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>{$cust} ( {$fty} )&nbsp;<br>FY:{$year}</b></td>
+    <td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+  </tr>
+ <!-- 
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>TOP&nbsp;(volume)</b></td>
+  {section name=FST loop=$ft_ary}
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[{$ft_ary[FST]}]" size=4 value="" class=select style='text-align:center'>&nbsp;</td>
+ 	{/section}
+</tr>
+-->
+<tr bgcolor="#CCCCCC">
+	<td class=b9 width=100 align=center bgcolor=#dddddd><b>Q'TY<br>(volume)</b></td>
+  {section name=FST loop=$ft_ary}
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[{$ft_ary[FST]}]" size=4 value="" class=select style='text-align:center'>&nbsp;</td>
+ 	{/section} 	
+ 
+  </tr>
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>est. FOB price&nbsp;(US$)</b></td>
+  {section name=FST loop=$ft_ary}
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[{$ft_ary[FST]}]" size=4 value="" class=select style='text-align:center'>&nbsp;</td>
+ 	{/section}
+ 
+  </tr>
+ <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>Comm.&nbsp;(%)</b></td>
+  {section name=FST loop=$ft_ary}
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[{$ft_ary[FST]}]" size=3 value="" class=select style='text-align:center'>&nbsp;</td>
+ 	{/section}
+  </tr>
+</table>
+<br><br><br>
+
+    <table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+      <tr> 
+        <td class=bgdy9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			# NOTICE : please be sure all the data been key-in to the above form are in numeric style only !
+        </td>
+      <tr> 
+        <td align=center>
+			<input type="hidden" name="PHP_action" value="do_forecast_add">
+			<input type="hidden" name="PHP_fty" value="{$fty}">
+			<input type="hidden" name="PHP_dept" value="{$dept}">
+			<input type="hidden" name="PHP_cust" value="{$cust}">
+			<input type="hidden" name="PHP_year" value="{$year}">
+			<input type=submit value="[ ADD new Forecast record ]" class=select_e style="cursor:pointer; width=100%"></form>
+        </td>
+	  </tr>
+    </table>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

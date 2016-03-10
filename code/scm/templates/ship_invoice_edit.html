@@ -1,0 +1,823 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>=== ...... SCM SYSTEM [ SHIPPING DOCUMENT EDIT ] ...... ===</title>
+<link type="text/css" rel="stylesheet" href="./css/shipping.css">
+<link type="text/css" rel="stylesheet" href="./js/src/css/jscal2.css" />
+<link type="text/css" rel="stylesheet" href="./js/src/css/border-radius.css" />
+<link type="text/css" rel="stylesheet" href="./js/src/css/steel/steel.css" />
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/src/js/jscal2.js"></script>
+<script type="text/javascript" src="./js/src/js/lang/en.js"></script>
+{literal}
+<script language="javascript">
+
+$(document).ready(function(){
+
+	$('.mail_msg').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("mail_txt");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("mail_txt");  
+	}).bind('selectstart', function(){
+		return false;
+	}).css('MozUserSelect','none');
+	
+	$('.title_submit, .charge_add , .file_add ').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	}).bind('selectstart', function(){
+		return false;
+	}).css('MozUserSelect','none');
+	
+	$('.title_submit').click(function(){
+		$("#"+$(this).attr('id')).submit();
+	});
+	
+	$('.title_submit2 ').hover(function(){
+		$(this).animate({ fontSize: '+=5' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ fontSize: '-=5' }, 200);
+		$(this).removeClass("title_submit_over");  
+	}).bind('selectstart', function(){
+		return false;
+	}).css('MozUserSelect','none');
+		
+	$('.list_invoice , .list_invoice_0 ').hover(function(){
+		$(this).addClass("list_txt_bg");
+	},function(){
+		$(this).removeClass("list_txt_bg");  
+	}).bind('selectstart', function(){
+		return false;
+	}).css('MozUserSelect','none');
+	
+		
+	$('.list_invoice_5').hover(function(){
+		$(this).addClass("list_txt_bg_d");
+	},function(){
+		$(this).removeClass("list_txt_bg_d");  
+	}).bind('selectstart', function(){
+		return false;
+	}).css('MozUserSelect','none');
+	
+	$('tr[cust_po^=]').live('click',function(e) { 
+	
+		var po = $(this).attr('cust_po');
+		var mk = $('tr[id^='+po+']').is(":hidden");
+		$('tr[id^=]').hide();
+		if ( mk == true ) {
+			$('tr[id^='+po+']').show('slow');
+		} else {
+			$('tr[id^='+po+']').hide('slow');
+		}
+
+	});
+	
+	$('tr[sid^="in"]').dblclick(function(){
+		
+		var DHTM = '';
+
+		DHTM += '<tr class="list_input_d" sid="del" >';
+
+		// PO
+		DHTM += '<td width="130">'+$("#PHP_cust_po_"+$(this).attr("inpo")+" :selected").text();
+		DHTM += '<input type="hidden" name="PHP_q_id[]" value="">';
+		DHTM += '<input type="hidden" name="PHP_ord[]" value="'+$(this).attr("inpo")+'">';
+		DHTM += '<input type="hidden" name="PHP_cust_po[]" value="'+$("#PHP_cust_po_"+$(this).attr("inpo")+" :selected").text()+'">';
+		DHTM += '</td>';
+		
+		// ColorWay
+		DHTM += '<td width="250">'+$(this).find("td").eq(0).html();
+		DHTM += '<input type="hidden" name="PHP_colorway[]" value="'+$(this).find("td").eq(0).html()+'">';
+		DHTM += '<input type="hidden" name="PHP_w_id[]" value="'+$(this).find("td").eq(1).attr("w_id")+'">';
+		DHTM += '<input type="hidden" id="PHP_qty" name="PHP_qty[]" value="">';
+		DHTM += '</td>';
+		
+		// Qty
+		$(this).each(function(i,elm) {
+		
+			cts = $(elm).find("td").length;
+			
+			for( var i = 0 ; i < cts ; i ++ ){
+				if ( i > 0 & i < cts - 3 ) {
+					DHTM += '<td did="'+$(elm).find("td").eq(i).attr("id")+'">';
+					DHTM += '<input type="text" value="" size="2" onkeyup="reg(\''+$(this).attr("inpo")+'\');ValidateNumber(this,value);" >';
+					DHTM += '</td>';
+				}
+			}
+			
+	
+		});
+		
+		// TOTAL
+		DHTM += '<td><input type="text" id="" name="PHP_ttl[]" value="" size="4" readonly="readonly"></td>';
+		
+		// FOB
+		DHTM += '<td><input type="text" id="" name="PHP_fob[]" value="" size="4" onkeyup="reg(\''+$(this).attr("inpo")+'\');ValidateFloat2(this,value);"></td>';
+		
+		// Amount
+		DHTM += '<td><input type="text" id="" name="PHP_amount[]" value="" size="8" readonly="readonly"></td>';
+		DHTM += '</tr>';
+
+		$("#ORD"+$(this).attr("inpo")).append(DHTM);
+		
+		$("td[ac='update']").hide();
+		
+	});
+	
+	$('.list_txt , .list_input , .button_ord').hover(function(){
+		$(this).addClass("list_txt_bg");
+	},function(){
+		$(this).removeClass("list_txt_bg");
+	});
+	
+	$('.button_ord').click(function(){
+		$("table[id^=ORD]").hide();
+		$("#ORD"+$(this).attr('ord')).show();
+		$("span[id^=cust_po]").hide();
+		$("#cust_po"+$(this).attr('ord')).show();
+		reg();
+	});
+	
+	$('.button_ord').hover(function(){
+		$(this).animate({ fontSize: '+=8' }, 280);
+		$(this).addClass("button_ord_over");
+	},function(){
+		$(this).animate({ fontSize: '-=8' }, 280);
+		$(this).removeClass("button_ord_over");  
+	});
+
+	$('tr[sid^="del"]').live('dblclick',function(e) { 
+		if (confirm('ARE YOU SURE TO DELETE IT ?')) {
+			var dd = $(this);
+			
+			if ( dd.eq(0).find("input").val() ){
+				var q_id = dd.eq(0).find("input").val();
+				var invoice = $("#invoice").val();
+				$.ajax({
+					url: 'shipping.php?PHP_action=del_color_qty',
+					type: 'GET',
+					data: {
+						PHP_invoice : invoice ,
+						PHP_q_id : q_id 
+					},
+					error: function(xhr) {
+						alert('Ajax request 發生錯誤,請聯絡系統管理員~'+xhr);
+					},
+					success: function(response) {
+						$('#msg').show();
+						if ( response == 'error' ) {
+							$(".msg_atc_txt").html('<b>刪除失敗，請聯絡網站管理員！</b>');
+						} else {
+							$(".msg_atc_txt").html('<b>刪除成功！</b>');
+		
+							dd.fadeOut(100, function () {
+								dd.remove();
+							});
+						}
+						$('#msg').hide(2600);
+					}
+				});
+			} else {
+				dd.remove(); 
+			}
+			reg();
+		}
+	});
+	
+	reg = function(ord){
+
+		// 尺寸數量
+		var ct = 0;
+		// 累加數量
+		var pm = Number(0);
+		
+		// 回覆原始數量
+		$('tr[sid^="in"]').each(function(im,elm) {
+		
+			//if( $(elm).attr("inpo") == ord ){
+
+				cts = $(elm).find("td").length;
+				
+				for( var i = 0 ; i < cts ; i ++ ){
+
+					if( i > 0 & i < cts - 3 ){
+
+						$(elm).find("td").eq(i).html($(elm).find("td").eq(i).attr("uqty"));
+					}
+					
+				}
+				
+			//}
+			
+		});
+		
+		var judgment = Number(0);
+		
+		$('tr[sid^="del"]').each(function(i2, elm2) {
+		
+		
+			pm = Number(0);
+			ct = $(elm2).find("td").length;
+			qstr = "";
+
+			for( var m = 0 ; m < ct ; m ++ ){
+
+				if( m > 1 & m < ct - 3 ){
+					// 抓取目前的數量
+					iqty = $("#"+$(elm2).find("td").eq(m).attr("did")).text();
+
+					// 抓取輸入的數量
+					cqty = $(elm2).find("td").eq(m).find("input").val().replace(/[ ]/g,"");
+					$(elm2).find("td").eq(m).find("input").val( cqty );
+
+					// 寫入
+					mqty = iqty-cqty;
+					if( mqty >= 0 ) {
+						$("#"+$(elm2).find("td").eq(m).attr("did")).html('<font color="black">'+mqty+'<font>');
+					} else {
+						$("#"+$(elm2).find("td").eq(m).attr("did")).html('<font color="red">'+mqty+'<font>');
+					}
+					
+					// 加總
+					pm += Number($(elm2).find("td").eq(m).find("input").val());
+					
+					// 組字串
+					qstr += (( m > 2 ) ? ',' : '' ) + cqty ;
+				}
+				
+			}
+			// alert(qstr);
+			$(elm2).find("td").eq(m-3).find("input").val( pm );
+			ttl = Number($(elm2).find("td").eq(m-2).find("input").val());
+			$(elm2).find("td").eq(m-1).find("input").val( Math.round(pm*ttl*100)/100 );
+			$(elm2).find("td").eq(1).find("input[id='PHP_qty']").val(qstr);
+
+			// 檢查輸入是否完整
+			if ( $(elm2).find("td").eq(m-1).find("input").val() <= 0 ) { 
+				judgment ++ ;
+			}
+			
+			if ( $(elm2).find("td").eq(m-1).find("input").val() == 'NaN' ) { 
+				judgment ++ ;
+			}
+			
+			if ( $(elm2).find("td").eq(m-1).find("input").val() == '' ) { 
+				judgment ++ ;
+			}			
+			
+		});
+
+		// 檢查輸入是否完整
+		if ( judgment > 0 )
+			$("td[ac='update']").hide();
+		else 
+			$("td[ac='update']").show();
+	
+	};
+	
+	$('.charge_add').click( function(){
+		$("#note_charge").html("");
+		
+		var now = new Date();
+		var id = now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds();
+		var HTML = 
+		'<tr id="'+id+'">'+
+		'	<td><input type="text" name="PHP_charge[]" size="66" value="" class="select" style="width:110;" onkeyup="return ValidateFloat2(this,value)" ><input type="hidden" name="PHP_charge_id[]"></td>'+
+		'	<td><input type="text" name="PHP_desc[]" size="66" value="" class="select" style="width:400;"></td>'+
+		'	<td><img id="delete" mk="charge" tm="'+id+'" src="../images/del.gif" alt="刪除" style="cursor:pointer"></td>'+
+		'</tr>';
+		$('td[id=charge_h]').show();
+		$('#charge').append(HTML);
+	});
+	
+	$('.file_add').click( function(){
+		$("#note_file").html("");
+		
+		var now = new Date();
+		var id = now.getHours()+'-'+now.getMinutes()+'-'+now.getSeconds();
+		var HTML = 
+		'<tr id="m'+id+'m">'+
+		'	<td><input type="file" onchange="chk_file(this);" name="PHP_file[]" size="66" value="" class="select" style="width:260;"><input type="hidden" name="PHP_file_id[]"></td>'+
+		'	<td><input type="text" name="PHP_desf[]" size="66" value="" class="select" style="width:250;"></td>'+
+		'	<td><img id="delete" mk="file" tm="m'+id+'m" src="../images/del.gif" alt="刪除" style="cursor:pointer"></td>'+
+		'</tr>';
+		$('td[id=file_h]').show();
+		$('#file').append(HTML);
+	});
+	
+	$('#delete').live('click',function(e) { 
+		var mk = $(this).attr("mk");
+		var tm = $(this).attr("tm");
+		var row = $('#'+tm);
+		row.remove();
+		
+		var num = $('#'+mk).find("tr").length;
+		
+		if( num <= 1 ) {
+			$('td[id='+mk+'_h]').hide();
+		}
+		
+		$("#note_charge").html("");
+		$("#note_file").html("");
+	});
+	
+	chk_file = function (file){
+		$("#note").html("");
+		var re = /\.(pdf|PDF|rar|RAR|xls|XLS|doc|DOC|xlsx|XLSX|docx|DOCX)$/i;
+		if ( !re.test($(file).val()) ) {
+			alert('附檔名錯誤'+$(file).val());
+			var row = $(file).parent().parent();
+			row.fadeOut('fast', function() {
+				row.remove();
+			});
+		}
+		var value = $(file).val();
+		if( value.match("[\u4E00-\u9FA5]+") ){
+			alert('不可以有中文'+$(file).val());
+			var row = $(file).parent().parent();
+			row.fadeOut('fast', function() {
+				row.remove();
+			});
+		}
+		check_shipping_file(file);
+	}
+	
+	check_shipping_file = function (file){
+	
+		var  LSA  =  $(file).val().split("\\");
+		var  CFN  =  LSA[LSA.length-1]
+		
+		$.ajax({
+			url: 'shipping.php?PHP_action=check_shipping_file',
+			type: 'GET',
+			data: {
+				file: CFN
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				var sts = response.split(",");
+				if ( sts[0] == 'in' ) {
+					alert('該檔案存在！如果繼續上傳將會覆蓋此檔案 ( '+sts[1]+' )！');
+					$("#note_file").html('該檔案存在！如果繼續上傳將會覆蓋此檔案 ( '+sts[1]+' )！');
+				} else {
+					// alert('沒事！繼續動作~');
+				}
+			}
+		});
+	};
+
+	drop_charge = function(e,id){
+	
+		$("#note_charge").html("");
+		$("#note_charge").fadeIn();
+		
+		var invoice = $("#invoice").val();
+		
+		$.ajax({
+			url: 'shipping.php?PHP_action=drop_charge',
+			type: 'GET',
+			data: {
+				PHP_invoice : invoice ,
+				id	: id
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+
+				if ( response == 'ok' ) {
+					$("#note_charge").html("刪除成功");
+					var row = $(e).parent().parent();
+					row.fadeOut('fast', function() {
+						row.remove();
+						$("#note_charge").fadeOut("2200");
+					});
+					
+					var num = $('#charge').find("tr").length;
+					if( num == 2 ) {
+						$('td[id=charge_h]').hide();
+					}
+				} else {
+					$("#note_charge").html("刪除失敗！");
+				}
+			}
+		});
+	}
+
+	check_invoice = function(){
+	
+		var invoice = $('#invoice').val().toUpperCase();
+
+		if( invoice == '' ){
+			alert('PLEASE INPUT INVOICE NUMBER！');
+			return false;
+		}
+
+		$.ajax({
+			url: 'shipping.php?PHP_action=check_invoice_no',
+			type: 'GET',
+			data: {
+				invoice : invoice
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				
+				var sts = response.split(",");
+				
+				if ( sts[0] == 'in' ) {
+					$('#msg').show();
+					$(".msg_atc_txt").html('<b>'+invoice+'</b> REPEAT！ ~ PLEASE CHECK INVOICE NUMBER！');
+				}
+				$('#msg').hide(2000);
+			}
+		});
+	};
+	
+	
+	drop_file = function(e,id,file_name){
+	
+		$("#note_file").html("");
+		$("#note_file").fadeIn();
+		
+		var invoice = $("#invoice").val();
+		
+		$.ajax({
+			url: 'shipping.php?PHP_action=drop_file',
+			type: 'GET',
+			data: {
+				PHP_invoice : invoice ,
+				id		: id ,
+				files 	: file_name
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+
+				if ( response == 'ok' ) {
+					$("#note_file").html("刪除成功");
+					var row = $(e).parent().parent();
+					row.fadeOut('fast', function() {
+						row.remove();
+						$("#note_file").fadeOut("2200");
+					});
+					
+					var num = $('#file').find("tr").length;
+					if( num == 2 ) {
+						$('td[id=file_h]').hide();
+					}
+				} else {
+					$("#note_file").html("刪除失敗！"+response);
+				}
+			}
+		});
+	}
+    
+    function show(){
+		$.ajax({
+			url: 'shipping.php?PHP_action=chk_ready',
+			type: 'GET',
+			data: {
+				invoice : ''
+			},
+			error: function(xhr) {
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				if ( response == 'ok' ) {
+					$("#chk_ready").html(' <b style="color:green">online </b>');
+				} else {
+                    $("#chk_ready").html(' <b style="color:red">offline</b>');
+				}
+			}
+		});
+    }
+    setInterval(show,60000);// 
+});
+
+function ValidateNumber(e, pnumber)
+{
+
+	if (!/^\d+$/.test(pnumber))
+	{
+		var newValue =/^\d+/.exec(e.value);         
+		if (newValue != null)         
+		{             
+			e.value = newValue;        
+		}      
+		else     
+		{          
+			e.value = "";    
+		} 
+	}
+
+	return false;
+}
+	
+function ValidateFloat2(e, pnumber)
+{
+    if (!/^\d+[.]?[1-9]?[1-9]?$/.test(pnumber))
+    {
+        var newValue = /\d+[.]?[0-9]?[0-9]?/.exec(e.value);
+        if (newValue != null)         
+        {             
+            e.value = newValue;        
+        }      
+        else     
+        {          
+            e.value = "";    
+        } 
+    }
+    
+    return false;
+}
+
+</script>
+{/literal}
+</head>
+<body onload="reg();">
+{if $max_notify > 0 }
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+	<a href="notify.php?PHP_action=notify">
+	<tr height="30" >
+		<td align="center" class="mail_msg" bgcolor="#EEEEEE">
+			<span class="sign" align="center"><b> You have {$max_notify} message un-read</b></span>
+		</td>
+	</tr>
+	</a>
+</table>
+<br>
+{/if}	
+
+<table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+	{if $msg_YES}
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr id="msg" style="display:none">
+		<td>
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_t"></td>
+	</tr>
+	<tr>
+		<td class="title_main">[ SHIPPING INVOICE EDIT ]<span id="chk_ready"></span></td>
+	</tr>
+
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_b">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<form method="POST" enctype="multipart/form-data" id="update">
+	<input type="hidden" name="PHP_action" value="ship_invoice_update">
+	<input type="hidden" name="PHP_id" value="{$PHP_id}">
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<td class="title_txt_l" width="160">INVOICE NO.：</td>
+					<td class="title_txt_1" width=""><input onchange="check_invoice();" class="check_invoice_input" name="PHP_invoice" type="text" id="invoice" value="{$invoice.invoice.inv_num}" size="20" style="text-transform:uppercase"></td>
+					<td class="title_txt_l" width=""></td>
+					<td class="title_txt_l" width=""></td>
+					<td class="title_txt_l" width="60">DATE：</td>
+					<td class="title_txt_1" width="100"><input id="ship_date" type="text" name="PHP_ship_date" size=10 class="select" value="{$invoice.invoice.ship_date}" readonly="readonly"></td>
+					{literal}
+					<script type="text/javascript">//<![CDATA[
+					  Calendar.setup({
+						inputField : "ship_date",
+						trigger    : "ship_date",
+						onSelect   : function() { this.hide() },
+						dateFormat : "%Y-%m-%d"
+					  });
+					//]]></script>
+					{/literal}			
+				</tr>
+				<tr>
+					<td class="title_txt_l">Consignee / Ship to：</td>
+					<td class="title_txt_1" colspan="5">{$consignee_select}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	
+	<tr id="invoice_ss">
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					{section name=ORD loop=$ord}
+					<td class="button_ord" ord="{$ord[ORD].num}"><B>{$ord[ORD].num}</B></td>
+					{/section}
+				</tr>
+			</table>
+		</td>
+	</tr>	
+
+	
+	<tr id="invoice_ss">
+		<td>
+			{section name=ORD loop=$ord}
+			<table id="ORD{$ord[ORD].num}" custpo="{$ord[ORD].cust_po}" border="0" cellspacing="0" cellpadding="0" width="100%" style="{if $smarty.section.ORD.first}{else}display:none{/if}">
+				<tr>
+					<td class="line_black" colspan="20"></td>
+				</tr>			
+				<tr>
+					<td class="ord_number" colspan="20">{$ord[ORD].num}</td>
+				</tr>
+				<tr>
+					<td class="line_b" colspan="20">&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="line_spc" colspan="20"></td>
+				</tr>
+				<tr>
+					<td class="ord_choice" colspan="20">BUYER PO#：{$ord[ORD].cust_po_select}</td>
+				</tr>
+				<tr>
+					<td class="line_spc" colspan="20"></td>
+				</tr>
+				<tr class="list_detail">
+					<td colspan="2" >COLORWAY</td>
+					{section name=SECS loop=$ord[ORD].size}
+					<td>{$ord[ORD].size[SECS]}</td>
+					{/section}
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				{section name=CLRC loop=$ord[ORD].qty_plus}
+				<tr sid="in" inpo="{$ord[ORD].num}" scolor="{$ord[ORD].qty_plus[CLRC].ship_color}" class="list_input">
+					<td colspan="2">{$ord[ORD].qty_plus[CLRC].ship_color}</td>
+					{section name=SEC loop=$ord[ORD].qty_plus[CLRC].qty}
+					<td id="{$ord[ORD].colorway[CLRC].w_id}_{$ord[ORD].size[SEC]}" sz="{$ord[ORD].size[SEC]}" w_id="{$ord[ORD].colorway[CLRC].w_id}" uqty="{$ord[ORD].qty_plus[CLRC].qty[SEC]}" >{$ord[ORD].qty_plus[CLRC].qty[SEC]}</td>
+					{/section}
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				{/section}
+				<tr class="list_choice_detail">
+					<td width="130">P.O.NO</td>
+					<td width="250">COLORWAY</td>
+					{section name=SECS loop=$ord[ORD].size}
+					<td>{$ord[ORD].size[SECS]}</td>
+					{/section}
+					<td>TOTAL<br>QTY.</td>
+					<td>UNIT<br>PRICE</td>
+					<td>AMOUNT</td>
+				</tr>
+				{section name=TD loop=$td}
+				{if $td[TD].num == $ord[ORD].num}
+				<tr class="list_input_d" sid="del">
+					<td width="130">{$td[TD].cust_po}
+						<input type="hidden" id="q_id" name="PHP_q_id[]" value="{$td[TD].q_id}">
+						<input type="hidden" name="PHP_ord[]" value="{$td[TD].num}">
+						<input type="hidden" name="PHP_cust_po[]" value="{$td[TD].cust_po}">
+					</td>
+					<td width="250">{$td[TD].colorway}
+						<input type="hidden" name="PHP_colorway[]" value="{$td[TD].colorway}">
+						<input type="hidden" name="PHP_w_id[]" value="{$td[TD].w_id}">
+						<input type="hidden" id="PHP_qty" name="PHP_qty[]" value="{$td[TD].sqty}">
+					</td>
+					{section name=TDC loop=$td[TD].qty}
+					<td did="{$td[TD].w_id}_{$ord[ORD].size[TDC]}">
+					<input type="text" value="{$td[TD].qty[TDC]}" size="2" onkeyup="reg('{$td[TD].num};return ValidateNumber(this,value);');" >
+					</td>
+					{/section}
+					<td><input type="text" id="" name="PHP_ttl[]" value="{$td[TD].ttl}" size="4" readonly="readonly"></td>
+					<td><input type="text" id="" name="PHP_fob[]" value="{$td[TD].fob}" size="4" onkeyup="reg('{$td[TD].num}');return ValidateFloat2(this,value);"></td>
+					<td><input type="text" id="" name="PHP_amount[]" value="{$td[TD].amount}" size="8" readonly="readonly"></td>
+				</tr>
+				{/if}
+				{/section}
+			</table>
+			{/section}
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_c">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	
+	<tr id="invoice_ss">
+		<td>
+			<table border="0" cellspacing="3" cellpadding="0" width="100%" id="momo">
+				<tr>
+					<td valign="top" style="width:150;"><span class="charge_title" style="width:150;">OTHER CHARGE</span><span id="note_charge" class="note" style="width:150;"></span></td>
+					<td valign="top" align="left">
+						<table id="charge" border="0" cellspacing="3" cellpadding="3">
+							<tr>
+								<td id="charge_h" style="{if !$charge}display:none{/if}"><span class="charge_menu" style="width:110;">Charge(US$)</span></td>
+								<td id="charge_h" style="{if !$charge}display:none{/if}"><span class="charge_menu" style="width:400;">Description</span></td>
+								<td class="charge"><span class="charge_add" style="width:66;">ADD</span></td>
+							</tr>
+							{section name=CRG loop=$charge}
+							<tr>
+								<td><input type="text" name="PHP_charge[]" size="66" value="{$charge[CRG].charge}" class="select" style="width:110;" onkeyup="return ValidateFloat2(this,value);" ><input type="hidden" name="PHP_charge_id[]" value="{$charge[CRG].id}"></td>
+								<td><input type="text" name="PHP_desc[]" size="66" value="{$charge[CRG].des}" class="select" style="width:400;"></td>
+								<td><img onClick="drop_charge(this,'{$charge[CRG].id}');" src="../images/del.gif" alt="刪除" style="cursor:pointer">
+								</td>
+							</tr>
+							{/section}
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	
+	<tr id="invoice_ss">
+		<td>
+			<table border="0" cellspacing="3" cellpadding="0" width="100%">
+				<tr>
+					<td valign="top" style="width:150;"><span class="charge_title" style="width:150;">ATTACHMENT FILE</span><span id="note_file" class="note" style="width:150;"></span></td>
+					<td valign="top" align="left">
+						<table id="file" border="0" cellspacing="3" cellpadding="3">
+							<tr>
+								<td id="file_h" style="{if !$file}display:none{/if}"><span class="charge_menu" style="width:260;">File Name</span></td>
+								<td id="file_h" style="{if !$file}display:none{/if}"><span class="charge_menu" style="width:250;">Description</span></td>
+								<td class="charge"><span class="file_add" style="width:66;">ADD</span></td>
+							</tr>
+							{section name=FL loop=$file}
+							<tr>
+								<td class="file"><a href="download.php?fname={$file[FL].file_name}&fdir=shipping_file" title="{$order.cust_po[SEC].file}">{$file[FL].file_name}</a><input type="hidden" name="PHP_file_id[]" value="{$file[FL].id}"></td>
+								<td><input type="text" name="PHP_desf[]" size="66" value="{$file[FL].file_des}" class="select" style="width:250;"></td>
+								<td><img onClick="drop_file(this,'{$file[FL].id}','{$file[FL].file_name}');" src="../images/del.gif" alt="刪除" style="cursor:pointer"></td>
+							</tr>
+							{/section}							
+						</table>
+					</td>					
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+
+	</form>
+	<form method="POST" id="list"><input type="hidden" name="PHP_action" value="ship_sch"></form>
+	<form method="POST" id="view"><input type="hidden" name="PHP_action" value="ship_invoice_view"><input type="hidden" name="PHP_id" value="{$PHP_id}"></form>
+	<tr>
+		<td>
+			<table border="0" cellspacing="9" cellpadding="0" width="100%">
+				<tr>
+					<td class="title_submit" id="list" width="30%">[ LIST ]</td>
+					<td class="title_submit" id="view" width="30%">[ VIEW ]</td>
+					<td class="title_submit" id="update" width="30%" ac="update">[ UPDATE ]</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+ 	
+</table>

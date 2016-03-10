@@ -1,0 +1,61 @@
+{include file="header_utf8.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">{if $T_send_title}{$T_send_title}{else}Send{/if} 搜尋發料單，篩選確認是否已發料過，以及紀錄發料數量。</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Material : </td>
+					<td>
+						<input type="radio" name="mat" id="mat" value="lots" /> Fabric 
+						<input type="radio" name="mat" id="mat" value="acc" /> Accessory
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Order number#</td>
+					<td><input type="text" id="order_num" size="20" class="ui-widget"></td>
+				</tr>
+				<tr>
+					<td>Send number#</td>
+					<td><input type="text" id="notice_num" size="20" class="ui-widget"></td>
+					<td><input class="submit_ajax" type="button" id="receiving_to_get_material_search" style="width:90px;" name="Submit" value="{if $T_submit}{$T_submit}{else}Search{/if}"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<br>
+<input type="button" class="ListName" value="show un-SEND list" style="cursor:pointer;{if $show_un_send_list}display:none;{/if}" onclick="show_un_send_list(this)">
+{if $un_send}
+<table cellspacing="0" cellpadding="0" cols="0" width="500">
+<tr>
+	<td class="ListName" width="90">Send num #</td>
+	<td class="ListName" width="90">Order num #</td>
+	<td class="ListName" width="170">Create date</td>
+	<td class="ListName" width="150">Status</td>
+</tr>
+{section name=DET loop=$un_send}
+<tr>
+	<td class="ListValueLeft" width="90">{$un_send[DET].id}</td>
+	<td class="ListValueLeft" width="90">{$un_send[DET].ord_num}</td>
+	<td class="ListValueLeft" width="170">{$un_send[DET].create_date}</td>
+	<td class="ListValueLeft" width="150">{if $un_send[DET].status == 0} waiting for submit
+										  {elseif $un_send[DET].status == 2} waiting for CFM
+										  {else} APV{/if}</td>
+</tr>
+{/section}
+</table>
+{/if}
+<br>
+{include file="footer_utf8.html"}

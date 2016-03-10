@@ -1,0 +1,438 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ customer data ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body ><form METHOD="POST" name="cust_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#003300>
+	<tr>
+		<td class="des" align=center height=28> [ <span class=sign>Append</span>&nbsp;EXPENSE  record ] </td>
+		<td class="des" align=right height=28 width=100><B> FY : {$yy}-{$mm}</B></td>
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=2 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=left><B>FORECAST</b></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right width=90>薪資支出: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_salary" size=9 class=select value="{$f.salary}">
+    </td>
+    <td class=snvy align=right width=90>租金支出: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_rent" size=9 class=select value="{$f.rent}">
+    </td>
+    <td class=snvy align=right width=90>文具用品: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_sationery" size=9 class=select value="{$f.sationery}">
+    </td>   
+    <td class=snvy align=right width=90>旅費: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_travel" size=9 class=select value="{$f.travel}">
+    </td>       
+  </tr>
+  <tr>
+    <td class=snvy align=right >運費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_freight" size=9 class=select value="{$f.freight}">
+    </td>
+    <td class=snvy align=right >郵電費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_postal" size=9 class=select value="{$f.postal}">
+    </td>
+    <td class=snvy align=right >修繕費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_fix" size=9 class=select value="{$f.fix}">
+    </td>   
+    <td class=snvy align=right >廣告費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_ad" size=9 class=select value="{$f.ad}">
+    </td>       
+  </tr>
+  <tr>
+    <td class=snvy align=right >水電瓦斯: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_water" size=9 class=select value="{$f.water}">
+    </td>
+    <td class=snvy align=right >保險費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_insurance" size=9 class=select value="{$f.insurance}">
+    </td>
+    <td class=snvy align=right >交際費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_communicat" size=9 class=select value="{$f.communicat}">
+    </td>   
+    <td class=snvy align=right >捐贈: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_donate" size=9 class=select value="{$f.donate}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >稅捐: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_taxes" size=9 class=select value="{$f.taxes}">
+    </td>
+    <td class=snvy align=right >呆帳損失: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_bed_dabt" size=9 class=select value="{$f.bed_dabt}">
+    </td>
+    <td class=snvy align=right >折舊: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_dpereciation" size=9 class=select value="{$f.dpereciation}">
+    </td>   
+    <td class=snvy align=right >各項攤提: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_1" size=9 class=select value="{$f.other_1}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >圖書什誌: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_book" size=9 class=select value="{$f.book}">
+    </td>
+    <td class=snvy align=right >伙食費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_food" size=9 class=select value="{$f.food}">
+    </td>
+    <td class=snvy align=right >職工福利金: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_welfare" size=9 class=select value="{$f.welfare}">
+    </td>   
+    <td class=snvy align=right >研究發展費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_rd" size=9 class=select value="{$f.rd}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >訓練費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_teach" size=9 class=select value="{$f.teach}">
+    </td>
+    <td class=snvy align=right >醫藥費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_medicine" size=9 class=select value="{$f.medicine}">
+    </td>
+    <td class=snvy align=right >佣金: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_commission" size=9 class=select value="{$f.commission}">
+    </td>   
+    <td class=snvy align=right >勞務費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_labor_1" size=9 class=select value="{$f.labor_1}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >什費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_2" size=9 class=select value="{$f.other_2}">
+    </td>
+    <td class=snvy align=right >什項購置: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_other_3" size=9 class=select value="{$f.other_3}">
+    </td>
+    <td class=snvy align=right >報關費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_customs" size=9 class=select value="{$f.customs}">
+    </td>   
+    <td class=snvy align=right >樣品費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_sample" size=9 class=select value="{$f.sample}">
+    </td>       
+  </tr>   
+  <tr>
+    <td class=snvy align=right >銀行手續費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_bank" size=9 class=select value="{$f.bank}">
+    </td>
+    <td class=snvy align=right >包裝費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_pack" size=9 class=select value="{$f.pack}">
+    </td>
+    <td class=snvy align=right >勞保費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_labor_2" size=9 class=select value="{$f.labor_2}">
+    </td>   
+    <td class=snvy align=right >健保費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_health" size=9 class=select value="{$f.health}">
+    </td>       
+  </tr>  
+  <tr>
+    <td class=snvy align=right >耗用物料: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_martrial" size=9 class=select value="{$f.martrial}">
+    </td>
+    <td class=snvy align=right >費用分攤: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_share" size=9 class=select value="{$f.share}">
+    </td>
+    <td class=snvy align=right >年獎提存: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_prize" size=9 class=select value="{$f.prize}">
+    </td>   
+    <td class=snvy align=right >退休金準備: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_retire_1" size=9 class=select value="{$f.retire_1}">
+    </td>       
+  </tr>  
+  <tr>
+    <td class=snvy align=right >外銷拓展費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_reach_cost" size=9 class=select value="{$f.reach_cost}">
+    </td>
+    <td class=snvy align=right >商港建設費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_build" size=9 class=select value="{$f.build}">
+    </td>
+    <td class=snvy align=right >退休金費用: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_retire_2" size=9 class=select value="{$f.retire_2}">
+    </td>   
+    <td class=snvy align=right >衣服修改費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_cloth_fix" size=9 class=select value="{$f.cloth_fix}">
+    </td>       
+  </tr>   
+  <tr>
+    <td class=snvy align=right >員工制服費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_work_cloth" size=9 class=select value="{$f.work_cloth}">
+    </td>
+    <td class=snvy align=right >管理費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_manage" size=9 class=select value="{$f.manage}">
+    </td>
+    <td class=snvy align=right >保全費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_f_safty" size=9 class=select value="{$f.safty}">
+    </td>   
+    <td class=snvy align=right colspan=2>&nbsp; </td>    
+  </tr>   
+</table>
+<hr SIZE=2 WIDTH=700>
+<table border=0 cellspacing=2 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=left><B>EXPENSE</b></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right width=90>薪資支出: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_salary" size=9 class=select value="{$e.salary}">
+    </td>
+    <td class=snvy align=right width=90>租金支出: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_rent" size=9 class=select value="{$e.rent}">
+    </td>
+    <td class=snvy align=right width=90>文具用品: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_sationery" size=9 class=select value="{$e.sationery}">
+    </td>   
+    <td class=snvy align=right width=90>旅費: </td>
+    <td class=frnt align=left  width=85 bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_travel" size=9 class=select value="{$e.travel}">
+    </td>       
+  </tr>
+  <tr>
+    <td class=snvy align=right >運費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_freight" size=9 class=select value="{$e.freight}">
+    </td>
+    <td class=snvy align=right >郵電費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_postal" size=9 class=select value="{$e.postal}">
+    </td>
+    <td class=snvy align=right >修繕費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_fix" size=9 class=select value="{$e.fix}">
+    </td>   
+    <td class=snvy align=right >廣告費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_ad" size=9 class=select value="{$e.ad}">
+    </td>       
+  </tr>
+  <tr>
+    <td class=snvy align=right >水電瓦斯: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_water" size=9 class=select value="{$e.water}">
+    </td>
+    <td class=snvy align=right >保險費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_insurance" size=9 class=select value="{$e.insurance}">
+    </td>
+    <td class=snvy align=right >交際費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_communicat" size=9 class=select value="{$e.communicat}">
+    </td>   
+    <td class=snvy align=right >捐贈: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_donate" size=9 class=select value="{$e.donate}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >稅捐: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_taxes" size=9 class=select value="{$e.taxes}">
+    </td>
+    <td class=snvy align=right >呆帳損失: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_bed_dabt" size=9 class=select value="{$e.bed_dabt}">
+    </td>
+    <td class=snvy align=right >折舊: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_dpereciation" size=9 class=select value="{$e.dpereciation}">
+    </td>   
+    <td class=snvy align=right >各項攤提: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_other_1" size=9 class=select value="{$e.other_1}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >圖書什誌: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_book" size=9 class=select value="{$e.book}">
+    </td>
+    <td class=snvy align=right >伙食費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_food" size=9 class=select value="{$e.food}">
+    </td>
+    <td class=snvy align=right >職工福利金: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_welfare" size=9 class=select value="{$e.welfare}">
+    </td>   
+    <td class=snvy align=right >研究發展費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_rd" size=9 class=select value="{$e.rd}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >訓練費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_teach" size=9 class=select value="{$e.teach}">
+    </td>
+    <td class=snvy align=right >醫藥費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_medicine" size=9 class=select value="{$e.medicine}">
+    </td>
+    <td class=snvy align=right >佣金: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_commission" size=9 class=select value="{$e_commission}">
+    </td>   
+    <td class=snvy align=right >勞務費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_labor_1" size=9 class=select value="{$e.labor_1}">
+    </td>       
+  </tr> 
+  <tr>
+    <td class=snvy align=right >什費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_other_2" size=9 class=select value="{$e.other_2}">
+    </td>
+    <td class=snvy align=right >什項購置: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_other_3" size=9 class=select value="{$e.other_3}">
+    </td>
+    <td class=snvy align=right >報關費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_customs" size=9 class=select value="{$e.customs}">
+    </td>   
+    <td class=snvy align=right >樣品費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_sample" size=9 class=select value="{$e.sample}">
+    </td>       
+  </tr>   
+  <tr>
+    <td class=snvy align=right >銀行手續費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_bank" size=9 class=select value="{$e.bank}">
+    </td>
+    <td class=snvy align=right >包裝費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_pack" size=9 class=select value="{$e.pack}">
+    </td>
+    <td class=snvy align=right >勞保費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_labor_2" size=9 class=select value="{$e.labor_2}">
+    </td>   
+    <td class=snvy align=right >健保費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_health" size=9 class=select value="{$e.health}">
+    </td>       
+  </tr>  
+  <tr>
+    <td class=snvy align=right >耗用物料: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_martrial" size=9 class=select value="{$e.martrial}">
+    </td>
+    <td class=snvy align=right >費用分攤: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_share" size=9 class=select value="{$e.share}">
+    </td>
+    <td class=snvy align=right >年獎提存: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_prize" size=9 class=select value="{$e.prize}">
+    </td>   
+    <td class=snvy align=right >退休金準備: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_retire_1" size=9 class=select value="{$e.retire_1}">
+    </td>       
+  </tr>  
+  <tr>
+    <td class=snvy align=right >外銷拓展費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_reach_cost" size=9 class=select value="{$e.reach_cost}">
+    </td>
+    <td class=snvy align=right >商港建設費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_build" size=9 class=select value="{$e.build}">
+    </td>
+    <td class=snvy align=right >退休金費用: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_retire_2" size=9 class=select value="{$e.retire_2}">
+    </td>   
+    <td class=snvy align=right >衣服修改費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_cloth_fix" size=9 class=select value="{$e.cloth_fix}">
+    </td>       
+  </tr>   
+  <tr>
+    <td class=snvy align=right >員工制服費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_work_cloth" size=9 class=select value="{$e.work_cloth}">
+    </td>
+    <td class=snvy align=right >管理費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_manage" size=9 class=select value="{$e.manage}">
+    </td>
+    <td class=snvy align=right >保全費: </td>
+    <td class=frnt align=left  bgcolor=#EEEEEE >
+    	<input type=text name="PHP_e_safty" size=9 class=select value="{$e.safty}">
+    </td>   
+    <td class=snvy align=right colspan=2>&nbsp; </td>    
+  </tr>   
+</table>
+<BR>
+			
+			
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+  <tr> 
+    <td align=center>
+        <input type="hidden" name="PHP_action" value="do_expense_add">
+        <input type="hidden" name="PHP_yy" value="{$yy}">
+        <input type="hidden" name="PHP_mm" value="{$mm}">	
+				<input type=submit value="[ Append expense record ]" class=select_e style="cursor:pointer; width=100%"></form>
+    </td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

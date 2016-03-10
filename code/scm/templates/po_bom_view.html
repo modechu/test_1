@@ -1,0 +1,242 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System  ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+ 
+<script language="javascript" src="./js/open_detial.js"></script>
+
+
+<Script language="javascript">
+
+function po_add(ap_num,back_str,wi_id){
+	window.location='po.php?PHP_action=po_add&PHP_aply_num='+ap_num+"&PHP_bk="+back_str+"&PHP_wi_id="+wi_id; 	
+
+}
+</script>
+
+{/literal}
+</head>
+
+<body>
+<form method=POST name=aply_wi>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#2E5E73>
+	<tr><td class="des" align=center height=28 >[ <b>Purchase Order status for BOM </b> -<span class=ylw10><b>{$wi.wi_num}</span>  ]</td>
+
+</tr>
+</table>
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=700 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+
+  </tr>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=100 align=center class=back><b>Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=150 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<input type="image" src="{$wi.pic_url}" name="pic" width=100 border="0" onclick='window.open2("{$wi.pic_url}","","height=640,width=480")'>
+	</td>
+	<td class=grn9 align=center> <b>&nbsp;{$smpl.order_num}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total}</b></span>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9><未輸入></span>{/if}</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+			{$show_breakdown}
+		</table>
+	</td>
+  </tr>
+</table>
+<br>
+<!-------------  BOM table ------------->
+<!-------------  主料 bom ------------->
+<hr size=2 width=700 align=center>
+
+<table width=700 border=1 cellspacing=1 cellpadding=1>
+   <tr><td>
+	<table width=700 border=1 cellspacing=0 cellpadding=1>
+	<!------- 主料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100  class=b9  align=center><b>Fabirc #</b></td>
+	    <td width=200  class=b9  align=center><b>Placement</b></td>
+	  	<td width=100  class=b9  align=center><b>Color/cat.</b></td>
+	  	<td width=100  class=b9  align=center><b>Q'TY</b></td>
+			<td width=100  class=b9  align=center><b>Regular PA</b></td>
+			<td width=100  class=b9  align=center><b>SPECIAL PA</b></td>
+	 </tr>
+
+	<!-------  BOM 主料記錄 --------- -->
+
+	{section name=BOM loop=$bom_lots} 
+	<tr onmouseover="bgColor='#F9E2BB'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_fab('{$bom_lots[BOM].lots_code}')" value='ord_out' style='cursor:pointer'><small>{$bom_lots[BOM].lots_code}</small></a></td>
+		<td class=b7 align=left><small>&nbsp;{$bom_lots[BOM].use_for}</small></td>
+		<td class=b9 align=left><small>&nbsp;{$bom_lots[BOM].color}</small></td>
+	  <td class=snvy align=right><small>&nbsp;{$bom_lots[BOM].total|number_format:"2f"}&nbsp;{$bom_lots[BOM].unit}</small></td>
+	  <td class=snvy align=left>
+	  	{if $bom_lots[BOM].status == 4}
+   			 <a href="javascript:po_add('{$bom_lots[BOM].ap_mark}','{$back_str}','{$wi.id}')" value='ord_out' style='cursor:pointer'>
+	 	 		&nbsp;<b>{$bom_lots[BOM].ap_mark}</b></a>
+			{elseif $bom_lots[BOM].status > 4}
+				&nbsp;<a href="javascript:pa_show('{$bom_lots[BOM].ap_mark}')"><font color="#0A5C0B"><s>{$bom_lots[BOM].ap_mark}</s></font></a>
+			{else}
+			 &nbsp;<a href="javascript:pa_show('{$bom_lots[BOM].ap_mark}')">{$bom_lots[BOM].ap_mark}</a>
+			{/if}
+		</td>
+ 	  <td class=snvy align=left> 	  	
+ 	  	{section name=AP loop=$bom_lots[BOM].spec_ap}
+ 	  	{if $bom_lots[BOM].spec_ap[AP].status == 4}
+	  		<a href="javascript:po_add('{$bom_lots[BOM].spec_ap[AP].ap_num}','{$back_str}','{$wi.id}')" value='ord_out' style='cursor:pointer'>
+ 	  		&nbsp;<b>{$bom_lots[BOM].spec_ap[AP].ap_num}</b></a> 	  	
+			{elseif $bom_lots[BOM].spec_ap[AP].status > 4}
+				&nbsp;<a href="javascript:pa_show('{$bom_lots[BOM].spec_ap[AP].ap_num}')"><font color="#0A5C0B"><s>{$bom_lots[BOM].spec_ap[AP].ap_num}</s></font></a>
+			{else}
+			 &nbsp;<a href="javascript:pa_show('{$bom_lots[BOM].spec_ap[AP].ap_num}')">{$bom_lots[BOM].spec_ap[AP].ap_num}</a>
+			{/if}
+
+ 	  	{/section}&nbsp;
+ 	  </td>
+	</tr>
+	{/section}
+<!--	</table>	-->
+
+<!-------------  副料 ------------->
+<!--	<table width=600 border=0 cellspacing=1 cellpadding=1>	-->
+
+	<!------- 副料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100 class=b9 align=center><b>Accessory #</b></td>
+	    <td width=200  class=b9  align=center><b>Placement</b></td>
+	  	<td width=100  class=b9  align=center><b>Color/cat.</b></td>
+	  	<td width=100  class=b9  align=center><b>Q'TY</b></td>
+			<td width=100  class=b9  align=center><b>Regular PA</b></td>
+			<td width=100  class=b9  align=center><b>SPECIAL PA</b></td>
+	 </tr>
+	<!-------  end  Title --------- -->
+
+	<!-------  BOM 副料記錄 --------- -->
+	
+	{section name=BOM loop=$bom_acc} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left nowrap>&nbsp;<a href="javascript:Show_acc('{$bom_acc[BOM].acc_code}')" value='ord_out' style='cursor:pointer'><small>{$bom_acc[BOM].acc_code}</small></a></td>
+		<td class=b7 align=left><small>&nbsp;{$bom_acc[BOM].use_for}</small></td>
+		<td class=b9 align=left><small>&nbsp;{$bom_acc[BOM].color}</small></td>
+	  <td class=snvy align=right><small>&nbsp;{$bom_acc[BOM].total|number_format:"2f"}&nbsp;{$bom_acc[BOM].unit}</small></td>
+	  <td class=snvy align=left>
+	  	{if $bom_acc[BOM].status == 4}
+	  		<a href="javascript:po_add('{$bom_acc[BOM].ap_mark}','{$back_str}','{$wi.id}')" value='ord_out' style='cursor:pointer'>
+	  		&nbsp;<b>{$bom_acc[BOM].ap_mark}</b></a></td>
+			{elseif $bom_acc[BOM].status > 4}
+				&nbsp;<a href="javascript:pa_show('{$bom_acc[BOM].ap_mark}')"><font color="#0A5C0B"><s>{$bom_acc[BOM].ap_mark}</s></font></a>
+			{else}
+			 &nbsp;<a href="javascript:pa_show('{$bom_acc[BOM].ap_mark}')">{$bom_acc[BOM].ap_mark}</a>
+			{/if}
+ 	  <td class=snvy align=left>
+ 	 	{section name=AP loop=$bom_acc[BOM].spec_ap}
+ 	 	{if $bom_acc[BOM].spec_ap[AP].status == 4}
+	 	 	<a href="javascript:po_add('{$bom_acc[BOM].spec_ap[AP].ap_num}','{$back_str}','{$wi.id}')" value='ord_out' style='cursor:pointer'>
+ 	  	&nbsp;<b>{$bom_acc[BOM].spec_ap[AP].ap_num}</b></a> 
+ 			{elseif $bom_acc[BOM].spec_ap[AP].status > 4}
+				&nbsp;<a href="javascript:pa_show('{$bom_acc[BOM].spec_ap[AP].ap_num}')"><font color="#0A5C0B"><s>{$bom_acc[BOM].spec_ap[AP].ap_num}</s></font></a>
+			{else}
+			 &nbsp;<a href="javascript:pa_show('{$bom_acc[BOM].spec_ap[AP].ap_num}')">{$bom_acc[BOM].spec_ap[AP].ap_num}</a>
+			{/if}
+ 	 	{/section}&nbsp;
+ 	 	</td>
+	</tr>
+	{/section}
+<!--	</table>	-->
+	</table>
+	
+{if !$ext_mat_NONE}
+<br>
+	<table width=700 border=1 cellspacing=0 cellpadding=1>
+	<!------- 物料補  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td colspan=5  class=b9  align=center><b>Extra Material</b></td>
+	 </tr>	
+	 <tr bgcolor=#D5D5BE>
+	    <td width=100  class=b9  align=center><b>Material #</b></td>
+	    <td width=100  class=b9  align=center><b>Placement</b></td>
+	  	<td width=100  class=b9  align=center><b>Color/cat.</b></td>
+	  	<td width=100  class=b9  align=center><b>Total</b></td>
+			<td width=110  class=b9  align=center><b>SPECIAL PA</b></td>
+	 </tr>
+	{section name=BOM loop=$ext_mat} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 align=left>&nbsp;<a href="javascript:{if $ext_mat[BOM].mat_cat == 'a'}Show_acc{else}Show_fab{/if}('{$ext_mat[BOM].mat_code}')" value='ord_out' style='cursor:pointer'>{$ext_mat[BOM].mat_code}</a></td>
+		<td class=b7 align=left>&nbsp;{$ext_mat[BOM].use_for}</td>
+		<td class=b9 align=left>&nbsp;{$ext_mat[BOM].color}</td>
+	  <td class=snvy align=right>&nbsp;{$ext_mat[BOM].ap_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}</td>
+	  <td class=snvy align=center>&nbsp;
+	  	{if $ext_mat[BOM].status == 4}
+	  		<a href="javascript:po_add('{$ext_mat[BOM].ap_num}','{$back_str}','{$wi.id}')" value='ord_out' style='cursor:pointer'>
+	  		<b>{$ext_mat[BOM].ap_num}</b></a></td> 	
+ 			{elseif $ext_mat[BOM].status > 4}
+				&nbsp;<a href="javascript:pa_show('{$ext_mat[BOM].ap_num}')"><font color="#0A5C0B"><s>{$ext_mat[BOM].ap_num}</s></font></a>
+			{else}
+			 &nbsp;<a href="javascript:pa_show('{$ext_mat[BOM].ap_num}')">{$ext_mat[BOM].ap_num}</a>
+			{/if}
+	</tr>
+	{/section}
+	</table>
+{/if}
+
+
+   </td></tr>
+</table>
+
+
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=640 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2>
+{if $back_str && $edit_non <> 1}
+		<input type=button onClick="window.location.href='{$PHP_SELF}{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}
+	</td>
+  </tr>
+
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

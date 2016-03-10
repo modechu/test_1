@@ -1,0 +1,156 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>{$lang.head}</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+{/literal}
+<body topmargin="10">
+<table cellspacing=1 cellpadding=4 cols=1 width=780 bgcolor=#333333>
+	<tr>
+	  <td class="des" align=center height=28><table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="35%">&nbsp;</td>
+          <td width="300" align="center" class="des">Transport </td>
+          <td width="35%" align="right"><span class=ylw10>{if $revise > 0 }[ <b>REVISE</b> ]：<b><i>{$revise}</i></b>{else}&nbsp;{/if}</span>&nbsp;&nbsp;&nbsp;	{if $sub_date != '0000-00-00'}<img src="images/revise21.jpg" onClick="window.location.href='{$PHP_SELF}?PHP_action=transport_revise&trn_num={$trn_num}&transport_ord_num={$ord_num}{$back_str}'" style="cursor:pointer" >{/if}</td>
+        </tr>
+      </table></td>
+	</tr>
+</table>
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=780>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg}{$msg[SEC_MSG]}<br>
+	  {/section}</td>
+	</tr>
+</table>
+<hr size=2 width=780>
+{/if}
+<table width="780" border="0" cellspacing="1" cellpadding="1">
+  <form method=POST name=adding enctype="multipart/form-data">
+		<tr>
+      <td height="6"></td>
+    </tr>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
+        <tr>
+          <td width="96" align="right" class=grn10>轉運單號碼#：</td>
+          <td class=frnt> {$trn_num}</td>
+          <td class=frnt align=right>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right" class=grn10>訂單號碼#：</td>
+          <td class=frnt>{$ord_num}</td>
+          <td class=frnt align=right>&nbsp;</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td align="center"><hr size=2 width=98%></td>
+    </tr>
+    <tr>
+      <td><table width=99% border=0 cellpadding=6 cellspacing=3 bgcolor=#FFFFFF class="table_line">
+        <tr>
+          <td width="120" align=right valign="top" class=txt_B_b10><b>轉出單位：</b></td>
+          <td colspan="3" align=left valign="top" bgcolor=#dddddd class=b10>{$org_fty.Name}</td>
+        </tr>
+        <tr>
+          <td align=right class=txt_B_b10><b>地址：</b></td>
+          <td colspan="3" align=left bgcolor=#dddddd class=b10>{$org_fty.Addr}</td>
+        </tr>
+        <tr>
+          <td align=right class=txt_B_b10><b>電話：</b></td>
+          <td width="35%" align=left bgcolor=#dddddd class=b10>{$org_fty.TEL}</td>
+          <td width="120" align=right class=txt_B_b10><b>傳真：</b></td>
+          <td width="35%" align=left bgcolor=#dddddd class=b10>{$org_fty.FAX}</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td><table width=99% border=0 cellpadding=3 cellspacing=1 bgcolor=#FFFFFF class="table_line">
+        <tr>
+          <td align=center  nowrap bgcolor="#CCCCCC" class=txt_B_b10><b>Material #</b></td>
+          <td width="200" align=center bgcolor="#CCCCCC" class=txt_B_b10><b>Color/cat.</b></td>
+          <td width="70" align=center bgcolor="#CCCCCC" class=txt_B_b10><b>Qty</b></td>
+          </tr>
+				{section name=SEC loop=$mat_list}
+        <tr>
+          <td height="2" colspan="3" valign="top" bgcolor="#CCCCCC" class=b10></td>
+        </tr>
+        <tr>
+          <td width="60%" valign="top" nowrap bgcolor="#EEEEEE" class=b10><table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="80" valign="top">{$mat_list[SEC].mat_code}</td>
+              <td width="10" valign="top">&nbsp;</td>
+              <td valign="top">{$mat_list[SEC].mat_name} </td>
+            </tr>
+          </table>            </td>
+          <td valign="top" bgcolor="#EEEEEE" class=b10>{$mat_list[SEC].color}</td>
+          <td align=right valign="top" nowrap bgcolor="#EEEEEE" class=b10>{$mat_list[SEC].qty|number_format} {$mat_list[SEC].unit}</td>
+          </tr>
+        <tr>
+          <td colspan="3" valign="top" nowrap bgcolor="#EEEEEE" class=b10>{$mat_list[SEC].note}</td>
+          </tr>
+				{/section}
+      </table></td>
+    </tr>
+		{if $remark}
+    <tr>
+      <td><table width="99%" border="0" cellpadding="3" cellspacing="1" class="table_line">
+        <tr>
+          <td align="center" bgcolor="#CCCCCC" class="b10_b">Remark</td>
+        </tr>
+        <tr>
+          <td bgcolor="EEEEEE" class="b10">{$remark}</td>
+        </tr>
+      </table></td>
+    </tr>
+		{/if}
+    <tr>
+      <td align="center"><hr size=2 width=98%></td>
+    </tr>
+    <tr>
+      <td><table width=99% border=0 cellpadding=6 cellspacing=3 bgcolor=#FFFFFF class="table_line">
+        <tr>
+          <td width="120" align=right class=snvy><b>轉入單位：</b></td>
+          <td colspan="3" align=left bgcolor=#dddddd class=bgdy>{$new_fty.Name}</td>
+        </tr>
+        <tr>
+          <td align=right class=snvy><b>地址：</b></td>
+          <td colspan="3" align=left bgcolor=#dddddd class=bgdy>{$new_fty.Addr}</td>
+        </tr>
+        <tr>
+          <td align=right class=snvy><b>電話：</b></td>
+          <td width="35%" align=left bgcolor=#dddddd class=bgdy>{$new_fty.TEL}</td>
+          <td width="120" align=right class=snvy><b>傳真：</b></td>
+          <td width="35%" align=left bgcolor=#dddddd class=bgdy>{$new_fty.FAX}</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td align="center"><hr size=2 width=98%></td>
+    </tr>
+    <tr>
+      <td align="right" class="gry9"><table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="200">{if $sub_date != '0000-00-00'}Submit by：{$sub_user} / {$sub_date}{/if}</td>
+          <td width="10">&nbsp;</td>
+        </tr>
+      </table></td>
+    </tr>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="6" cellpadding="0">
+        <tr>
+          <td align="center">
+						<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=transport_list{$back_str}'" value="Go Back" class=select_e style="cursor:pointer; width=28%">
+            {if $sub_date == '0000-00-00'}
+            <input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=transport_edit&trn_num={$trn_num}&transport_ord_num={$ord_num}{$back_str}'" value="Edit" class=select_e style="cursor:pointer; width=28%">
+            <input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=transport_submit&trn_num={$trn_num}&transport_ord_num={$ord_num}{$back_str}'" value="Submit" class=select_e style="cursor:pointer; width=28%">{/if}					</td>
+        </tr>
+      </table></td>
+    </tr>
+  </form>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

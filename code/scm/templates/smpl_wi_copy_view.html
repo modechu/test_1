@@ -1,0 +1,173 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM System [ Working Instruction for sample order ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+</head>
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+
+{/literal}
+<body>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#333333>
+	<tr><td class="des" align=center height=28 width=380>[ <span class=ylw10> View </span><b> Sample W / I</b>  : <b>{$wi.wi_num}</b>] </td>
+	<td class="ylw10" align=center height=28 width=100>{if $wi.confirmer}<b>[ {literal}SUBMIT{/literal} ]{else}[{literal} UN SUBMIT{/literal} ]{/if}</span></b></td>
+	<td class="des" align=center height=28 width=100>Version :<span class=ylw10><b>{$wi.revise}</b></span></td>
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+  </tr>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=150 align=center class=back><b>Sample Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=100 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<input type="image" src="{$wi.pic_url}" name="pic" width=100 border="0" onclick='window.open2("{$wi.pic_url}","","height=640,width=480")'>
+	</td>
+	<td class=grn9 align=center>
+	 <a href="javascript:Show_smpl_ord('{$wi.smpl_id}')" value='ord_out' style='cursor:pointer'>
+	<b>&nbsp;{$smpl.num}</b></a></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total}</b></span>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9><UnInput></span>{/if}  (SMPL : {$smpl.qty} {$wi.unit})</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+			{$show_breakdown}
+		</table>
+	</td>
+  </tr>
+</table>
+
+<!-------------  material range ------------->
+<br>
+    <table width=700 border=0 cellspacing=1 cellpadding=2>
+     <tr bgcolor=#333333 height=28>
+	  <td width=130 class=ylw9 align=center><b>Fabirc #</b></td>
+	  <td width=150 class=ylw9 align=center><b>Fabric Name</b></td>
+	  <td width=200 class=ylw9 align=center><b>Placement</b></td>
+	  <td width=70 class=ylw9 align=center><b>consump.</b></td>
+	  <td width=50 class=ylw9 align=center><b>Unit</b></td>
+     </tr>
+
+	{if $lots_NONE}  
+	  <tr>
+		<td colspan=6 align=center class=ssign><br>No Fabric data!<br><br>
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$lots_use} 
+     <tr bgcolor=#eeeeee height=28>
+	  <td class=snvy align=center nowrap><a href="javascript:Show_fab('{$lots_use[USE].lots_code}')" value='ord_out' style='cursor:pointer'>{$lots_use[USE].lots_code}&nbsp;</a></td>
+	  <td class=snvy >{$lots_use[USE].lots_name}&nbsp;</td>
+	  <td class=snvy >{$lots_use[USE].use_for}&nbsp;</td>
+	  <td class=snvy align=center>{$lots_use[USE].est_1}&nbsp;</td>
+	  <td class=snvy align=center>{$lots_use[USE].unit}&nbsp;</td>
+	 </tr>
+	{/section} 
+	 
+    </table>
+<!------------------------------------------------>
+<!-------------  accessories range ------------->
+    <table width=700 border=0 cellspacing=1 cellpadding=2>
+     <tr bgcolor=#333333 height=28>
+	  <td width=130 class=ylw9 align=center><b>Accessory #</b></td>
+	  <td width=150 class=ylw9 align=center><b>Accessory Name</b></td>
+	  <td width=200 class=ylw9 align=center><b>Placement</b></td>
+	  <td width=70 class=ylw9 align=center><b>consump.</b></td>
+	  <td width=50 class=ylw9 align=center><b>Unit</b></td>
+     </tr>
+
+	{if $acc_NONE}  
+	  <tr>
+		<td colspan=6 align=center class=ssign><br>No Accessory data!<br><br>
+		<input type="hidden" name="PHP_acc_est" value="">
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$acc_use} 
+     <tr bgcolor=#eeeeee height=28>
+	  <td class=snvy align=center nowrap><a href="javascript:Show_acc('{$acc_use[USE].acc_code}')" value='ord_out' style='cursor:pointer'>{$acc_use[USE].acc_code}&nbsp;</a></td>
+	  <td class=snvy >{$acc_use[USE].acc_name}&nbsp;</td>
+	  <td class=snvy >{$acc_use[USE].use_for}&nbsp;</td>
+	  <td class=snvy align=center>{$acc_use[USE].est_1}&nbsp;</td>
+	  <td class=snvy align=center>{$acc_use[USE].unit}&nbsp;</td>
+	 </tr>
+	{/section} 
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ </table>
+    <table width=700 border=0 cellspacing=1 cellpadding=2>
+      <tr bgcolor=#ffffff>
+        <td class=gry9 align=center>
+        <font color=black>Open: </font><u>{$wi.creator}</u>&nbsp;&nbsp;<u>{$wi.open_date}</u>&nbsp;&nbsp;&nbsp;&nbsp;
+        <font color=black>Last Update : </font><u>{if $wi.updator}{$wi.updator}{else}[ None ]{/if}</u>&nbsp;&nbsp;<u>{$wi.last_update}</u>&nbsp;&nbsp;&nbsp;&nbsp;
+        <font color=black>{literal}Submit: {/literal}</font><u>{if $wi.confirmer}{$wi.confirmer}{else}[ None ]{/if}</u>&nbsp;&nbsp;<u>{$wi.cfm_date}</u>
+        </td>
+      </tr>
+    </table>
+    <!--------- wi data end ---------->
+<table border=0 cellspacing=0 cellpadding=2 width=690 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2><form method=POST name=back>
+{if $back_str2 && $edit_non <> 1}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=search_smpl_wi_copy{$copy_search}{$back_str2}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}</form>
+	</td>
+	<td><form method=POST name=edit>
+{if $add_flag}
+		<input type="hidden" name="PHP_action" value="do_smpl_wi_copy">
+		<input type="hidden" name="PHP_wi_num" value="{$wi.wi_num}">
+		<input type="hidden" name="PHP_new_num" value="{$org_wi_num}">
+		<input type="hidden" name="PHP_etd" value="{$org_etd}">
+		<input type="hidden" name="PHP_dept" value="{$wi.dept}">	
+		<input type="hidden" name="PHP_cust" value="{$wi.cust}">
+		<input type="hidden" name="PHP_smpl_id" value="{$org_smpl_id}">
+			
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_back_str2" value="{$back_str2}">
+		<input type=submit value="[  COPY  ]" class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}</form>
+	</td>
+  </tr>
+
+</table>
+{include file="footer.html"}

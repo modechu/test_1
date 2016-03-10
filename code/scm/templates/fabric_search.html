@@ -1,0 +1,87 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 布料開發 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body >
+<br><form METHOD="POST" name="add_fabric">
+{if $add_flag}
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><input type="hidden" name="PHP_action" value="fabric_add">
+		<td class="des" align=center height=28> [ 新增&nbsp;開發布料記錄 ] </td>
+		<td width=60><input type="submit" value="新增" class=select style="width:50;cursor:pointer"></td>
+	</tr>
+</table>
+{/if}
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550>
+      <tr bgcolor=#ffffff></form><form METHOD="POST" name="fabric_search" action="{$PHP_SELF}">
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=600 align=center>
+
+<br></form>
+<br>
+<br>
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><input type="hidden" name="PHP_action" value="fabric_add">
+		<td class="des" align=center height=28> [ 查尋&nbsp;開發布料記錄 ] </td>
+	</tr>
+</table>
+<table border=0 cellspacing=1 cellpadding=1 width=550 bgcolor=#FFFFFF>
+
+  <tr><form METHOD="POST" name="search_supl">
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>Artical #</b> : </td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;
+		<input type=text name="PHP_art_code" size=10 class=select value=""></td>
+    <td class=snvy align=right>布料名稱 : </td>
+    <td colspan=3 class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;
+		<input type=text name="PHP_name" size=45 class=select value=""></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>布料類別 : </td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$select_cat}</td>
+    <td class=snvy align=right>布料成份 : </td>
+    <td colspan=3 class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;
+		<input type=text name="PHP_content" size=45 class=select value=""></td>
+  </tr>
+  <tr>
+  <tr>
+    <td class=snvy align=right>供應商 : </td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$select_supl}</td>
+    <td class=snvy align=right>後整理 : </td>
+    <td class=frnt colspan=3 align=left bgcolor=#CEE4E3>&nbsp;&nbsp;&nbsp;<input type=text name="PHP_finish" size=45 class=select value=""></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>供應商布號 : </td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;<input type=text name="PHP_supl_ref" size=10 class=select value=""></td>
+    <td class=snvy colspan=4 align=right>&nbsp;</td>
+  </tr>
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+             <tr> 
+              <td align=left class=grn9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                ※ 1: 查尋 開發布料資料時，請先輸入或拉選關鍵欄位搜尋。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				※ 2: 需全部列表時，不需輸入任何欄位，直接按下[ 查尋  開發布料資料記錄 ] 按鈕。
+              </td>
+			</tr>
+           <tr> 
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="fabric_search">  
+				<input type=submit value="[ 查尋  開發布料資料記錄 ]" class=select_e style="cursor:pointer; width=100%"></form>
+              </td>
+			</tr>
+          </table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

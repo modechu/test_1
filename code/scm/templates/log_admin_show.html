@@ -1,0 +1,58 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  管理員 工作日誌記錄 :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function tp(url) { parent.top.location.href=url }
+ function cfm(doit) {
+	if ( confirm("Are you sure to delete these record ??")) {
+	location.href=doit;
+	}
+ }
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=0><form>
+<table width=660 border=1 cellspacing=0 cellpadding=2 align=center bgcolor=#EEEEEE>
+{section name=SEC loop=$logs}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#EEEEEE'">
+   <td class=gry9 width=60 align=center><small>{$logs[SEC].id}</small></td>
+   <td class=gry9 width=90 align=center>{$logs[SEC].login_id}</td>
+   <td class=gry9 width=140 align=center><small>{$logs[SEC].date}</small></td>
+   <td class=gry9 width=56 align=center>{$logs[SEC].job}</td>
+   <td class=gry9>{$logs[SEC].description}</td>
+   <td class=snvy width=90 align=center><small>{$logs[SEC].ip}</small></td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    <td class=w9 colspan=3 align=center>
+    	<span class=bgdy>※ message </font>:Above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;USER Working Log!&nbsp;&nbsp;<span class=bgdy>[ Total : {$max_no}  ]</font>
+    </td>
+  </tr>
+  <tr>
+   <td align=center>
+{if $pages[0] > 1}
+   <a href="{$cgistr_get}&PHP_sr_startno=p{$pages[0]}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt=" pre - page"></a>
+  {/if}
+   {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>  
+    {else}
+    <a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    {if $lastpage < $maxpage}
+    <a href="{$cgistr_get}&PHP_sr_startno=n{$lastpage}" style="cursor:pointer">&nbsp;<img src="images/right2.gif" alt="next page" border=0></a>
+{/if}
+    </td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

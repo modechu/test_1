@@ -1,0 +1,443 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  CAPACITY SEARCH .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">@import url(js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar.js"></script>
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script language="JavaScript">
+$(document).ready(function(){
+	$('#PHP_lots_detail_submit').on('click',function(){
+			//判斷日期用(強制輸入日期，且查詢的結束日期不能早於開始日期)
+			var startdate=$('#PHP_lots_detail_begin_date').val();
+			var start=new Date(startdate.replace("-", "/").replace("-", "/"));  
+			var enddate=$('#PHP_lots_detail_end_date').val();
+			var end=new Date(enddate.replace("-", "/").replace("-", "/")); 
+			if(jQuery.trim(startdate)=='')
+			{
+				alert("Please select StartDate");
+				return false;
+			}
+			if(jQuery.trim(enddate)=='')
+			{
+				alert("Please select EndDate");
+				return false;
+			}
+			if(end<start)
+			{
+				alert("EndDate can't be made earlier than StartDate");
+				return false;
+			}			
+		});
+});
+function check_inventory(mat){
+	$.blockUI({ message: '<div><h4>Checking...</h4></div>'});
+	$.ajax({
+			url: 'stock_report.php?PHP_action=check_inventory',
+			type: 'POST',
+			data: {
+				PHP_inventory_factory: $("#PHP_inventory_factory").val(),
+				PHP_mat: mat
+			},
+			error: function(xhr) {
+				$.unblockUI();
+				alert('Ajax request 發生錯誤'+xhr);
+			},
+			success: function(response) {
+				if(response==1){
+					alert("No inventory \n Can't print PDF");
+					$('#inventory_btn').attr('disabled', true);
+				}else{
+					$('#inventory_btn').attr('disabled', false);
+				}
+				$.unblockUI();
+			}
+		});
+}
+
+
+</script>
+{/literal}
+
+</head>
+<body  background=" ">
+<br>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =5 class="des" align=center height=28><font color=yellow><b>[ Stock print 盤點表列印 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$inventory_fty_select}</td>	
+					<td width="140" class=snvy>
+						<b>Order：</b>
+						<input type=text id="PHP_order" name="PHP_order" size=10 class=select value="">
+					</td>
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" onclick="check_inventory('l')"><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc" onclick="check_inventory('a')"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="260" align=left>
+						<input type=hidden name="PHP_action" value="print_inventory">
+						<input type=submit id="inventory_btn" value=" LIST " class=select_e style="cursor:pointer; width=80%">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan =5 class="des" align=center height=28><font color=yellow><b>[ 庫存盤點差異表列印 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$stock_inventory_diff_fty_select}</td>	
+					<td width="140" class=snvy>
+						<b>Order：</b>
+						<input type=text name="PHP_stock_inventory_diff_order" size=10 class=select value="">
+					</td>
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_stock_inventory_diff_mat" value="lots"><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_stock_inventory_diff_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="260" align=left>
+						<input type=hidden name="PHP_action" value="print_stock_inventory_diff">
+						<input type=submit id="inventory_btn" value=" LIST " class=select_e style="cursor:pointer; width=80%">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ Daily report 庫存日報表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_begin_date" name="PHP_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_end_date" name="PHP_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ Stock detail 庫存明細帳 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_detail_begin_date" name="PHP_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_detail_end_date" name="PHP_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock_detail">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ 庫存異動表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_diff_detail_begin_date" name="PHP_diff_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_diff_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_diff_detail_end_date" name="PHP_diff_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_diff_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock_diff_detail">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ Acceptance detail 驗收明細表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy>
+						<b>Order：</b>
+						<input type=text id="PHP_i_order" name="PHP_i_order" size=10 class=select value="">
+					</td>
+				</tr>
+				<tr>
+					
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_i_detail_begin_date" name="PHP_i_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_i_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_i_detail_end_date" name="PHP_i_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_i_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock_i_detail">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ Send detail 發料明細表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy>
+						<b>Order：</b>
+						<input type=text id="PHP_r_order" name="PHP_r_order" size=10 class=select value="">
+					</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_r_detail_begin_date" name="PHP_r_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_r_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_r_detail_end_date" name="PHP_r_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_r_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock_r_detail">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ Return detail 退料明細表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_b_detail_begin_date" name="PHP_b_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_b_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_b_detail_end_date" name="PHP_b_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_b_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_stock_b_detail">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ 訂單別入庫數量統計表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+						<!--<label><input type="checkbox" name="PHP_detail" value="detail"><b>&nbsp;Detail</b></label>-->
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_lots_detail_begin_date" name="PHP_lots_detail_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_lots_detail_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_lots_detail_end_date" name="PHP_lots_detail_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_lots_detail_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_month_lots_detail">
+						<input type=submit id="PHP_lots_detail_submit" value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+
+<form METHOD="POST">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=700 bgcolor=#DDD9D4  align=center>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="1" width="700">
+				<tr>
+					<td bgcolor="#3A2F2A" colspan=3 class="des" align=center height=28><font color=yellow><b>[ 訂單原物料進銷存統計表 ]</b></font</td>
+				</tr>
+				<tr>
+					<td width="140" class=snvy><b>Factory：</b>{$fty_select}</td>					
+					<td width="220" class=snvy>
+						<b>Mat：</b>
+						<label><input type="radio" name="PHP_mat" value="lots" checked><b>&nbsp;Fabric</b></label>
+						<label><input type="radio" name="PHP_mat" value="acc"><b>&nbsp;Acc</b></label>
+					</td>
+					<td width="340" align=left>
+						Date : 
+						<input type=text id="PHP_order_mat_cost_begin_date" name="PHP_order_mat_cost_begin_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_order_mat_cost_begin_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						&nbsp;TO&nbsp;
+						<input type=text id="PHP_order_mat_cost_end_date" name="PHP_order_mat_cost_end_date" size=10 class=select value="">
+						{literal}
+						<script type="text/javascript">Calendar.setup({inputField:"PHP_order_mat_cost_end_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+						{/literal}
+						<input type=hidden name="PHP_action" value="print_order_mat_cost">
+						<input type=submit value=" LIST " class=select_e style="cursor:pointer;">
+					</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

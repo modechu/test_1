@@ -1,0 +1,825 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM System [ BOM for Purchase Order ] ::::::::::===</title>
+<!-- <link rel=stylesheet type="text/css" href="./bom.css"> -->
+<link rel=stylesheet type="text/css" href="./css/scm.css">
+{literal}
+<script language="javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/bom.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<script language="javascript">
+
+function show_tw_rcvd_det(po_nums,mat_cat,mat_id,color,size)
+{
+	var url ="tw_receive.php?PHP_action=get_rcv_det&PHP_po_nums="+po_nums+"&PHP_mat_id="+mat_id+"&PHP_color="+color+"&PHP_size="+size;
+	var nm = 'rcvdpo';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+
+function show_rcvd_det(po_nums,mat_cat,mat_id,color,size)
+{
+	var url ="incoming_material.php?PHP_action=rev_po_det&PHP_po_nums="+po_nums+"&PHP_mat_cat="+mat_cat+"&PHP_mat_id="+mat_id+"&PHP_color="+color+"&PHP_size="+size;
+	var nm = 'rcvdpo';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+
+function show_pre_apb_det(po_nums, mat_cat, mat_id, color, size, ord_num)
+{
+	var url ="apb.php?PHP_action=rev_bom_pre_apb_det&PHP_po_nums="+po_nums+"&PHP_mat_cat="+mat_cat+"&PHP_mat_id="+mat_id+"&PHP_color="+color+"&PHP_size="+size+"&PHP_ord_num="+ord_num;
+	var nm = 'apb';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+
+function show_apb_det(po_nums, mat_cat, mat_id, color, size, ord_num)
+{
+	var url ="apb.php?PHP_action=rcv_bom_apb_det&PHP_po_nums="+po_nums+"&PHP_mat_cat="+mat_cat+"&PHP_mat_id="+mat_id+"&PHP_color="+color+"&PHP_size="+size+"&PHP_ord_num="+ord_num;
+	var nm = 'apb';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+
+function ship_show(bom_id,mat,mat_id,color,size)
+{
+	var url ="supplier_ship.php?PHP_action=get_ship_det&PHP_bom_id="+bom_id+"&PHP_mat="+mat+"&PHP_mat_id="+mat_id+"&PHP_color="+color+"&PHP_size="+size;
+	var nm = 'shippo';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+
+function show_rcv(rcv_num) {
+	var url ="receive.php?PHP_action=rcvd_view&PHP_rcv_num="+rcv_num+"&PHP_resize=1";
+	var nm = 'order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function show_old_ship(bom_id, mat_cat){
+	var url ="po_ship.php?PHP_action=get_old_ship_det&PHP_bom_id="+bom_id+"&PHP_mat_cat="+mat_cat; 
+	var nm = 'shippp';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500,top=50, left=100');
+}
+</script>
+</head>
+<body>
+{/literal}
+
+<table cellpadding="0" cellspacing="0" cols="0" class="title_bg">
+	<tr>
+		<td class="title_l"> Order / BOM :  
+            <a href="javascript:show_order_rec('','{$wi.wi_num}')">{$wi.wi_num}</a>
+        </td>
+		<td class="title_m">[ Purchase Status ]</td>
+		<td class="title_r"> </td>
+	</tr>
+</table>
+
+<table cellpadding="0" cellspacing="0" cols="0" class="txt_item">
+	<tr>
+		<td class="txt_item_top_r">CURRENCY : US$</td>
+	</tr>
+	<tr>
+		<td><hr></td>
+	</tr>
+	<tr>
+		<td>
+            <table>
+                <tr>
+                    <td><img src="{$wi.pic_url}" height="110"></td>
+                    <td>
+                        <table>
+                            <tr>
+                                <td class="txt_item_r">Style No. :</td>
+                                <td class="txt_item_l">{$order.style_num}</td>
+                                <td class="txt_item_r">Customer :</td>
+                                <td class="txt_item_l">{$order.cust}</td>
+                                <td class="txt_item_r">Customer Ref. :</td>
+                                <td class="txt_item_l">{$order.ref}</td>
+                                <td class="txt_item_r">Team :</td>
+                                <td class="txt_item_l">{$order.dept}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">Factory :</td>
+                                <td class="txt_item_l">{$order.factory}</td>
+                                <td class="txt_item_r">Style Type :</td>
+                                <td class="txt_item_l">{$order.style}</td>
+                                <td class="txt_item_r">Q'ty :</td>
+                                <td class="txt_item_l">{$order.qty|number_format}{$order.unit}</td>
+                                <td class="txt_item_r">SU :</td>
+                                <td class="txt_item_l">{$order.f_su}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">FOB @ :</td>
+                                <td class="txt_item_l">$ {$order.uprice}</td>
+                                <td class="txt_item_r">Quota Cat. :</td>
+                                <td class="txt_item_l">{$order.quota}</td>
+                                <td class="txt_item_r">Smpl ord No. :</td>
+                                <td class="txt_item_l"><a href="javascript:smpl_out('{$order.smpl_ord}')" value='ord_out'>{$order.smpl_ord}</a></td>
+                                <td class="txt_item_r">Size :</td>
+                                <td class="txt_item_l">{$order.size}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8"><hr></td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">ETD :</td>
+                                <td class="txt_item_l">{$order.etd}</td>
+                                <td class="txt_item_r">ETP. :</td>
+                                <td class="txt_item_l">{$order.etp}</td>
+                                <td class="txt_item_r">Est. Lead Time :</td>
+                                <td class="txt_item_l">{$lead_time} days</td>
+                                <td class="txt_item_r">Calc. IE :</td>
+                                <td class="txt_item_l">{$order.ie1}</td> 
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+	<tr>
+		<td><hr></td>
+	</tr>
+</table>
+<table cellpadding="0" cellspacing="0" cols="0">
+	<!------- BOM 主料記錄 --------- -->
+	{section name=BOM loop=$bom_lots.bom} 
+	{if $smarty.section.BOM.index % 16 == 0}
+	<tr>
+		<td class="BomName" id="HT-name">Fab. Name <img id="HT-name" src="./js/src/css/img/nav-right.gif"></td>
+		<td class="BomName" id="H-name" style="display:none;">Fab. Placement</td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName" id="HT-po">Purchased <img id="HT-po" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-po" style="display:none;">Purchased Detail</td>
+ 		<td class="BomName" id="HT-ship">Ship <img id="HT-ship" src="./js/src/css/img/nav-right.gif"></td>
+ 		<td class="BomName" id="H-ship" style="display:none;">Ship Detail</td>
+		<td class="BomName">Received</td>
+		<td class="BomName">Apb</td>
+		<td class="BomName">TW Ship</td>
+	</tr>
+	{/if}				
+	{if $bom_lots.bom[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}
+		<td class="BomValueLeft"><a href="javascript:Show_fab('{$bom_lots.bom[BOM].lots_code}')" value='ord_out' style='cursor:pointer' title='{$bom_lots.bom[BOM].lots_code}'>{$bom_lots.bom[BOM].lots_name}</a></td>
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$bom_lots.bom[BOM].use_for}</td>
+		<td class="BomValueLeft">{$bom_lots.bom[BOM].color}</td>
+		<td class="BomValueRight">{$bom_lots.bom[BOM].est_1|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_lots.bom[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].unit}</td>
+		{if $bom_lots.bom[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+        <!-- 採購 -->
+		<td class="BomValueRight">&nbsp;
+            {if $bom_lots.bom[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_lots.bom[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</span><br>{/if}
+            {if $bom_lots.bom[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_lots.bom[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</span>{/if}
+		</td>
+		<td class="BomValueLeft" id="H-po" style="display:none;" nowrap>
+			&nbsp;
+			{section name=SHIP loop=$bom_lots.bom[BOM].po.ship}
+                {if $smarty.section.SHIP.index > 0}<hr class="bar_span">{/if}
+				<a href="javascript:po_show('{$bom_lots.bom[BOM].po.ship[SHIP].ap_num}')">{$bom_lots.bom[BOM].po.ship[SHIP].po_num}</a>
+				{if $bom_lots.bom[BOM].po.ship[SHIP].po_num}&nbsp;( {$bom_lots.bom[BOM].po.ship[SHIP].statuss} ) {/if}
+				{if $bom_lots.bom[BOM].po.ship[SHIP].special == 1} , <font class="f_green">Extra</font> {/if}
+				{if $bom_lots.bom[BOM].po.ship[SHIP].special >= 2} , <font class="f_green">P.P.</font> {/if}				
+			{/section}
+		</td>
+        
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight">
+            <a href="javascript:ship_show('{$bom_lots.bom[BOM].id}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}','{$bom_lots.bom[BOM].po.ship.0.mat_id}','{$bom_lots.bom[BOM].po.ship.0.color}','{$bom_lots.bom[BOM].po.ship.0.size}')">
+            {if $bom_lots.bom[BOM].po.ship_qty > 0}<img src="images/{$bom_lots.bom[BOM].po.ship.0.ship_way}.png" border="0">&nbsp;{$bom_lots.bom[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}{else}&nbsp;{/if}
+            </a>
+        </td>
+		<td class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$bom_lots.bom[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $bom_lots.bom[BOM].po.ship[SHIP].ship_date}
+			<font class="f_etd"><a style="cursor:pointer;" onclick="show_old_ship('{$bom_lots.bom[BOM].id}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}')">ETD:{$bom_lots.bom[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font class="f_eta">ETA:{$bom_lots.bom[BOM].po.ship[SHIP].ship_eta_date}</a></font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+		</td>
+        
+		<!-- 驗收 -->
+		<td class="BomValueRight">
+			{if $bom_lots.bom[BOM].po.tw_rcv_qty > 0}<a href="javascript:show_tw_rcvd_det('{$bom_lots.bom[BOM].po.po_nums}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}','{$bom_lots.bom[BOM].po.ship.0.mat_id}','{$bom_lots.bom[BOM].po.ship.0.color}','{$bom_lots.bom[BOM].po.ship.0.size}')" value='order' style='cursor:pointer' title="Taiwan Recevied" class="underline_gray">{$bom_lots.bom[BOM].po.tw_rcv_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $bom_lots.bom[BOM].po.rcv_qty > 0}<a href="javascript:show_rcvd_det('{$bom_lots.bom[BOM].po.po_nums}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}','{$bom_lots.bom[BOM].po.ship.0.mat_id}','{$bom_lots.bom[BOM].po.ship.0.color}','{$bom_lots.bom[BOM].po.ship.0.size}')" value='order' style='cursor:pointer' title="Factory Recevied" class="underline_black">{$bom_lots.bom[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<!-- 驗收付款 -->
+		<td class="BomValueRight">
+			{if $bom_lots.bom[BOM].po.pre_apb_qty > 0}<a href="javascript:show_pre_apb_det('{$bom_lots.bom[BOM].po.po_nums}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}','{$bom_lots.bom[BOM].po.ship.0.mat_id}','{$bom_lots.bom[BOM].po.ship.0.color}','{$bom_lots.bom[BOM].po.ship.0.size}','{$wi.wi_num}')" value='order' style='cursor:pointer' title="Pre-Account Payable" class="underline_gray">{$bom_lots.bom[BOM].po.pre_apb_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $bom_lots.bom[BOM].po.apb_qty > 0}<a href="javascript:show_apb_det('{$bom_lots.bom[BOM].po.po_nums}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}','{$bom_lots.bom[BOM].po.ship.0.mat_id}','{$bom_lots.bom[BOM].po.ship.0.color}','{$bom_lots.bom[BOM].po.ship.0.size}','{$wi.wi_num}')" value='order' style='cursor:pointer' title="Account Payable" class="underline_black">{$bom_lots.bom[BOM].po.apb_qty|number_format:"2f"}&nbsp;{$bom_lots.bom[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<td class="BomValueRight">
+			{if $bom_lots.bom[BOM].po.tw_ship_qty > 0}<a href="javascript:show_old_ship('{$bom_lots.bom[BOM].id}','{$bom_lots.bom[BOM].po.ship.0.mat_cat}')" value='order' style='cursor:pointer' title="" class="underline_black">{$bom_lots.bom[BOM].po.tw_ship_qty|number_format:"2f"}&nbsp;</a>{else}&nbsp;{/if}
+		</td>
+		{/if}
+	</tr>
+	{if $bom_lots.bom[BOM].po.ship_rmk}
+	<tr id="Bom_TR">	
+		<td class="BomValueLeft" colspan="11">{$bom_lots.bom[BOM].po.ship_rmk}</td>
+	</tr>
+	{/if}
+	{section name=AP loop=$bom_lots.bom[BOM].spec_ap}
+	{if $bom_lots.bom[BOM].spec_ap[AP].ship_rmk}
+	<tr id="Bom_TR">	
+		<td class="BomValueLeft" colspan="11">{$bom_lots.bom[BOM].spec_ap[AP].ship_rmk}</td>
+	</tr>
+	{/if}
+	{/section}
+	{/section}
+
+
+	<!------- BOM 副料記錄 --------- -->
+	{section name=BOM loop=$bom_acc.bom} 
+	{if $smarty.section.BOM.index % 16 == 0}
+	<tr>
+		<td class="BomName" id="HT-name">Acc. Name <img id="HT-name" src="./js/src/css/img/nav-right.gif"></td>
+		<td class="BomName" id="H-name" style="display:none;">Acc. Placement</td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName" id="HT-po">Purchased <img id="HT-po" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-po" style="display:none;">Purchased Detail</td>
+		<td class="BomName" id="HT-ship">Ship <img id="HT-ship" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-ship" style="display:none;">Ship Detail</td>
+		<td class="BomName">Received</td>
+		<td class="BomName">Apb</td>
+		<td class="BomName">TW Ship</td>
+	</tr>
+	{/if}	
+	{if $bom_acc.bom[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft"><a href="javascript:Show_acc('{$bom_acc.bom[BOM].acc_code}')" value='ord_out' style='cursor:pointer' title='{$bom_acc.bom[BOM].acc_code}'>{$bom_acc.bom[BOM].acc_name}</a></td>	
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$bom_acc.bom[BOM].use_for}</td>
+		<td class="BomValueLeft">{$bom_acc.bom[BOM].color}</td>
+		<td class="BomValueRight">{$bom_acc.bom[BOM].est_1|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_acc.bom[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].unit}</td>
+		{if $bom_acc.bom[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+        <!-- 採購 -->
+		<td class="BomValueRight">&nbsp;
+            {if $bom_acc.bom[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_acc.bom[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</span><br>{/if}
+            {if $bom_acc.bom[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_acc.bom[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</span>{/if}
+		</td>		
+        <td class="BomValueLeft" id="H-po" style="display:none;" nowrap>
+			&nbsp;
+			{section name=SHIP loop=$bom_acc.bom[BOM].po.ship}
+                {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+				<a href="javascript:po_show('{$bom_acc.bom[BOM].po.ship[SHIP].ap_num}')">{$bom_acc.bom[BOM].po.ship[SHIP].po_num}</a>
+				{if $bom_acc.bom[BOM].po.ship[SHIP].po_num}( {$bom_acc.bom[BOM].po.ship[SHIP].statuss} ) {/if}
+				{if $bom_acc.bom[BOM].po.ship[SHIP].special == 1} , <font color="green">Extra</font> {/if}
+				{if $bom_acc.bom[BOM].po.ship[SHIP].special >= 2 } , <font color="green">P.P.</font> {/if}				
+				{if $bom_acc.bom[BOM].po.ship[SHIP].ann_num}&nbsp;<font color=red>{$bom_acc.bom[BOM].po.ship[SHIP].ann_num}</font>{/if}					
+			{/section}
+			
+			
+		</td>
+        
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight" {if $bom_acc.bom[BOM].po.arrival_active == 'y'}bgcolor="#f6ffe3"{/if}>
+            <a href="javascript:ship_show('{$bom_acc.bom[BOM].id}','{$bom_acc.bom[BOM].po.ship.0.mat_cat}','{$bom_acc.bom[BOM].po.ship.0.mat_id}','{$bom_acc.bom[BOM].po.ship.0.color}','{$bom_acc.bom[BOM].po.ship.0.size}')">
+            {if $bom_acc.bom[BOM].po.ship_qty > 0} <img src="images/{$bom_acc.bom[BOM].po.ship.0.ship_way}.png" border="0">&nbsp;{$bom_acc.bom[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}{else}&nbsp;{/if}
+            </a>
+        </td>
+		<td class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$bom_acc.bom[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $bom_acc.bom[BOM].po.ship[SHIP].ship_date}
+			<font color="#222222">ETD:{$bom_acc.bom[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font color="#bf6000">ETA:{$bom_acc.bom[BOM].po.ship[SHIP].ship_eta_date}</font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+            
+            
+		</td>
+        
+		<!-- 驗收 -->
+		<td class="BomValueRight" {if $bom_acc.bom[BOM].acc_cat == 1} title="主要副料" bgcolor="FFEBFF"{/if}>
+			{if $bom_acc.bom[BOM].po.tw_rcv_qty > 0}<a href="javascript:show_tw_rcvd_det('{$bom_acc.bom[BOM].bom_id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer' title="Taiwan Recevied" class="underline_gray">{$bom_acc.bom[BOM].po.tw_rcv_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $bom_acc.bom[BOM].po.rcv_qty > 0}<a href="javascript:show_rcvd_det('{$bom_acc.bom[BOM].bom_id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer' title="Factory Recevied" class="underline_black">{$bom_acc.bom[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<!-- 驗收付款 -->
+		<td class="BomValueRight">
+			{if $bom_acc.bom[BOM].po.pre_apb_qty > 0}<a href="javascript:show_pre_apb_det('{$bom_acc.bom[BOM].po.po_nums}','{$bom_acc.bom[BOM].po.ship.0.mat_cat}','{$bom_acc.bom[BOM].po.ship.0.mat_id}','{$bom_acc.bom[BOM].po.ship.0.color}','{$bom_acc.bom[BOM].po.ship.0.size}','{$wi.wi_num}')" value='purchase' style='cursor:pointer' title="Pre-Account Payable" class="underline_gray">{$bom_acc.bom[BOM].po.pre_apb_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $bom_acc.bom[BOM].po.apb_qty > 0}<a href="javascript:show_apb_det('{$bom_acc.bom[BOM].po.po_nums}','{$bom_acc.bom[BOM].po.ship.0.mat_cat}','{$bom_acc.bom[BOM].po.ship.0.mat_id}','{$bom_acc.bom[BOM].po.ship.0.color}','{$bom_acc.bom[BOM].po.ship.0.size}','{$wi.wi_num}')" value='purchase' style='cursor:pointer' title="Account Payable" class="underline_black">{$bom_acc.bom[BOM].po.apb_qty|number_format:"2f"}&nbsp;{$bom_acc.bom[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<td class="BomValueRight">
+			{if $bom_acc.bom[BOM].po.tw_ship_qty > 0}<a href="javascript:show_old_ship('{$bom_acc.bom[BOM].id}','{$bom_acc.bom[BOM].po.ship.0.mat_cat}')" value='order' style='cursor:pointer' title="" class="underline_black">{$bom_acc.bom[BOM].po.tw_ship_qty|number_format:"2f"}&nbsp;</a>{else}&nbsp;{/if}
+		</td>
+		{/if}
+	</tr>
+	{if $bom_acc.bom[BOM].po.ship_rmk}
+	<tr id="Bom_TR">
+		<td class="BomValueLeft" colspan="11">{$bom_acc.bom[BOM].po.ship_rmk}</td>
+	</tr>
+	{/if}
+	{section name=AP loop=$bom_acc.bom[BOM].spec_ap}
+	{if $bom_acc.bom[BOM].spec_ap[AP].ship_rmk}
+	<tr id="Bom_TR">
+		<td class="BomValueLeft" colspan="11">{$bom_acc.bom[BOM].spec_ap[AP].ship_rmk}</td>
+	</tr>
+	{/if}
+	{/section}
+	{/section}	
+
+	{if $ext_mat}
+	<!------- 物料補 Title --------- -->
+	<tr><td colspan="11" height="9"></td></tr>
+	<tr>
+		<td class="BomName" colspan="11">Extra Material</td>
+	</tr>	
+	<tr>
+		<td class="BomName" id="HT-name">Name</td>
+		<td class="BomName" id="H-name" style="display:none;">Placement <img id="HT-name" src="./js/src/css/img/nav-right.gif"></td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName" id="HT-po">Purchased <img id="HT-po" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-po" style="display:none;">Purchased Detail</td>
+		<td class="BomName" id="HT-ship">Ship <img id="HT-ship" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-ship" style="display:none;">Ship Detail</td>
+		<td class="BomName">Received</td>
+		<td class="BomName">Apb</td>
+	</tr>
+	{section name=BOM loop=$ext_mat} 
+	{if $ext_mat[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}
+		<td class="BomValueLeft"><a href="javascript:{if $ext_mat[BOM].mat_cat == 'a'}Show_acc{else}Show_fab{/if}('{$ext_mat[BOM].mat_code}')" value='ord_out' style='cursor:pointer' title='{$ext_mat[BOM].mat_code}'>{$ext_mat[BOM].mat_name}</a></td>
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$ext_mat[BOM].use_for}</td>
+		<td class="BomValueLeft">{$ext_mat[BOM].color}</td>
+		<td class="BomValueCenter">&nbsp;</td>
+		<td class="BomValueRight">&nbsp;
+            {if $ext_mat[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$ext_mat[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$ext_mat[BOM].po.unit}</span><br>{/if}
+            {if $ext_mat[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$ext_mat[BOM].po.po_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].po.unit}</span>{/if}
+		</td>
+        
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight">{if $ext_mat[BOM].ship_qty}{$ext_mat[BOM].ship_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}{/if}</td>
+		<td class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$ext_mat.bom[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $ext_mat.bom[BOM].po.ship[SHIP].ship_date}
+			<font color="#222222">ETD:{$ext_mat.bom[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font color="#bf6000">ETA:{$ext_mat.bom[BOM].po.ship[SHIP].ship_eta}</font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+		</td>
+        
+		<td class="BomValueRight">
+			{if $ext_mat[BOM].tw_rcv_qty > 0}<a href="javascript:show_rcv('{$ext_mat[BOM].tw_rcv}')" value='order' style='cursor:pointer' title="Taiwan Recevied" class="underline_gray">{$ext_mat[BOM].tw_rcv_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $ext_mat[BOM].rcv_qty > 0}<a href="javascript:show_rcv('{$ext_mat[BOM].rcv}')" value='order' style='cursor:pointer' title="Factory Recevied" class="underline_black">{$ext_mat[BOM].rcv_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}</a>{else}&nbsp;{/if}
+			
+		</td>
+		<td class="BomValueRight">&nbsp;
+			{if $ext_mat[BOM].pre_apb_qty > 0}<a href="javascript:show_apb('{$ext_mat[BOM].pre_apb_rcv_num}','{$ext_mat[BOM].pre_apb_payment}','{$ext_mat[BOM].pre_apb_status}')" value='purchase' style='cursor:pointer' title="Pre-Account Payable" class="underline_gray">{$ext_mat[BOM].pre_apb_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}</a>{else}&nbsp;{/if}<br>
+			<hr class="bar_span">
+			{if $ext_mat[BOM].apb_qty > 0}<a href="javascript:show_apb('{$ext_mat[BOM].apb_rcv_num}','{$ext_mat[BOM].apb_payment}','{$ext_mat[BOM].apb_status}')" value='purchase' style='cursor:pointer' title="Account Payable" class="underline_black">{$ext_mat[BOM].apb_qty|number_format:"2f"}&nbsp;{$ext_mat[BOM].unit}</a>{else}&nbsp;{/if}
+		</td>
+		<td class="BomValueLeft">&nbsp;
+			{section name=SHIP loop=$ext_mat.bom[BOM].po.ship}
+			{if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+				<a href="javascript:po_show('{$ext_mat.bom[BOM].po.ship[SHIP].ap_num}')">{$ext_mat.bom[BOM].po.ship[SHIP].po_num}</a>
+				{if $ext_mat.bom[BOM].po.ship[SHIP].po_num}( {$ext_mat.bom[BOM].po.ship[SHIP].statuss} ) {/if}
+				{if $ext_mat.bom[BOM].po.ship[SHIP].special == 1} , <font color="green">Extra</font> {/if}
+				{if $ext_mat.bom[BOM].po.ship[SHIP].special >= 2 } , <font color="green">P.P.</font> {/if}				
+				{if $ext_mat.bom[BOM].po.ship[SHIP].ann_num}&nbsp;&nbsp;&nbsp;<font color=red>{$ext_mat.bom[BOM].po.ship[SHIP].ann_num}</font>{/if}					
+				{if $ext_mat.bom[BOM].po.ship[SHIP].ship_way}<br>&nbsp;
+				<a href="javascript:ship_show('{$ext_mat.bom[BOM].po.ship[SHIP].po_spare}','{$ext_mat.bom[BOM].po.det_special}','{$ext_mat.bom[BOM].mat_code}','{$ext_mat.bom[BOM].po.ship[SHIP].po_num}','{$ext_mat.bom[BOM].po.unit}')">
+					<font color=#222>Ship:{$ext_mat.bom[BOM].po.ship[SHIP].ship_date}</font> <img src="images/{$ext_mat.bom[BOM].po.ship[SHIP].ship_way}.png" border="0"> {$ext_mat.bom[BOM].po.ship[SHIP].ship_eta}
+				</a>
+				{/if}			
+			{/section}
+			
+					
+			<a href="javascript:po_show('{$ext_mat[BOM].ap_num}')">{$ext_mat[BOM].po_num}</a>
+			{if $ext_mat[BOM].po_num}( {$ext_mat[BOM].statuss} ){/if}
+			{if $ext_mat[BOM].ann_num}&nbsp;&nbsp;&nbsp;<font color=red>{$ext_mat[BOM].ann_num}</font>{/if}
+			{if $ext_mat[BOM].special >= 2 } , <font color="green">P.P.</font> {/if}
+			{if $ext_mat[BOM].ship_way}<br>&nbsp;
+						
+			<a href="javascript:ship_show('{$ext_mat[BOM].po_spare}','{$ext_mat[BOM].det_special}','{$ext_mat[BOM].mat_code}','{$ext_mat[BOM].po_num}','{$ext_mat[BOM].unit}')">
+				<font color=#222>Ship:{$ext_mat[BOM].ship_date}</font> <img src="images/{$ext_mat[BOM].ship_way}.png" border="0"> {$ext_mat[BOM].ship_eta}
+			</a>
+			{/if}			
+		</td>
+	</tr>
+	{/section}
+	{/if}
+
+
+	{if $bom_lots.fty || $bom_acc.fty}	
+	<!------- 主料 bom Title --------- -->
+	<tr>
+        <td colspan="11" height="9"></td>
+    </tr>		
+	<tr>
+		<td class="BomName" colspan="11">Factory Sourcing</td>
+	</tr>
+	<tr>
+		<td class="BomName" id="HT-name">Name <img id="HT-name" src="./js/src/css/img/nav-right.gif"></td>
+		<td class="BomName" id="H-name" style="display:none;">Placement</td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName" id="HT-po">Purchased <img id="HT-po" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-po" style="display:none;">Purchased Detail</td>
+		<td class="BomName" id="HT-ship">Ship <img id="HT-ship" src="./js/src/css/img/nav-right.gif"></td>
+        <td class="BomName" id="H-ship" style="display:none;">Ship Detail</td>
+		<td class="BomName">Received</td>
+		<td class="BomName">Apb</td>
+	</tr>
+	<!------- BOM 主料記錄 --------- -->
+	{section name=BOM loop=$bom_lots.fty} 
+	{if $bom_lots.fty[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft"><a href="javascript:Show_fab('{$bom_lots.fty[BOM].lots_code}')" value='ord_out' style='cursor:pointer' title='{$bom_lots.fty[BOM].lots_code}'>{$bom_lots.fty[BOM].lots_name}</a></td>
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$bom_lots.fty[BOM].use_for}</td>
+		<td class="BomValueLeft">{$bom_lots.fty[BOM].color}</td>
+		<td class="BomValueRight">{$bom_lots.fty[BOM].est_1|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_lots.fty[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].unit}</td>
+		{if $bom_lots.fty[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+		<td class="BomValueRight">&nbsp;
+        {if $bom_lots.fty[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_lots.fty[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].po.unit}</span><br>{/if}
+        {if $bom_lots.fty[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_lots.fty[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].po.unit}</span>{/if}
+		</td>	
+		
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight">{if $bom_lots.fty[BOM].po.ship_qty > 0}{$bom_lots.fty[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].po.unit}{else}&nbsp;{/if}</td>
+		<td class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$bom_lots.fty[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $bom_lots.fty[BOM].po.ship[SHIP].ship_date}
+			<font color="#222222">ETD:{$bom_lots.fty[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font color="#bf6000">ETA:{$bom_lots.fty[BOM].po.ship[SHIP].ship_eta}</font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+		</td>
+		<td class="BomValueRight">
+			{if $bom_lots.fty[BOM].po.tw_rcv_qty > 0}<a href="javascript:show_tw_rcvd_det('{$bom_lots.fty[BOM].po.id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer'>&nbsp;{$bom_lots.fty[BOM].po.tw_rcv_qty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			{if $bom_lots.fty[BOM].po.rcv_qty > 0}<a href="javascript:show_rcvd_det('{$bom_lots.fty[BOM].po.id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer'>&nbsp;{$bom_lots.fty[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_lots.fty[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<td class="BomValueLeft">&nbsp;</td>
+
+		<td class="BomValueLeft">
+			&nbsp;
+			{section name=SHIP loop=$bom_lots.fty[BOM].po.ship}
+			{if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+				<a href="javascript:po_show('{$bom_lots.fty[BOM].po.ship[SHIP].ap_num}')">{$bom_lots.fty[BOM].po.ship[SHIP].po_num}</a>
+				{if $bom_lots.fty[BOM].po.ship[SHIP].po_num}( {$bom_lots.fty[BOM].po.ship[SHIP].statuss} ) {/if}
+				{if $bom_lots.fty[BOM].po.ship[SHIP].special == 1} , <font color="green">Extra</font> {/if}
+				{if $bom_lots.fty[BOM].po.ship[SHIP].special >= 2 } , <font color="green">P.P.</font> {/if}				
+				{if $bom_lots.fty[BOM].po.ship[SHIP].ann_num}&nbsp;&nbsp;&nbsp;<font color=red>{$bom_lots.fty[BOM].po.ship[SHIP].ann_num}</font>{/if}					
+				{if $bom_lots.fty[BOM].po.ship[SHIP].ship_way}<br>&nbsp;
+				<a href="javascript:ship_show('{$bom_lots.fty[BOM].po.ship[SHIP].po_spare}','{$bom_lots.fty[BOM].po.det_special}','{$bom_lots.fty[BOM].lots_code}','{$bom_lots.fty[BOM].po.ship[SHIP].po_num}','{$bom_lots.fty[BOM].po.unit}')">
+					<font color=#222>Ship:{$bom_lots.fty[BOM].po.ship[SHIP].ship_date}</font> <img src="images/{$bom_lots.fty[BOM].po.ship[SHIP].ship_way}.png" border="0"> {$bom_lots.fty[BOM].po.ship[SHIP].ship_eta}
+				</a>
+				{/if}			
+			{/section}
+		</td>
+		{/if}
+	</tr>
+	{/section}
+
+	{section name=BOM loop=$bom_acc.fty} 
+	{if $bom_acc.fty[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft" nowrap>&nbsp;<a href="javascript:Show_acc('{$bom_acc.fty[BOM].acc_code}')" value='ord_out' style='cursor:pointer'>{$bom_acc.fty[BOM].acc_code}</a></td>
+		<td class="BomValueLeft">{$bom_acc.fty[BOM].acc_name}</td>	
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$bom_acc.fty[BOM].use_for}</td>
+		<td class="BomValueRight">{$bom_acc.fty[BOM].est_1|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_acc.fty[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].unit}</td>
+		{if $bom_acc.fty[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+		<td class="BomValueRight">&nbsp;
+            {if $bom_acc.fty[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_acc.fty[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].po.unit}</span><br>{/if}
+            {if $bom_acc.fty[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_acc.fty[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].po.unit}</span>{/if}
+		</td>
+		
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight">{if $bom_acc.fty[BOM].po.ship_qty > 0}{$bom_acc.fty[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].po.unit}{else}&nbsp;{/if}</td>
+		<td class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$bom_acc.fty[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $bom_acc.fty[BOM].po.ship[SHIP].ship_date}
+			<font color="#222222">ETD:{$bom_acc.fty[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font color="#bf6000">ETA:{$bom_acc.fty[BOM].po.ship[SHIP].ship_eta}</font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+		</td>
+        
+		<td class="BomValueRight">
+			{if $bom_acc.fty[BOM].po.tw_rcv_qty > 0}<a href="javascript:show_tw_rcvd_det('{$bom_acc.fty[BOM].po.id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer'>&nbsp;{$bom_acc.fty[BOM].po.tw_rcv_qty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].po.unit}</a>{else}&nbsp;{/if}<br>
+			{if $bom_acc.fty[BOM].po.rcv_qty > 0}<a href="javascript:show_rcvd_det('{$bom_acc.fty[BOM].po.id}','{$wi.wi_num}')" value='purchase' style='cursor:pointer'>&nbsp;{$bom_acc.fty[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_acc.fty[BOM].po.unit}</a>{else}&nbsp;{/if}
+		</td>
+		<td class="BomValueLeft">&nbsp;</td>
+
+		<td class="BomValueLeft">
+			&nbsp;
+			{section name=SHIP loop=$bom_acc.fty[BOM].po.ship}
+			{if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+				<a href="javascript:po_show('{$bom_acc.fty[BOM].po.ship[SHIP].ap_num}')">{$bom_acc.fty[BOM].po.ship[SHIP].po_num}</a>
+				{if $bom_acc.fty[BOM].po.ship[SHIP].po_num}( {$bom_acc.fty[BOM].po.ship[SHIP].statuss} ) {/if}
+				{if $bom_acc.fty[BOM].po.ship[SHIP].special == 1} , <font color="green">Extra</font> {/if}
+				{if $bom_acc.fty[BOM].po.ship[SHIP].special >= 2 } , <font color="green">P.P.</font> {/if}				
+				{if $bom_acc.fty[BOM].po.ship[SHIP].ann_num}&nbsp;&nbsp;&nbsp;<font color=red>{$bom_acc.fty[BOM].po.ship[SHIP].ann_num}</font>{/if}					
+				{if $bom_acc.fty[BOM].po.ship[SHIP].ship_way}<br>&nbsp;
+				<a href="javascript:ship_show('{$bom_acc.fty[BOM].po.ship[SHIP].po_spare}','{$bom_acc.fty[BOM].po.det_special}','{$bom_acc.fty[BOM].acc_code}','{$bom_acc.fty[BOM].po.ship[SHIP].po_num}','{$bom_acc.fty[BOM].po.unit}')">
+					<font color=#222>Ship:{$bom_acc.fty[BOM].po.ship[SHIP].ship_date}</font> <img src="images/{$bom_acc.fty[BOM].po.ship[SHIP].ship_way}.png" border="0"> {$bom_acc.fty[BOM].po.ship[SHIP].ship_eta}
+				</a>
+				{/if}			
+			{/section}
+		</td>
+	{/if}
+	</tr>
+	{/section}
+	{/if}
+
+	{if $bom_lots.cust || $bom_acc.acc}
+	<!------- 主料 bom Title --------- -->
+	<tr><td colspan="11" height="9"></td></tr>
+	<tr>
+		<td colspan="11" class="BomName">Customer Support</td>
+	</tr>
+	<tr>
+		<td class="BomName" id="HT-name">Name</td>
+		<td class="BomName" id="H-name" style="display:none;">Placement</td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName" id="HT-po">Purchased</td>
+        <td class="BomName" id="H-po" style="display:none;">Purchased Detail</td>
+		<td class="BomName" id="HT-ship">Ship</td>
+        <td class="BomName" id="H-ship" style="display:none;">Ship Detail</td>
+		<td class="BomName">Received</td>
+		<td class="BomName">Apb</td>
+	</tr>
+	<!------- BOM 主料記錄 --------- -->
+	{section name=BOM loop=$bom_lots.cust} 
+	{if $bom_lots.cust[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft"><a href="javascript:Show_fab('{$bom_lots.cust[BOM].lots_code}')" value='ord_out' style='cursor:pointer' title='{$bom_lots.cust[BOM].lots_code}'>{$bom_lots.cust[BOM].lots_name}</a></td>
+		<td class="BomValueLeft" id="H-name" style="display:none;">{$bom_lots.cust[BOM].use_for}</td>
+		<td class="BomValueRight">{$bom_lots.cust[BOM].est_1|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_lots.cust[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].unit}</td>
+		{if $bom_lots.cust[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+		<td class="BomValueRight">&nbsp;
+            {if $bom_lots.cust[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_lots.cust[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].po.unit}</span><br>{/if}
+            {if $bom_lots.cust[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_lots.cust[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].po.unit}</span>{/if}
+		</td>
+        <!-- 供應商出貨 -->
+		<td class="BomValueRight">{if $bom_lots.cust[BOM].po.ship_qty > 0}{$bom_lots.cust[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].po.unit}{else}&nbsp;{/if}</td>
+		<td  class="BomValueCenter" id="H-ship" style="display:none;" nowrap>
+            {section name=SHIP loop=$bom_lots.cust[BOM].po.ship}
+            {if $smarty.section.SHIP.index > 0}<br><hr class="bar_span">&nbsp;{/if}
+            {if $bom_lots.cust[BOM].po.ship[SHIP].ship_date}
+			<font color="#222222">ETD:{$bom_lots.cust[BOM].po.ship[SHIP].ship_date}</font>&nbsp;/&nbsp;<font color="#bf6000">ETA:{$bom_lots.cust[BOM].po.ship[SHIP].ship_eta}</font>
+            {else}
+            &nbsp;
+            {/if}
+            {sectionelse}
+            &nbsp;
+            {/section}
+            
+            
+		</td>
+        
+		<td class="BomValueRight">{if $bom_lots.cust[BOM].po.rcv_qty > 0}{$bom_lots.cust[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].po.unit}{else}&nbsp;{/if}</td>
+		<td class="BomValueRight">{if $bom_lots.cust[BOM].po.apb_qty > 0}{$bom_lots.cust[BOM].po.apb_qty|number_format:"2f"}&nbsp;{$bom_lots.cust[BOM].po.unit}{else}&nbsp;{/if}</td>
+
+		<td class="BomValueLeft">
+		<a href="javascript:po_show('{$bom_lots.cust[BOM].ap_mark}')">{$bom_lots.cust[BOM].po_num}</a>
+		<!-- STATUS -->
+		{if $bom_lots.cust[BOM].po_num}( {$bom_lots.cust[BOM].statuss} ){/if}
+		<!-- NOTE -->
+		{if $bom_lots.cust[BOM].ann_num}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>{$bom_lots.cust[BOM].ann_num}</font><br>{/if}
+		<!-- SHIP -->
+		{section name=AP loop=$bom_lots.cust[BOM].spec_ap}<br>
+		<a href="javascript:po_show('{$bom_lots.cust[BOM].spec_ap[AP].ap_num}')">{$bom_lots.cust[BOM].spec_ap[AP].po_num}</a>
+		<!-- STATUS -->
+		{if $bom_lots.cust[BOM].spec_ap[AP].po_num}( {$bom_lots.cust[BOM].spec_ap[AP].statuss} ){/if}
+		<!-- NOTE -->
+		{if $bom_lots.cust[BOM].spec_ap[AP].ann_num}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>{$bom_lots.cust[BOM].spec_ap[AP].ann_num}</font><br><br>{/if}
+		{/section}&nbsp;
+		</td>
+		{/if}
+	</tr>
+	{/section}
+	{section name=BOM loop=$bom_acc.acc} 
+	{if $bom_acc.acc[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft" nowrap>&nbsp;<a href="javascript:Show_acc('{$bom_acc.acc[BOM].acc_code}')" value='ord_out' style='cursor:pointer'>{$bom_acc.acc[BOM].acc_code}</a></td>
+		<td class="BomValueLeft">{$bom_acc.acc[BOM].acc_name}</td>	
+		<td class="BomValueLeft">{$bom_acc.acc[BOM].use_for}</td>
+		<td class="BomValueRight">{$bom_acc.acc[BOM].est_1|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].unit}</td>
+		<td class="BomValueRight">{$bom_acc.acc[BOM].bom_qty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].unit}</td>
+		{if $bom_acc.acc[BOM].ap_mark == 'stock'}
+		<td class="BomValueCenter" colspan="6"> = = = STOCK = = = </td>
+		{else}
+		<td class="BomValueRight">&nbsp;
+            {if $bom_acc.acc[BOM].po.po_uqty > 0}<span style="color:#999;cursor:default;" title="Un APV">{$bom_acc.acc[BOM].po.po_uqty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].po.unit}</span><br>{/if}
+            {if $bom_acc.acc[BOM].po.po_qty > 0}<span style="cursor:default;" title="APV">{$bom_acc.acc[BOM].po.po_qty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].po.unit}</span>{/if}
+		</td>
+		<td class="BomValueRight">{if $bom_acc.acc[BOM].po.ship_qty > 0}{$bom_acc.acc[BOM].po.ship_qty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].po.unit}{else}&nbsp;{/if}</td>
+
+		<td class="BomValueRight">{if $bom_acc.acc[BOM].po.rcv_qty > 0}{$bom_acc.acc[BOM].po.rcv_qty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].po.unit}{else}&nbsp;{/if}</td>
+		<td class="BomValueRight">{if $bom_acc.acc[BOM].po.apb_qty > 0}{$bom_acc.acc[BOM].po.apb_qty|number_format:"2f"}&nbsp;{$bom_acc.acc[BOM].po.unit}{else}&nbsp;{/if}</td>
+
+		<td class="BomValueLeft">
+            <a href="javascript:po_show('{$bom_acc.acc[BOM].ap_mark}')">{$bom_acc.acc[BOM].po_num}</a>
+            <!-- STATUS -->
+            {if $bom_acc.acc[BOM].po_num}( {$bom_acc.acc[BOM].statuss} ){/if}
+            <!-- NOTE -->
+            {if $bom_acc.acc[BOM].ann_num}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>{$bom_acc.acc[BOM].ann_num}</font><br>{/if}
+            <!-- SHIP -->
+            {section name=AP loop=$bom_acc.acc[BOM].spec_ap}<br>
+            <a href="javascript:po_show('{$bom_acc.acc[BOM].spec_ap[AP].ap_num}')">{$bom_acc.acc[BOM].spec_ap[AP].po_num}</a>
+            <!-- STATUS -->
+            {if $bom_acc.acc[BOM].spec_ap[AP].po_num}( {$bom_acc.acc[BOM].spec_ap[AP].statuss} ){/if}
+            <!-- NOTE -->
+            {if $bom_acc.acc[BOM].spec_ap[AP].ann_num}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color=red>{$bom_acc.acc[BOM].spec_ap[AP].ann_num}</font><br>{/if}
+            {/section}&nbsp;	
+		</td>
+		{/if}
+	</tr>
+	{/section}
+	{/if}
+</table>
+
+
+
+{if $dis_lots}
+<br>
+<table cellpadding="0" cellspacing="0" cols="0">
+	<!------- 物料預先採購 Title --------- -->
+	<tr>
+		<td class="BomName" colspan="11">前版本己採購主料記錄</td>
+	</tr>	
+	<tr>
+		<td class="BomName">Fabric #</td>	
+		<td class="BomName">Placement</td> 
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName">PO #</td>
+		<td class="BomName">Purchas Q'TY</td>
+	</tr>
+	{section name=BOM loop=$dis_lots} 
+	{if $dis_lots[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}
+		<td class="BomValueLeft">&nbsp;<a href="javascript:Show_fab('{$dis_lots[BOM].lots_code}')" value='ord_out' style='cursor:pointer'>{$dis_lots[BOM].lots_code}</a></td>
+		<td class="BomValueLeft">&nbsp;{$dis_lots[BOM].use_for}</td>
+		<td class="BomValueLeft">&nbsp;{$dis_lots[BOM].color}</td>
+		<td class="BomValueRight">&nbsp;{$dis_lots[BOM].est_1}{$dis_lots[BOM].unit}</td>
+		<td class="BomValueRight">&nbsp;{$dis_lots[BOM].bom_qty}{$dis_lots[BOM].unit}</td>
+		<td class="BomValueCenter">&nbsp;<a href="javascript:po_show('{$dis_lots[BOM].ap_num}')">{$dis_lots[BOM].po_num}</a></td>
+		<td class="BomValueRight">&nbsp;{$dis_lots[BOM].po_qty}{$dis_lots[BOM].po_unit}</td>
+	</tr>
+	{/section}
+</table>
+{/if}
+
+{if $dis_acc}
+<br>
+<table cellpadding="0" cellspacing="0" cols="0">
+	<!------- 物料預先採購 Title ----------->
+	<tr bgcolor=#D5D5BE height="30">
+		<td class="BomName" colspan="11">前版本己採購副料記錄</td>
+	</tr>	
+	<tr bgcolor=#D5D5BE>
+		<td class="BomName">Accessory #</td>	
+		<td class="BomName">Placement</td> 
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Consump.</td>
+		<td class="BomName">BOM Q'TY</td>
+		<td class="BomName">PO #</td>
+		<td class="BomName">Purchas Q'TY</td>
+	</tr>
+	{section name=BOM loop=$dis_acc} 
+	{if $dis_acc[BOM].ln_mk}
+	<tr bgColor='#FFD5A8'>
+	{else}
+	<tr id="Bom_TR">
+	{/if}	
+		<td class="BomValueLeft">&nbsp;<a href="javascript:Show_acc('{$dis_acc[BOM].acc_code}')" value='ord_out' style='cursor:pointer'>{$dis_acc[BOM].acc_code}</a></td>
+		<td class="BomValueLeft">&nbsp;{$dis_acc[BOM].use_for}</td>
+		<td class="BomValueLeft">&nbsp;{$dis_acc[BOM].color}</td>
+		<td class="BomValueRight">&nbsp;{$dis_acc[BOM].est_1}{$dis_acc[BOM].unit}</td>
+		<td class="BomValueRight">&nbsp;{$dis_acc[BOM].bom_qty}{$dis_acc[BOM].unit}</td>
+		<td class="BomValueCenter">&nbsp;<a href="javascript:po_show('{$dis_acc[BOM].ap_num}')">{$dis_acc[BOM].po_num}</a></td>
+		<td class="BomValueRight">&nbsp;{$dis_acc[BOM].po_qty}{$dis_acc[BOM].po_unit}</td>
+	</tr>
+	{/section}
+</table>
+{/if}
+
+{if $pp_mat}
+<br>
+<table cellpadding="0" cellspacing="0" cols="0">
+	<!------- 物料預先採購 Title --------- -->
+	<tr>
+		<td class="BomName" colspan="11">Pre-Purchase Matrial</td>
+	</tr>	
+	<tr>
+		<td class="BomName">Matriel #</td>
+		<td class="BomName">Name</td>
+		<td class="BomName">Placement</td>
+		<td class="BomName">Color/cat.</td>
+		<td class="BomName">Q'TY</td>
+		<td class="BomName">P.O.#</td>
+	</tr>
+	{section name=BOM loop=$pp_mat} 
+	<tr id="Bom_TR">
+		<td class="BomValueLeft">&nbsp;<a href="javascript:{if $pp_mat[BOM].mat_cat == 'a'}Show_acc{else}Show_fab{/if}('{$pp_mat[BOM].mat_code}')" value='ord_out' style='cursor:pointer'>{$pp_mat[BOM].mat_code}</a></td>
+		<td class="BomValueLeft">&nbsp;{$pp_mat[BOM].mat_name}</td>
+		<td class="BomValueLeft">&nbsp;{$pp_mat[BOM].use_for}</td>
+		<td class="BomValueLeft">&nbsp;{$pp_mat[BOM].color}</td>
+		<td class="BomValueCenter">&nbsp;{$pp_mat[BOM].ap_qty}</td>
+		<td class="BomValueCenter">&nbsp;<a href="javascript:po_show('{$pp_mat[BOM].ap_num}')">{$pp_mat[BOM].po_num}</a></td>
+	</tr>
+{/section}
+</table>
+{/if}
+
+
+<BR>
+{if $exc_rec.0.exc_id}
+<table cellpadding="0" cellspacing="0" cols="0">
+	<tr>
+		<td class="BomName">EXCEPTION #</td>
+		<td class="BomName">PO #</td>
+		<td class="BomName">異常狀態</td>
+		<td class="BomName">Material</td>
+	</tr>
+	{section name=SEC loop=$exc_rec}
+	<tr id="Bom_TR">
+		<td class="BomValueLeft"><a href="javascript:open_exc({$exc_rec[SEC].exc_id})">{$exc_rec[SEC].ex_num} </a></td>
+		<td class="BomValueLeft"><a href="javascript:po_show('{$exc_rec[SEC].ap_num}')">{$exc_rec[SEC].po_num}</a></td>
+		<td class="BomValueLeft">{$exc_rec[SEC].exc_name}</td>
+		<td class="BomValueLeft">{$exc_rec[SEC].mat_code}</td>
+	</tr>	 
+	{/section}
+</table>
+{/if}
+
+<table width="100%" cellpadding="0" cellspacing="0" cols="0"> 
+	<tr>
+		<td align="right">
+			{literal}&nbsp;&nbsp;&nbsp;Confirm: {/literal}&nbsp;{if $wi.bcfm_user}<a href="javascript:message_out('{$wi.bcfm_user_id}')" style="cursor:pointer"><u>{$wi.bcfm_user}</u></a>&nbsp;&nbsp; <U>[ {$wi.bcfm_date} ] </U>{else}[ None ]{/if}
+			{literal}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Submit: {/literal}&nbsp;{if $wi.bupdator}<u>{$wi.bupdator}</u>&nbsp;&nbsp;&nbsp;{/if}
+            {if $order.last_updator}Last update : {$order.last_updator} [ {$order.last_update} ]{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

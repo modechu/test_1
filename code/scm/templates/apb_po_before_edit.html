@@ -1,0 +1,660 @@
+apb_po_before_edit.html<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===::::::::::SCM SYSTEM -- RECEIVING ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">@import url(js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/calendar/calendar.js"></script>
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+function aply_revise(id,rcv_num,back_str,version,ckdate) {
+	if ( ckdate == 1 ) {
+		alert("APB 已超過關帳日期！ 無法 Revise！");
+		//return false;
+	} else if ( ckdate == 2 ) {
+		alert("APB 已超過關帳日期！ 無法 Revise！");
+	} else {
+		var loc;
+		loc='apply_revise';
+		if ( confirm("are you sure to REVISE Receive:#[ "+rcv_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the apply procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+			location.href="apb.php?PHP_action=rcvd_revise&PHP_rcv_num="+rcv_num+back_str+"&PHP_id="+id+"&PHP_ver="+version;
+		}
+	}
+}
+
+function Show_batch_cost(id)
+{
+	var url ='index2.php?PHP_action=ord_batch_cost&PHP_bom_num='+id; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function file_del(table,id,rcv_num,file_name,back_str)
+{
+	if ( confirm("Are you shure to delete this file  ??")) {
+		location.href="apb.php?PHP_action=do_file_del&PHP_id="+id+"&PHP_talbe="+table+"&PHP_rcv_num="+rcv_num+"&PHP_file_name="+file_name+back_str;
+	} 
+}
+
+function show_rcvd_qty(qty,id,unit,table)
+{
+	var url ="apb.php?PHP_action=recv_qty_show&PHP_qty="+qty+"&PHP_id="+id+"&PHP_unit="+unit+"&PHP_table="+table;
+	var nm = 'rcvd';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=500,height=500 top=50, left=100');
+}
+
+function show_ship_qty(id,special,mat,po_num,unit)
+{
+	//alert(id+" "+special+" "+mat+" "+po_num+" "+unit);return;
+	var url ="po_ship.php?PHP_action=get_ship_det&PHP_po_id="+id+"&PHP_special="+special+"&PHP_mat="+mat+"&PHP_po_num="+po_num+"&PHP_unit="+unit;
+	var nm = 'ship';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=500 top=50, left=100');
+}
+
+function rcv(po_num){
+	var apb=price= Number(0);
+	$("input[id^=PHP_qty" + po_num + "]").each(function(i,elm) {
+		str = $(elm).attr("id").split("PHP_qty");
+		
+		if( Number($("#PHP_apbed_qty"+str[1]).val()) + Number($("#PHP_qty"+str[1]).val()) <= Number($("#PHP_toleri_qty"+str[1]).val()) ){
+			$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprice"+str[1]).val()));
+		}else{
+			alert("     已請款總數量 " + Number($("#PHP_apbed_qty"+str[1]).val()) +
+					"\r + 本次請款數量 " + Number($("#PHP_qty"+str[1]).val()) + 
+					"\r --------------------------- " +
+					"\r                   總和  " + ( Number($("#PHP_apbed_qty"+str[1]).val()) + Number($("#PHP_qty"+str[1]).val())) +
+					"\r已超過tolerance數量 " + Number($("#PHP_toleri_qty"+str[1]).val()) + "\n將用 " + (Number($("#PHP_toleri_qty"+str[1]).val()) - Number($("#PHP_apbed_qty"+str[1]).val())) + " 計算");
+			$("#PHP_qty"+str[1]).val($("#PHP_toleri_qty"+str[1]).val() - Number($("#PHP_apbed_qty"+str[1]).val()));
+			$("#price"+str[1]).text( roundAmount( (Number($("#PHP_toleri_qty"+str[1]).val()) - Number($("#PHP_apbed_qty"+str[1]).val())) * $("#PHP_uprice"+str[1]).val()));
+		}
+		price += Number($("#price"+str[1]).text());
+	});
+	
+	$("input[id^=ap_oth_cost" + po_num + "]").each(function(i,elm) {
+		if($(elm).attr("checked")){
+			price += Number($(elm).val())
+		}
+	});
+	
+	$("#amount"+po_num).val( roundAmount(price) );
+	invoice();
+}
+
+function invoice(){
+	var price = Number(0);
+	$("input[id^=PHP_checkbox]").each(function(i,elm) {
+		if( $(elm).attr("checked")){
+			price += Number($("#amount" + $(elm).val() ).val());
+			str = $(elm).attr("id").split("PHP_checkbox");
+			$("input[id^=apb_oth_cost" + str[1] + "]").each(function(x,obj) {
+				price += Number($(obj).val());
+			});
+			//$("input[id^=ap_oth_cost" + str[1] + "]").each(function(x,obj) {
+			//	$(obj).attr("checked",true);
+			//});
+		}
+	});
+	
+	
+	
+	if ( $("#inv_num").val() != "" ) {
+		$("#vat").val( Math.round(price*.05) );
+	}
+	
+	if($("#PHP_select_currency").val()=="NTD"){
+		$("#inv_amt").val( Math.round(price));
+		price = price + Number($("#vat").val()) - Number($("#discount").val()) - Number($("#off_duty").val());
+		$("#inv_price").val( Math.round(price));
+	}else{
+		$("#inv_amt").val(roundAmount(price));
+		$("#inv_price").val(roundAmount(price));
+	}
+}
+
+function roundAmount(n) {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s + ".00"
+	var t = s.substring( 0 , i + 1 ) +     
+	s.substring( i + 1 , i + 3 )   
+	if (i + 2 == s.length) t += "0"   
+		return t   
+}
+
+function roundAmount2(n) {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s
+	var t = s.substring( 0 , i )
+		return t   
+}
+
+function chksmt(){
+	
+	var mode = Number(0);
+	var rcvd = Number(0);
+	var apbd = Number(0);
+	var apb = Number(0);
+	
+	$("input[id^=no]").each(function(i,elm) {
+		rcvd = Number($("#rcvd_s"+$(elm).val()).val());
+		apbd = Number($("#apbd_s"+$(elm).val()).val());
+		apb = Number($("#apb_s"+$(elm).val()).val());
+		if ( rcvd < (apbd + apb) ) mode += 1;		
+		//alert(rcvd+' = '+(apbd +'+'+ apb));
+	});
+	
+	//if ( mode > 0 ) $('#smt').attr({disabled:"disabled"});
+	var ckdate = {/literal}{$ckdate}{literal};
+	if ( ckdate == '1' ) $('#smt').attr({disabled:"disabled"});
+	
+}
+
+function del_cost(po_num,r){
+	if(confirm("確定刪除?")){
+		$.ajax({
+				url: 'apb.php?PHP_action=del_apb_cost',
+				type: 'GET',
+				data: {
+					PHP_id: $("#apb_cost_id"+po_num).val()
+				},
+				error: function(xhr) {
+					alert('Ajax request 發生錯誤'+xhr);
+				},
+				success: function(response) {
+					document.getElementById('cost_tbl'+po_num).deleteRow(r.parentNode.parentNode.rowIndex);
+					invoice();
+				}
+		});
+	}	
+}
+
+function cal_amount(po_num){
+	var ttl = Number($("#inv_amt").val());
+	if ($("#PHP_checkbox"+po_num).attr("checked")){
+		if($("#PHP_select_currency").val()=="NTD")
+			$("#inv_amt").val(Math.round( ttl + Number($("#PHP_checkbox"+po_num).val()) ));
+		else
+			$("#inv_amt").val(roundAmount( ttl + Number($("#PHP_checkbox"+po_num).val()) ));
+	}else{
+		if($("#PHP_select_currency").val()=="NTD")
+			$("#inv_amt").val(Math.round( ttl - Number($("#PHP_checkbox"+po_num).val()) ));
+		else
+			$("#inv_amt").val(roundAmount( ttl - Number($("#PHP_checkbox"+po_num).val()) ));
+		
+		$("input[id^=ap_oth_cost" + po_num + "]").each(function(i,elm) {
+			$(elm).attr("checked",false);
+		});
+	}
+	invoice();
+}
+
+function change_currency(NTD){
+
+	if(NTD==undefined){
+		var currency = $("#PHP_select_currency").val();
+	}else{
+		$("#PHP_select_currency").val("NTD");
+		var currency = "NTD";
+	}
+	
+	$("span[id^=cury]").each(function(i,elm) {
+		$(elm).text(currency);
+	});
+	
+	
+	invoice();
+}
+
+$(document).ready(function() {
+    select_checkbox = function(status){
+        if ( status == 'Select' ) {
+            $("input[id^=PHP_checkbox]").each(function(i, elm) {
+                $(elm).attr("checked",true);
+            });
+            invoice();
+        } else {
+            $("input[id^=PHP_checkbox]").each(function(i, elm) {
+                $(elm).attr("checked",false);
+            });
+            invoice();
+        }
+    }
+});
+
+function cal_oth_cost(r,po_num){
+	if(r.checked){
+		$("#amount"+po_num).val( Number($("#amount"+po_num).val()) + Number(r.value) );
+	}else{
+		$("#amount"+po_num).val( Number($("#amount"+po_num).val()) - Number(r.value) );
+	}
+	invoice();
+}
+
+function cal_amt(po_num){
+	var currency = $("#PHP_select_currency").val();
+	var price = 0;
+	$("input[id^=PHP_qty" + po_num + "]").each(function(i,elm) {
+		str = $(elm).attr("id").split("PHP_qty");
+		$("#PHP_uprice"+str[1]).val( roundAmount5($("#PHP_uprices"+str[1]).val() * $("#PHP_rate"+str[1]).val()) )
+		if(currency=="NTD")
+			$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprice"+str[1]).val()));
+		else
+			$("#price"+str[1]).text( roundAmount($(elm).val() * $("#PHP_uprices"+str[1]).val()));
+		price += Number($("#price"+str[1]).text())
+	});
+	
+	$("#amount" + po_num).val(price);
+	invoice();
+}
+
+function roundAmount5(n) {   
+	var s = "" + Math.round( n * 100000 ) / 100000   
+	var i = s.indexOf('.')  
+	
+	if ( i < 0 ) return s + ".00000"
+	var t = s.substring( 0 , i + 1 ) +     
+	s.substring( i + 1 , i + 6 )   
+	if (i + 5 == s.length) t += "0"   
+		return t   
+}
+</script>
+{/literal}
+</head>
+<body topmargin="10" onLoad="invoice();" bgcolor="#003C77" >
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=950 bgcolor=#003300>
+	<tr>
+		<td class="des" align=center width=150>{if $apb.status ==1}<b>Waiting for submit</b>{/if}{if $apb.status ==2}<b>Submitted</b>{/if}</td>
+		<td class="des" align=center width=300><span class=sign_b>請款單&nbsp;</span> # <span class=ylw10><b>{$apb.rcv_num}</b></span>  Record </td>
+		<td class="des" align=center>
+		 {if $apb.status == 2 && $back_str && $edit_flag}
+			<a href="javascript:aply_revise('{$apb.id}','{$apb.rcv_num}','{$back_str}','{$apb.version}','{$ckdate}')" value='revise' style='cursor:pointer'>
+				<img src='./images/revise21.jpg' border=0 ALT="REVISE">
+			</a>
+		 {/if}
+		</td>
+		<td class="ylw10" align=center height=28> {if $apb.version <> 0}<span class=sign_b>Version</span> <b>{$apb.version}</b>{else}&nbsp;{/if} </td>
+		<td>
+			
+		</td>
+	</tr>
+</table>
+
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=950>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}
+
+{if $ckdate AND $apb.status != 2}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=950>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>APB 已超過關帳日期！ 無法 Submit！</td>
+	</tr>
+</table>
+{/if}
+
+<hr SIZE=2 WIDTH=950>
+<form method=POST name=smpl_logs>
+
+<table border=0 cellspacing=1 cellpadding=4 width=950 bgcolor=#FFFFFF>
+  <input type="hidden" name="PHP_chkacc_no" value="{$apb.rcv_num}">
+  <tr>
+    <td class=snvy align=right bgcolor=#E9F7E8><b>驗收單號 :</b></td>
+    <td align=left bgcolor="#EEEEEE"  class=b9><b>&nbsp;{$apb.rcv_num}</b></td>
+    <td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>付款方式 :</b></td>
+    <td align=left bgcolor="#EEEEEE" class=b9 >
+		<b>{$apb.payment}</b>
+		<input type=hidden name="PHP_payment" value="{$apb.payment}">
+	</td>
+    <td align=right><b>付款幣別 : </b></td>
+	<td align=left>{$currency}</td>
+	<td class=snvy align=right bgcolor=#E9F7E8><b>合計金額 : </b></td>
+	<td align=left class=des ><input type=text id="inv_amt" size=15 class=select value="" readonly="readonly" style="text-align:right"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right bgcolor=#E9F7E8 nowrap><b>供應商代號 : </b></td>
+    <td align=left bgcolor="#EEEEEE"  class=b9><b>&nbsp;{$apb.sup_no}</b></td>
+	<td  align=right nowrap bgcolor=#E9F7E8 class=snvy><b>請款單位 : </b></td>
+    <td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.dept}
+      <input type="hidden" name="PHP_dept" value="{$dept}">
+          <input type="hidden" name="PHP_ship" value="{$ship}">
+    </b></td>
+	<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>請款日期 : </b></td>
+    <td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.rcv_date}</b></td>
+	<td class=snvy align=right bgcolor=#E9F7E8><b>營業稅 : </b></td>
+    <td align=left bgcolor="#EEEEEE">&nbsp;<input type=text id="vat" name="PHP_vat" size=15 class=select value="{if $apb.vat != '0.00'}{$apb.vat}{/if}" style="text-align:right" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');"></td>
+ </tr>
+  <tr>
+    <td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>供應商名稱 : </b></td>
+    <td align=left bgcolor="#EEEEEE"  class=b9><b>&nbsp;{$apb.s_name}</b></td>
+    <td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>統一發票 : </b></td>
+    <td align=left bgcolor="#EEEEEE"  class=b9>
+		<input class=select type="text" id="inv_num" name="PHP_inv_num" value="{$apb.inv_num}" onchange="change_currency('NTD');">
+	</td>
+	<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>發票日期 : </b></td>
+    <td align=left bgcolor="#EEEEEE" class=b9 >
+		<input name="PHP_inv_date" type="text" class="select" style="width:72px;" id="inv_date" value="{$apb.inv_date}" readonly="readonly" />
+			{literal}
+			<script type="text/javascript">Calendar.setup({inputField:"inv_date",button:"f_trigger_c",ifFormat:"%Y-%m-%d"});</script>
+			{/literal}
+	</td>
+    <td class=snvy align=right bgcolor=#E9F7E8><b>折讓 : </b></td>
+    <td align=left bgcolor="#EEEEEE">&nbsp;<input type=text id="discount" name="PHP_discount" size=15 class=select style="text-align:right" value="{if $apb.discount != '0.00'}{$apb.discount}{/if}" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right bgcolor=#E9F7E8><b>供應商統編 : </b></td>
+	<td align=left bgcolor="#EEEEEE"><b>&nbsp;{$apb.uni_no}</b></td>
+	<td align=right nowrap bgcolor=#E9F7E8 class=snvy><b>INVOICE # : </b></td>
+    <td align=left bgcolor="#EEEEEE"  class=b9>
+		<input class=select type="text" name="PHP_foreign_inv_num" value="{$apb.foreign_inv_num}">
+	</td>
+	<td></td>
+	<td></td>
+	<td class=snvy align=right bgcolor=#E9F7E8><b>折稅 : </b></td>
+    <td align=left bgcolor="#EEEEEE">&nbsp;<input type=text id="off_duty" name="PHP_off_duty" size=15 class=select style="text-align:right" value="{if $apb.off_duty != '0.00'}{$apb.off_duty}{/if}" onkeyup="invoice('');this.value=this.value.replace(/[^\d]/g,'');"></td>
+    </tr>
+  <tr>
+	<td class=snvy  align=right bgcolor=#E9F7E8 colspan=7><b>總合計金額 : </b></td>
+    <td align=left bgcolor="#FF0000" class=des >&nbsp;<input type=text id="inv_price" name="PHP_inv_price" size=15 class=select style="text-align:right" value="{$apb.inv_price}" readonly="readonly"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right ></td>
+    <td class=ssign align=left colspan=7>&nbsp;{if $apb.ann_num}({$apb.ann_num}){/if}</td>
+  </tr>
+</table>
+<hr SIZE=2 WIDTH=950>
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Select');"/> Select All 
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Clear');"/> Clear All
+{section name=AP_M loop=$ap}
+<table cellspacing=1 cellpadding=4 cols=1 width=950 bgcolor=#003300>
+    <tr>
+        <td class="ylw10" align=left width=100>
+            <input type="checkbox" id="PHP_checkbox{$ap[AP_M].po_num}" name="PHP_checkbox[{$ap[AP_M].po_num}]" value='{$ap[AP_M].po_num}' checked onclick="cal_amount('{$ap[AP_M].po_num}')">
+            <input type="text" size=8 class=select id="amount{$ap[AP_M].po_num}" name="PHP_price[{$ap[AP_M].po_num}]" value='{$ap[AP_M].po_price}' onchange="invoice()" readonly>
+            <input type="hidden" name="PHP_ap_num[{$ap[AP_M].po_num}]" value="{$ap[AP_M].ap_num}">
+            <input type="hidden" name="PHP_toler[{$ap[AP_M].po_num}]" value="{$ap[AP_M].toler}">
+        </td>
+        <td class="frnt" align=left height=28><b><a href="javascript:po_show('{$ap[AP_M].ap_num}','')" style='color:yellow;'>[ {$ap[AP_M].po_num} ]</a></td>
+        <td class="ylw10" align=right height=28>
+			<b>CURRENCY : <span id="PHP_currency{$ap[AP_M].po_num}">{$ap[AP_M].currency}</span></b>
+			<input type="hidden" name="PHP_currency[{$ap[AP_M].po_num}]" value="{$ap[AP_M].currency}">
+		</td>
+    </tr>
+</table>
+
+	<table border="1" cellspacing=0 cellpadding=2 width=950>	
+		<tr bgcolor="#003333" height=28>
+			<td width="100" class=back align="center"><b>Order #</b></td>		
+			<td width="70" class=back align="center"><b>Name</b></td>
+			<td width="100" class=back align="center"><b>Color / Cat.</b></td>
+			<td width="100" class=back align="center"><b>Size</b></td>
+			<td width="80" class=back align="center"><b>P/O Q'ty</b></td>
+			<td width="80" class=back align="center"><b>已請款<br>Q'ty</b></td>
+			<td width="80" class=back align="center"><b>請款 Q'ty</b></td>
+			<td width="90" class=back align="center"><b>Price</b></td>
+			<td width="40" class=back align="center"><b>FOC</b></td>
+			<td width="60" class=back align="center"><b>原幣單價</b></td>
+			<td width="60" class=back align="center"><b><span id="cury{$ap[AP_M].po_num}">{$ap[AP_M].currency}</span>單價</b></td>
+			<td width="40" class=back align="center"><b>匯率</b></td>
+			<td width="80" class=back align="center"><b>小計</b></td>
+		</tr>
+	{section name=SEC loop=$ap[AP_M].ap_det} 
+		<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+			<td  align="left">
+			{section name=ORD loop=$ap[AP_M].ap_det[SEC].orders}
+				<a href="javascript:po_bom_view('{$ap[AP_M].ap_det[SEC].orders[ORD]}','{$ap[AP_M].po_num}')" value='ord_out' style='cursor:pointer'>
+				{$ap[AP_M].ap_det[SEC].orders[ORD]}&nbsp;</a><br>
+			{/section}
+			</td>
+			<td  align="left" nowrap>
+				<a href="javascript:{if $ap[AP_M].ap_det[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$ap[AP_M].ap_det[SEC].mat_code}')" value='ord_out' style='cursor:pointer' title='{$ap[AP_M].ap_det[SEC].mat_code}'>{$ap[AP_M].ap_det[SEC].mat_code}</a>
+				<!--<input type="hidden" name="PHP_mat_code[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].mat_code}">-->
+			</td>
+			<td  align="left">
+				{$ap[AP_M].ap_det[SEC].color}&nbsp;
+			</td>
+			<td  align="left">
+				{$ap[AP_M].ap_det[SEC].size}&nbsp;
+			</td>
+			<td  align="right">
+				{$ap[AP_M].ap_det[SEC].po_qty|number_format:"2f"}&nbsp;{$ap[AP_M].ap_det[SEC].po_unit}
+				<input type="hidden" name="PHP_po_qty[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].po_qty}">
+			</td>
+			<td  align="center">
+				{$ap[AP_M].ap_det[SEC].apbed_qty}
+				<input type="hidden" size=5 id="PHP_apbed_qty{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" value="{$ap[AP_M].ap_det[SEC].apbed_qty}" >
+			</td>
+			<td  align="right">
+				<input type="text" size="8" class=select id="PHP_qty{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" name="PHP_qty[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].qty}" onchange="rcv('{$ap[AP_M].po_num}');">
+				<input type="hidden" size=5 id="PHP_toleri_qty{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" value="{$ap[AP_M].ap_det[SEC].toleri_qty}" >
+			</td>
+			<td  align="right">{$ap[AP_M].fob}&nbsp;{$ap[AP_M].fob_area}<br>{$ap[AP_M].ap_det[SEC].prics|number_format:"5f"}&nbsp;/&nbsp;{$ap[AP_M].ap_det[SEC].prc_unit}</td>
+			<td  align="right">
+				<input size=5 type="text" name="PHP_foc[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].foc}" class="select">
+			</td>
+			<td>
+				<input size=5 type="text" id="PHP_uprices{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" name="PHP_uprices[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].uprices|number_format:'5f'}" readonly>
+			</td>	
+			<td>
+				<input size=5 type="text" id="PHP_uprice{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" name="PHP_uprice[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].uprice}" readonly>
+			</td>
+			<td  align="right">
+				<input size=5 type="text" id="PHP_rate{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}" name="PHP_rate[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].rate}" onchange="cal_amt('{$ap[AP_M].po_num}')" class="select">
+			</td>
+			<td  align="right">
+				<span id="price{$ap[AP_M].po_num}{$ap[AP_M].ap_det[SEC].i}">{$ap[AP_M].ap_det[SEC].amount|number_format:"2f"}</span>
+			</td>
+		</tr>
+		<input type="hidden" name="PHP_det_id[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].id}">
+		<input type="hidden" name="PHP_mat_id[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].mat_id}">
+		<input type="hidden" name="PHP_color[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].color}">
+		<input type="hidden" name="PHP_size[{$ap[AP_M].po_num}][{$ap[AP_M].ap_det[SEC].i}]" value="{$ap[AP_M].ap_det[SEC].size}">
+		{if $ap[AP_M].ap_det[SEC].ship_rmk}
+		<tr>
+			<td colspan=8 align="left"> <B>Remark : </B>{$ap[AP_M].ap_det[SEC].ship_rmk} &nbsp;</td>
+		</tr>
+		{/if}
+	{/section}
+
+		{section name=COST loop=$ap[AP_M].ap_oth_cost}
+		<tr bgcolor='#ffffff'>
+			<td align=left colspan=6>
+				<input type="checkbox" id="ap_oth_cost{$ap[AP_M].po_num}{$ap[AP_M].ap_oth_cost[COST].id}" name="ap_oth_cost[{$ap[AP_M].ap_oth_cost[COST].id}]" onclick="rcv('{$ap[AP_M].po_num}')" value='{$ap[AP_M].ap_oth_cost[COST].cost}' checked>
+				<input type="hidden" name="ap_oth_cost_id[{$ap[AP_M].po_num}][{$ap[AP_M].ap_oth_cost[COST].id}]" value='{$ap[AP_M].ap_oth_cost[COST].id}'>
+				{$ap[AP_M].ap_oth_cost[COST].item}
+			</td>
+			<td align=right colspan=3><b>{$ap[AP_M].currency}$ {$ap[AP_M].ap_oth_cost[COST].cost}</b></td>
+			<td align=right colspan=4>&nbsp;</td>
+		</tr>
+		{/section}
+		<tr bgColor='#ffffff'>	
+			<td align="left" colspan=6><b>&nbsp;&nbsp;Total</b></td>	
+			<td align="right" colspan=6><b>{$ap[AP_M].currency}$ {$ap[AP_M].po_total}</b></td>		
+			<td align="right">&nbsp;</b></td>		
+		</tr>
+		<tr bgColor='#ffffff'>	
+			<td align="left" colspan=6><b>&nbsp;&nbsp;Deal Amount</b></td>	
+			<td align="right" colspan=6><b>{$ap[AP_M].currency}$ {$ap[AP_M].dear}</b></td>		
+			<td align="right">&nbsp;</b></td>		
+		</tr>
+	</table>
+
+	<table border="0" cellspacing=0 cellpadding=2 width=950>	
+		<tr height=28>
+			<td align="Left"><b>&nbsp;Acceptable Tolerance : {if $ap[AP_M].toler == '0|0'}0{else} + {$ap[AP_M].toleri} % {if $ap[AP_M].tolern != '0'}~ - {$ap[AP_M].tolern} % {/if}{/if}</b></td>
+		</tr>
+	</table>
+
+	{if $ap[AP_M].apb_oth_cost}
+	<table border=1 cellspacing=0 cellpadding=0 width=950 align=center id="cost_tbl{$ap[AP_M].po_num}">
+		<tr bgcolor=#bbbbbb height=25>
+			<td colspan=3 align=center class=nvy9><b>APB Other Cost</b></td>
+		</tr>
+		<tr bgcolor=#666666 height=25>
+			<td width=500 class=w10 align=center>Remark</td>
+			<td width=60 class=w10 align=center>Cost</td>
+			<td width=40 class=w10 align=center></td>
+		</tr>
+		{section name=COST2 loop=$ap[AP_M].apb_oth_cost}
+		<tr bgcolor=#eeeeee >
+			<td class=gry9 align=left>
+				<input type="text" size="100" name="PHP_item[{$ap[AP_M].apb_oth_cost[COST2].id}]" class=select value="{$ap[AP_M].apb_oth_cost[COST2].item}">
+			</td>
+			<td class=ylw9 align=center>
+				<input type="text" id="apb_oth_cost{$ap[AP_M].po_num}" name="PHP_cost[{$ap[AP_M].apb_oth_cost[COST2].id}]" class=select value="{$ap[AP_M].apb_oth_cost[COST2].cost}" onkeyup="this.value=this.value.replace(/[^\d\.]/g,'');invoice()">
+			</td>
+			<td class=ylw9 align=center>
+				&nbsp;<image src="images/del.png" onClick="del_cost('{$ap[AP_M].po_num}',this);" alt="delete" style="cursor: pointer">&nbsp;
+			</td>
+		</tr>
+			<input type="hidden" id="apb_cost_id{$ap[AP_M].po_num}" value="{$ap[AP_M].apb_oth_cost[COST2].id}">
+		{/section}
+	</table>
+	{/if}
+	
+		
+	<!---------- SHOW 出 一些訂單歷史記錄   -->
+	{if $ap[AP_M].apply_special}
+	<hr SIZE=2 WIDTH=950>
+	<table border=1 cellspacing=0 cellpadding=0 width=950 align=center>
+		<tr bgcolor=#A49587 height=25>
+			<td colspan=5 align=center class=nvy9><b>Reason for Special Purchase</b></td>
+		</tr>
+		<tr bgcolor=#54473B height=25>
+			<td width=100 class=w10 align=center>Date</td>
+			<td width=80 class=w10 align=center>Item</td>
+			<td width=300 class=w10 align=center>History records</td>
+			<td width=80 class=w10 align=center>by</td>
+		</tr>
+		{section name=SEC loop=$ap[AP_M].apply_special}
+		<tr bgcolor=#E2D9D1 >
+			<td class=gry9 align=center><small>{$ap[AP_M].apply_special[SEC].k_date}</small></td>
+			<td class=gry9 align=left>{$ap[AP_M].apply_special[SEC].item}</td>
+			<td class=gry9 align=left>{$ap[AP_M].apply_special[SEC].des}</td>
+			<td class=gry9 align=center>{$ap[AP_M].apply_special[SEC].user}</td>
+		</tr>
+		{/section}
+	</table>
+	<br>
+	{/if}  
+
+	{if $ap[AP_M].apply_log}  
+	<table border=1 cellspacing=0 cellpadding=0 width=950 align=center id='mater_table'>
+		<tr bgcolor=#bbbbbb height=25>
+			<td colspan=5 align=center class=nvy9><b>Remark Records</b></td>
+		</tr>
+		<tr bgcolor=#666666 height=25>
+			<td width=80 class=w10 align=center>Date</td>
+			<td width=80 class=w10 align=center>Item</td>
+			<td width=300 class=w10 align=center>History records</td>
+			<td width=80 class=w10 align=center>by</td>
+			{if $add_flag && $ap[AP_M].status != 12 && $ap[AP_M].status >= 0 }
+			<td width=20 class=w10 align=center>&nbsp;</td>
+			{/if}
+		</tr>
+		{section name=SEC loop=$ap[AP_M].apply_log}
+		<tr bgcolor=#eeeeee >
+			<td class=gry9 align=center><small>{$ap[AP_M].apply_log[SEC].k_date}</small></td>
+			<td class=gry9 align=left>{$ap[AP_M].apply_log[SEC].item}</td>
+			<td class=gry9 align=left>{$ap[AP_M].apply_log[SEC].des}</td>
+			<td class=gry9 align=center>{$ap[AP_M].apply_log[SEC].user}</td>
+			{if $add_flag && $ap[AP_M].status != 12 && $ap[AP_M].status >= 0 }
+			<td align=center>
+				<input type='image' src="images/del.png"   onclick=cfm_ajx('{$ap[AP_M].apply_log[SEC].id}',this)>	
+			</td>
+			{/if}
+		</tr>
+		{/section}
+	</table>
+	{/if}   	
+		
+	<hr SIZE=2 WIDTH=950>
+	
+	</td>
+	</tr>
+	</table>
+{/section}
+<br>
+
+<hr SIZE=2 WIDTH=950>
+
+<br>
+{if $rcv_log}  
+<table border=1 cellspacing=0 cellpadding=0 width=950 align=center>
+	<tr bgcolor=#bbbbbb height=25>
+		<td colspan=5 align=center class=nvy9><b>Remark Records</b></td>
+	</tr>
+	<tr bgcolor=#666666 height=25>
+		<td width=100 class=w10 align=center>Date</td>
+		<td width=80 class=w10 align=center>Item</td>
+		<td width=300 class=w10 align=center>History records</td>
+		<td width=80 class=w10 align=center>by</td>
+	</tr>
+	{section name=SEC loop=$rcv_log}
+	<tr bgcolor=#eeeeee >
+		<td class=gry9 align=center><small>{$rcv_log[SEC].k_date}</small></td>
+		<td class=gry9 align=left>{$rcv_log[SEC].item}</td>
+		<td class=gry9 align=left>{$rcv_log[SEC].des}</td>
+		<td class=gry9 align=center>{$rcv_log[SEC].user}</td>
+	</tr>
+	{/section}
+</table>
+{/if}
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=950>
+<tr>
+<td WIDTH=360 align=right><font size=1 >Submit : </font> </td>
+<td WIDTH=120 align=left>{if $apb.rcv_sub_user}<font size=1 ><a href="javascript:message_out('{$apb.rcv_sub_user_id}')" style="cursor:pointer">{$apb.rcv_sub_user}</a> / {$apb.rcv_sub_date}&nbsp;</font>{/if}</td>
+<td WIDTH=100 align=right><font size=1 >create</font></td>
+<td WIDTH=120 align=left><font size=1 ><a href="javascript:message_out('{$apb.rcv_user_id}')" style="cursor:pointer">{$apb.rcv_user}</a> / {$apb.rcv_date}&nbsp;</font></td>
+</tr>
+</table>
+<br>
+
+
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=950>
+ <tr>       
+ {if $back_str}
+	{if $ck}
+	<td width=100>			
+			<input type="button" onClick="window.location.href='{$PHP_SELF}?PHP_action=apb'" value=" << back apb" class=select_e  style="cursor:pointer; width:95%" >
+	</td>
+	{else}
+	<td width=100>			
+			<input type="button" onClick="window.location.href='{$PHP_SELF}?PHP_action=rcvd_search{$back_str}'" value=" << back " class=select_e  style="cursor:pointer; width:95%" >
+	</td>
+	{/if}
+	{/if}
+			  <td align=center width=208>	
+				{if $edit_flag && $apb.status == 1}				
+				<input type="submit" id="smt" value=" [ Update above data ] " class=select_e  style="cursor:pointer; width:95%" >
+				<input type="hidden" name="PHP_action" value="do_po_before_edit">
+				<input type="hidden" name="PHP_id" value="{$apb.id}">
+				<input type="hidden" name="PHP_rcv_num" value="{$apb.rcv_num}">
+				<input type="hidden" name="PHP_ver" value="{$apb.version}">
+				<input type="hidden" name="PHP_back_str" value="{$back_str}">
+				{/if}				
+              </td>
+   </tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

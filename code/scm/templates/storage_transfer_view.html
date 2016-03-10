@@ -1,0 +1,98 @@
+﻿{include file="header.html"}
+<form id="transfer_update" name="transfer_update" method="POST" >
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle"> Storage : Transfer View</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+    <tr>
+        <td class="ord_number">
+            <table border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td><img height="130" src="picture/{$ord_num}.jpg"></td>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0" cols="1">
+                            <tr>
+                                <td class="ord_number" align="right">Storage ID # :</td>
+                                <td class="ord_number">{$sid} {if $del_flag} <img sid="{$sid}" id="delete" src="images/del.gif" title="DELETE" alt="DELETE" border="0">{/if}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Order :</td>
+                                <td class="ord_number">{$ord_num}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Facrory :</td>
+                                <td class="ord_number">{$fty_select} TO {$fty_to_select}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Line :</td>
+                                <td class="ord_number">{$line_select} TO {$line_to_select}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Zone :</td>
+                                <td class="ord_number">{$zone_select} TO {$zone_to_select}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+</table>
+
+
+<table cellpadding="0" cellspacing="0" cols="0">
+	{section name=PTL loop=$partial}
+	<tr id="G_partial_tr_{$smarty.section.PTL.index}" span_id="G_partial_span_{$smarty.section.PTL.index}">
+		<td id="Bom_TR_Title">({$partial[PTL].mks}){$partial[PTL].remark} ETD:{$partial[PTL].p_etd}</td>
+		{section name=SDS loop=$size_des}
+		<td id="Bom_TR_Size">{$size_des[SDS]}</td>
+		{/section}
+		<td id="Bom_TR_Size">Total</td>
+		<input type="hidden" name="PHP_p_id[{$partial[PTL].mks}]" value="{$partial[PTL].id}">
+	</tr>
+<!-- 	<span id="G_partial_span_{$smarty.section.PTL.index}"> -->
+	{section name=WQTY loop=$partial[PTL].wiqty}
+	<tr id="G_partial_span_{$smarty.section.PTL.index}" name="re_cal_storage">
+		<td id="Bom_TR_Item" rowspan="2">{$partial[PTL].wiqty[WQTY].colorway}</td>
+		{section name=TS loop=$partial[PTL].wiqty[WQTY].qtys}
+		<td id="Bom_TR_Value" bgcolor="#EEEEEE">
+			&nbsp;<input type="text" id="G_qty_{$partial[PTL].mks}_{$smarty.section.WQTY.index}_{$smarty.section.TS.index}" style="background-color:#EEEEEE;border-color:#EEEEEE;border-width:0px;" class="storage_end_line_input" value="{$partial[PTL].wiqty[WQTY].qtys[TS]}" readonly="readonly">&nbsp;
+			<input type="hidden" id="G_o_qty_{$partial[PTL].mks}_{$smarty.section.WQTY.index}_{$smarty.section.TS.index}" class="storage_end_line_input" value="{$partial[PTL].wiqty[WQTY].qtys[TS]}">
+		</td>
+		{/section}
+		<td id="Bom_TR_Total" bgcolor="EEEEEE"><b><span id="G_color_ttl_{$partial[PTL].mks}_{$smarty.section.WQTY.index}">{$partial[PTL].wiqty[WQTY].ttl_color_qty}</span></b></td>
+	</tr>
+    <tr id="G_partial_span_{$smarty.section.PTL.index}">
+        {section name=SDS loop=$size_des}
+        <td id="Bom_TR_Value">
+            &nbsp;<input type="text" id="T_qty_{$partial[PTL].mks}_{$smarty.section.WQTY.index}_{$smarty.section.SDS.index}" name="PHP_qty[{$partial[PTL].mks}][{$smarty.section.WQTY.index}][{$smarty.section.SDS.index}]" class="storage_end_line_input" value="{$partial[PTL].wiqty[WQTY].qtye[SDS]}" onkeyup="cal_storage_color_qty('{$partial[PTL].mks}', '{$smarty.section.WQTY.index}', '{$smarty.section.SDS.index}')">&nbsp;
+            <input type="hidden" name="PHP_color[{$partial[PTL].mks}][{$smarty.section.WQTY.index}][{$smarty.section.SDS.index}]" value="{$partial[PTL].wiqty[WQTY].colorway}">
+            <input type="hidden" name="PHP_size[{$partial[PTL].mks}][{$smarty.section.WQTY.index}][{$smarty.section.SDS.index}]" value="{$size_des[SDS]}">
+            <input type="hidden" name="PHP_id[{$partial[PTL].mks}][{$smarty.section.WQTY.index}][{$smarty.section.SDS.index}]" value="{$partial[PTL].wiqty[WQTY].ide[SDS]}">
+        </td>
+        {/section}
+        <td id="Bom_TR_Total" bgcolor="EEEEEE"><span id="T_color_ttl_{$partial[PTL].mks}_{$smarty.section.WQTY.index}"><b> 0 </b></span></td>
+    </tr>
+	{/section}
+<!-- 	</span> -->
+	{/section}
+    <tr>
+        <td colspan="{$qty_count+2}" align="center">
+            <input id="transfer_update" class="submit_ajax" type="submit" style="width:99%" name="Submit" value="Update">
+		</td>
+    </tr>
+</table>
+<input type="hidden" name="PHP_sid" value="{$sid}">
+<input type="hidden" name="PHP_ord_num" value="{$ord_num}">
+<input type="hidden" name="PHP_factory_from" value="{$fty_from}">
+<input type="hidden" name="PHP_line_from" value="{$line_from}">
+<input type="hidden" name="PHP_zone_from" value="{$zone_from}">
+<input type="hidden" name="PHP_action" value="do_update_transfer_qty">
+</form>
+{include file="footer.html"}

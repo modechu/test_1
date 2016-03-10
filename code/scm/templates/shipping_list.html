@@ -1,0 +1,181 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset=big5">
+	<title>==== :::::::::: ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+	{literal}
+<script language="javascript">
+<!--*****&shy;&para;&frac14;&#439;s&frac14;Wstart -->
+function cfm_ship(pd_id, ord_num, unit, fty, remain,pgs, cust, dept, order_nums, ref, factory, style,p_id) {
+	var T = '';
+		T = window.document.forms['add'].elements['qty_'+p_id].value;
+	if ( confirm("are you sure to SHIP #[ "+ord_num+" ] \rin quantity ["+T+"] "+unit+"\rtoday ??")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$now_pp}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5="+fty;
+		location.href="ship.php?PHP_action=add_shipping&PHP_pd_id="+pd_id+"&PHP_ord_num="+ord_num+"&PHP_qty="+T+"&PHP_back="+cgiget+"&PHP_remain="+remain+"&PHP_sr_startno="+pgs+"&PHP_cust="+cust+"&PHP_dept="+dept+"&PHP_order_nums="+order_nums+"&PHP_ref="+ref+"&PHP_factory="+factory+"&PHP_style="+style+"&PHP_p_id="+p_id;
+	} 
+}
+
+function cfm_del_shp(ord_num, qty, su, fty, unit, id, pgs, cust, dept, order_num, ref, factory,p_id) {
+	if ( confirm("are you sure to CANCEL today's shipping record :\r\r #[ "+ord_num+" ] in quantity ["+qty+"] "+unit+"\r\r  ????")) {
+		location.href="ship.php?PHP_action=del_shipping&PHP_shp_id="+id+"&PHP_ord_num="+ord_num+"&PHP_fty="+fty+"&PHP_qty="+qty+"&PHP_su="+su+"&PHP_p_id="+p_id;
+	} 
+}
+  <!--*****&shy;&para;&frac14;&#439;s&frac14;Wend -->
+ </script>
+	{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form name='add'>
+ <table width=690 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=11 align=center class=gry><b>PRODUCTION ORDER LIST</b></td></tr>
+<!---
+{if $msg_YES}
+ <TR><TD colspan=10>
+     <table border=0 cellpadding=3 cellspacing=0 cols=1 width=690>
+      <tr bgcolor=#ffffff>
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </TD></TR>
+{/if}
+--->
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=55 align=center>order#</td>
+    <td class=w9 width=55 align=center>cust.</td>
+    <td class=w9 width=65 align=center>ETD</td>
+    <td class=w9 width=65 align=center>STYEL#</td>
+    <td class=w9 width=65 align=center>Order Q'ty</td>
+    <td class=w9 width=65 align=center>output Q'ty</td>
+    <td class=w9 width=65 align=center>SHPed Q'ty</td>
+    <td class=w9 width=65 align=center>today</td>
+    <td class=w9 width=65 align=center bgcolor=#4A0033>process</td>
+    <td class=w9 width=20 align=center>FTY</td>
+    <td class=w9 width=10 align=center>Pd</td>
+  </tr>
+	{section name=SEC loop=$sorder} {if $sorder[SEC].status > 9}
+  <tr bgColor='#eeeeee'>
+{else}
+  {if $sorder[SEC].sub_con == 1}
+	  <tr bgColor='#FFFFDF'></a>
+  {else}
+  	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+  {/if}
+{/if}
+   <td class=gry9 align=center nowrap><small><a hrefs="{$PHP_SELF}?PHP_action=ord_schedule_view&PHP_order_num={$sorder[SEC].order_num}&cgiget= {$cgistr_get}&cgino={$now_pp}&cgi_1={$cgi.dept}&cgi_2={$cgi.order_num}&cgi_3={$cgi.cust}&cgi_4={$cgi.ref}&cgi_5={$cgi.factory}">
+	{$sorder[SEC].order_num}</a>({$sorder[SEC].mks})</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].cust_iname}&nbsp;</small></td>
+   <td class=b9 align=center><small>{$sorder[SEC].etd}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].style_num}&nbsp;</small></td>
+   <td class=gry9 align=right>{$sorder[SEC].qty|number_format}&nbsp;{$sorder[SEC].unit}</td>
+   <td class=dgrn align=right><b><i>{$sorder[SEC].qty_done|number_format}</i></b>&nbsp;{if 
+	$sorder[SEC].qty_done}{$sorder[SEC].unit}{/if}</td>
+   <td class=ssign align=right><b>{$sorder[SEC].qty_shp|number_format}&nbsp;</b></td>
+
+   <td class=b9 align=center>
+   
+   <!--if $add_flag && $sorder[SEC].factory == $sorder[SEC].dept-->
+   {if $add_flag}
+		<input type=text name="qty_{$sorder[SEC].p_id}" size=5 class=option value="{$sorder[SEC].today}" style='text-align:center'>
+   {/if}&nbsp;</td>
+   <td class=ssign align=center bgcolor=#eeeeee>
+   <!--if $add_flag && $sorder[SEC].factory == $sorder[SEC].dept  -->
+   {if $add_flag}
+ <!--*****&shy;&para;&frac14;&#439;s&frac14;Wstart -->
+		<a href="javascript:cfm_ship({$sorder[SEC].id},'{$sorder[SEC].order_num}','{$sorder[SEC].unit}','{$sorder[SEC].factory}',{$sorder[SEC].qty_done} - {$sorder[SEC].qty_shp},{$now_pp},'{$cgi.cust}','{$cgi.dept}','{$cgi.order_num}','{$cgi.ref}','{$cgi.factory}','{$sorder[SEC].style}','{$sorder[SEC].p_id}')" value='ship' style='cursor:pointer'>
+		<img src='./images/ship.jpg' ALT="shipping Today"></a>
+   {/if}&nbsp;</td>
+<!--*****&shy;&para;&frac14;&#439;s&frac14;Wend -->
+   <td class=gry9 align=center><b>{$sorder[SEC].factory}&nbsp;</b></td>
+   <td class=gry9 align=center><b>{if $sorder[SEC].sub_con == 1}S{else}I{/if}&nbsp;</b></td>
+  </tr>
+  {/section}
+
+</table>
+<br>
+
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※  </font>above listing 
+	{if $msg_YES}{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} 
+	&nbsp;{/section}{/if}&nbsp;order records!&nbsp;&nbsp;<span class=bgdy9>[ total :{$max_no} 
+	entries ]</font>
+    </td>
+  </tr>
+</table>  
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td align=center width=180><form name="form5" method="post">{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=p{$pages[0]}'">
+          {/if}&nbsp;&nbsp;
+	   </td>
+		<td align=center width=260> 
+		{section name=PGE loop=$pages} {if $pages[PGE] <= $maxpage } {if $pages[PGE] == $now_pp}
+		    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+	    {else}
+		    <a href="{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">
+			&nbsp;{$pages[PGE]}</a>
+	    {/if} {/if} {/section} &nbsp;</td>
+
+		</td>
+		<td align=center width=180>
+		{if $lastpage < $maxpage}
+		    <input type="button" name="Submit6" value="next 10 page >" class=select_e style="cursor:pointer width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td></form>
+		<td align=center width=60>
+			<a href="{$PHP_SELF}?PHP_action=pdt_excel&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}" style="cursor:pointer">
+			<img src="./images/excel_icon.gif" border=0 alt="a windows [Excel]IR?></a>
+
+		</td>
+	</tr>
+</table>
+<br>
+
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    <td align=center width=180><form name="form5" method="post"></td>
+		</form>
+
+  </tr>
+
+
+</table>
+
+<br>
+<br>
+<br>
+
+<table width=500 border=1 cellspacing=0 cellpadding=2 align=center>
+  <tr>
+    <td colspan=3 align=center class=gry><b>+++ SHIPPING records of TODAY ++++</b></td>
+    <td colspan=2 align=center class=bgdy9>Q'ty: <span class=snvy><b>{$shpping_qty}</b></span> unit ::<span class=snvy> <b>{$shpping_su}</b></span> s.u.</td>
+ </tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=120 align=center>order#</td>
+    <td class=w9 width=100 align=center>output Q'ty</td>
+    <td class=w9 width=100 align=center>S.U.</td>
+    <td class=w9 width=80 align=center>FTY</td>
+    <td class=w9 width=50 align=center>remark</td>
+  </tr>
+{section name=TODAY loop=$shp}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+   <td class=b9 align=center title="{$shp[TODAY].p_id}">{$shp[TODAY].ord_num}&nbsp;({$shp[TODAY].mks})</td>
+   <td class=b9 align=center>{$shp[TODAY].qty}&nbsp;{$pdt[TODAY].unit}</td>
+   <td class=b9 align=center>{$shp[TODAY].su}&nbsp;</td>
+   <td class=b9 align=center>{$shp[TODAY].factory}&nbsp;</td>
+   <td class=b9 align=center>
+  <!-- if $add_flag && $shp[TODAY].factory == $shp[TODAY].dept-->
+  {if $add_flag}
+ <!--*****頁數新增start -->
+		<a href="javascript:cfm_del_shp('{$shp[TODAY].ord_num}',{$shp[TODAY].qty},{$shp[TODAY].su},'{$shp[TODAY].factory}','{$shp[TODAY].unit}','{$shp[TODAY].id}','{$now_pp}','{$cgi.cust}','{$cgi.dept}','{$cgi.order_num}','{$cgi.ref}','{$cgi.factory}','{$shp[TODAY].p_id}')" value='del_shipping' style='cursor:pointer'>
+		<img src='./images/x07.jpg' border=0 ALT="cancel shipping entry">{/if}&nbsp;</td>
+  </tr>
+  <!--*****頁數新增end -->
+{/section}
+{if !$shipping_records}
+   <td class=bgdy align=center colspan=5>+++ none SHIPPING records for today currently +++</td>
+{/if}
+<!----------------------------------------------------------->
+<!--------- footer ---------->
+{include file="footer.html"}

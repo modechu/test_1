@@ -1,0 +1,78 @@
+﻿{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">{if $T_acceptance_title}{$T_acceptance_title}{else}Acceptance{/if}</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+                <tr>
+					<td id="box_right">B.L.# : </td>
+					<td><input type="text" id="bl_num" size="20" class="ui-widget"></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td id="box_right">Carrier # : </td>
+					<td><input type="text" id="carrier_num" size="20" class="ui-widget"></td>
+					<td><input class="submit_ajax" type="button" id="incoming_material_search" style="width:90px;" name="Submit" value="{if $T_submit}{$T_submit}{else}Submit{/if}"></td>
+				</tr>
+			</table>
+            <input type="hidden" id="arrival_active" value="y">
+            <input type="hidden" id="incoming_active" value="n">
+		</td>
+	</tr>
+	{if $dept_select}
+	<tr>
+		<td class="subInputName">
+			<table cellspacing="3" cellpadding="0" cols="0">
+				<tr>
+					<td>Factory : </td>
+					<td>{$dept_select}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	{if $dept}
+	<tr>
+		<td>
+			<table cellspacing="0" cellpadding="0" cols="0">
+				{section name=DET loop=$dept_html}
+				{if $smarty.section.DET.index % 16 == 0}
+				<tr>
+					<!-- <td class="ListName" title="Ship Number">Ship #</td> -->
+					<td class="ListName" title="B.L. Number">B.L. #</td>
+					<td class="ListName" title="Carrier Number">Carrier #</td>
+					<td class="ListName" title="From">From</td>
+					<td class="ListName" title="To">TO</td>
+                    <td class="ListName" title="Ship Date">SHIP Date</td>
+					<td class="ListName" title="ETA">ETA</td>
+                    <td class="ListName" title="Ship By">SHIP BY</td>
+					<td class="ListName" title="Express Company">Express Company</td>
+				</tr>				
+				{/if}
+				<tr id="List_TR_link" link="{$dept_html[DET].bl_num}">
+					<!-- <td class="ListValueLeft">S{$dept_html[DET].id}</td> -->
+					<td class="ListValueLeft">{$dept_html[DET].bl_num}</td>
+					<td class="ListValueLeft">{$dept_html[DET].carrier_num}</td>
+					<td class="ListValueLeft">{$dept_html[DET].org}</td>
+					<td class="ListValueLeft">{$dept_html[DET].dist}</td>
+										<td class="ListValueLeft">{$dept_html[DET].ship_date}</td>
+					<td class="ListValueLeft">{$dept_html[DET].ship_eta_date}</td>
+					<td class="ListValueLeft">{$dept_html[DET].ex_cmpy}</td>
+                    <td class="ListValueLeft">{$dept_html[DET].ship_way}</td>
+				</tr>
+				{sectionelse}
+				<tr>
+					<td class="List_msg">{$dept}, No data!</td>
+				</tr>
+				{/section}
+			</table>
+		</td>
+	</tr>
+	{/if}
+</table>
+{include file="footer.html"}

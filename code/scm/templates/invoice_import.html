@@ -1,0 +1,432 @@
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <title>==== ::::::::::  Pack Style Input :::::::::: ====</title>
+ <link rel=stylesheet type="text/css" href="./bom.css">
+ <link type="text/css" href="./js/calendar/css/jscal2.css" rel="stylesheet" />
+ <link type="text/css" href="./js/calendar/css/border-radius.css" rel="stylesheet" />
+ <link type="text/css" href="./js/calendar/css/gold/gold.css" rel="stylesheet" />
+{literal}
+<style type="text/css">@import url(js/calendar/skins/aqua/theme.css);.outline {
+	border :1px solid #CCCCCC;
+	padding:3px 7px 3px 7px;
+	background-color:#FFFFFF;
+	color:#000000;
+	margin:3px  !important;
+	cursor:pointer;
+}</style>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<!--<script type="text/javascript" src="./js/calendar/calendar.js"></script>-->
+<script type="text/javascript" src="./js/calendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="./js/calendar/calendar-setup.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="./js/calendar/js/jscal2.js" charset="big5"></script>
+<script type="text/javascript" src="./js/calendar/js/lang/en.js" charset="big5"></script>
+
+
+
+<script language="javascript">
+(function($){
+	$(document).ready(function(){
+		
+		$("#btn_import_csv").click(function(){
+			//alert('test');
+			var fty = $("#fty").find(":selected").val();
+			
+			if(fty !='')
+			{
+				if(fty == 'LY')
+				{
+					$("#PHP_action").val('ly_invoice_import');
+					//alert($("#PHP_action").val());
+				}
+				else
+				{
+					$("#PHP_action").val('cf_invoice_import');
+					//alert($("#PHP_action").val());
+				}
+			}
+			else
+			{
+				alert("Please select FTY");
+			}
+		});
+		$("#import_csv_post").click(function(){
+			var val_null=true;
+			if($('#consignee_select').val()!='')
+			{
+				$('input[type=text]').each(function(key,val){
+					if(key > 0)
+					{
+						if($(val).val() == '')
+						{
+							alert('Please keyin SCM Order Number!!');
+							val_null=false;
+							//return false;
+							
+						}
+					}
+					
+				});
+				if(!val_null)
+				{
+					return false;
+				}
+				
+				
+			}
+			else
+			{
+				alert('Please select "Consignee / Ship to" ');
+				return false;
+			}
+			
+		});
+		$("#btn_invoice_delete").click(function(){
+			//alert("test");
+			var inv = $('#txt_invoice_search').val();
+			//alert(inv);
+			if (confirm('確認刪除??')) 
+			{
+				$.post('./invoice_import.php?PHP_action=delete_invoice',{PHP_INV_NO:inv},function(data) {
+							//$('#result').html(data)
+					//alert(data);
+					var status = data.split(",");
+					//alert(status[1]);
+					if(status[0] > 0)
+					{
+						if(status[0] == 1)
+						{
+							alert('狀態submit,無法刪除');
+						}
+						else
+						{
+							alert('狀態Confirm,無法刪除');
+						}
+					}
+					else
+					{
+						if(status[1] == 1)
+						{
+							alert('刪除成功');
+						}
+						else
+						{
+							//alert('刪除失敗');
+							alert(data);
+						}
+					}
+				});			
+								
+			}
+				
+		});
+		//$("#calendar-inputField").change(function{
+		//	alert('test');
+		//}); 
+		$('#order_copy').hover(function(){
+		$(this).animate({ paddingLeft: '+=2' }, 200);
+		//$(this).addClass("title_submit_over");
+		},function(){
+		$(this).animate({ paddingLeft: '-=2' }, 200);
+		//$(this).removeClass("title_submit_over");  
+		});
+		
+		$('#order_copy').click(function(){
+			var order='';
+			$('input[type=text]').each(function(key,val){
+					if(key > 0)
+					{
+						if(key==1)
+						{
+							if($(val).val()=='')
+							{
+								alert('Please keyin order number in first text box!!');
+								return false;
+							}
+							else
+							{
+								order=$(val).val();
+							}
+						}
+						else
+						{
+							$(this).val(order);
+						}
+					}
+				});
+				if(!val_null)
+				{
+					return false;
+				}
+		});
+		
+	});
+})(jQuery);
+</script>
+{/literal}
+</head>
+<body>
+{if $msg_YES}
+<table cellpadding="0" cellspacing="0" cols="0" >
+	<tr bgcolor=#ffffff> 
+		<td width="90" class="gry10" align="center"><img src="images/alert.gif" border="0"></td>
+		<td class="msg"><b>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}</b><br>{/section}</td>
+	</tr>
+</table>
+{/if}
+<div id='show_message'></div>
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subInputName">
+            <table class="table_bady" border="1" cellspacing="0" cellpadding="0" cols="1">
+				
+				<tr><td rowspan='2'><font size="4">匯入檔案</font></td><td>FTY：&nbsp;
+					<select id='fty'>
+						<option value=''>select</option>
+						<option value='LY'>LY</option>
+						<option value='CF'>CF</option>
+					</select>
+				</td></tr>
+                {if $add_flag}
+				<tr>
+					<td>
+						<form id="import_csv" method=POST name=pattn enctype="multipart/form-data" action=invoice_import.php>    
+						<font size="3">檔案：</font><input type="hidden" id="PHP_action" name="PHP_action" value="import_csv_file">
+							<input type='file' id='PHP_csv_file' name='PHP_csv_file' size=20 class=select>&nbsp;&nbsp;
+							<input id="btn_import_csv" class="title_submit" type='submit' value=' 載入 '>
+						</form>
+					</td>
+				</tr>
+                {/if}
+				<tr>
+								
+				
+				<form id="import_csv" method=POST name=pattn enctype="multipart/form-data" action=invoice_import.php>  
+				<input type="hidden" id="PHP_action" name="PHP_action" value="view_invoice">
+				
+				<td><font size="4">Invoice查詢</font></td>
+				<td colspan='2'>
+				<input type='text' id='txt_invoice_search' name='PHP_INV_NO' value=''/>&nbsp;&nbsp;<input type='submit' id='btn_invoice_search' value='查 &nbsp;&nbsp; 詢'>
+				<input type='button' id='btn_invoice_delete' value='刪 &nbsp;&nbsp; 除'>
+				</form>
+				</td>
+				</tr>
+            </table>
+			
+        </td>
+    </tr>
+	<tr>
+		<form method=POST name=import enctype="multipart/form-data" action=invoice_import.php>
+		{if $Invoice_import}
+		<table style="border:5px #cccccc solid;"  rules="all" cellpadding='0' cellspacing='0' width=100%>
+			<input type="hidden" id="PHP_fty" name="PHP_fty" value="{$fty}">
+			<input type="hidden" id="PHP_cust" name="PHP_cust" value="{$cust}">
+			<tr>
+				<td align='right'><font size="4">Factory：</font></td>
+				<td align='left'><font size="4">{$fty}</font></td>
+				<td align='right'><font size="4">Customer：</font></td>
+				<td align='left'><font size="4">{$cust}</font></td>
+				<td class="item_list">
+                <font size="2"> Shipping Date : </font>
+				<font size="2" style="cursor:pointer;font-weight:bold;" id="calendar-trigger" color="blue">{$ship_date}</font>
+                <input type="hidden" id="calendar-inputField" name="PHP_ship_date" size="8" value="{$ship_date}" />
+                </td>
+				
+			{if $color_check}{if $size_check}<td colspan='6' align='left'>&nbsp;&nbsp;</td>{else}<td colspan='5' align='left'>&nbsp;&nbsp;</td>{/if}      {else}{if $size_check}<td colspan='5' align='left'>&nbsp;&nbsp;</td>{else}<td colspan='4' align='left'>&nbsp;&nbsp;</td>{/if}  {/if}
+			<tr>
+			<tr>
+				<td align='center'><font size="4">Consignee / Ship to：</font></td>
+			<!-- {if $color_check}{if $size_check}<td colspan='9' align='left'>{$consignee}</td>{else}<td colspan='8' align='left'>{$consignee}</td>{/if}      {else}{if $size_check}<td colspan='8' align='left'>{$consignee}</td>{else}<td colspan='7' align='left'>{$consignee}</td>{/if}  {/if} -->
+			<td colspan='9' align='left'>{$consignee}</td>
+			<tr>
+				<td align='center'><font size="4">INV No#</font></td>
+				<td><font size="4">SHIP Date#</font></td>
+				<td><font size="4">CUST PO#</font></td>
+				<td><font size="4">STYLE#</font></td>
+				{if $color_check}
+					{if $size_check}
+					<td><font size="4">COLOR#</font></td>
+					<td><font size="4">SIZE#</font></td>
+					
+					{else}
+					<td><font size="4">COLOR#</font></td>
+					<td><font size="4">SIZE#</font></td><!--2015-07-07新增-->
+					{/if}
+				{else}
+					{if $size_check}
+					<td><font size="4">SIZE#</font></td>
+					
+					{else}
+					<!-- <td><font size="4">COLOR#</font></td> --><!--2015-07-14新增 For LY-->
+					{/if}
+				{/if}
+				<td><font size="4">SCM NO#<span style="width:20;height:20;background-color:orange" id="order_copy">Repeat</span></font></td>
+				<td><font size="4">Qty</font></td>
+				<td><font size="4">Unit Price</font></td>	
+				<td><font size="4">Amount</font></td>
+			</tr>
+		
+		<tr>
+		{foreach from=$Invoice_import key=inv_key item=inv_value name=inv}
+		<!--Invoice-->
+		{if $inv_key!='span'}
+		<td rowspan='{$inv_value.span}' align='center'><font size="4">{$inv_key}</font></td>
+		<td rowspan='{$inv_value.span}'><span id='table_shipdate'>{$ship_date}</span></td>
+			{foreach from=$inv_value key=po_key item=po_value name=po}
+			<!--CUSTPO-->
+			{if $po_key!='span'}
+			{if $smarty.foreach.po.index > 0}
+			<tr name='po'>
+			{/if}
+			<td rowspan='{$po_value.span}'>{$po_key}</td>
+				{foreach from=$po_value key=style_key item=style_value name=style}
+				<!--STYLE-->
+				{if $style_key!='span'}
+				{if $smarty.foreach.style.index > 0}
+				<tr name='style'>
+				{/if}
+				<td rowspan='{$style_value.span}'>{$style_key}</td>
+					{foreach from=$style_value key=color_key item=color_value name=color}
+					<!--COLOR-->
+						{if $color_key=='nocolor'}
+						<!--Invoice沒有顏色-->
+							{foreach from=$color_value key=size_key item=size_value name=size}
+								<!--SIZE-->
+								{if $size_key=='nosize'}
+									<!--Invoice沒有尺碼-->
+									{if $size_key!='span'}
+										{if $fty =='CF'}
+										<td>&nbsp;&nbsp;</td><!--2015-07-07新增-->
+										{/if}
+										<td><input type='text'  class='SCM_order' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][SCM]' value=''/></td>
+										{foreach from=$size_value key=k item=value}
+										<!--Content qty,dollar_unit,fob,amount-->
+											
+											{if $k!='span'}
+											<td>{$value}</td>
+											<input type='hidden' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][{$k}]' value='{$value}' />
+											{/if}
+										{/foreach}
+										</tr>
+									{/if}
+								<!--Invoice沒有尺碼 END-->
+								{else}
+								<!--Invoice有尺碼-->
+									{if $size_key!='span'}
+										<td>{$size_key}</td>
+										<td><input type='text' class='SCM_order'  name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][SCM]' value=''/></td>
+										{foreach from=$size_value key=k item=value}
+										<!--Content qty,dollar_unit,fob,amount-->
+											
+											{if $k!='span'}
+											<td>{$value}</td>
+											<input type='hidden' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][{$k}]' value='{$value}' />
+											{/if}
+										{/foreach}
+										</tr>
+									{/if}
+								<!--Invoice有尺碼 END-->
+							{/if}
+									
+						{/foreach}
+					<!--Invoice沒有顏色 END-->
+					{else}
+					<!--Invoice有顏色-->
+						{if $color_key!='span'}
+						{if $smarty.foreach.color.index > 0}
+						<tr name='color'>
+						{/if}
+						<td rowspan='{$color_value.span}'>{$color_key}</td>
+							{foreach from=$color_value key=size_key item=size_value name=size}
+							<!--SIZE-->
+							{if $size_key=='nosize'}
+							<!--Invoice沒有尺碼-->
+								{if $size_key!='span'}
+									<td>&nbsp;&nbsp;</td><!--2015-07-07新增-->
+									<td><input type='text'  class='SCM_order' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][SCM]' value=''/></td>
+									{foreach from=$size_value key=k item=value}
+									<!--Content qty,dollar_unit,fob,amount-->
+										
+										{if $k!='span'}
+										
+										<td>{$value}</td>
+										<input type='hidden' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][{$k}]' value='{$value}' />
+										{/if}
+									{/foreach}
+									</tr>
+								{/if}
+							<!--Invoice沒有尺碼 END-->
+							{else}
+							<!--Invoice有尺碼-->
+								{if $size_key!='span'}
+									<td>{$size_key}</td>
+									<td><input type='text' class='SCM_order'  name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][SCM]' value=''/></td>
+									{foreach from=$size_value key=k item=value}
+									<!--Content qty,dollar_unit,fob,amount-->
+										
+										{if $k!='span'}
+										<td>{$value}</td>
+										<input type='hidden' name='PHP_INVOICE[{$inv_key}][{$po_key}][{$style_key}][{$color_key}][{$size_key}][{$k}]' value='{$value}' />
+										{/if}
+									{/foreach}
+									</tr>
+								{/if}
+							<!--Invoice有尺碼 END-->
+							{/if}
+								
+							{/foreach}
+						{/if}
+					<!--Invoice有顏色 END-->
+					{/if}
+					<!--COLOR END-->
+					{/foreach}
+				{/if}
+				<!--STYLE END-->
+				{/foreach}
+			{/if}
+			<!--CUSTPO END-->
+			{/foreach}
+		{/if}
+		<!--Invoice END-->
+		{/foreach}
+		<!-- </tr> -->
+		<!-- <tr>{if $color_check}{if $size_check}<td colspan='7' align='right'>{else}<td colspan='6' align='right'>{/if}{else}{if $size_check}<td colspan='6' align='right'>{else}<td colspan='5' align='right'>{/if}{/if}Total:</td><td>{$ttl_qty}</td><td align='right'>&nbsp;</td><td align='right'>&nbsp;</td><td>US$&nbsp;&nbsp;{$ttl_amount}</td></tr> -->
+		<!-- <tr>{if $color_check}{if $size_check}<td colspan='10' align='center'>{else}<td colspan='9' align='center'>{/if}{else}{if $size_check}<td colspan='9' align='center'>{else}<td colspan='8' align='center'>{/if}{/if}<input id="import_csv_post" class="select_e" style="cursor:pointer; width=60%"  type='submit' value=' upload '></td></tr> -->
+		{if $fty =='LY'}
+		<tr><td colspan='5' align='right'>Total:</td><td>{$ttl_qty}</td><td align='right'>&nbsp;</td><td>US$&nbsp;&nbsp;{$ttl_amount}</td></tr>
+		{else}
+		<tr><td colspan='7' align='right'>Total:</td><td>{$ttl_qty}</td><td align='right'>&nbsp;</td><td>US$&nbsp;&nbsp;{$ttl_amount}</td></tr>
+		{/if}
+		<tr><td colspan='10' align='center'><input id="import_csv_post" class="select_e" style="cursor:pointer; width=60%"  type='submit' value=' upload '></td></tr>
+		</table>
+		
+		<!--<input type="hidden" id="PHP_ship_date" name="PHP_ship_date" value="{$ship_date}">-->
+		<input type="hidden" id="PHP_action" name="PHP_action" value="save_csv_file">
+		<input type="hidden" id="PHP_ttl_qty" name="PHP_ttl_qty" value="{$ttl_qty}">
+		<input type="hidden" id="PHP_ttl_amount" name="PHP_ttl_amount" value="{$ttl_amount}">
+		{/if}
+		</form>
+		
+	</tr>
+	{literal}
+	<script type="text/javascript">
+			cal = Calendar.setup({
+				weekNumbers : false,
+				trigger     : "calendar-trigger",
+				inputField  : "calendar-inputField",
+				date        : {/literal}{$ship_dates}{literal} ,
+				selection   : {/literal}{$ship_dates}{literal} ,
+				showTime    : false,
+				onSelect: function() {
+					$('#calendar-trigger').html($('#calendar-inputField').val());
+					$('#table_shipdate').html($('#calendar-inputField').val());
+					cal.hide();
+				}
+			});
+	</script>
+	{/literal}
+</table>
+
+{include file="footer.html"}

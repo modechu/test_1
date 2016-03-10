@@ -1,0 +1,71 @@
+{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle"> Materials release ( Factory ) : Append list </td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" cols="0">
+	<tr>
+		<td colspan="8">
+			<table cellspacing="0" cellpadding="0" width="100%">
+                <tr class="item_title">
+                    <td colspan="5"> Order LIST </td>
+                </tr>
+				<tr class="list_title">
+					<td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[0]}={$sort[0]}{$sorting}">Order</a></td>
+                    <td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[1]}={$sort[1]}{$sorting}">Customer</a></td>
+					<td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[2]}={$sort[2]}{$sorting}">Create</a></td>
+					<td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[3]}={$sort[3]}{$sorting}">ETD Date</a></td>
+<!--                     <td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[4]}={$sort[4]}{$sorting}">Submit User</a></td>
+					<td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[5]}={$sort[5]}{$sorting}">Submit Date</a></td> -->
+                    <td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[6]}={$sort[6]}{$sorting}">Factory</a></td>
+                    <td><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[7]}={$sort[7]}{$sorting}">Status</a></td>
+					<td></td>
+				</tr>
+				{if !$pages}
+				<tr class="list_txt">
+					<td colspan="9"><br>
+					there is no record currently!<br>
+					<br></td>
+				</tr>
+				{/if}
+				{section name=SEC loop=$pages}
+				<tr class="list_txt">
+					<td>{$pages[SEC].order_num}</td>
+					<td>{$pages[SEC].cust_init_name}</td>
+					<td>{$pages[SEC].creator}</td>
+					<td>{$pages[SEC].etd|date_format:"%Y/%m/%d"}</td>
+<!--                     <td>{$pages[SEC].pdc_submit_user}</td>
+                    <td>{$pages[SEC].pdc_submit_date|date_format:"%Y/%m/%d"}</td> -->
+                    <td>{$pages[SEC].factory}</td>
+                    <td>{if $pages[SEC].pdc_status == 2}{literal}Bom(VN) UN Submit{/literal}
+                    {elseif $pages[SEC].pdc_status == 4}{literal}<span style="color:#7f7f7f">Un SET</span>{/literal}
+                    {elseif $pages[SEC].pdc_status == 6}{literal}<span style="color:#7f7f7f">Setting</span>{/literal}
+                    {elseif $pages[SEC].pdc_status == 8}{literal}<span style="color:#7f7f7f">Finish</span>{/literal}
+                    {else}{literal}CUTTING PLAN UN Submit{/literal}{/if}
+                    </td>
+					<td style="text-align: left;">
+                        {if $pages[SEC].pdc_status >= 4}
+                        <a href="{$PHP_SELF}?PHP_action=bom_requi_append&PHP_ord_num={$pages[SEC].order_num}&PHP_id={$pages[SEC].id}&PHP_mat={$PHP_mat}" style="cursor:pointer"><img src="images/add.gif" title="View" border=0></a>
+                        {/if}
+<!--                         {if $edit_flag}
+                            {if $pages[SEC].pdc_status == 4}
+                            <a href="{$PHP_SELF}?PHP_action=edit_bom_of_materials&PHP_ord_num={$pages[SEC].order_num}&PHP_id={$pages[SEC].id}" style="cursor:pointer"><img src="images/edit.gif" title="UPDATE" border=0></a>
+                            {else}
+                            <a href="{$PHP_SELF}?PHP_action=detail_bom_of_materials&PHP_ord_num={$pages[SEC].order_num}&PHP_id={$pages[SEC].id}" style="cursor:pointer"><img src="images/mac.gif" title="Detail" border=0></a>
+                            {/if}
+                        {/if} -->
+                    </td>
+				</tr>
+				{/section}
+				<tr class="search_txt">
+					<td colspan="9">{$page_num}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+{include file="footer.html"}

@@ -1,0 +1,175 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SAMPLE ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function tp(url) { parent.top.location.href=url }
+ function  cfm(style_code,cust_ref,size,picurl,id,size_scale,etd,cust,dept,pp,back_str,unit) {
+		location.href="index2.php?PHP_action=smpl_wi_add&PHP_style_code="+style_code+"&PHP_cust_ref="+cust_ref+"&PHP_size="+size+"&PHP_pic="+picurl+"&PHP_smpl_id="+id+"&PHP_size_scale="+size_scale+"&PHP_etd="+etd+"&PHP_customer="+cust+"&PHP_dept="+dept+"&PHP_sr="+pp+back_str+"&PHP_unit="+unit;
+ }
+
+function delete_cfm(ref,id,pp,back_str) {
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+ref+"]??")) {
+	location.href="index2.php?PHP_action=smpl_wi_del&PHP_id="+id+"&PHP_sr_startno="+pp+back_str;
+	} 
+ }
+function copy(id,num,new_num,etd,cust,dept,pp,back_str) {
+	location.href="index2.php?PHP_action=do_smpl_wi_copy&PHP_wi_num="+num+"&PHP_smpl_id="+id+"&PHP_new_num="+new_num+"&PHP_etd="+etd+"&PHP_dept="+dept+"&PHP_cust="+cust+"&PHP_sr="+pp+back_str;
+}
+function Show_ord(id) {
+	 var url ='index2.php?PHP_action=smpl_ord_view&PHP_id='+id+'&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=&cgi_6=&cgi_7=&cgi_8=&cgi_9=&cgi_10=&cgiget=&cgino=&cgi_5=&cgi_6=&cgi_7=&cgi_8=&cgi_9=&cgi_10='; 	
+	 var nm = 'Order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function search_copy(id,num,dept,cust,pp,back_str,etd)
+{
+	location.href="index2.php?PHP_action=search_smpl_wi_copy&PHP_wi_num="+num+"&PHP_smpl_id="+id+"&PHP_c_dept="+dept+"&PHP_c_cust="+cust+"&PHP_sr="+pp+back_str+"&PHP_c_etd="+etd;
+}
+
+function search_ti_copy(id,dept,cust,pp,back_str)
+{
+	location.href="index2.php?PHP_action=search_smpl_ti_copy&PHP_smpl_id="+id+"&PHP_c_dept="+dept+"&PHP_c_cust="+cust+"&PHP_sr="+pp+back_str;
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr><td height=35 colspan=15 align=center class=gry><b>SAMPLE ORDER LIST - for <font color=navy><i>Working Instruction / WorkSheet</i></font></b></td></tr>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w9 width=90 align=center><b>smpl ord #</b></td>
+    <td class=w9 width=25 align=center><b>W/I</b></td>
+    <td class=w9 width=25 align=center><b>W/S</b></td>
+    <td class=w9 width=25 align=center><b>BOM</b></td>
+    <td class=w9 width=70 align=center><b>smpl Type</b></td>
+    <td class=w9 width=35 align=center><b>Style</b></td>
+    <td class=w9 width=40 align=center><b>q'ty</b></td>
+    <td class=w9 width=60 align=center><b>ETD</b></td>
+    <td class=w9 width=20 align=center><b>MK</b></td>
+    <td class=w9 width=100 align=center><b>Sample status</b></td>
+    <td class=w9 width=100 align=center><b>W/I</b></td>
+    <td class=w9 width=110 align=center><b>W/S</b></td>
+  </tr>
+{section name=SEC loop=$sorder}
+{if $sorder[SEC].status == 10}
+  <tr bgColor='#dddddd'></a>
+{elseif $sorder[SEC].status == 7}
+  <tr bgColor='#FFC6C1'></a>
+{else}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+{/if}
+   <td class=gry9 align=center nowrap><b>
+   <a href="javascript:Show_ord('{$sorder[SEC].id}')" value='ord_out' style='cursor:pointer'>
+   {$sorder[SEC].num}</a></b></td>
+   <td class=gry9 align=center><small>&nbsp;{if $sorder[SEC].wi_status > 0}<img src="images/yes.gif" border=0 width=15 valign=bottom  style="cursor:pointer">{/if}</small></td>
+   <td class=gry9 align=center><small>&nbsp;{if $sorder[SEC].ti_cfm <> '' && $sorder[SEC].ti_cfm <> '0000-00-00'}<img src="images/yes.gif" border=0 width=15 valign=bottom  style="cursor:pointer">{/if}</small></td>
+   <td class=gry9 align=center><small>&nbsp;{if $sorder[SEC].wi_status > 1}<img src="images/yes.gif" border=0 width=15 valign=bottom  style="cursor:pointer">{/if}</small></td>
+   <td class=gry9 align=center><small>&nbsp;{$sorder[SEC].smpl_type}</small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].style}</small></td>
+   <td class=gry9 align=right><small>{$sorder[SEC].qty}&nbsp;{$sorder[SEC].unit}</small></td>
+   <td class=bgdy9 align=center><small>&nbsp;{$sorder[SEC].etd}</small></td>
+   <td class=gry9 align=center><small>&nbsp;{$sorder[SEC].factory}</small></td>
+   {if $sorder[SEC].apv_date == '0000-00-00'}
+   <td class=ylw9 align=center bgcolor=#003C77>
+   {else}
+   <td class=ylw9 align=center bgcolor=#5E5F5E>
+   {/if}
+			<small><b> {if $sorder[SEC].status == -1}<font color=#CBB4F5>Wait submt</font>
+			{elseif $sorder[SEC].status == 0}W/I expect
+			{elseif $sorder[SEC].status == 1}<span class=ssign><small>PTTN expect</span>
+			{elseif $sorder[SEC].status == 2}<span class=ssign><small>FAB expect</span>
+			{elseif $sorder[SEC].status == 3}<span class=ssign><small>ACC expect</span>
+			{elseif $sorder[SEC].status == 4}<span class=lgrn><small>PTTN schdle</span>
+			{elseif $sorder[SEC].status == 5}<span class=lgrn><small>SMPL schdle</span>
+			{elseif $sorder[SEC].status == 6}<span class=grn9><small>DEVELOPING</span>
+			{elseif $sorder[SEC].status == 7}<span class=ssign><small>* PENDING *</span>
+			{elseif $sorder[SEC].status == 10}<span class=des><small>= case close =</span>
+			{else}&nbsp;{/if}</b>
+			</small></td>
+  <td class=w9 align=left>&nbsp;
+  {if $sorder[SEC].wi_id == ''}    
+    
+		<img src="images/add.gif" alt="Add" border=0 valign=bottom onClick="cfm('{$sorder[SEC].num}','{$sorder[SEC].style}','{$sorder[SEC].size}','{$sorder[SEC].main_pic}','{$sorder[SEC].id}','{$sorder[SEC].size_scale}','{$sorder[SEC].etd}','{$sorder[SEC].cust}','{$sorder[SEC].dept}','{$now_pp}','{$back_str}','{$sorder[SEC].unit}');" style="cursor:pointer">
+	&nbsp;
+	<!--
+    {if $sorder[SEC].copy}	
+    		<img src="images/copy.jpg" alt="Copy" border=0 valign=bottom onClick="copy('{$sorder[SEC].id}','{$sorder[SEC].copy}','{$sorder[SEC].num}','{$sorder[SEC].etd}','{$sorder[SEC].cust}','{$sorder[SEC].dept}','{$now_pp}','{$back_str}');" style="cursor:pointer">
+    {/if}
+    -->
+   		<img src="images/copy_ws.jpg" alt="Copy" border=0 valign=bottom onClick="search_copy('{$sorder[SEC].id}','{$sorder[SEC].num}','{$sorder[SEC].dept}','{$sorder[SEC].cust}','{$now_pp}','{$back_str}','{$sorder[SEC].etd}');" style="cursor:pointer">
+
+  {else}
+	{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=smpl_wi_view&PHP_id={$sorder[SEC].wi_id}&PHP_style_code={$sorder[SEC].num}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+	{/if}
+	&nbsp;
+	{if $edit_flag && $sorder[SEC].wi_status == 0}
+		<a href="{$PHP_SELF}?PHP_action=smpl_wi_edit&PHP_id={$sorder[SEC].wi_id}&PHP_style_code={$sorder[SEC].num}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+	{/if}
+	&nbsp;
+	{if $manager_flag && $sorder[SEC].wi_status == 0}
+	    <a href="javascript:delete_cfm('{$sorder[SEC].num}','{$sorder[SEC].wi_id}','{$now_pp}','{$back_str}')" value="DEL" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+	{/if}
+		
+  {/if}
+  </td>
+   <td class=w9 align=left>&nbsp;
+   {if $sorder[SEC].wi_id <> ''}
+	{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=smpl_wi_view&PHP_ti=1&PHP_id={$sorder[SEC].wi_id}&PHP_style_code={$sorder[SEC].num}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+	{/if}
+	&nbsp;
+	{if $edit_flag && $sorder[SEC].ti_cfm == '0000-00-00'}
+		<a href="{$PHP_SELF}?PHP_action=smpl_ti_add&PHP_id={$sorder[SEC].wi_id}&PHP_style_code={$sorder[SEC].num}&PHP_sr={$now_pp}{$back_str}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+	   		<img src="images/copy_ws.jpg" alt="Copy" border=0 valign=bottom onClick="search_ti_copy('{$sorder[SEC].wi_id}','{$sorder[SEC].dept}','{$sorder[SEC].cust}','{$now_pp}','{$back_str}');" style="cursor:pointer">
+
+	{/if}
+  {/if}
+  </td>
+  </tr>
+  
+  {/section}
+</table>
+<br>
+<table width=750 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ </font>sample order list : {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:70%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>    
+    
+{if $lastpage < $maxpage}
+         <input type="button" name="Submit6" value="next 10 page >" class=select_e style="cursor:pointer; width:70%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td></form>
+
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

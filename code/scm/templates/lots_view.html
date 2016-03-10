@@ -1,0 +1,169 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 主料記錄 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+	{literal}
+
+<Script language="javascript"> 
+function Show_supl(num)  {
+	var url ="index2.php?PHP_action=supl_view_open&PHP_num="+num;
+	var nm = 'Supplier';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=600 top=50, left=100');
+}
+</script>
+{/literal}
+</head>
+<body ><form METHOD="POST" name="lots_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=550 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ <b><font color=yellow>{$lots.lots_code}</font>&nbsp;Fabric record </b>] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+    	<tr><td colspan=4>
+  		<table border=0 cellspacing=0 cellpadding=1 width=500 bgcolor=#FFFFFF>
+  <tr>
+  <td colspan=4 class=snvy align=left><b>FABRIC Category :</b></td>
+  </tr>
+   <tr>
+   	<td class=snvy align=right><b>Fabric Kind : </b></td>
+    <td class=frnt align=left><input type="radio" disabled value="1" {if $cat_1 == 'W'}checked{/if} name="PHP_cat1">&nbsp;<b>Woven</b></td>
+    <td class=snvy align=left><input type="radio" disabled value="0" {if $cat_1 == 'K'}checked{/if} name="PHP_cat1">&nbsp;<b>Knit</b></td>
+    <td class=snvy align=left><input type="radio" disabled value="2" {if $cat_1 == 'H'}checked{/if} name="PHP_cat1">&nbsp;<b>Others</b></td>
+  </tr>
+   <tr>
+   	<td class=snvy align=right><b>Content : </b></td>
+    <td class=snvy align=left><input type="radio" disabled value="0" {if $cat_2 == 'C'}checked{/if} name="PHP_cat2">&nbsp;<b>100%Cotton</b></td>
+    <td class=frnt align=left><input type="radio" disabled value="1" {if $cat_2 == 'W'}checked{/if} name="PHP_cat2">&nbsp;<b>100%Wool</b></td>
+    <td class=frnt align=left><input type="radio" disabled value="1" {if $cat_2 == 'P'}checked{/if} name="PHP_cat2">&nbsp;<b>100%Poly</b></td>
+    <td class=frnt align=left><input type="radio" disabled value="1" {if $cat_2 == 'N'}checked{/if} name="PHP_cat2">&nbsp;<b>100%Nylon</b></td>   	
+
+    <td class=snvy align=left><input type="radio" disabled value="2" {if $cat_2 == 'H'}checked{/if} name="PHP_cat2">&nbsp;<b>Others</b></td>
+  </tr>    
+</table></td></tr>
+  <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right>FABRIC # :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=15% nowrap>&nbsp;{$lots.lots_code}</td>
+    <td class=snvy align=right>Customer# :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=50%>&nbsp;{$lots.custer}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=15% nowrap>&nbsp;</td>
+    <td class=snvy align=right>FABRIC Name :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 width=50%>&nbsp;{$lots.lots_name}</td>
+  </tr>  
+    <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+
+    <td class=snvy align=right>Supplier's code :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.des}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Content :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.comp}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Construction :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.specify}</td>
+  </tr>
+    <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>CuttablWidth :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.width}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Weight :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.weight}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Finish :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.cons}</td>
+  </tr> 
+  <tr>
+    <td class=snvy align=right>&nbsp;</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;</td>
+    <td class=snvy align=right>Remark :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$lots.memo}</td>
+  </tr>   
+   <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+
+		<table border=1 cellspacing=0 cellpadding=1 width=550 bgcolor=#FFFFFF>
+  <tr bgcolor=#31657B height=25>
+    <td class=w10 align=center>Supplier #</td>
+    <td class=w10 align=center>Term</td>
+    <td class=w10 align=center>Price</td>
+    <td class=w10 align=center>Unit</td>
+    <td class=w10 align=center>Currency</td>
+  </tr>
+  <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;<a href="javascript:Show_supl('{$lots.vendor1}')" value='ord_out' style='cursor:pointer'>{$lots.vendor1}</a></td>
+    <td class=gry10 align=center>&nbsp;{$lots.term1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit1}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency1}</td>
+  </tr> 
+  <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;<a href="javascript:Show_supl('{$lots.vendor2}')" value='ord_out' style='cursor:pointer'>{$lots.vendor2}</a></td>
+    <td class=gry10 align=center>&nbsp;{$lots.term2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit2}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency2}</td>
+  </tr> 
+   <tr bgcolor=#ffffff>
+    <td class=gry10 align=center>&nbsp;<a href="javascript:Show_supl('{$lots.vendor3}')" value='ord_out' style='cursor:pointer'>{$lots.vendor3}</a></td>
+    <td class=gry10 align=center>&nbsp;{$lots.term3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.price3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.unit3}</td>
+    <td class=gry10 align=center>&nbsp;{$lots.currency3}</td>
+  </tr> 
+
+</table>
+		<hr SIZE=2 WIDTH=550>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=550>
+            <tr> 
+              <td align=center valign=top>
+								{if $back_str}
+									<input type=button onClick="window.location.href='primary.php?&PHP_action=do_lots_search'" value=" << Go back " class=select_e style="cursor:pointer; width=95%">
+								{else}&nbsp;{/if}          
+              </td></form>
+   <form METHOD="POST" name="acc_edit" action="primary.php">           
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="lots_edit">
+<!--2006.11.14 頁碼記錄 start-->                
+                <input type="hidden" name="PHP_sr_startno" value={$now_pp}>
+                <input type="hidden" name="PHP_back_str" value={$back_str}>
+                <input type="hidden" name="PHP_id" value={$lots.id}>
+<!--2006.11.14 頁碼記錄 end-->
+				<input type=submit value=" EDIT " class=select_e style="cursor:pointer; width=95%"></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

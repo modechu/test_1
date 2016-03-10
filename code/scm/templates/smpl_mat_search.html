@@ -1,0 +1,127 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  樣本款式 查尋 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id) {
+	if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 樣本記錄:["+ref+"]??")) {
+	location.href="index2.php?PHP_action=smpl_del&PHP_id="+id;
+	} 
+ }
+
+function tp(url) { parent.top.location.href=url }
+
+function input(form)
+{
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (val ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+
+function check() {
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (field.value ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+ <tr>
+    <td align=center>
+<form METHOD="POST" name="search_smpl">
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr>
+		<td class="des" align=center height=28> [ 查尋/表列&nbsp;樣本記錄 ] </td>
+		<td colspan=2 class=w9 align=left>部門 :&nbsp;<b><span class=ylw10>{$dept_id}</span></b></td>
+		{if !$manager_flag}<input type="hidden" name="PHP_dept_code" value="{$dept_id}">{/if}
+	</tr>
+</table>
+	</td>
+</tr>
+<tr>
+	<td align=center>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+	</td>
+</tr>
+<tr>
+	<td align=center>
+<table border=0 cellspacing=0 cellpadding=1 width=600>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right>樣本編號 : </td>
+    <td class=frnt align=left>&nbsp;<input type=text name="PHP_style_code" size=15 class=select value=""></td>
+    <td class=snvy align=right>客戶 : </td>
+    <td class=frnt align=left><b>&nbsp;{$cust_select}</b></td>
+    <td class=snvy align=right>客戶編號 : </td>
+    <td class=frnt align=left>&nbsp;<input type=text name="PHP_cust_ref" size=15 class=select value=""></td>
+  </tr>
+  <tr>
+  <tr>
+    <td class=snvy align=right>年份 : </td>
+    <td class=frnt align=left><b>&nbsp;{$year_select}</b></td>
+    <td class=snvy align=right>季節 : </td>
+    <td class=frnt align=left><b>&nbsp;{$season_select}</b></td>
+    <td class=snvy align=right>款式類別 : </td>
+    <td class=frnt align=left><b>&nbsp;{$style_type_select}</b></td>
+  </tr>
+
+</table>
+
+<table border=0 cellspacing=0 cellpadding=0 width=600>
+	<tr> 
+	  <td align=left class=b9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class=grn10>樣本物料作業，需先行找出指定之樣本記錄，再行作業。</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		※ 1: 查尋 / 列表  樣本資料時，請先輸入或拉選關鍵欄位搜尋。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		※ 2: 需全部列表時，不需輸入任何欄位，直接按下[ 查尋/列表 樣本記錄 ] 按鈕。
+	  </td>
+	</tr>
+	<tr><hr SIZE=2 WIDTH=97%></tr>
+	<tr> 
+	  <td align=center>
+		<input type="hidden" name="PHP_action" value="smpl_mat_search">
+		<input type=submit value="[ 查尋 /表列 樣本記錄 ]" class=select_e style="cursor:pointer; width=100%"></form>
+	  </td>
+	</tr>
+</table>
+
+
+
+
+
+	</td>
+</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,224 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+function add_rmk()
+{
+	var dtl = window.document.forms['cfm'].elements['PHP_detail'].value;
+	window.document.forms['reject'].elements['PHP_detail'].value = dtl;
+//	alert(window.document.forms['reject'].elements['PHP_detail'].value);
+
+}
+</script>
+{/literal}
+</head>
+<body>
+
+<br>
+<form method=POST name=cfm>
+<table cellspacing=1 cellpadding=4 cols=1 width=800 bgcolor=#333333>
+	<tr>
+	   <td align=left class="des"><b>
+			{if $exc.status == 0} Waiting for Submit {/if}
+			{if $exc.status == 2} Waiting for Confirm {/if}
+			{if $exc.status == 6} Waiting for Review {/if}
+			{if $exc.status == 3} Waiting for Approval {/if}
+			{if $exc.status == 4} APPROVAL {/if}
+			{if $exc.status == 5} REJECT {/if}
+			</b>
+		</td>
+		<td class="des" align=center height=28><b> CONFIRM</b> -- [ <span class=ylw10><b>{$SYS_DEPT} 異常報告  -- {$exc.ex_num}</b></span> ]</td>
+	   <td align=right>
+	   {if $exc.status == 4}
+    	<a href="exception.php?PHP_action=exc_print&PHP_id={$exc.id}">
+				<img src="./images/print9.jpg" border=0 alt="PDF: SAVE/PRINT"></a>
+			{/if}
+		</td>
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=800>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=b9>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<br>
+<table border=0 cellspacing=0 cellpadding=1 width=800 bgcolor=#FFFFFF>
+  <tr>	   
+  	<td class=frnt align=right><b>客戶 :</b></td>
+  	<td class=b9 align=left><b>{$exc.cust_iname}</b></td> 
+
+     <td class=snvy align=right nowrap><b>部門 :</b></td>			
+     <td class=b9 align=left><b>{$exc.dept}</b></td>
+		 	
+     <td  class=frnt align=right><b>報告日期 : {$exc.exc_date}</b></td>
+     <td class=b9 align=right><b>報告人 : </b></td>
+     <td class=b9 align=left ><b><a href="javascript:message_out('{$exc.exc_user_id}')" style="cursor:pointer">{$exc.exc_user}</a></b></td> 
+
+
+ 	</tr>
+  <tr>	
+    <td class=snvy align=right nowrap><b>訂單編號 :</b></td>
+    <td class=b9 align=left  colspan=6><b>
+    	{section name=SEC loop=$exc.ord_nums}
+  			<a href="javascript:show_order_rec('','{$exc.ord_nums[SEC]}')" style='cursor:pointer'>
+				{$exc.ord_nums[SEC]}</a> 
+			{/section}
+    	
+    </b></td>
+ 	</tr>     
+  <tr>	
+    <td class=snvy align=right nowrap><b>採購單編號 :</b></td>
+    <td class=b9 align=left  colspan=6><b>
+ 	   <a href="javascript:po_show('{$exc.pa_num}')">{$exc.po_num}</a>
+    	
+    </b></td>
+ 	</tr>
+    <td class=snvy align=right nowrap><b>異常來源:</b></td>
+    <td class=b9 align=left  colspan=4>&nbsp;&nbsp;
+    	<b>{if $exc.exc_from == 1 }組織內需求所造成{/if}
+    		 {if $exc.exc_from == 2 }組織外要求所造成{/if}&nbsp;</b>
+    </td> 	
+ </table>
+ {if $ord_rec}
+<table border=0 cellspacing=2 cellpadding=1 width=800 bgcolor=#FFFFFF>
+	<tr><td colspan=8><hr size=2 width=98%></td></tr>  
+	
+  <tr>	
+    <td class=snvy align=right nowrap><b>QTY :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.qty}</b></td>
+    
+  	<td class=snvy align=right><b>ETD :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee ><b>{$ord_rec.etd}</b></td> 
+
+     <td class=snvy align=right nowrap><b>Smpl CFM :</b></td>			
+     <td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.smpl_apv}</b></td>
+ 	</tr>
+  <tr>	
+    <td class=snvy align=right nowrap width=80><b>FAB ETA :</b></td>
+    <td class=b9 align=left  width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_etd}</b></td>
+    
+  	<td class=snvy align=right width=80><b>FAB RCVD. :</b></td>
+  	<td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.mat_shp}</b></td> 
+
+     <td class=snvy align=right nowrap width=80><b>ACC ETA :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_etd}</b></td>
+
+     <td class=snvy align=right nowrap width=80><b>ACC RCVD :</b></td>			
+     <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.m_acc_shp}</b></td>
+ 	</tr>      
+  <tr>	
+    <td class=snvy align=right nowrap><b>SHIP Date :</b></td>
+    <td class=b9 align=left  bgcolor=#eeeeee><b>{$ord_rec.shp_date}</b></td>
+    
+  	<td class=snvy align=right><b>SHIP QTY. :</b></td>
+  	<td class=b9 align=left bgcolor=#eeeeee><b>{$ord_rec.qty_shp}</b></td> 
+    <td class=snvy align=right nowrap width=80><b>IE :</b></td>			
+    <td class=b9 align=left width=80 bgcolor=#eeeeee><b>{$ord_rec.ie1}</b></td>
+ 	</tr> 
+ </table> 
+  {/if}
+ <br>
+<table border=0 cellspacing=0 cellpadding=1 width=800 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#eeeeee height=28>
+    <td class=bgdy align=center nowrap colspan=5><b>異常狀態</b></td>
+ </tr>
+{section name=SEC loop=$state}	
+ <tr>
+    <td class=snvy align=left nowrap>&nbsp;&nbsp;<b>{$state[SEC].sta_name}</b></td>
+    <td class=b9 align=left><b>{$state[SEC].org_name}:</b>&nbsp;&nbsp; 
+    	{if $state[SEC].state == 8 && $exc.status < 4}<input type='text' name="PHP_org" size=8 value="{$state[SEC].org_rec}" class=select>
+    		<input type='hidden' name="PHP_state_id" value="{$state[SEC].id}" class=select>
+    {else}<b>{$state[SEC].org_rec}</b>{/if}
+   </td>
+    <td class=b9 align=left><b>{if $state[SEC].new_name}{$state[SEC].new_name}:{/if}</b> &nbsp;&nbsp;<b>{$state[SEC].new_rec}</b></td>
+</tr>
+{/section}
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>  
+
+<table border=0 cellspacing=7 cellpadding=7 width=800 bgcolor=#FFFFFF>
+
+ <tr height=28>
+    <td width=340 bgcolor=#eeeeee class=bgdy align=center nowrap><b>發生原因及預估損失</b></td>
+    <td width=360 bgcolor=#eeeeee class=bgdy align=center nowrap><b>會辦單位</b></td>
+ </tr>
+ <tr>
+   <td class=frnt align=left rowspan=8 valign=top>
+   	{if $exc.sys_des}
+   	{$exc.sys_des}<BR>
+   	<hr size=2 width=98%><BR>
+   	{/if}
+   	{$exc.exc_des}
+   </td>
+ </tr>
+ {section name=SEC loop=$comm}	   
+  <tr>
+  	<td><b>{$comm[SEC].dept_name}</b> {if $comm[SEC].comm_user}-- [<a href="javascript:message_out('{$comm[SEC].comm_user_id}')" style="cursor:pointer">{$comm[SEC].comm_user}</a> / {$comm[SEC].comm_date}]{/if}</td>
+  </tr>
+  <tr>
+  	<td>{$comm[SEC].Comm}&nbsp;</td>
+  </tr>
+  {/section}
+
+ 
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width=800 bgcolor=#FFFFFF>
+
+ <tr bgcolor=#333333 height=28>
+  <tr>
+    <td  colspan=2 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>    
+ </tr>
+ 
+</table>
+
+<table border=0 cellspacing=2 cellpadding=2 cols=2 width=740>
+
+{if $add_flag && $exc.status == 2}	
+ <tr>
+	<td class=gry10 align=right valign=middle width=65>comments:</td>
+	<td class=gry10 valign=top colspan=2>
+	    <textarea name="PHP_detail" rows=2 cols=120 class=select></textarea>
+	</td>		
+	</tr>
+{/if}	
+   <tr>
+	<td valign=top width=100>
+		<input type=button onClick="window.location.href='{$back_str}'" value=" << back " class=select_e style="cursor:pointer; width=99; height=40">
+</td>
+
+{if $exc.status == 2}
+	<td width=100 valign=top align=center>
+		<input type="hidden" name="PHP_action" value="do_exc_cfm">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type="hidden" name="PHP_ord_num" value="{$exc.ord_num}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value="CFM ok" class=select_e style="cursor:pointer; width=90%; height=40"></form>
+	</td>
+	
+	<td class=gry10 valign=top align=center><form method=POST name=reject>
+		<input type="hidden" name="PHP_action" value="reject_exc_cfm">
+		<input type="hidden" name="PHP_id" value="{$exc.id}">
+		<input type="hidden" name="PHP_ord_num" value="{$exc.ord_num}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type="hidden" name="PHP_detail" value="">
+		<input type=submit value=" reject " class=select_e style="cursor:pointer; width=90%; height=40" onclick=add_rmk()></form>
+	</td>
+{/if}
+			</tr>
+				
+       
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

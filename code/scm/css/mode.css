@@ -1,0 +1,136 @@
+A {
+	COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; TEXT-DECORATION: none
+}
+A:link {
+	COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; TEXT-DECORATION: none
+}
+A:active {
+	COLOR: black; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: black; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; TEXT-DECORATION: none
+}
+BODY {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+TD {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+SELECT {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+INPUT {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+DIV {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+FORM {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+TEXTAREA {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+CENTER {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+OPTION {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+PRE {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+BR {
+	FONT-SIZE: 9pt; COLOR: #666666; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'
+}
+
+BODY {
+	SCROLLBAR-FACE-COLOR: white; MARGIN: 0px; SCROLLBAR-HIGHLIGHT-COLOR: gainsboro; OVERFLOW: auto; SCROLLBAR-SHADOW-COLOR: gainsboro; SCROLLBAR-3DLIGHT-COLOR: whitesmoke; SCROLLBAR-ARROW-COLOR: gainsboro; SCROLLBAR-TRACK-COLOR: white; SCROLLBAR-DARKSHADOW-COLOR: whitesmoke
+}
+.button {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; HEIGHT: 20px; BACKGROUND-COLOR: white
+}
+.input {
+	BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; FONT-FAMILY: 'Tahoma', 'Verdana', 'Arial'; BACKGROUND-COLOR: white
+}
+.minichi {
+	FONT-SIZE: 8pt; FONT-FAMILY: '新細明體', 'PMingLiU'
+}
+
+
+SELECT {
+	FONT-FAMILY: '新細明體', 'PMingLiU'
+}
+
+
+body {
+	background-color: #E5E5E5;
+	scrollbar-face-color: #DEE3E7;
+	scrollbar-highlight-color: #FFFFFF;
+	scrollbar-shadow-color: #DEE3E7;
+	scrollbar-3dlight-color: #D1D7DC;
+	scrollbar-arrow-color:  #006699;
+	scrollbar-track-color: #EFEFEF;
+	scrollbar-darkshadow-color: #98AAB1;
+}
+
+
+
+
+
+.forumline	{ background-color: #FFFFFF; border: 2px #CCCCCC solid; }
+
+th	{
+	color: #EEEEEE; font-size: 11px; font-weight : bold;
+	background-color: #006699; height: 25px;
+	background-image: url(images/cellpic3.gif);
+}
+
+th.thHead,th.thSides,th.thTop,th.thLeft,th.thRight,th.thBottom,th.thCornerL,th.thCornerR {
+	font-weight: bold; border: #FFFFFF; border-style: solid; height: 28px; }
+td.row3Right,td.spaceRow {
+	background-color: #D1D7DC; border: #FFFFFF; border-style: solid; }
+th.thHead,td.catHead { font-size: 12px; border-width: 1px 1px 0px 1px; }
+th.thSides,td.catSides,td.spaceRow	 { border-width: 0px 1px 0px 1px; }
+th.thRight,td.catRight,td.row3Right	 { border-width: 0px 1px 0px 0px; }
+th.thBottom,td.catBottom  { border-width: 0px 1px 1px 1px; }
+th.thCornerL { border-width: 1px 0px 0px 1px; }
+th.thTop	 { border-width: 1px 0px 0px 0px; }
+th.thCornerR { border-width: 1px 1px 0px 0px; }
+
+
+/* Forum category titles */
+
+a.cattitle		{ text-decoration: underline; color : #006699; }
+.cattitle		{
+	font-weight: bold;
+	font-size: 12px;
+	letter-spacing: 1px;
+	color : #006699;
+}
+
+
+
+td.rowpic {
+		background-color: #FFFFFF;
+		background-image: url(images/cellpic2.jpg);
+		background-repeat: repeat-y;
+}
+
+td.cat,td.catHead,td.catSides,td.catLeft,td.catRight,td.catBottom {
+			background-image: url(images/cellpic1.gif);
+			background-color:#D1D7DC; border: #FFFFFF; border-style: solid; height: 28px;
+}
+td.cat,td.catHead,td.catBottom {
+	height: 29px;
+	border-width: 0px 0px 0px 0px;
+}
+th.thLeft,td.catLeft	  { border-width: 0px 0px 0px 1px; }
+
+/* Main table cell colours and backgrounds */
+td.row1	{ background-color: #EFEFEF; }
+td.row2	{ background-color: #DEE3E7; }
+td.row3	{ background-color: #D1D7DC; }

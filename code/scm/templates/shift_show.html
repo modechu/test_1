@@ -1,0 +1,298 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript">
+ 
+function cfm_revise(ord_num,status) {
+//	var T = '';
+//		T = window.document.forms['add'].elements['qty_'+pd_id].value;
+	if ( confirm("are you sure to REVISE order :#[ "+ord_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the Order procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="index2.php?PHP_action=revise_order&PHP_ord_num="+ord_num+"&PHP_status="+status;
+	} 
+}
+ 
+function cfm_shift(ord_num,status) {
+//	var T = '';
+//		T = window.document.forms['add'].elements['qty_'+pd_id].value;
+	if ( confirm("are you sure to SHIFT order :#[ "+ord_num+" ] ?\r\rTo other factory ?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}";
+		location.href="index2.php?PHP_action=shift_order&PHP_ord_num="+ord_num+"&PHP_status="+status;
+	} 
+}
+
+
+function openRemote(file)
+  {
+ var gofile = 'index2.php?PHP_action=revise_order_view&PHP_id='+ file ;
+window.open(gofile,'_new','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=740,height=600 top=30, left=100');
+  }
+
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+}
+
+</script>
+{/literal}
+</head>
+{if $re_adding}
+<body onLoad="refreshIt();">
+{else}
+<body onLoad="refreshIt();">
+{/if}
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#333333>
+	<tr>
+	  <td class="ylw10" align=center height=28 width=150> {if $order.status == 0}waitt'g for IE rec.
+									{elseif $order.status == 1}wait for submit</span>
+									{elseif $order.status == 2}waitt'g for CFM</span>
+									{elseif $order.status == 3}waitt'g for APV</span>
+									{elseif $order.status == 4}<b>APVED</b></span>
+									{elseif $order.status == 5}<span class=ssign><b>REJECT</b></span>
+									{elseif $order.status == 6}<span class=lgrn><b>SCHDLing</b></span>
+									{elseif $order.status == 7}<span class=des><b>SCHDL CFMed</b></span>
+									{elseif $order.status == 8}<span class=des><b>PRODUCING</b></span>
+									{elseif $order.status == 10}<b>=finished=</b></span>
+									{elseif $order.status == 12}<b>==shipped==</b></span>
+									{else}&nbsp;{/if}</td>
+	  <td class="des" align=center width=250>[ <span class=ylw10><b>ORDER</b></span> # ] --- <b>{$order.order_num}</b></td>
+
+	  <td class="sign" align=center width=100>
+	   {if $order.revise > 0 }
+			[ <b>REVISE</b> ] : <b><i><span class=ylw10>{$order.revise}</span></i></b>
+	   {else}
+			&nbsp;
+	   {/if}
+	  </td>
+	  <td class="des" align=center width=100>
+	   {if $order.status >= 2 && $order.status < 8  &&  $order.status <> 5}
+			<a href="javascript:cfm_shift('{$order.order_num}',{$order.status})" value='revise' style='cursor:pointer'>
+			<img src='./images/shift09.jpg' border=0 ALT="SHIFT ORDER"></a>
+	   {else}
+		&nbsp;
+	   {/if}
+
+	  <td class="des" align=center width=100>
+	   {if $order.status > 1 && $order.status < 7  &&  $order.status <> 5}
+			<a href="javascript:cfm_revise('{$order.order_num}',{$order.status})" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER"></a>
+	   {else}
+		&nbsp;
+	   {/if}
+	  </td>
+
+	</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=6 class=grn10 align=left><b>&nbsp;&nbsp;{if $order.last_updator}Last update : {$order.last_updator}<small> [ {$order.last_update} ]</small>{/if}</b></td>
+    <td colspan=2 class=frnt align=right><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+  </tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=add_order >
+    <td class=snvy align=right nowrap><b>style No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style_num}</b></td>
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.cust}</b></td>
+    <td class=snvy align=right nowrap><b>customer ref. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;<small>{$order.ref}</small></b></td>
+    <td class=snvy align=right nowrap><b>Team :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.dept}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>factory :</b></td>
+    <td class=bgdy align=left bgcolor=#000000><b>&nbsp;<font color=yellow>{$order.factory}</font></b></td>
+    <td class=snvy align=right nowrap><b>style type :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.style}</b></td>
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.qty}&nbsp;{$order.unit}</b></td>
+    <td class=snvy align=right nowrap><b>SU :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.f_su}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>FOB @ :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.uprice}</b></td>
+    <td class=snvy align=right nowrap><b>Quota Cat. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.quota}</b></td>
+    <td class=snvy align=right nowrap><b>smpl ord No. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.smpl_ord}</b></td>
+    <td class=snvy align=right nowrap><b>calc. IE :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.ie1}</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>pattern # :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd colspan=2><b>&nbsp;{$order.patt_num}</b></td>
+	<td class=snvy align=right nowrap colspan=3><b>&nbsp;</b></td>
+	<td class=snvy align=right nowrap><b>final IE :</b></td>
+	<td class=grn10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.ie2}</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etd}</b></td>
+	<td class=snvy align=right nowrap><b>ETP. :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$order.etp}</b></td>
+	<td colspan=3 class=snvy align=right nowrap><b>est. Lead Time :</b></td>
+	<td class=grn10 align=left nowrap bgcolor=#dddddd><b>&nbsp;{$lead_time} days</b></td>
+  </tr>
+  <tr>
+	
+	<td><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>picture</b></i></td>
+	<td><hr size=2 width=96%></td>
+	<td colspan=2><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>unit cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+
+ <tr>
+
+        <td align=center class=head valign=top rowspan=18 colspan=3>
+			<table width=190 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><img src="{$main_pic}" name="pic" width=190><td></tr>
+			</table>
+		</td>
+
+    <td class=snvy align=right nowrap colspan=4><b>main fabric Q'ty required per unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp; {$order.mat_useage}</b></td>
+  </tr>
+ <tr>	
+    <td class=snvy align=right nowrap colspan=4><b>main fabric unit price :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.mat_u_cost}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>accessory cost per unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.acc_u_cost}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>quota charge per unit [if any] :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.quota_fee}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>commission per unit [if any] :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.comm_fee}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>C.M. estimate per unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.cm}</b></td>
+  </tr>
+
+  <tr>
+	<td><hr size=2 width=96%></td>
+	<td colspan=2 class=bgdy align=center><i><b>special treatment cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+ <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>embroidery :</b></td>
+	<td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.emb}</b></td>
+	<td colspan=2>&nbsp;</td>
+ </tr>
+ <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>garment wash :</b></td>
+	<td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.wash}</b></td>
+	<td colspan=2>&nbsp;</td>
+  </tr>
+ <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>other treatment :</b></td>
+	<td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.oth}</b></td>
+{if $order.oth_treat}
+    <td colspan=2 class=snvy align=left nowrap colspan=4 bgcolor=#dddddd><i><b>for</b>:<small>{$order.oth_treat}</small></i></td>
+{else}
+	<td colspan=2>&nbsp</td>
+{/if}
+  </tr>
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=3><b>estimate Total Sales of this order :</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+    <td class=grn10 align=right><b>$ {$order.sales}</b></td>
+  </tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=3><b>estimate Total Cost of good sold :</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+    <td class=grn10 align=right><b>$ {$order.grand_cost}</b></td>
+  </tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=3><b>unit cost :</b></td>
+    <td class=grn10 align=right><b>@ $ {$order.unit_cost}</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+</tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=3><b>sample cost :</b></td>
+    <td class=grn10 align=right bgcolor=#dddddd><b>$ {$order.smpl_fee}</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+</tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=3><b>estimate Gross Margin from this order :</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+    <td class=grn10 align=right><b>$ {$order.gm}</b></td>
+</tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=3><b>G.M. rate :</b></td>
+    <td class=bgdy align=left><b>&nbsp;</b></td>
+    <td class=bgdy align=right><b>{$order.gm_rate} %</b></td>
+</tr>
+
+ 
+ 
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+<table border=1 cellspacing=1 cellpadding=1 width=600 align=center>
+  <tr bgcolor=#333333 >
+	<td width=34% class=w9><b>&nbsp;OPEN by : <span class=ylw10></b>{$order.creator}</span>-[{$order.opendate}]</td>
+	<td width=33% class=w9>{if $order.cfmer}&nbsp;<b>CFM by : </b><span class=ylw10>{$order.cfmer}</span>-[{$order.cfm_date}]{else}&nbsp;{/if}</td>
+	<td width=33% class=w9>{if $order.apver}&nbsp;<b>APV by : </b><span class=ylw10>{$order.apver}</span>-[{$order.apv_date}]{else}&nbsp;{/if}</td>
+	</td>
+</table>
+<!---------- SHOW 出 一些訂單歷史記錄 -->  
+{if $log_records}
+	<table border=1 cellspacing=1 cellpadding=1 width=600 align=center>
+	  <tr bgcolor=#666666 >
+	   <td width=120 class=w10 align=center>DateTime</td>
+	   <td width=400 class=w10 align=center>History records</td>
+	   <td width=80 class=w10 align=center>by</td>
+	  </tr>
+	 {section name=SEC loop=$logs}
+	  <tr bgcolor=#eeeeee >
+	   <td class=gry9 align=center><small>{$logs[SEC].k_time}</small></td>
+	   <td class=gry9 align=left>{$logs[SEC].des}</td>
+	   <td class=gry9 align=center>{$logs[SEC].user}</td>
+	  </tr>
+	{/section}
+	</table>
+{/if}
+<!---------- END SHOW   -->  
+
+<!--------- footer ---------->
+{include file="footer.html"}

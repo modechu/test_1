@@ -1,0 +1,95 @@
+{include file="header_utf8.html"}
+<table cellpadding="0" cellspacing="0" cols="0" class="title_bg">
+	<tr>
+		<td class="title_l"> Materials release ( Factory ) : Added Sends the material plan 新增領、發料數量 ( Order # <a href="javascript:Show_ord('{$id}','{$order_num}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order_num}</b></a> ) </td>
+<!-- 		<td class="title_m">[ {if $status >= 6}{literal}Submit{/literal}{elseif $status == 4}{literal}UN Submit{/literal}{/if} ]</b></td>
+		<td class="title_r">Version : <b>{$version}</b></td>
+        <td class="title_r">{if $status == 4}<img id="revise_bom_of_materials" name="submit_ajax" src='./images/revise21.jpg?' border=0 title="REVISE">{/if}</td> -->
+	</tr>
+</table>
+<form METHOD="POST" id="do_added_send_material" action="{$PHP_SELF}?PHP_action=do_added_send_material">
+<table cellpadding="0" cellspacing="0" cols="0" class="txt_item">
+	<tr>
+		<td>
+            <table>
+                <tr>
+                    <td valign="top">{$pic_url}</td>
+                    <td valign="top">
+                        <table>
+                            <tr>
+                                <td class="txt_item_r">Cust. : </td>
+                                <td class="txt_item_l">{$cust_iname}</td>
+                                <td class="txt_item_r">Dept. : </td>
+                                <td class="txt_item_l">{$dept}</td>
+                                <td class="txt_item_r">ETD : </td>
+                                <td class="txt_item_l">{$etd}</td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r">Style : </td>
+                                <td class="txt_item_l">{$style}</td>
+                                <td class="txt_item_r">SIZE RANGE : </td>
+                                <td class="txt_item_l">{$size_scale}</td>
+                                <td class="txt_item_r">Q'ty / Unit :</td>
+                                <td class="txt_item_l">{$qty|NUMBER_FORMAT} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6"><hr></td>
+                            </tr>
+                            <tr>
+                                <td class="txt_item_r2">Send No. : </td>
+                                <td class="txt_item_l2">RN{$rn_num}</td>
+                                <input type="hidden" name="PHP_rn_num" value="{$rn_num}"/>
+                                <td class="txt_item_r2">Line # : </td>
+                                <td class="txt_item_l2">{$line}</td>
+                                <input type="hidden" name="PHP_line" value="{$line_id}"/>
+                                <td class="txt_item_r2">SEND Q'ty : </td>
+                                <td class="txt_item_l2">{$send_qty} {$unit}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <table>
+                                        <tr>
+                                            <td valign="top">{$PHTML}</td>
+                                            <td valign="top">{$CHTML}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="6">
+                                    <input id="do_added_send_material" type="button" class="submit_ajax" style="width:100%;" value="Submit">
+                                </td>
+                            </tr>	
+                        </table>
+                        <input type="hidden" name="PHP_factory" value="{$factory}"/>
+                        <input type="hidden" name="PHP_ord_num" value="{$order_num}"/>
+                        <input type="hidden" name="PHP_id" value="{$wi_id}"/>
+                    </td>
+                </tr>
+            </table>
+        </td>
+	</tr>
+	</tr>
+    <tr>
+		<td><hr></td>
+	</tr>
+	<tr>
+		<td>{$BHTML}</td>
+	</tr>
+	<tr>
+		<td align="right" class="txt_status">{if $pdc_bom_sub_user}Submit：{$pdc_bom_sub_user} / {$pdc_bom_sub_date|date_format:"%Y-%m-%d"}{/if}</td>
+	</tr>
+	<tr>
+		<td><hr></td>
+	</tr>
+    <tr>
+        <td>
+            <input id="do_added_send_material" type="button" class="submit_ajax" style="width:100%;" value="Submit">
+        </td>
+    </tr>	
+</table>
+</form>
+{include file="footer_utf8.html"}

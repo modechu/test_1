@@ -1,0 +1,481 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<Script language="javascript">
+var transaction;
+  var sUrl;
+  var callback = {
+    success: function(o) {
+    	document.getElementById("tbl_msg").style.display='block';    
+    	document.getElementById("ajx_wait").style.display='none';
+    	document.getElementById("size_show").style.display='block';    	   	
+    	   	
+    	var response = o.responseText.split("|");
+    	var divrep=response[1];
+    	msg1.innerText  = divrep; 
+    	document.e.PHP_Size.value =response[0];    	 
+
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+
+  function get_change(size,size_id,size_item,id,back_str,base_size) {
+    document.getElementById("ajx_wait").style.display='block';
+    document.getElementById("size_show").style.display='none';
+  
+    sUrl = "index2.php?PHP_action=do_smpl_fa_edit_ajx&PHP_size="+size+"&PHP_size_id="+size_id+"&PHP_size_item="+size_item+"&PHP_id="+id+back_str+"&cgino="+pp+"&PHP_base_size="+base_size;	
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+  }
+  
+  var delback = {
+    success: function(o) {
+    	document.getElementById("tbl_msg").style.display='block';    
+    	var response = o.responseText.split("|");
+    	var divrep=response[0];
+    	msg1.innerText  = divrep; 
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };  
+function cfm_ajx(lots_code,lots_id,back_str,order_num,id,item,pp,r){
+	if ( confirm("This record will forever delete and can't reversion anymore  !\r\rPlease check again\r\rAre you sure delet fabric:["+lots_code+"]??")) {
+
+	  var i=r.parentNode.parentNode.rowIndex;
+	  document.getElementById('mater_table').deleteRow(i);	  
+		sUrl="index2.php?PHP_action=smpl_fab_del_ajx&PHP_lots_code="+lots_code+"&PHP_lots_id="+lots_id+"&PHP_id="+id+"&PHP_order="+order_num+"&PHP_item="+item+back_str+"&cgino="+pp;
+
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	  
+
+	} 
+
+}
+</script>
+<Script language="javascript">
+ 
+function cfm(lots_code,lots_id,back_str,order_num,id,item,pp){
+	if ( confirm("This record will forever delete and can't reversion anymore  !\r\rPlease check again\r\rAre you sure delet fabric:["+lots_code+"]??")) {
+	} 
+
+}
+function list(){
+	var gofile ='index2.php?PHP_action=show_fabric_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+
+function add_fab(){
+	var gofile ='index2.php?PHP_action=lots_add&PHP_status=sub';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+
+
+
+
+ function acclist(){
+	var gofile ='index2.php?PHP_action=show_accessory_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+function add_acc(){
+	var gofile ='index2.php?PHP_action=acc_add&PHP_status=sub';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ } 
+ 
+  function list_size(dept,cust){
+	var gofile ='index2.php?PHP_action=show_size_search&PHP_dept='+dept+'&PHP_cust='+cust;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+function writeToParentList(lots_code,lots_name,unit1,id) {
+	var i=0;
+	window.document.forms['fat_edit'].elements['PHP_smpl_num'].value = lots_code;
+	window.document.forms['fat_edit'].elements['PHP_name'].value = lots_name;
+	
+	for (var i = 0; i < window.document.forms['fat_edit'].elements['PHP_unit'].options.length; i++) {
+    if (unit1 == window.document.forms['fat_edit'].elements['PHP_unit'].options[i].text) 
+      window.document.forms['fat_edit'].elements['PHP_unit'].selectedIndex = i;
+  }
+    window.document.forms['fat_edit'].elements['PHP_select'].value = 1;
+	/*
+	if (unit1)
+	{
+		i++;
+		window.document.forms['fat_edit'].elements['PHP_unit'].options[i] =new Option(unit1,unit1);
+	}
+	if (unit2 && unit1!=unit2)
+	{
+		i++;
+		window.document.forms['fat_edit'].elements['PHP_unit'].options[i] =new Option(unit2,unit2);
+	}
+	if (unit3 && unit1!=unit3 && unit2!=unit3)
+	{
+		i++;
+		window.document.forms['fat_edit'].elements['PHP_unit'].options[i] =new Option(unit3,unit3);
+	}
+	*/
+}
+function writeToAccList(acc_code,acc_name,unit1,id) {
+	var i=0;
+	window.document.forms['acc_edit'].elements['PHP_smpl_num'].value = acc_code;
+//	window.document.forms['acc_edit'].elements['PHP_name'].value = acc_name;
+
+  for (var i = 0; i < window.document.forms['acc_edit'].elements['PHP_name'].options.length; i++) {
+    if (acc_name == window.document.forms['acc_edit'].elements['PHP_name'].options[i].text) 
+      window.document.forms['acc_edit'].elements['PHP_name'].selectedIndex = i;
+  }
+	
+  for (var i = 0; i < window.document.forms['acc_edit'].elements['PHP_unit'].options.length; i++) {
+    if (unit1 == window.document.forms['acc_edit'].elements['PHP_unit'].options[i].text) 
+      window.document.forms['acc_edit'].elements['PHP_unit'].selectedIndex = i;
+  }
+  window.document.forms['acc_edit'].elements['PHP_select'].value = 1;
+ 
+	
+/*	if (unit1)
+	{
+		i++;
+		window.document.forms['acc_edit'].elements['PHP_unit'].options[i] =new Option(unit1,unit1);
+	}
+	if (unit2 && unit1!=unit2)
+	{
+		i++;
+		window.document.forms['acc_edit'].elements['PHP_unit'].options[i] =new Option(unit2,unit2);
+	}
+	if (unit3 && unit1!=unit3 && unit2!=unit3)
+	{
+		i++;
+		window.document.forms['acc_edit'].elements['PHP_unit'].options[i] =new Option(unit3,unit3);
+	}
+	*/
+}
+
+function writeToSizeList(id,size) {
+	var i=0;
+	window.document.forms['e'].elements['PHP_Size'].value = size;
+	window.document.forms['e'].elements['PHP_Size_id'].value = id;
+	
+	
+	size_item=window.document.forms['e'].elements['PHP_Size_item'].value;
+	order_id=window.document.forms['e'].elements['order_id'].value;
+	back=window.document.forms['e'].elements['back_str'].value;
+	pp=window.document.forms['e'].elements['now_pp'].value;
+	get_change (size,id,size_item,order_id,back,pp);
+	
+
+}
+
+function writeToSizeAddList(size) {	
+	var size_ary = size.split(",");
+	var i=(size_ary.length)-1;
+	var scale=size_ary[0]+'~'+size_ary[i]
+	window.document.forms['e'].elements['PHP_Size'].value = scale;
+	window.document.forms['e'].elements['PHP_Size_id'].value = 0;
+	window.document.forms['e'].elements['PHP_Size_item'].value = size;
+	
+	order_id=window.document.forms['e'].elements['order_id'].value;
+	back=window.document.forms['e'].elements['back_str'].value;
+	pp=window.document.forms['e'].elements['now_pp'].value;
+	get_change (scale,0,size,order_id,back,pp);
+
+}
+
+function edit_all (size,size_id,size_item,id,back_str,pp)
+{
+		location.href="index2.php?PHP_action=do_smpl_fa_edit_all&PHP_size="+size+"&PHP_size_id="+size_id+"&PHP_size_item="+size_item+"&PHP_id="+id+back_str+"&cgino="+pp;	
+
+}
+
+function view (id,back_str,pp)
+{
+		location.href="index2.php?PHP_action=smpl_fa_view&PHP_id="+id+back_str+"&cgino="+pp;	
+
+}
+
+</script>
+{/literal}
+</head>
+<body>
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=720 bgcolor=#333333>
+   <tr height=28>
+	<td align=center class="des"> [ <b>SAMPLE ORDER # {$order.num}</b> ] </td>
+	<td align=center class="ylw10">status:<b> {if $order.status == -1}<font color=#CBB4F5>Wait submit</font>
+									{elseif $order.status == 0}W/I expect
+									{elseif $order.status == 1}<span class=ssign>PTTN. expect</span>
+									{elseif $order.status == 2}<span class=ssign>FAB. expect</span>
+									{elseif $order.status == 3}<span class=ssign>ACC. expect</span>
+									{elseif $order.status == 4}<span class=lgrn>PTTN schdle</span>
+									{elseif $order.status == 5}<span class=lgrn>SMPL schdle</span>
+									{elseif $order.status == 6}<span class=grn9>DEVELOPING</span>
+									{elseif $order.status == 7}<span class=ssign>* PENDING *</span>
+									{elseif $order.status == 10}<span class=des>= case close =</span>
+									{else}&nbsp;{/if}</b><a href="javascript:smpl_appval({$order.id},'{$order.num}','{$order.orders}','{$order.spt}')" value='smpl' style='cursor:pointer'></td>
+   </tr>
+</table>
+
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=720 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+
+  <form METHOD="POST" name="e" action="{$PHP_SELF}">
+<table border=0 cellspacing=1 cellpadding=2 width=720 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>   
+    <td class=snvy align=right nowrap width=100><b>Customer :</b></td>
+			<input type="hidden" name="PHP_cust" value="{$cust_id}">
+    <td class=bgdy align=left width=130><b>{$order.cust}</b></td>
+	<td class=snvy align=right nowrap width=100><b>work Team :</b></td>
+			<input type="hidden" name="PHP_dept" value="{$dept_id}">
+    <td class=bgdy align=left width=100><b>{$order.dept}</b></td>
+    <td class=snvy align=right nowrap><b>IE :</b></td>
+    <td class=b9 align=left><b>{$order.ie}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>smpl type :</b></td>
+    <td class=bgdy align=left><b>{$order.smpl_type}</b></td>
+    <td class=snvy align=right nowrap><b>style # :</b></td>
+	<td class=bgdy align=left><b>{$order.ref}</b></td>
+    <td class=snvy align=right nowrap><b>style cat. :</b></td>
+    <td class=bgdy align=left><b>{$order.style_cat}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+	<td class=bgdy align=left><b>{$order.etd}</b></td>
+    <td class=snvy align=right nowrap><b>style type :</b></td>
+    <td class=bgdy align=left><b>{$order.style}</b></td>
+    <td class=snvy align=right nowrap><b>Size :</b></td>
+    <td class=b9 align=left>
+     <div id=ajx_wait style="display:none;"><img src="./images/ajax-loader_w.gif" alt="Wait" style="cursor:pointer" height=20></div>
+	 <div id=size_show>
+        {if $size_edit}
+		<input type='text' name="PHP_Size" size=5 class=select value="{$order.size}"  onClick="list_size('{$order.dept}','{$order.cust}')">
+		<img src="./images/icoSearch.gif" alt="Fabric" onClick="list_size('{$order.dept}','{$order.cust}');" style="cursor:pointer">
+		<input type='hidden' name="PHP_Size_id" value={$order.size_id} >
+		<input type='hidden' name="PHP_Size_item" value='' >
+    {else}
+    	{$order.size}
+    	<input type='hidden' name="PHP_Size_id" value={$order.size_id} >
+		<input type='hidden' name="PHP_Size_item" value='' >
+		<input type='hidden' name="PHP_Size" value="{$order.size}" >
+    {/if}
+    </div>
+    </td>
+    <input type='hidden' name="order_id" value="{$order.id}" >
+    <input type='hidden' name="back_str" value="{$back_str}" >
+    <input type='hidden' name="now_pp" value="{$now_pp}" >
+  </tr>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  </table>
+</form>  
+<table border=0 cellspacing=1 cellpadding=1 width=720 bgcolor=#FFFFFF id='mater_table'>
+  <tr height=25 bgcolor=#C4C3AE>
+  	<td class=snvy align=center nowrap colspan=2><b>Fabric #</b></td>
+  	<td width=100 class=snvy align=center nowrap><b>Fabric Name</b></td>
+  	<td width=70  class=snvy align=center nowrap><b>Unit</b></td>
+  	<td width=80  class=snvy align=center nowrap><b>Consumption</b></td>  	
+  	<td width=240 class=snvy align=center nowrap colspan=2><b>Placement</b></td>
+  	<td width=80  class=snvy align=center nowrap colspan=2>&nbsp;</td>
+  </tr>
+  <tr bgcolor=#C9CCC9>
+  <form METHOD="POST" name="fat_edit" action="{$PHP_SELF}">
+	<td width=100 class=grn10 align=cneter nowrap bgcolor=#dddddd>
+		<input type='text' name="PHP_smpl_num" size=10 class=select value="{$fab_un_add.num}" onkeyup=value=value.replace(/[^\w\-]/ig,'') readonly >
+	</td>
+	<td align=right width=50>
+		<img src="./images/icoSearch.gif" alt="Fabric" onClick="list();" style="cursor:pointer" width=15>
+<!--    <img src="./images/add.gif" alt="Fabric Add" onClick="add_fab();" style="cursor:pointer" width=15>    -->
+	</td>
+	<td class=grn10 align=left nowrap bgcolor=#dddddd>
+		<input type='text' name="PHP_name"	 size=12 class=select value="{$fab_un_add.est}" onkeyup=value=value.replace(/\#/ig,'') readonly >
+	</td>
+	<td class=grn10 align=center nowrap bgcolor=#dddddd>
+		{$fab_unit}
+	</td>
+	<td class=grn10 align=center nowrap bgcolor=#dddddd>
+		<input type='text' name="PHP_est" size=3 class=select value="{$fab_un_add.est}" >
+	</td>
+  	<td class=snvy align=center colspan=2 nowrap>
+  		<input type='text' name="PHP_use_for" size=35 class=select value="{$fab_un_add.use_for}" maxlength=40>
+  	</td>
+  	<td class=snvy align=center nowrap colspan=2 ><input type=submit value="[ ADD fab.]" class=select_e style="cursor:pointer; width=100%"></td>
+  	<input type='hidden' name="PHP_action" value="do_smpl_fa_edit" >  
+  	<input type='hidden' name="PHP_select" value={$fab_un_add.select} >
+  	<input type='hidden' name="PHP_smpl_code" value={$order.num} >
+  	<input type='hidden' name="PHP_item" value="fab" >
+  	<input type='hidden' name="PHP_id" value={$order.id} >
+  	<input type='hidden' name="cgino" value={$now_pp} >
+  	<input type='hidden' name="PHP_back_str" value={$back_str} >
+  </form>
+  </tr>
+   <tr bgcolor=#E7E7E7>
+  {if $fab.msg}
+	{if $order.des_fab == ''}
+  	<td class=b10 align=center nowrap bgcolor=#E7E7E7 colspan=9><b>&nbsp;{$fab.msg}</b></td>
+	{/if}
+  {else}
+  {section name=SEC loop=$fab}
+   <form METHOD="POST" name="fat_update" action="{$PHP_SELF}" >
+  	<td class=snvy align=left nowrap >{$fab[SEC].lots_code}</td>
+  	<td align=right>
+  	  <a href="{$PHP_SELF}?PHP_action=do_smpl_fa_edit&PHP_id={$order.id}&PHP_smpl_code={$order.num}&PHP_item=fab&PHP_smpl_num={$fab[SEC].lots_code}&PHP_name={$fab[SEC].lots_name}&PHP_unit={$fab[SEC].unit}&PHP_est=0&PHP_use_for={$back_str}" style="cursor:pointer">
+			<img src="./images/add4.gif" border=0 alt="copy"></a>	
+  	</td>
+  	<td class=snvy align=center nowrap >{$fab[SEC].lots_name}</td>
+  	<td class=snvy align=center nowrap>{$fab[SEC].unit_select}</td>
+  	<td class=snvy align=center nowrap >{$fab[SEC].est_1}</td>  	
+  	<td class=snvy align=center colspan=2 nowrap ><input type='text' name="PHP_use_for" size=35 class=select value="{$fab[SEC].use_for}"  maxlength=40></td>  	
+  	<td class=snvy align=center nowrap ><input type=submit value="[ Edit ]" class=select_e style="cursor:pointer; width=80%"></td>
+  	<input type='hidden' name="PHP_action" value="do_smpl_fa_update" > 
+  	<input type='hidden' name="PHP_item" value="fab" >
+  	<input type='hidden' name="PHP_old_unit" value={$fab[SEC].unit} >
+  	<input type='hidden' name="PHP_item_id" value={$fab[SEC].id} >
+  	<input type='hidden' name="PHP_item_name" value={$fab[SEC].lots_code} >
+  	<input type='hidden' name="PHP_id" value={$order.id} >
+  	<input type='hidden' name="cgino" value={$now_pp} >
+  	<input type='hidden' name="PHP_back_str" value={$back_str} >
+  	</form>
+  	<td class=snvy align=center nowrap >
+  		<input type='image' src="images/del.png"   onclick="javascript:cfm_ajx('{$fab[SEC].lots_code}','{$fab[SEC].id}','{$back_str}','{$order.order_num}','{$order.id}','fab','{$now_pp}',this)">
+  	</td>
+
+  	</tr>  	
+  	<tr bgcolor=#E7E7E7>
+  {/section}
+
+  {/if}
+  </tr>
+	<form METHOD="POST" name="fat_update" action="{$PHP_SELF}" >
+	<tr bgcolor=#E7E7E7>
+		<td class=b10 align=center nowrap bgcolor=#E7E7E7 ><b>面布(Shell)</b></td>
+		<td class=b10 align=center nowrap bgcolor=#E7E7E7 colspan="7"><textarea name="PHP_des_fab" rows=4 cols=100 class="select">{$order.des_fab}</textarea></td>
+		<td class=b10 align=center nowrap bgcolor=#E7E7E7 ><input type=submit value="[ EDIT ]" class=select_e style="cursor:pointer; width=100%"></td>
+	</tr>
+	<input type='hidden' name="PHP_action" value="do_smpl_des_fab" >
+	<input type='hidden' name="PHP_id" value={$order.id} >
+  	</form>
+  
+  <tr><td></td></tr>
+  
+  <tr height=25 bgcolor=#C4C3AE>
+  	<td class=snvy align=center nowrap colspan=2><b>Accessory #</b></td>
+  	<td class=snvy align=center nowrap><b>Acc. Name</b></td>
+  	<td class=snvy align=center nowrap><b>Unit</b></td>
+  	<td class=snvy align=center nowrap><b>Consumption</b></td>
+  	<td class=snvy align=center nowrap><b>Placement</b></td>
+  	<td class=snvy align=center nowrap><b>Main Acc</b></td>
+  	<td class=snvy align=center nowrap colspan=2><b>&nbsp;</b></td>
+  </tr>
+  <tr bgcolor=#C9CCC9>
+  <form METHOD="POST" name="acc_edit" action="{$PHP_SELF}">
+	<td class=grn10 align=left nowrap bgcolor=#dddddd>&nbsp;
+		<input type='text' name="PHP_smpl_num" size=10 class=select value="{$acc_un_add.num}" onkeyup=value=value.replace(/[^\w\-]/ig,'') readonly >
+	</td>
+	<td align=right>
+		<img src="./images/icoSearch.gif" alt="accessory search" onClick="acclist();" style="cursor:pointer" width=15>
+<!--   	<img src="./images/add.gif" alt="Accessory add" onClick="add_acc();" style="cursor:pointer" width=15>    -->
+	</td>
+	<td class=grn10 align=center nowrap bgcolor=#dddddd>
+		{$acc_name}
+	</td>
+	<td class=grn10 align=center nowrap bgcolor=#dddddd>
+		{$acc_unit}
+	</td>
+	<td class=grn10 align=center nowrap bgcolor=#dddddd>
+		<input type='text' name="PHP_est" size=3 class=select value="{$acc_un_add.est}" >
+	</td>
+  	<td class=snvy align=center nowrap>
+  		<input type='text' name="PHP_use_for" size=25 class=select value="{$acc_un_add.use_for}" maxlength=40>
+  	</td>
+  	<td class=snvy align=center nowrap>
+  		<input type="checkbox" name="PHP_main" value="1" {if $acc_un_add.acc_cat == 1}checked{/if}>
+  	</td>
+  	<td class=snvy align=center nowrap colspan=2><input type=submit value="[ ADD acc.]" class=select_e style="cursor:pointer; width=100%"></td>
+  	<input type='hidden' name="PHP_action" value="do_smpl_fa_edit" >
+  	<input type='hidden' name="PHP_select" value={$acc_un_add.select} >
+  	<input type='hidden' name="PHP_smpl_code" value={$order.num} >
+  	<input type='hidden' name="PHP_item" value="acc" >
+  	<input type='hidden' name="PHP_id" value={$order.id} >
+  	<input type='hidden' name="PHP_back_str" value={$back_str} >
+  	<input type='hidden' name="cgino" value={$now_pp} >
+  </form>
+  </tr>
+
+  {section name=SEC loop=$acc}
+    <tr bgcolor=#E7E7E7>
+    {if $acc.msg}
+  		<td class=b10 align=center nowrap bgcolor=#E7E7E7 colspan=9><b>&nbsp;{$acc.msg}</b></td>
+  	{else}
+  	 <form METHOD="POST" name="acc_update" action="{$PHP_SELF}">
+  	<td class=snvy align=left nowrap >{$acc[SEC].acc_code}</td>
+  	<td align=right>
+   		<a href="{$PHP_SELF}?PHP_action=do_smpl_fa_edit&PHP_id={$order.id}&PHP_smpl_code={$order.num}&PHP_item=acc&PHP_smpl_num={$acc[SEC].acc_code}&PHP_unit={$acc[SEC].unit}&PHP_est=0&PHP_use_for=&PHP_main=0{$back_str}&PHP_name={$acc[SEC].acc_name}" style="cursor:pointer">
+			<img src="./images/add4.gif" border=0 alt="copy"></a>
+  	</td>
+  	<td class=snvy align=center nowrap >{$acc[SEC].acc_name}</td>
+  	<td class=snvy align=center nowrap>{$acc[SEC].unit_select}</td>
+  	<td class=snvy align=center nowrap >{$acc[SEC].est_1}</td>  	
+  	<td class=snvy align=center nowrap ><input type='text' name="PHP_use_for" size=25 class=select value="{$acc[SEC].use_for}" maxlength=40></td>  	
+  	<td class=snvy align=center nowrap>
+  		<input type="checkbox" name="PHP_main" value="1" {if $acc[SEC].acc_cat == 1}checked{/if}>
+  	</td>
+  	<td class=snvy align=center nowrap >
+  		<input type=submit value="[ Edit ]" class=select_e style="cursor:pointer; width=80%"></td>
+  	
+  	<input type='hidden' name="PHP_action" value="do_smpl_fa_update" > 
+  	<input type='hidden' name="PHP_item" value="acc" >
+  	<input type='hidden' name="PHP_old_unit" value={$acc[SEC].unit} >
+  	<input type='hidden' name="PHP_item_id" value={$acc[SEC].id} >
+  	<input type='hidden' name="PHP_item_name" value={$acc[SEC].acc_code}>
+  	<input type='hidden' name="PHP_id" value={$order.id} >
+  	<input type='hidden' name="cgino" value={$now_pp} >
+  	<input type='hidden' name="PHP_back_str" value={$back_str} >
+  </form>
+    <td class=snvy align=center nowrap >
+  		<input type='image' src="images/del.png"   onclick="cfm_ajx('{$acc[SEC].acc_code}','{$acc[SEC].id}','{$back_str}','{$order.order_num}','{$order.id}','acc','{$now_pp}',this)">
+  	</td>
+	</form>
+
+    {/if}
+    </tr>
+  	{/section}
+</table>
+
+<!--    order version -->
+
+<table border=0 cellspacing=0 cellpadding=2 width=720 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=smpl_fa_search{$back_str}&PHP_sr_startno={$now_pp}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+{else}&nbsp;
+{/if}
+	</td>
+	<td>
+		<input type=button onClick="javascript:view('{$order.id}','{$back_str}','{$now_pp}')" value=" FAB / ACC VIEW " class=select_e style="cursor:pointer; width=99%">
+	</td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

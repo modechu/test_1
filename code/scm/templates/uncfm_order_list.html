@@ -1,0 +1,337 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  UN-CONFIRM ORDER LISTING :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function tp(url) { parent.top.location.href=url }
+function cfm(doit) {
+	if ( confirm("確定要刪除 ??")) {
+		location.href=doit;
+	}
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+	
+{if $max_notify > 0 }		
+	<table width=700 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}	
+	
+	<form>
+ <table width=700 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=10 align=center class=gry><b>UN-CONFIRM ORDER LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+   <td class=w9 width=60 align=center><b>order#</b></td>
+   <td class=w9 width=55 align=center><b>cust.</b></td>
+   <td class=w9 width=80 align=center><b>ETD</b></td>
+    <td class=w9 width=80 align=center><b>ETP</b></td>
+    <td class=w9 width=70 align=center><b>q'ty</b></td>
+    <td class=w9 width=60 align=center><b>u/price</b></td>
+    <td class=w9 width=50 align=center><b>G.M.%</b></td>
+    <td class=w9 width=45 align=center><b>FTY</b></td>
+    <td class=w9 width=120 align=center><b>submit time</b></td>
+    <td class=w9 width=80 align=center><b>Remark</b></td>
+
+  </tr>
+{section name=SEC loop=$sorder}
+  <tr onmouseover="bgColor='#FCF4A4'" {if $sorder[SEC].del_mk == 0}onmouseout="bgColor='#ffffff'"{else}onmouseout="bgColor='#FDB8D0'" bgcolor="#FDB8D0" {/if}></a>
+   <td class=gry9 align=center nowrap><small><a href="{$PHP_SELF}?PHP_action=order_cfm_view&PHP_id={$sorder[SEC].id}&cgiget= {$cgistr_get}&cgino={$now_pp}&cgi_1={$cgi.dept}&cgi_2={$cgi.order_num}&cgi_3={$cgi.cust}&cgi_4={$cgi.ref}&cgi_5={$cgi.factory}&max_rec={$max_no}&per_page={$per_page}">{$sorder[SEC].order_num}</a></small></td>
+   <td class=gry9 align=center><small>{$sorder[SEC].cust_iname}</small></td>
+   <td {if $today > $sorder[SEC].etd}class=B_blue9 bgcolor=#FFB0B6{else}class=gry9{/if} align=center><small>{$sorder[SEC].etd}</small></td>
+   <td {if $today > $sorder[SEC].etp}class=B_blue9 bgcolor=#FFB0B6{else}class=gry9{/if} align=center><small>{$sorder[SEC].etp}</small></td>
+   <td {if $sorder[SEC].qty == 0}class=B_blue9 bgcolor=#FFB0B6{else}class=gry9{/if} align=right><small>{$sorder[SEC].qty|number_format}&nbsp;{$sorder[SEC].unit}</small></td>
+   <td {if $sorder[SEC].uprice == 0}class=B_blue9 bgcolor=#FFB0B6{else}class=gry9{/if} align=center><small>$ {$sorder[SEC].uprice}</small></td>
+   <td class=bgdy9 align=center><small>{$sorder[SEC].gmr|number_format:"2f"} %</small></td>
+   <td class=gry9 align=center><b>{$sorder[SEC].factory}</b></td>
+   <td class=bgdy9 align=center><small>{if $sorder[SEC].del_mk == 0}{$sorder[SEC].last_update}{else}{$sorder[SEC].del_date}{/if}</small></td>
+   <td class=bgdy9 align=center>&nbsp;{if $sorder[SEC].del_mk == 0}&nbsp;{else}<font color='#FF0000'><b>Cancellation</b></font>{/if}</td>
+
+
+
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=700 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=2 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;{literal}waiting for confirm order!{/literal}&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_number}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=p{$pages[0]}&max_rec={$max_no}'">
+{else}&nbsp;
+{/if}
+    </td></form>
+	<td align=center width=260>
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+<a href="{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_number}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno={$pages[PGE]}&max_rec={$max_no}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>    
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_cust={$cgi.cust}&PHP_dept_code={$cgi.dept}&PHP_order_num={$cgi.order_number}&PHP_ref={$cgi.ref}&PHP_factory={$cgi.factory}&PHP_sr_startno=n{$lastpage}&max_rec={$max_no}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->
+    </td></form>
+  </tr>
+</table>
+
+
+<br><br>
+
+{if $cost.0.id}
+ <table width=700 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=10 align=center class=gry><b> UN-Confirm Sales Cost List</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=90 align=center><b>Month</b></td>
+    <td class=w9 width=80 align=center><b>Dept</b></td>
+    <td class=w9 width=80 align=center><b>Cust</b></td>
+    <td class=w9 width=90 align=center><b>FTY</b></td>
+    <td class=w9 width=90 align=center><b>Sales</b></td>
+    <td class=w9 width=90 align=center><b>Cost</b></td>
+<!--
+    <td class=w9 width=90 align=center><b>G.M.</b></td>
+    <td class=w9 width=90 align=center><b>G.M.(%)</b></td>
+-->  
+  </tr>
+{section name=SEC loop=$cost}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'"></a>
+   <td class=gry9 align=center nowrap><b><a href="cost.php?PHP_action=cost_cfm_view&PHP_cost={$cost[SEC].id}{$back_str}&PHP_sr_cost={$now_pp}">{$cost[SEC].out_month}</a></b></td>
+   <td class=gry9 align=center>{$cost[SEC].dept}&nbsp;</td>
+   <td class=gry9 align=center>{$cost[SEC].cust}&nbsp;</td>
+   <td class=gry9 align=center>{$cost[SEC].fty}&nbsp;</td>
+   <td class=gry9 align=right>{$cost[SEC].in_cost|number_format}&nbsp;</td>
+   <td class=gry9 align=right>{$cost[SEC].cost|number_format:"2f"}&nbsp;</td>
+<!--
+   <td class=gry9 align=right>{$cost[SEC].gross|number_format:"2f"}&nbsp;</td>
+   <td class=gry9 align=right>{$cost[SEC].gross_rate|number_format:"2f"}%&nbsp;</td>
+-->  
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=700 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above listing {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;<span class=bgdy>[ total {$c_max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $c_pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_cost=p{$c_pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$c_pages}
+    {if $c_pages[PGE] <= $c_maxpage }
+    {if $c_pages[PGE] == $c_now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$c_pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_sr_cost={$c_pages[PGE]}" style="cursor:pointer">&nbsp;{$c_pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+        
+{if $c_lastpage < $c_maxpage}
+          <input type="button" name="Submit6" value="next-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_cost=n{$c_lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td>
+
+  </tr>
+</table>
+{/if}
+
+<BR>
+{if $rem.0.fty}
+ <table width=700 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=10 align=center class=gry><b>Cutting & Making charge UN-CONFIRM LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=100 align=center><b>C.M.#</b></td>
+    <td class=w9 width=100 align=center><b>FTY</b></td>
+    <td class=w9 width=100 align=center><b>EX. Month</b></td>
+    <td class=w9 width=100 align=center><b>Q'TY</b></td>
+    <td class=w9 width=100 align=center><b>smpl. Q'TY</b></td>
+    <td class=w9 width=100 align=center><b>Cost</b></td>
+    <td class=w9 width=150 align=center><b>Status</b></td>
+
+  </tr>
+{section name=SEC loop=$rem}
+{if $rem[SEC].status > 6}
+ 	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#dddddd'" bgColor='#dddddd'>
+{else}
+  <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+{/if}
+   <td class=gry9 align=center nowrap><b><a href="cost.php?PHP_action=cfm_cm_view&PHP_renum={$rem[SEC].id}&PHP_sr_cm={$now_pp}">{$rem[SEC].num}</a></b></td>
+   <td class=gry9 align=center>{$rem[SEC].fty}&nbsp;</td>
+   <td class=gry9 align=center>{$rem[SEC].out_month}&nbsp;</td>
+   <td class=gry9 align=right>{$rem[SEC].qty|number_format}&nbsp;</td>
+   <td class=gry9 align=right>{$rem[SEC].smpl|number_format}&nbsp;</td>
+   <td class=gry9 align=right>{$rem[SEC].cost|number_format:"2f"}&nbsp;</td>
+   <td class=gry9 align=left>&nbsp;{if $rem[SEC].status == 0}Waitting for Submit
+   																 {elseif $rem[SEC].status == 2}waitting for CFM
+   																 {elseif $rem[SEC].status == 4}waitting for APV
+   																 {elseif $rem[SEC].status == 6}<B>APVD</B>
+   																 {elseif $rem[SEC].status == 7}<font color=red>REJECT</font>
+   																 {/if}
+   	</td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=650 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above listing {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;<span class=bgdy>[ total {$r_max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $r_pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='cost.php?PHP_action=cfm_cm&PHP_sr_cm=p{$r_pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$r_pages}
+    {if $r_pages[PGE] <= $r_maxpage }
+    {if $r_pages[PGE] == $r_now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$r_pages[PGE]}</b></i></font>
+    {else}
+    <a href="cost.php?PHP_action=cfm_cm&PHP_sr_cm={$r_pages[PGE]}" style="cursor:pointer">&nbsp;{$r_pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+        
+{if $r_lastpage < $r_maxpage}
+          <input type="button" name="Submit6" value="next-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='cost.php?PHP_action=cfm_cm&PHP_sr_cm=n{$r_lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td></form>
+  </tr>
+</table>
+{/if}
+
+
+{if $exc.0.id && $exc_flag}
+<br>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=12 align=center class=gry><b>Exceptional UN-APPROVAL LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=70  align=center rowspan=2>異常報告#</td>
+    <td class=w9 width=70  align=center rowspan=2>訂單編號#</td>
+    <td class=w9 width=100 align=center rowspan=2>客戶</td>
+    <td class=w9 width=40  align=center rowspan=2>部門</td>
+    <td class=w9 width=70  align=center rowspan=2>報告日期</td>
+    <td class=w9 align=center colspan=4>會辦單位</td>
+    <td class=w9 width=80  align=center rowspan=2>狀態</td>
+  </tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=30 align=center>立元</td>
+    <td class=w9 width=30 align=center>湖嘉</td>
+    <td class=w9 width=30 align=center>嘉菲</td>
+    <td class=w9 width=30 align=center>生企</td>
+  </tr>
+{section name=SEC loop=$exc}
+<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+<!--*****--2006.11.16頁碼新增 start	  -->
+   <td class=gry9 align=center><small><a href="exception.php?PHP_action=exc_show_cfm&PHP_id={$exc[SEC].id}&PHP_sr_exc={$now_pp}">{$exc[SEC].ex_num}</a></small></td>
+   <td class=gry9 align=center><small><a href="exception.php?PHP_action=exc_show_cfm&PHP_id={$exc[SEC].id}&PHP_sr_exc={$now_pp}">{$exc[SEC].ord_num}</a></small></td>
+<!--*****--2006.11.16頁碼新增 end	  -->   
+   <td class=gry9 align=left><small>{$exc[SEC].cust_iname}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$exc[SEC].dept}&nbsp;</small></td>
+   <td class=gry9 align=center><small>{$exc[SEC].exc_date}</small></td> 	
+   <td class=gry9 align=center>
+   	{if $exc[SEC].LY == 1}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].HJ == 1}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].RD == 1}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+   <td class=gry9 align=center>
+   	{if $exc[SEC].PM == 1}<img src="images/yes.gif" border=0 width=15>{/if}
+   	&nbsp;</td>
+ 	 <td class=gry9 align=left>&nbsp;<small>Wait for CFM	</small> </td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=750 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=3 align=center><span class=bgdy>※ message </font>:above listing {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;&nbsp;<span class=bgdy>[ total {$r_max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">    
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $e_pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10 page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_exc=p{$r_pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>    
+    
+    {section name=PGE loop=$e_pages}
+    {if $e_pages[PGE] <= $e_maxpage }
+    {if $e_pages[PGE] == $e_now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$e_pages[PGE]}</b></i></font>
+    {else}
+    <a href="{$cgistr_get}&PHP_sr_exc={$e_pages[PGE]}" style="cursor:pointer">&nbsp;{$e_pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+        
+{if $e_lastpage < $e_maxpage}
+          <input type="button" name="Submit6" value="next-page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}&PHP_sr_exc=n{$e_lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->    
+    </td></form>
+  </tr>
+</table>
+{/if}
+
+
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

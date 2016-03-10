@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  SCM System .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<script language="javascript">
+var transaction;
+  var sUrl;	
+  var delback = {
+    success: function(o) {
+    	
+    	document.getElementById("tbl_msg").style.display='block';  
+    	var response = o.responseText;    	
+    	msg1.innerText  = response; 
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };  
+function Show_ord(id,back_str,pp) {
+	window.location='index2.php?PHP_action=apply_wi_view&PHP_id='+id+'&PHP_sr='+pp+back_str; 	
+}
+
+function close_pa(id,wi_num,r) {
+	if ( confirm("This record will forever delete and can't reversion anymore  !\r\rPlease check again\r\rAre you sure delet ["+wi_num+"]??")) {
+	  var i=r.parentNode.parentNode.rowIndex;
+	  document.getElementById('list_table').deleteRow(i);	  
+//		alert(id);
+ 	  sUrl = "index2.php?PHP_action=bom_close_pa&PHP_id="+id+"&PHP_wi_num="+wi_num;
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	  
+
+	} 
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=600 bgcolor=#cccccc  align=center>
+	<tr>
+		<td align=center>
+			<table border=1 cellspacing=0 cellpadding=4 cols=1 width=600 bgcolor=#534A67>
+				<tr><td class=des align=center>.....  <b>BOM LIST -- FOR Purchase Order </b>.......</td></tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=550 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+    </td>
+	</tr>
+</table>
+<table border cellspacing=0 cellpadding=2 width=600 bgcolor=#ffffff align=center id ='list_table'>
+  <tr bgcolor="#003333" height=28> 
+		<td nowrap width=100 align=center class=back><b>Order #</b></td>
+		<td nowrap width=130 align=center class=back><b>Customer</b></td>
+		<td nowrap width=100 align=center class=back><b>ETD</b></td>	
+		<td nowrap width=100 align=center class=back><b>FAB. PO</b></td>
+		<td nowrap width=100 align=center class=back><b>ACC. PO</b></td>
+		<td nowrap width=10 align=center class=back><b>CLOSE</b></td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+		<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	<form method=POST name=cfm>
+	{section name=SEC loop=$wi} 
+  <tr>
+		<td class=g10 align=center nowrap>
+		<a href="javascript:Show_ord('{$wi[SEC].id}','{$back_str}','{$now_pp}')" value='ord_out' style='cursor:pointer'>
+		<b>{$wi[SEC].wi_num}&nbsp;</b></a></td>
+		<td class=gry9 align=center>{$wi[SEC].cust_iname}&nbsp;</td>  
+		<td align=center class=gry9>{$wi[SEC].etd}&nbsp;</td>   
+		<td align=center class=gry9>&nbsp;{if $wi[SEC].lots_ap == 1}<img src="images/yes.gif" border=0 width=15 valign=bottom  style="cursor:pointer">{/if}&nbsp;</td> 
+		<td align=center class=gry9>&nbsp;{if $wi[SEC].acc_ap == 1}<img src="images/yes.gif" border=0 width=15 valign=bottom  style="cursor:pointer">{/if}&nbsp;</td> 
+		<td align=center class=gry9>&nbsp;{if $close_flag}<input type='image' src="images/ok01.gif" border=0 valign=bottom  onclick="close_pa('{$wi[SEC].id}','{$wi[SEC].wi_num}',this)"; style='cursor:hand'>&nbsp;{/if}</td> 
+
+
+
+		<input type="hidden" name="PHP_action" value="do_bom_cfm">
+		<input type="hidden" name="PHP_id" value="{$wi[SEC].id}">
+		<input type="hidden" name="PHP_wi" value="{$wi[SEC].wi_num}">
+		<input type="hidden" name="PHP_order_num" value="{$wi[SEC].style_code}">
+	</tr>
+	{/section}
+	</form>
+</table>
+<table border=0 cols=4 width=600 align=center>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;wi record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+		<td align=center width=100>
+		{if $pages[0] > 1}
+		<a href="{$cgistr_get}&PHP_sr_startno=p{$pages[1]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+		{/if}
+		</td>
+		<td width=300 align=center>
+		{section name=PGE loop=$pages}
+		{if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}&PHP_sr_startno={$pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+		{/section}
+		</td>
+		<td width=100 align=center>
+		{if $lastpage < $maxpage}
+			<a href="{$cgistr_get}&PHP_sr_startno=n{$lastpage}{$back_str}">&nbsp;<img src="images/right2.gif" border=0 alt="後12筆資料"></a>
+		{/if} 
+		</td>
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,626 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 製造令 資料 ] ::::::::::===</title>
+   <link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style>
+#Layer1 {
+	position:absolute;
+	width:421px;
+	height:708px;
+	left:0px;
+	top:0px;
+	z-index:1;
+}
+</style>
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script language="JavaScript"><!--
+
+var transaction;
+  var sUrl;
+  var callback = {
+    success: function(o) {
+    var response = o.responseText.split("|");
+    var divrep=response[0];
+    	
+    document.getElementById("msg_show").style.display='block';
+    m_div1.innerText  = divrep; 
+//  alert(divrep);
+
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+
+function cfm_del_ajx(bom_id,wi_id,mat_code,mat,r) {
+
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+mat_code+"]??")) {
+
+  var i=r.parentNode.parentNode.rowIndex
+  document.getElementById('bom_table').deleteRow(i)
+
+	sUrl = "index2.php?PHP_action=do_smpl_bom_del_ajx&PHP_bom_id="+bom_id+"&PHP_id="+wi_id+"&mat_code="+mat_code+"&PHP_mat="+mat+"{/literal}{$back_str2}"{literal};
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+
+	} 
+ }	
+	
+function cfm_del(bom_id,wi_id,mat_code,mat) {
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+mat_code+"]??")) {
+	location.href="index2.php?PHP_action=do_smpl_bom_del&PHP_bom_id="+bom_id+"&PHP_id="+wi_id+"&mat_code="+mat_code+"&PHP_mat="+mat+"{/literal}{$back_str2}"{literal};
+	} 
+ }
+ 
+ $(document).ready(function(){
+ 	show_color(-1);
+	mat_id = '';
+	size = '';
+	row_index = 0;
+	num_checkbox = 0;
+	des = '';
+	now_tdid = $('#color_table tr:eq(0) td:eq(0)').get(0).id;
+	pre_tdid = '';
+	$('#color_table tr:eq(0) td:eq(0)').children().css('cursor','');//將第一筆ETD變成無作用
+	eval("$('#" + now_tdid + "').removeClass('ylw9').toggleClass('trk')");
+		
+	cfm_add = function (){
+		
+		eval("$('#Layer1').css('left','" + (event.clientX/3) + "px')");
+		eval("$('#Layer1').css('top','" + (event.clientY+document.body.scrollTop) + "px')");
+		document.getElementById("Layer1").style.display='block';
+		//alert("X軸"+event.clientX/3 + "\nY軸" + (event.clientY+document.body.scrollTop));
+		//var wi_id = $('#PHP_id').val();
+		var mat = this.mat;
+		var qty = '';
+		var qty2 = '';
+		var ck = '';
+		var color = '';
+		var T1 = '';
+		var T2 = '';
+		var tr_content = '';
+		
+		for (i=0; i<this.num_checkbox; i++){
+			
+            //alert("wi_id="+wi_id+" mat_id="+mat_id+" num_colors="+num_colors+" mat="+mat+" size="+size+" des="+des);
+            if (mat == "lots"){
+				T1 = "window.document.forms.bom_edit.PHP_bom_qty"+this.mat_id+"_"+i+".checked";
+				T2 = "window.document.forms.bom_edit.PHP_bom_qty"+this.mat_id+"_"+i+".value";
+				//alert(T1 + "\n" + T2);
+			}else{
+				T1 = "window.document.forms.acc_edit.PHP_bom_qty"+this.mat_id+"_"+i+".checked";
+				T2 = "window.document.forms.acc_edit.PHP_bom_qty"+this.mat_id+"_"+i+".value";
+				//當主副料欄位有size時，PHP_bom_qty12345xXL_0會加上size的值
+			}
+            
+            if (eval(T1)){
+                ck = '1';
+                qty = qty + eval(T2) + ',';
+                //qty[i] = eval(T2);
+                if(eval(T2) == 0)
+                {
+                    alert("Please choice allocation of this materiel [colorway]!\r\rIf there is no colorway or q'ty data，\rPlease update this data on [W I] first !");
+                    return;
+                }
+            } else {
+                qty = qty + '' + ',';
+                //qty[i] = '';
+            }
+		}
+
+		if (ck == ''){
+			alert("Please choice allocation of this materiel [colorway]!\r\rIf there is no colorway or q'ty data，\rPlease update this data on [W I] first !");
+			document.getElementById("layer1").style.display='none';
+			return;
+		}
+        
+		if (mat == "lots"){
+			color = eval("window.document.forms.bom_edit.PHP_lots_color_"+mat_id+".value");
+		} else {
+			color = eval("window.document.forms.acc_edit.PHP_acc_color_"+mat_id+".value");
+		}
+
+		$.ajax({
+			url: 'index2.php?PHP_action=do_smpl_bom_add',
+			type: 'GET',
+			data: {
+				PHP_mat: this.mat,
+				PHP_mat_use_id: this.mat_id,
+				PHP_color: escape(color),
+				PHP_qty: qty,
+				PHP_size: this.size,
+				PHP_size_des: this.des,
+				PHP_wi_id: {/literal}"{$wi.id}"+"{$back_str2}"{literal}
+			},
+			error: function(xhr) {
+				alert('ajax error');
+			},
+			success: function(response) {
+                
+				//alert(response);
+				var num_cell = document.all.bom_table.rows(0).cells.length;
+				var num_colspan = 0;
+				
+				qty2 = qty.split(",");
+				tr_content = '';
+				tr_content = "$('#bom_table tr:eq("+(row_index-1)+")').after(\"" ; 
+				
+				if ( mat=="lots" ){
+					tr_content += "<tr onmouseover=bgColor='#FBFBCA' onmouseout=bgColor='#ffffff'>" +
+								  "<td class=b9 nowrap align=left><a href=javascript:Show_fab('" + eval("$.trim($('#bom_table tr:eq(" +(row_index-1)+") td:eq(0)').text())") + "')>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(0)').text()") + "</a></td>" ;
+				} else {
+					tr_content += "<tr onmouseover=bgColor='#D4E0F7' onmouseout=bgColor='#ffffff'>" +
+								  "<td class=b9 nowrap align=left><a href=javascript:Show_acc('" + eval("$.trim($('#bom_table tr:eq(" +(row_index-1)+") td:eq(0)').text())") + "')>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(0)').text()") + "</a></td>" ;
+				}
+				
+				tr_content +="<td class=b9 align=left>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(1)').text()") + "</td>" +
+					"<td class=b9 align=left>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(2)').text()") + "</td>" +
+					"<td class=b9 align=right>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(3)').text()") + "</td>" +
+					"<td class=b9 align=center>" + color + "</td>" +
+					"<td class=b9 align=center>" + eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(5)').text()") + "</td>" +
+					"<td class=b9 align=center width=0 bgcolor=#666666></td>";
+				
+				for (i=0; i<num_checkbox; i++){//判斷td colspan值
+					if (num_checkbox == 1){
+						for(i=7; i<num_cell-1; i++){
+							if (eval("$('#bom_table tr:eq(0) td:eq(" + i + ")').css('display')") != 'none')
+								num_colspan++;
+						}
+						tr_content+="<td class=grn9 colspan=" +num_colspan+" align=center><b>" + qty2[0] + "</b></td>";
+					}
+					else{
+						tr_content+="<td class=grn9 align=center><b>" + qty2[i] + "</b></td>";
+					}
+				}
+				
+				tr_content += "<td class=b9 align=center width=1><input type='image' src='images/del.png' onclick=cfm_del_ajx('" + response + "','" + {/literal}"{$wi.id}"{literal} + "','" + eval("$.trim($('#bom_table tr:eq(" +(row_index)+") td:eq(0)').text())") + "','"+mat+"',this)>&nbsp;</td>";
+				
+				tr_content+="</tr>\")";
+				//alert(tr_content);
+				eval(tr_content);
+				for (i=7; i<num_cell-1; i++){
+					if (eval("$('#bom_table tr:eq(" +(row_index-1)+") td:eq(" + i + ")').css('display')") == 'none')
+						eval("$('#bom_table tr:eq(" +(row_index)+") td:eq(" + i + ")').css('display','none')");
+				}
+				clear();
+			}
+		});
+	
+	};
+	
+	clear = function(){ //清除checkbox及input
+		$(":text").val('');
+		document.getElementById("layer1").style.display='none';
+		eval("$(\"#bom_table tr:eq(" + (this.row_index-1) + ") td input[type='checkbox']\").attr('checked',false)");
+		//$(":checkbox").attr("checked",false);
+	}
+	
+	get_num = function(r,mat_id,size,num_checkbox,mat,des){
+		this.size = size;
+		size == '' ? this.mat_id = mat_id : this.mat_id = mat_id + "x" + (this.size=size);
+		this.row_index = r.parentNode.parentNode.parentNode.rowIndex+1;
+		this.num_checkbox = num_checkbox;
+		this.mat = mat;
+		this.des = des;
+		cfm_add();
+	}
+	
+	function show_color(tdid2int){
+	
+		var tdid = new Array();
+		var begin_arr = new Array();
+		var num_row = document.all.bom_table.rows.length;
+		var color_num_row = document.all.color_table.rows.length;
+		var num_cell = document.all.bom_table.rows(0).cells.length;
+		var hit = new Array();
+		var hit_time = 1;
+		var begin_row = 0;
+		var end_row = 0;
+		var str = '';
+		var begin_field = 0;
+		var all_num_color = 0;
+		var display_style = '';
+		var active_colspan = 0;
+		var p=n=0;
+		hit[0] = 0;
+				
+		for (i=0 ; i<color_num_row ; i++){//比對color_table的第一行
+			str = eval("$('#color_table tr:eq(" + i + ") td:eq(0)').text()");
+			if (str.search("ETD")=="1"){
+				begin_row = i+1;
+				begin_arr[hit_time] = begin_row;
+			}
+			if (str.search("TOTAL")=="0") {
+				end_row = i;
+				hit[hit_time] = end_row - begin_row;
+				hit_time++;
+			}
+		}
+
+		for(x=0;x<hit.length;x++){all_num_color+=hit[x];} //計算所有顏色的筆數
+		
+		if(tdid2int==-1){ //初始值，只顯示第一筆ETD記錄
+			begin_field=hit[1];
+			if (hit_time<3) {//只有一筆ETD資料時,將顏色名稱改為代碼,並顯示
+				/*for(j=0;j<num_row;j++){
+					if (document.all.bom_table.rows(j).cells.length == all_num_color){
+						for(k=0;k<begin_field;k++){
+							if (eval("$('#bom_table tr:eq(" + (j) + ") td').length") > 1)
+								eval("$('#bom_table tr:eq(" + (j-1) + ") td:eq(" + (7+k) + ")').text('"+(k+1)+"')");
+						}
+					}
+				}*/
+				return;
+			} 
+			var tmpnum = begin_field;
+			
+			for(j=2;j<hit_time;j++){//color_table
+				for(k=begin_arr[j];k<=(begin_arr[j]+hit[j]);k++){
+					//alert("第 "+j+ " 個ETD\n從第"+begin_arr[j]+"開始\n第"+(begin_arr[j]+hit[j])+"結束\n現在是第 "+k+" 行");
+					eval("$('#color_table tr:eq(" + k + ")').css('display','none')");
+				}
+			}
+			
+			while(tmpnum < all_num_color){//bom_table 先隱藏整行
+				eval("$('#bom_table td:nth-child("+ (tmpnum+7+1) + ")').css('display','none')");
+				tmpnum++;
+			}
+			
+			for(j=0;j<num_row;j++){
+			
+				if (document.all.bom_table.rows(j).cells.length == all_num_color){
+					tmpnum = begin_field;
+					while(tmpnum < all_num_color){//隱藏bom_table的colorway
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(" + (tmpnum) + ")').css('display','none')");
+						tmpnum++;
+					}
+					
+					/*for(k=0;k<begin_field;k++){
+						eval("$('#bom_table tr:eq(" + (j-1) + ") td:eq(" + (7+k) + ")').text('"+(k+1)+"')");//將顏色名稱改為代碼
+					}*/
+				}
+				if (eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').attr('colspan')") == all_num_color){//checkbox 隱藏資料
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').attr('colspan','" + begin_field + "')");
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(8)').css('display','block')");
+				}else
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(" + (7+tmpnum-1) + ")').css('display','none')");
+			}
+			/*	
+			while(tmpnum < all_num_color){//bom_table
+				for (j=0; j < num_row; j++){
+					if (document.all.bom_table.rows(j).cells.length == all_num_color){
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(" + (tmpnum) + ")').css('display','none')");
+					}
+					else{
+						if (eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').attr('colspan')") == all_num_color)
+							eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').attr('colspan','" + begin_field + "')");
+						else
+							eval("$('#bom_table tr:eq(" + j + ") td:eq(" + (7+tmpnum) + ")').css('display','none')");
+					}
+				}
+				tmpnum++;
+			}*/
+			
+		}
+		else{
+			p = pre_tdid.split('_');
+			p = parseInt(p[1]);
+			n = now_tdid.split('_');
+			n = parseInt(n[1]);
+			
+			for(x=begin_arr[p+1];x<=(begin_arr[p+1]+hit[p+1]);x++){//隱藏上筆color_table記錄
+				eval("$('#color_table tr:eq(" + x + ")').css('display','none')");
+			}
+			for(x=begin_arr[n+1];x<=(begin_arr[n+1]+hit[n+1]);x++){//顯示當筆color_table記錄
+				eval("$('#color_table tr:eq(" + x + ")').css('display','block')");
+			}
+			all_num_color = begin_field = 0;
+			for(x=0;x<hit.length;x++){all_num_color+=hit[x];} //計算所有顏色的筆數
+			for(x=0;x<tdid2int;x++){begin_field+=hit[x+1];} //計算從第幾欄開始隱藏
+						
+			tmpnum = 0;
+			while(tmpnum < all_num_color){//bom_table隱藏全部
+				eval("$('#bom_table td:nth-child("+ (tmpnum+7+1) + ")').css('display','none')");
+				tmpnum++;
+			}
+			
+			tmpnum = 0;
+			while(tmpnum < hit[tdid2int+1]){//顯示該筆記錄(一整行顯示))
+				eval("$('#bom_table td:nth-child("+ (begin_field+7+1+tmpnum) + ")').css('display','block')");//nth-child的index是從1開始
+				tmpnum++;
+			}
+			
+			for (j=0; j < num_row; j++){//處理checkbox及顏色列
+				tmpnum = 0;
+				if( document.all.bom_table.rows(j).cells.length == all_num_color ){//顏色列
+					while(tmpnum < all_num_color){
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(" + tmpnum + ")').css('display','none')");
+						tmpnum++;
+					}
+					for(k=0;k<hit[tdid2int+1];k++){
+						eval("$('#bom_table tr:eq(" + j + ") td:eq(" + (begin_field+k) + ")').css('display','block')");
+						//eval("$('#bom_table tr:eq(" + (j-1) + ") td:eq(" + (7+begin_field+k) + ")').text('"+(k+1)+"')");//將顏色名稱改為代碼
+					}
+				}
+				if( document.all.bom_table.rows(j).cells.length == 9 ){//checkbox
+					eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').attr('colspan'," + hit[tdid2int+1] + ")");
+					eval("$('#bom_table tr:eq(" + j + ") td:eq(7)').css('display','block')");
+					eval("$('#bom_table tr:eq(" + j + ") td:eq(8)').css('display','block')");
+				}
+			}
+		}
+	}
+	
+	$('td.ylw9').live('mousedown',function(){
+		if (($(this).children().text()).search("ETD")==-1) return;
+		var tdid = new Array();
+		var tdid2int = '';
+		pre_tdid = now_tdid;
+		//now_tdid = $(this).parent().get(0).id;
+		now_tdid = $(this).attr('id');
+		if(pre_tdid==now_tdid) return;//避免隱藏二次
+		eval("$('#" + pre_tdid + "').children().css('cursor','pointer')");//上一筆記錄
+		eval("$('#" + pre_tdid + "').removeClass('trk').toggleClass('ylw9')");
+		eval("$('#" + now_tdid + "').children().css('cursor','')");//當筆記錄
+		eval("$('#" + now_tdid + "').removeClass('ylw9').toggleClass('trk')");
+		//tdid = ($(this).parent().get(0).id).split('_');
+		tdid = now_tdid.split('_');
+		tdid2int = parseInt(tdid[1]);
+		show_color(tdid2int);
+	});
+});
+
+function overTip(boxObj,data) { 
+	boxObj.style.visibility = "visible";
+	if(event.clientX + boxObj.offsetWidth > document.body.offsetWidth - 40 ){
+		boxObj.style.left = event.clientX + document.body.scrollLeft - boxObj.offsetWidth - 26 + 'px';
+	} else {
+		boxObj.style.left = event.clientX + document.body.scrollLeft + 6 + 'px';
+	}
+	if(event.clientY + boxObj.offsetHeight > document.body.offsetHeight - 20 ){
+		boxObj.style.top = event.clientY + document.body.scrollTop - boxObj.offsetHeight - 20 + 'px';
+	} else {
+		boxObj.style.top = event.clientY + document.body.scrollTop - 20 + 'px';
+	}
+	boxObj.innerHTML=data;
+}
+function outTip(boxObj){
+	boxObj.style.visibility = "hidden";
+}
+-->
+</script>
+{/literal}
+
+</head>
+
+<body>
+<div id='preview' style="position:absolute;z-index:1;visibility:hidden;background-color:#fff;border:1px solid #000;padding:3px"></div>
+<div id="Layer1" style="display : none"><img src="./images/ajpk.gif" border=0 width=20%></div>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#2E5E73>
+	<tr>
+	  <td class="des" align=center height=28 width=340>[ <b><span class=ylw10> EDIT </span> BOM for Sample</b> - <b>{$wi.wi_num}</b> ]</td>
+	<td class="des" align=center height=28 width=140>Version :<span class=ylw10><b>{$wi.bom_rev}</span></b></td>
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700 id=msg_show {if $msg_YES}style="display : block" {else}style="display : none" {/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='m_div1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+      </tr>
+     </table>
+
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=24> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=150 align=center class=back><b>Sample Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=100 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=24>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<a href="{$wi.pic_url}" target=_black><img src="{$wi.pic_url}" name="pic" border=0 width=90></a></td>
+	<td class=grn9 align=center><b>&nbsp;{$smpl.num}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total}</b></span>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9><未輸入></span>{/if}</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center id="color_table">
+			{$show_breakdown}
+		</table>
+	</td>
+  </tr>
+</table>
+<!-------------  BOM table ------------->
+<!-------------  主料 ------------->
+<hr size=2 width=700 align=center>
+<table width=700 border=1 cellspacing=1 cellpadding=1>
+<form method=POST name='bom_edit'>
+   <tr><td>
+	<table width=700 border=0 cellspacing=1 cellpadding=1 id=bom_table>
+	<!-------   Title --------- -->
+	 <tr bgcolor=#C4C3AE>
+	    <td width=90 class=b9 rowspan=2 align=center ><b>Fabirc #</b></td>
+	    <td width=90 class=b9 rowspan=2 align=center ><b>Fabric Name</b></td>
+	    <td width=80 class=b9 rowspan=2 align=center ><b>Placement</b></td>
+	    <td width=90 class=b9 rowspan=2 align=center ><b>consump.</b></td>
+		<td class=b9 align=center rowspan=2 width=70><b>Color/cat.</b></td>
+ 	  <td class=b9 align=center rowspan=2 width=10><small>size</small></td>
+		<td class=b9 align=center rowspan=2 width=0 bgcolor=#666666></td>
+	{if $colors_NONE}
+		<td class=bgdy9 align=center >NO Colorway data</td>
+	  <tr><td class=bgdy9 align=center >NO Q'ty</td>
+	{else}
+	
+	{section name=NAME loop=$color} 
+		<td class=grn9 align=center value={$color[NAME].name} onmouseover="overTip(preview,$(this).val())" onmouseout="outTip(preview)"><b>&nbsp;{$color[NAME].name|substr:0:1}</b></td>
+	{/section} 
+		<td class=b9 align=center rowspan=2 width=1>&nbsp</td>
+	 <tr bgcolor=#C9CCC9>
+	{section name=QTY loop=$color} 
+		<td class=b9 align=center><b>{$color[QTY].qty}</b>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9> ??</span>{/if}</b></td>
+	{/section} 
+
+	{/if}
+	 </tr>
+	<!-------  end  Title 
+
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=3>
+	 </tr>
+--------- -->
+	{if $lots_NONE}  
+	  <tr>
+		<tr><td class=bgdy9 align=center colspan={$total_fields} height=30>This wi hasn't any Fabric data!</td></tr>
+	  </tr>
+	{else}
+
+
+	<!-------  BOM 主料記錄 --------- -->
+	{section name=BOM loop=$bom_lots_list} 
+	{if $bom_lots_list[BOM].change == 1}
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=3>
+	 </tr>
+	 {/if}	
+	<tr {$bom_lots_list[BOM].tr}>
+		<td class=b9 align=left nowrap>&nbsp;{$bom_lots_list[BOM].lots_code}</td>
+		<td class=b9 align=left>&nbsp;{$bom_lots_list[BOM].lots_name}</td>
+		<td class=b9 align=left>&nbsp;{$bom_lots_list[BOM].use_for}</td>
+		<td class=b9 align=right>{$bom_lots_list[BOM].est_1}&nbsp;{$bom_lots_list[BOM].unit}</td>
+		<td class=b9 align=center>&nbsp;{if $bom_lots_list[BOM].est_1 > 0}{$bom_lots_list[BOM].color}{/if}</td>
+		<td class=b9 align=center>{$bom_lots_list[BOM].size}&nbsp;</td>
+		<td class=b9 align=center width=0 bgcolor=#666666></td>
+		{$bom_lots_list[BOM].list}
+		<td class=b9 align=center width=1>{if $bom_lots_list[BOM].est_1 > 0}{$bom_lots_list[BOM].remark}{/if}&nbsp;</td>
+	</tr>
+
+	{/section}
+	<!------- end BOM 主料記錄 --------- -->
+	
+	{/if}
+</form>
+<!--	</table>	-->
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=5>
+	 </tr>
+<form method=POST name='acc_edit'>
+<!-------------  副料 ------------->
+<!--	<table width=700 border=0 cellspacing=1 cellpadding=1>	-->
+	<!-------   Title --------- -->
+	 <tr bgcolor=#C4C3AE>
+	    <td class=b9 align=center rowspan=2><b>Accessory #</b></td>
+	    <td class=b9 align=center rowspan=2><b>Acc. Name</b></td>
+	    <td class=b9 align=center rowspan=2><b>Placement</b></td>
+	    <td class=b9 align=center rowspan=2><b>consump.</b></td>
+		<td class=b9 align=center rowspan=2 width=100><b>Color/cat.</b></td>
+		<td class=b9 align=center rowspan=2 width=10><small>size</small></td>				
+		<td class=b9 align=center rowspan=2 width=0 bgcolor=#666666></td>
+	{if $colors_NONE}
+		<td class=bgdy9 align=center >NO Colorway</td>
+	  <tr><td class=bgdy9 align=center >NO Q'ty</td>
+	{else}
+	
+	{section name=NAME loop=$color} 
+		<td class=grn9 align=center value={$color[NAME].name} onmouseover="overTip(preview,$(this).val())" onmouseout="outTip(preview)"><b>&nbsp;{$color[NAME].name|substr:0:1}</b></td>
+	{/section} 
+		<td class=b9 align=center rowspan=2 width=1>&nbsp</td>
+	 <tr bgcolor=#C9CCC9>
+	{section name=QTY loop=$color} 
+		<td class=b9 align=center><b>{$color[QTY].qty}</b>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9> ??</span>{/if}</b></td>
+	{/section} 
+
+	{/if}
+	 </tr>
+	<!-------  end  Title 
+
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=3>
+	 </tr>
+--------- -->
+	{if $acc_NONE}  
+	  <tr>
+		<tr><td class=bgdy9 align=center colspan={$total_fields} height=30>This wi hasn't any accessory data!</td></tr>
+	  </tr>
+	{else}
+
+	<!-------  BOM 副料記錄 --------- -->
+	{section name=BOM loop=$bom_acc_list} 
+	{if $bom_acc_list[BOM].change == 1}
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=3>
+	 </tr>
+	 {/if}
+	 <tr {$bom_acc_list[BOM].tr}>
+		<td class=b9 align=left>&nbsp;{$bom_acc_list[BOM].acc_code}</td>
+		<td class=b9 align=left>&nbsp;{$bom_acc_list[BOM].acc_name}</td>
+		<td class=b9 align=left>&nbsp;{$bom_acc_list[BOM].acc_use}</td>
+		<td class=b9 align=right>{$bom_acc_list[BOM].est_1}&nbsp;{$bom_acc_list[BOM].unit}</td>
+		<td class=b9 align=center>		{if $bom_acc_list[BOM].est_1 > 0}	&nbsp;{$bom_acc_list[BOM].color}{/if}&nbsp;</td>
+		<td class=b9 align=center>{$bom_acc_list[BOM].size}&nbsp;</td>
+		<td class=b9 align=center width=0 bgcolor=#666666></td>
+		
+		{$bom_acc_list[BOM].list}
+		
+		<td class=b9 align=center width=1>{if $bom_acc_list[BOM].est_1 > 0}{$bom_acc_list[BOM].remark}{/if}&nbsp;</td>
+
+	</tr>
+	{/section}
+	<!------- end BOM 副料記錄 --------- -->
+	{/if}
+
+	</table>
+</form>
+
+   </td></tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=2 width=690 bgcolor=#ffffff align=center>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td colspan=2><form method=POST name=back>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=smpl_bom_search_wi{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%"></form>
+{else}&nbsp;
+{/if}
+	</td></form>
+	<td colspan=2><form method=POST name=back>
+{if $back_str}
+		<input type=button onClick="window.location.href='{$PHP_SELF}?PHP_action=smpl_bom_view&PHP_style_code={$back_str2}&PHP_id={$wi.id}'" value=" BOM VIEW " class=select_e style="cursor:pointer; width=99%"></form>
+																	  
+{else}&nbsp;
+{/if}
+	</td></form>
+  </tr>
+
+</table>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

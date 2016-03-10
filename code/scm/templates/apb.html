@@ -1,0 +1,400 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===.........  SCM System -- RECEIVING .........===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+{literal}
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+
+<script language="javascript">
+	var transaction;
+	var sUrl;
+	var callback = {
+		success: function(o) {
+			var response = o.responseText;    	
+				sup_show.innerHTML = "Supplier :&nbsp;"+response;
+		},
+		failure: function(o) {
+		  alert("Error：Can't get data");
+		}
+	};
+  
+	function cfm(ref,id) {
+		if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 樣本記錄:["+ref+"]??")) {
+			location.href="index2.php?PHP_action=smpl_del&PHP_id="+id;
+		} 
+	}
+function check(){
+}
+
+function list(item){
+	var gofile ='index2.php?PHP_action=show_supplier_search&PHP_item='+item;	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+function fablist(){
+	var gofile ='index2.php?PHP_action=show_fabric_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ function acclist(){
+	var gofile ='index2.php?PHP_action=show_accessory_search';	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+ 
+ function writeToParentList(lots_code,lots_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_fab'].value = lots_code;
+}
+function writeToAccList(acc_code,acc_name,unit1,unit2,unit3,id) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_acc'].value = acc_code;
+} 
+ 
+function writeToSuplList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['add_aply'].elements['PHP_supl'].value = supl_s_name;
+	window.document.forms['add_aply'].elements['PHP_supl_cat'].value = supl_cat;
+}
+
+function writeToSupSESlList(supl_s_name,supl_cat) {
+	var i=0;
+	window.document.forms['search_aply'].elements['SCH_supl'].value = supl_s_name;
+}
+function search_ship(r,item)
+{
+ sup_show.innerHTML ="<img src='./images/ajax-loader_w.gif' alt='Wait' style='cursor:pointe' height=20>";
+ var ship = r.value;
+ sUrl = "apb.php?PHP_action=get_supplier&PHP_ship="+ship+"&PHP_item="+item;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+function add_trans() {
+	var trans_num = window.document.forms['add_aply'].elements['PHP_po'].value ;
+	var ship = window.document.forms['add_aply'].elements['PHP_ship'].value ;
+	var ord_num = window.document.forms['add_aply'].elements['PHP_ord'].value ;
+
+	window.location='trans_rcvd.php?PHP_action=trans_add_search&PHP_trans_num='+trans_num+'&PHP_ship='+ship+"&PHP_ord_num="+ord_num; 	
+
+}
+
+function to_excel(begin_date,end_date){
+	window.location='apb.php?PHP_action=to_excel&PHP_begin_date='+begin_date+'&PHP_end_date='+end_date;
+}
+
+function chk(val,p_date){
+	if(val.indexOf("Input T/T of shipment separately the BEFORE & AFTER") != -1){
+		document.getElementById("b_a_show").style.display="";
+	}else{
+		document.getElementById("b_a_show").style.display="none";
+		document.getElementById("PHP_before_after").value="";
+	}
+	
+	if(val.indexOf("T/T before shipment") != -1 && p_date < 27){
+		document.getElementById("po_before_rcv").style.display="";
+	}else{
+		document.getElementById("po_before_rcv").style.display="none";
+	}
+	
+	if(val.indexOf("月結") != -1){
+		document.getElementById("month_pay").style.display="";
+	}else{
+		document.getElementById("month_pay").style.display="none";
+	}
+}
+
+function show_un_rcv_po(){
+	var url = "apb.php?PHP_action=show_un_rcv_po";
+	window.open2(url,'un_rcv_po','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=900,height=700, top=100, left=150');
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<br>
+{if $max_notify > 0 }		
+<table width=770 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a>
+		</td>
+	</tr>
+</table>
+<br>
+{/if}
+
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 width="770" align=center>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}
+
+<table border="1" cellspacing="0" cellpadding="6" cols="1" width="770" bgcolor="#cccccc" align="center">
+	{if $add_flag}
+	<form METHOD="POST" name="add_aply">
+	<tr>
+    <td align=center>
+			<table border=0 cellspacing=0 cellpadding=3 width="100%">
+				<tr>
+					<td class=des align=center colspan=4 bgcolor=#280004><b>[ Accounts Payable Developing -- Purchase Order Search ]</b></td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan=4 align=center><hr size=2 width=98%></td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td  class=snvy align=center nowrap>
+						<b>Ship inv# :&nbsp;</b>
+						<input type=text name="PHP_ship_inv" size=15 class=select value="">
+					</td>
+					<td align=center  class=snvy>
+						<b>PO# <!-- / Transport# -->: </b>
+						<input type=text name="PHP_po" size=10 class=select value="">
+					</td>
+					{if !$manager_flag}<input type="hidden" name="PHP_ship" value="{$fty}">{/if}
+					<td  class=snvy align=center><b><div id=sup_show>Supplier :&nbsp;{$sup_no}</div></td>
+					<!--<td  class=snvy align=center><b>ORD.# : </b><input type=text name="PHP_ord" size=8 class=select value="">X</td>-->
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan="4" class=snvy align=left><b>Payment :&nbsp;</b>{$payment}
+						<span id="b_a_show" style="display:none">
+							<select onChange="" id="PHP_before_after" NAME="PHP_before_after" class="select" >
+								<option VALUE="" >Select</option>
+								<option VALUE="before" >before</option>
+								<option VALUE="after" >after</option>
+							</select>
+						</span>
+						
+						<span id="po_before_rcv" style="display:{if $d_date > 26} none {/if}">
+							<input type="checkbox" name="PHP_po_before_rcv" value="1"><b>驗收</b>
+						</span>
+						
+						<span id="month_pay" style="display:none">
+							<label><input name="PHP_tw_rcv" type="radio" value="1" checked> <b>台灣驗收</b></label>
+							<label><input name="PHP_tw_rcv" type="radio" value="0"> <b>工廠驗收</b></label>
+						</span>
+					</td>
+					
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan=4 align=center><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td class=w9 align=center class=w10 colspan=4 bgcolor=#cccccc>
+						<input type="hidden" name="PHP_action" value="rcvd_add_search">
+						<input type="submit" value="APPEND P/O Receiving" class=select_e style="width:100%;cursor:pointer"></td>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</form>
+	{/if}
+</table>
+
+<hr size=1 width=650 align=center>
+
+<table border="1" cellspacing=0 cellpadding=6 cols=1 width=770 bgcolor=#cccccc  align=center>
+	<form METHOD="POST" name="search_aply">
+	<tr>
+		<td>
+			<table cellspacing=0 cellpadding=3 cols=1 width="100%" align=center>
+				<tr>
+					<td colspan=6 class="des" align=center height=28 bgcolor=#003300>[ SEARCH/LISTING&nbsp;ACCOUNTS PAYABLE ]</td>
+				</tr>
+				<tr>
+					<td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+				<tr>
+				<tr>
+					<td class=snvy align=right><input type="button" class=select_e value="請款單未驗收PO" onclick="show_un_rcv_po()" style="cursor:pointer"></td>
+					<td class=frnt align=left></td>
+					<td class=snvy align=right></td>
+					<td class=frnt align=left></td>
+				</tr>
+				<tr>
+					<input type="hidden" name="SCH_fty" value={if $manager_flag}""{else}"{$fty}"{/if}>
+					<td class=snvy align=right><b>Accounts Payable # : </b></td>
+					<td class=frnt align=left><input type=text name="SCH_num" size=15 class=select value=""></td>
+					<td class=snvy align=right><b>Supplier : </b></td>
+					<td class=frnt align=left>{$sup_supl}</td>
+				</tr>
+				<tr>
+					<td class=snvy align=right><b>P/O # :</b></td>
+					<td class=frnt align=left>
+						<input type='text' name="SCH_po" size=15 class=select value="" >
+					</td>
+					<td class=snvy align=right><b>Ship num # : </b></td>
+					<td class=frnt align=left><b><input type='text' name="SCH_ship" size=15 class=select value="" ></b></td>
+				</tr>
+				<tr><td colspan=6><hr SIZE=2 WIDTH=97%></td></tr>
+				<tr> 
+					<td align=left class=b9 colspan=6>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 1: search / listing Receiving record ; please use combo selection or/and key field.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					※ 2: if entire listing ; keep fields in blank and just click [ SEARCH/LIST ACCOUNTS PAYABLE RECORDS ] button.
+					</td>
+				</tr>
+				<tr> 
+					<td align=center colspan=6>
+						<input type="hidden" name="PHP_action" value="rcvd_search">
+						<input type=submit value="[ SEARCH / LIST RECEIVING RECORDS ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;>
+					</td>  
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</form>	
+</table>
+
+<hr size=1 width=650 align=center>
+
+<table border cellspacing=0 cellpadding=8 cols=1 width=770 bgcolor=#cccccc  align=center>
+	<form METHOD="POST" name="to_excel">
+	<tr> 
+		<td align=center>
+			<table border=0 cellspacing=0 cellpadding=3 width="100%" >
+				<tr>
+					<td class=des align=center colspan=8 bgcolor=#280004><b>[ Accounts Payable Developing ]</b></td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan="8" align=center><hr size="2" width="100%"></td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td rowspan="2" class=frnt align=center>
+						&nbsp;&nbsp;FROM&nbsp;
+						<input type=text name="PHP_begin_date" size=15 class=select value="">
+						<img align='top' onmousedown="javascript:Cal(document.to_excel.PHP_begin_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+						&nbsp;&nbsp;TO&nbsp;
+						<input type=text name="PHP_end_date" size=15 class=select value="">
+						<img align='top' onmousedown="javascript:Cal(document.to_excel.PHP_end_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+					</td>
+					<td class=snvy align=left>
+						<label><input type="radio" name="groupby" value="1" checked>廠別</label>
+					</td>
+					<td class=snvy align=left>
+						<label><input type="radio" name="groupby" value="2">國內</label>
+					</td>
+					<td class=snvy align=left>
+						<label><input type="radio" name="groupby" value="3">國外</label>
+					</td>
+					<td class=snvy align=left>
+						<label><input type="radio" name="groupby" value="4">國內匯出資料</label>
+					</td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan="5" class=snvy align=left>
+						<fieldset width="100%"><legend>匯出 TipTop 資料</label></legend>
+							<table width="100%" border="0" cellpadding="3" cellspacing="3" bgcolor="#EEEEEE">
+								<tr>
+									<td><label><input type="radio" name="groupby" value="5">國內</label></td>
+									<td><label><input type="radio" name="groupby" value="7">國內 ( by 物料 )</label></td>
+									<td><label><input type="radio" name="groupby" value="8">國內 ( by 客人 )</label></td>
+									<td>|</td>
+									<td><label><input type="radio" name="groupby" value="6">國外</label></td>
+								</tr>
+							</table>
+						</fieldset>
+					</td>
+				</tr>
+				<tr bgcolor=#cccccc>
+					<td colspan=8 align=center><hr size=2 width="100%"></td>
+				</tr>
+				<tr>
+					<td class=w9 align=center class=w10 colspan=8 bgcolor=#cccccc>
+						<input type="hidden" name="PHP_action" value="apb2excel">
+						<input type=submit value="[ EXCEL ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;>
+					</td>  
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</form>
+</table>
+
+{if $rcvd}
+
+<hr size=1 width=650 align=center>
+
+<table width="770" border="1" cellspacing="0" cellpadding="0">
+	<tr>
+		<td>
+			<table width="100%">
+				<tr bgColor='#003300' >
+					<td colspan="10" align="center" class="des" height="30"><b>Accounts Payable Check-List</b></td>
+				</tr>
+				<tr>
+					<td>
+						<table border="0" cellspacing="1" cellpadding="2" width="100%">
+							<tr bgcolor="#003333" height="25" width="100%">
+								<td class=w9 width=90 align=center><b>APB. #</b></td>
+								<td class=w9 align=center><b>Supplier</b></td>
+								<td class=w9 width=110 align=center><b>Invoice</b></td>
+								<td class=w9 width=70 align=center><b>APB. date</b></td>
+								<td class=w9 width=90 align=center><b>Payment</b></td>
+								<td class=w9 width=150 align=center><b>status</b></td>
+							</tr>
+							{section name=SEC loop=$rcvd}
+							<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#EEEEEE'" bgColor='#EEEEEE'>
+								<td class=gry9 align=center nowrap>
+									
+									{if $rcvd[SEC].status == 1 OR $rcvd[SEC].status == 2}
+										<!-- 請款單 -->
+										<a href="apb.php?PHP_action=po_before_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 3 OR $rcvd[SEC].status == 4}
+										<!-- 驗收付款單 PO 驗收 -->
+										<a href="apb.php?PHP_action=po_rcv_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 5 OR $rcvd[SEC].status == 6}
+										<!-- 驗收付款單 T/T after -->
+										<a href="apb.php?PHP_action=apb_after_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 7 OR $rcvd[SEC].status == 8}
+										<!-- 驗收付款單 L/C at sight -->
+										<a href="apb.php?PHP_action=apb_lc_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 9 OR $rcvd[SEC].status == 10}
+										<!-- 驗收付款單 L/C at sight -->
+										<a href="apb.php?PHP_action=apb_month_fty_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 11 OR $rcvd[SEC].status == 12}
+										<!-- 驗收付款單 L/C at sight -->
+										<a href="apb.php?PHP_action=apb_month_tw_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 13 OR $rcvd[SEC].status == 14}
+										<!-- 請款單 貨前貨後 的 貨前 -->
+										<a href="apb.php?PHP_action=apb_before_after_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status == 15 OR $rcvd[SEC].status == 16}
+										<!-- 請款單 貨前貨後 的 貨前 -->
+										<a href="apb.php?PHP_action=apb_after_rcv_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{elseif $rcvd[SEC].status >= 200}
+										<!-- ??? -->
+										<a href="apb.php?PHP_action=po_before_apb_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{else}
+										<!-- 驗收付款單 -->
+										<a href="apb.php?PHP_action=rcvd_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+									{/if}
+								</td>
+								<!-- <td class=gry9 align=center><small>{$rcvd[SEC].ship}&nbsp;</small></td> -->
+								<td class=gry9 align=center><small>{$rcvd[SEC].s_name}&nbsp;</small></td>
+								<td class=gry9 align=center><small>{$rcvd[SEC].rcv_user}&nbsp;</small></td>
+								<td class=gry9 align=center><small>{$rcvd[SEC].rcv_date}&nbsp;</small></td>
+								<td class=gry9 align=center><small>
+									{$rcvd[SEC].payment}
+									</small></td>
+								<td class=gry9 align=center>
+									<small>
+									{if $rcvd[SEC].status % 2 <> 0}
+										waitt'g for submit									
+									{/if}
+									</small>
+								</td>
+							</tr>
+							{/section}
+						</table>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+{/if}
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,371 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM SYSTEM ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+var transaction;
+var sUrl; 
+var callback = {
+	success: function(o) {
+		document.getElementById("tbl_msg").style.display='block';    
+		var response = o.responseText.split("|");    	
+		msg1.innerText  = response[0]; 
+		window.document.forms['rcv_edit'].elements['PHP_del_mk'].value = response[1];
+	},
+	failure: function(o) {
+		alert("Error! Can't get data!");
+	}
+};
+
+function roundAmount(n)   {   
+	var s = "" + Math.round(n * 100) /   100   
+	var i = s.indexOf('.')   
+	if (i < 0) return s + ".00"   
+	var t = s.substring(0, i + 1) + s.substring(i + 1, i + 3)   
+	if (i + 2 == s.length) t += "0"   
+	return t   
+}
+
+function roundAmount2(n)   {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s
+	var t = s.substring( 0 , i )
+		return t   
+}  
+
+function check(r,po_qty,ship_qty,toler,i,now_qty)
+{
+	// 計算最大值
+	if ( toler == '0|0' ) {
+		var total_qty = parseFloat( po_qty );
+	} else {
+		var tolers = toler.split("|"); 
+		var total_qty = parseFloat( po_qty ) + parseFloat( ( po_qty * (tolers[0] ) / 100 ) );
+		total_qty = roundAmount( total_qty );
+	}
+	
+	// 輸入值
+	var rcv = r.value;
+	
+	// 計算已驗收和目前驗收的值 - 最大值
+	//var rcv_qty = parseFloat(rcv_qty) - parseFloat(now_qty);
+	var qty = parseFloat(ship_qty) - parseFloat(rcv);	
+	qty = roundAmount(qty);
+
+	var reason;
+	if ( qty < 0 ) {
+	
+		r.value = '';
+		if(confirm(	"++++++ Receive is illegial!! ++++++\r" +
+								"\r                       PO Q'TY : " + po_qty +
+								"\r   Tolerence PO Q'TY : " + total_qty +
+								"\r-------------------------------------------"+
+								"\r      but Ship Q'TY : " + ship_qty +
+								"\r       Receive Q'TY : " + rcv +
+								"\r              Overbalance : " + qty + 
+								"\r\rClick Yes. Receive Q'TY = " + ship_qty + 
+								"\rClick No. input reason for Receive Q'TY" ) ) {
+			r.value = ship_qty;
+		} else {
+			if(reason = prompt("Tolerence PO Q'TY : " + total_qty +
+												 "  but Receive Q'TY : " + ( parseFloat( rcv_qty ) +  parseFloat( rcv ) ) +
+												 "  \rOverbalance : "+qty+ "  Pls input reason for Receive Q'TY",''))
+			{
+				if(reason)
+				{
+					r.value = reason;
+					if ( parseFloat(reason) > parseFloat(total_qty) ) {
+						alert("Receive is illegal!!");
+						r.value = '';
+						// reason = mat_code + " overbalance : " + roundAmount( reason - total_qty );
+						// window.document.forms['rcvd_add'].elements['PHP_reason['+i+']'].value = reason;
+						// window.document.getElementById('reasons'+i).innerHTML = "<font color='red'>"+reason+"</font>"; 
+					} 
+				}
+			}
+		}
+		return;
+	}
+	// window.document.getElementById('reasons'+i).innerHTML = "";
+	// window.document.forms['rcvd_add'].elements['PHP_reason['+i+']'].value = "";
+}
+
+function del_mat(r,det_id,mat_code,sname,qty,rcv_num)
+{
+	if ( confirm("Are you sure to delete Material : [ "+sname+" ] Q'ty : [ " + qty + "] ??")) {
+		var i=r.parentNode.parentNode.rowIndex
+		document.getElementById('mat_table').deleteRow(i)
+	  	sUrl="receive.php?PHP_action=del_det_ajax&PHP_id="+det_id+"&PHP_rcv_num="+rcv_num+"&PHP_qty="+qty+"&PHP_mat_code="+mat_code;
+		transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+	}
+}
+
+function Show_batch_cost(id)
+{
+	 var url ='index2.php?PHP_action=ord_batch_cost&PHP_bom_num='+id; 	
+	 var nm = 'Sworking';
+	 window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function mask()
+{
+	$.blockUI({ message: '<div><h4>Update records...</h4></div>'});
+}
+
+$(document).ready(function() {
+
+    select_checkbox = function(status){
+        if ( status == 'Reply' ) {
+            $("input[id^=un_qty]").each(function(i, elm) {
+                $(elm).val($("#MK_"+$(elm).attr("id")).val());
+            });
+            invoice();
+        } else {
+            $("input[id^=un_qty]").each(function(i, elm) {
+                $(elm).val('0');
+            });
+            invoice();
+        }
+    }
+    
+    Ditto = function(id){
+        $("#PHP_qty_"+id).val($("#MK_un_qty_"+id).val()).change();
+    }
+});
+
+function show_apb_qty(po_id,unit,ap_num)
+{
+	var url ="apb.php?PHP_action=apb_qty_show&PHP_id="+po_id+"&PHP_unit="+unit+"&PHP_ap_num="+ap_num;
+	var nm = 'rcvd';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500 top=50, left=100');
+}
+
+var pre_det_id;
+function chk_qty(r,det_id){
+	var sum_avg_qty = 0;
+	var qty = Number($("#PHP_qty_"+det_id).val());
+	
+	$("input[id^=link_qty_"+det_id+"]").each(function(i, elm) {
+		sum_avg_qty += Number($(elm).val());
+	});
+	
+	if(pre_det_id == det_id)
+		document.getElementById('descript').innerHTML = "";
+	
+	if(sum_avg_qty != qty){
+		$("#update_rcv").attr("disabled",true);
+		$("#descript").css("display","");
+		document.getElementById('descript').innerHTML += "=====訂單數量=====&nbsp;&nbsp;<br>";
+		$("input[id^=link_qty_"+det_id+"]").each(function(i, elm) {
+			document.getElementById('descript').innerHTML += $(elm).val() + "&nbsp;" + "<BR>";
+		});
+		document.getElementById('descript').innerHTML += "<hr>";
+		document.getElementById('descript').innerHTML += "總和 " + sum_avg_qty + "<br>";
+		document.getElementById('descript').innerHTML += "不等於rcv qty " + qty + "<br>";
+		var pos = $(r).offset();  
+		var x = pos.left;  
+		var y = pos.top;  
+		$("#descript").css("top",y+"px");
+		$("#descript").css("left",x+70+"px");
+	}else{
+		document.getElementById('descript').innerHTML = "";
+		$("#descript").css("display","none");
+		$("#update_rcv").attr("disabled",false);
+	}
+	pre_det_id = det_id;
+}
+
+function input_qty(det_id){
+	$("#span_text_"+det_id).html("");
+	$("#span_"+det_id).css("display","");
+}
+
+function avg_qty(r,det_id,po_qty){
+	var rcv_qty = Number(r.value);
+	var tmp_qty = sum_tmp_qty = percent = count = k = 0;
+	var un_qty = Number($("#MK_un_qty_"+det_id).val());
+	if(rcv_qty > un_qty){
+		alert(	"++++++ Receive is illegial!! ++++++\r" +
+								"\r       Receive remain Q'TY : " + un_qty +
+								"\r       but input receive Q'TY : " + rcv_qty +
+								"\r\rClick OK. Set Receive Q'TY = " + un_qty );
+		$("#PHP_qty_"+det_id).val(un_qty);
+		$("#PHP_qty_"+det_id).change();
+		return;
+	}
+	
+	percent = rcv_qty / po_qty;
+	percent = roundAmount(percent);
+	$("input[id^=link_qty_"+det_id+"]").each(function(i, elm) {
+		count++;
+	});
+	$("input[id^=po_qty_"+det_id+"]").each(function(i, elm) {
+		k++;
+		str = $(elm).attr("id").split("po_qty");
+		if( k != count ){
+			tmp_qty = roundAmount( Number($(elm).val()) * percent );
+			sum_tmp_qty += Number(tmp_qty);
+			$("#link_qty"+str[1]).val(tmp_qty);
+			
+		}else{
+			sum_tmp_qty = roundAmount(sum_tmp_qty);
+			$("#link_qty"+str[1]).val(roundAmount(rcv_qty - sum_tmp_qty));
+		}
+	});
+}
+
+function roundAmount(n) {   
+	var s = "" + Math.round( n * 100 ) / 100   
+	var i = s.indexOf('.')   
+	if ( i < 0 ) return s + ".00"
+	var t = s.substring( 0 , i + 1 ) +     
+	s.substring( i + 1 , i + 3 )   
+	if (i + 2 == s.length) t += "0"   
+		return t   
+}
+</script>
+{/literal}
+</head>
+<body ><form METHOD="POST" name="rcv_edit" action="{$PHP_SELF}">
+<br>
+<div id="descript" style="position:absolute;width:150px;background-color:#f5e700;text-align:right;display:none"></div>
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr>
+	<td class="des" align=center width=100>{if $chkacc.status ==0}<b>Waiting for submit</b>{/if}{if $chkacc.status ==1}Submitted{/if}{if $chkacc.status ==2}瞻v簧皏i{/if}</td>
+	<td class="des" align=center width=400>Factory Receiving&nbsp; # <span class=ylw10><b>{$rcv.rcv_num}</b></span>  Record </td>
+	<td class="des" align=center width=50 height=28>{if $chkacc.status == 1 && $check_flag==1} <a href="{$PHP_SELF}?PHP_action=chkacc_chack&PHP_chkacc_nos={$chkacc.chkacc_no}&PHP_inv_chk={if $chkacc.chkacc_inv}1{else}0{/if}{$cgi_link}" value="簧皏i" style="cursor:pointer"><img src="images/approval06.gif" alt="簧皏i" border=0 valign=bottom>{/if}</td>		
+	</tr>
+</table>
+
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=900 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+	</tr>
+</table>
+
+<hr SIZE=2 WIDTH=900>
+<table border=0 cellspacing=1 cellpadding=4 width=900 bgcolor=#FFFFFF>
+		<input type="hidden" name="PHP_chkacc_no" value="{$rcv.rcv_num}">
+	<tr>
+		<td width=80  class=snvy  align=right bgcolor=#E9F7E8 ><b>Receiving #: </b></td>
+		<td width=90  class=b9    align=left><b>&nbsp;{$rcv.rcv_num}</b></td>		
+
+		<td width=80  class=snvy  align=right bgcolor=#E9F7E8 ><b>Dept : </b></td>
+		<td width=80  class=b9    align=left><b>&nbsp;{$rcv.dept}</b></td>
+
+		<td width=110  class=snvy  align=right bgcolor=#E9F7E8 ><b>Receiver : </b></td>
+		<td width=140  class=b9    align=left><b>&nbsp;{$rcv.ship}</b></td>		
+
+		<td width=70  class=snvy  align=right bgcolor=#E9F7E8 ><b>Ship num : </b></td>
+		<td width=90  class=b9    align=left><b>&nbsp;{$rcv.ship_num}</b><input type=hidden name="PHP_ship_num" size=15 class=select value="{$rcv.ship_num}"></td>
+	</tr>
+</table>
+
+<hr SIZE=2 WIDTH=900>
+
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Clear');"/> Clear All Receive Q'ty 
+<input name="radio" type="radio" value="" Onclick="select_checkbox('Reply');"/> Reply All Receive Q'ty 
+
+<table border="1" cellspacing=0 cellpadding=3 width="980" id="mat_table">	
+	<tr bgcolor="#584E5C" height=30>
+		<td cellpadding=2 width="100" class=back align="center"><b>Invoice #</b></td>
+		<td cellpadding=2 width="80" class=back align="center"><b>Order #</b></td>
+		<td cellpadding=2 width="70" class=back align="center"><b>P / O #</b></td>
+		<td cellpadding=2 width="90" class=back align="center"><b>Material #</b></td>
+		<td cellpadding=2 width="150" class=back align="center"><b>Color/cat</b></td>
+		<td cellpadding=2 width="100" class=back align="center"><b>P / O &nbspQ'ty</b></td>
+		<td cellpadding=2 width="100" class=back align="center"><b>Ship &nbsp;Q'ty</b></td>
+		<td cellpadding=2 width="90" class=back align="center"><b>Remain</b></td>
+		<td cellpadding=2 width="100" class=back align="center"><b>Receiving Q'ty</b></td>
+		<td cellpadding=2 width="90" class=back align="center"><b>Q'ty / order</b></td>
+		<td cellpadding=2 width="10" class=back align="center"><b>&nbsp;</b></td>	
+	</tr>
+{section name=CHK_D loop=$rcv_det} 
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+		<td align="left" nowrap>{$rcv_det[CHK_D].inv_num}&nbsp;</td>
+		<td align="center" nowrap>
+ 	  	{section name=SP loop=$rcv_det[CHK_D].link_qty} 	  		
+			<a href="javascript:Show_batch_cost('{$rcv_det[CHK_D].link_qty[SP].ord_num}')" style='cursor:pointer'>{$rcv_det[CHK_D].link_qty[SP].ord_num}</a>&nbsp;<br>
+			<input type=hidden id="po_qty_{$rcv_det[CHK_D].id}_{$rcv_det[CHK_D].link_qty[SP].id}" value="{$rcv_det[CHK_D].link_qty[SP].po_qty}">
+		{/section}
+		</td>
+		<td align="center" nowrap><a href="javascript:po_show('{$rcv_det[CHK_D].ap_num}','')" style='cursor:pointer'>{$rcv_det[CHK_D].po_num}</a></td>
+		<td align="center" nowrap>
+			<a href="javascript:{if $rcv_det[CHK_D].po.mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$rcv_det[CHK_D].mat_code}')" style='cursor:pointer'>{$rcv_det[CHK_D].sname[0]}</a>  
+		</td>
+		<td align="left"><small>{$rcv_det[CHK_D].color}</small>&nbsp;</td>
+		<td cellpadding=2 align="right" nowrap>{$rcv_det[CHK_D].po.po_qty|number_format:"2f"} {$rcv_det[CHK_D].po.po_unit}</td>
+		<td cellpadding=2 align="right" nowrap>{$rcv_det[CHK_D].ship_qty|number_format:"2f"} {$rcv_det[CHK_D].po.po_unit}</td>
+		<td cellpadding=2 align="right" nowrap><b>{$rcv_det[CHK_D].un_qty|number_format:"2f"} {$rcv_det[CHK_D].po.po_unit}</b></td>
+		<td cellpadding=2 align="right" nowrap> <a href="javascript:Ditto('{$rcv_det[CHK_D].id}');">=></a>
+			<input type=text id="PHP_qty_{$rcv_det[CHK_D].id}" name="PHP_qty[{$rcv_det[CHK_D].id}]" size=11 class=select value="{$rcv_det[CHK_D].qty}" onchange="this.value=this.value.replace(/[^\d\.]/g,'');avg_qty(this,'{$rcv_det[CHK_D].id}','{$rcv_det[CHK_D].po.po_qty}');" style=text-align:center {if $rcv_det[CHK_D].apb_rmk}readonly{/if}>
+            <input type="hidden" id="MK_un_qty_{$rcv_det[CHK_D].id}" value="{$rcv_det[CHK_D].un_qty}">
+		</td>
+		<td cellpadding=2 align="right" nowrap>
+			<span id="span_text_{$rcv_det[CHK_D].id}" onclick="javascript:input_qty('{$rcv_det[CHK_D].id}');" style="cursor:pointer">re-input Qty</span>
+			<span id="span_{$rcv_det[CHK_D].id}" style="display:none">
+			{section name=SP loop=$rcv_det[CHK_D].link_qty}
+				<input type=text id="link_qty_{$rcv_det[CHK_D].id}_{$rcv_det[CHK_D].link_qty[SP].id}" name="PHP_link_qty[{$rcv_det[CHK_D].id}][{$rcv_det[CHK_D].link_qty[SP].id}]" size=8 class=select value="{$rcv_det[CHK_D].link_qty[SP].qty}" onchange="chk_qty(this,'{$rcv_det[CHK_D].id}')" onblur="this.value=this.value.replace(/[^\d\.]/g,'');" {if $rcv_det[CHK_D].un_qty <= 0}readonly{/if} style=text-align:center>
+				<BR>
+			{/section}
+			</span>
+		</td>
+		<td align="center" bgcolor=#E7E7E7>				
+			{if $rcv_det[CHK_D].apb_rmk}
+				<a href="javascript:show_apb_qty('{$rcv_det[CHK_D].po_id}','{$rcv_det[CHK_D].unit}','{$rcv_det[CHK_D].ap_num}')" style="cursor:pointer"><small>APB</small></a>
+			{else}
+				<img src="images/del.png" onClick="del_mat(this,'{$rcv_det[CHK_D].id}','{$rcv_det[CHK_D].mat_code}','{$rcv_det[CHK_D].sname[0]}','{$rcv_det[CHK_D].qty}','{$rcv.rcv_num}');" style="cursor:pointer"></img>
+			{/if}
+			<input type="hidden" name="PHP_reason[{$rcv_det[CHK_D].i}]" value="">
+		</td>
+	</tr>
+	<tr>
+		<td colspan="8"><span id="reasons{$rcv_det[CHK_D].id}" ></span></td>
+	</tr>
+	<input type="hidden" name="PHP_po_qty[{$rcv_det[CHK_D].id}]" value="{$rcv_det[CHK_D].po.po_qty}">	
+	<!-- <input type="hidden" name="PHP_un_qty[{$rcv_det[CHK_D].id}]" value="{$rcv_det[CHK_D].un_qty}"> -->
+	<input type="hidden" name="PHP_det_id[{$rcv_det[CHK_D].id}]" value="{$rcv_det[CHK_D].id}">
+{/section}
+<input type=hidden name="PHP_del_mk" value='0'>
+</table>
+<br>
+
+<table border=0 cellspacing=0 cellpadding=2 width=900>
+<tr>
+<td WIDTH=360 align=right><font size=1 >Submit : </font> </td>
+<td WIDTH=120 align=left><font size=1 >{if $rcv.rcv_sub_user}{$rcv.rcv_sub_user} / {$rcv.rcv_sub_date}{/if}&nbsp;</font></td>
+<td WIDTH=100 align=right><font size=1 >Receive : </font></td>
+<td WIDTH=120 align=left><font size=1 >{$rcv.rcv_user} / {$rcv.rcv_date}&nbsp;</font></td>
+</tr>
+</table>
+<br>
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=900>
+	<tr>       
+		{if $back_str}
+		<td width=100>			
+			<input type="button" onClick="window.location.href='{$PHP_SELF}?PHP_action=rcvd_search{$back_str}'" value=" << back " class=select_e  style="cursor:pointer; width:95%" >
+		</td>
+		{/if}
+		<td align=center width=200>	
+		{if $edit_flag && $rcv.status == 0}				
+			<input type="submit" id="update_rcv" value=" [ Update above data ] " class=select_e  style="cursor:pointer; width:95%" onclick="return mask()" >
+		{/if}				
+		</td>
+	</tr>
+</table>
+<input type="hidden" name="PHP_action" value="do_rcvd_edit">
+<input type="hidden" name="PHP_rcv_num" value="{$rcv.rcv_num}">
+<input type="hidden" name="PHP_back_str" value="{$back_str}">
+<input type="hidden" name="PHP_revise" value="{$revise}">
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

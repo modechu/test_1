@@ -1,0 +1,159 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: 積物料輔助系統 [ 驗收 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<Script language="javascript">
+function aply_revise(id,rcv_num,back_str,version) {
+	var loc;
+	loc='apply_revise';
+	if ( confirm("are you sure to REVISE Receive:#[ "+rcv_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the apply procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		location.href="receive.php?PHP_action=rcvd_revise&PHP_rcv_num="+rcv_num+bakc_str+"&PHP_id="+id+"&PHP_ver="+version;
+	} 
+}
+function Show_batch_cost(id)
+{
+	 var url ='index2.php?PHP_action=ord_batch_cost&PHP_bom_num='+id; 	
+	 var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+</script>
+
+{/literal}
+</head>
+<body bgcolor="#003C77" background="images/vline-515.jpg" ><form METHOD="POST" name="supl_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=900 bgcolor=#003300>
+	<tr>
+	<td class="des" align=center width=150>{if $rcv.status ==0}<b>Waiting for submit</b>{/if}{if $rcv.status ==2}<b>Submitted</b>{/if}</td>
+	<td class="des" align=center width=400>Receiving&nbsp; # <span class=ylw10><b>{$rcv.rcv_num}</b></span>  Record </td>
+		<td class="des" align=center>
+	   {if $rcv.status == 2 && $back_str && $edit_flag}
+			<a href="javascript:aply_revise('{$rcv.id}','{$rcv.rcv_num}','{$back_str}','{$rcv.version}')" value='revise' style='cursor:pointer'>
+			<img src='./images/revise21.jpg' border=0 ALT="REVISE"></a>
+	   {/if}
+	  </td>
+		<td class="ylw10" align=center height=28> {if $rcv.version <> 0}<span class=sign_b>Version</span> <b>{$rcv.version}</b>{else}&nbsp;{/if} </td>
+	</tr>
+</table>
+
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=900>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<hr SIZE=2 WIDTH=640>
+<table border=1 cellspacing=0 cellpadding=0 width=900 bgcolor=#ffffff align=center>
+<tr> 
+<td>
+<table border=0 cellspacing=1 cellpadding=4 width=900 bgcolor=#FFFFFF>
+		<input type="hidden" name="PHP_chkacc_no" value="{$rcv.rcv_num}">
+  <tr>
+		<td width=80  class=snvy  align=right bgcolor=#E9F7E8 ><b>Receiving #: </b></td>
+		<td width=90  class=b9    align=left><b>&nbsp;{$rcv.rcv_num}</b></td>		
+
+		<td width=60  class=snvy  align=right bgcolor=#E9F7E8 ><b>Dept : </b></td>
+		<td width=50  class=b9    align=left><b>&nbsp;{$rcv.dept}</b></td>
+
+		<td width=110  class=snvy  align=right bgcolor=#E9F7E8 ><b>Receiver : </b></td>
+		<td width=140  class=b9    align=left><b>&nbsp;{$rcv.ship}</b></td>		
+		
+		<td width=70  class=snvy  align=right bgcolor=#E9F7E8 ><b>Invoice : </b></td>
+		<td width=90  class=b9    align=left>{$rcv.inv_num}</td>
+	</tr>
+	<tr>
+		<td class=snvy  align=right bgcolor=#E9F7E8 ><b>PO # : </b></td>
+		<td class=b9    align=left ><b>&nbsp;<a href="javascript:po_show('{$rcv.ap_num}','')" value='ord_out' style='cursor:pointer'>{$rcv.po_num}</a></b></td>		
+		<td class=snvy  align=right bgcolor=#E9F7E8 ><b>Tolerance : </b></td>
+		<td class=b9    align=left nowrap><b>&nbsp;{if $rcv.toler == '0|0'}0{else} + {$ap.toleri} % {if $ap.tolern != '0'}~ - {$ap.tolern} % {/if}{/if}</b></td>		
+
+		<td class=snvy  align=right bgcolor=#E9F7E8 ><b>Supplier : </b></td>
+		<td class=b9    align=left colspan=3><b>&nbsp;{$rcv.s_name}</b></td>	
+
+</tr>
+</table>
+</td>
+  </tr>
+</table>
+<hr SIZE=2 WIDTH=900>
+
+<table border="1" cellspacing=0 cellpadding=3 width="900" id="table1">	
+	<tr bgcolor="#584E5C" height=30>
+		<td cellpadding=2 width="100" class=back align="center"><b>Order #</b></td>	
+		<td cellpadding=2 width="100" class=back align="center"><b>Material #</b></td>	
+		<td cellpadding=2 width="200" class=back align="center"><b>Color/cat</b></td>	
+		<td cellpadding=2 width="150" class=back align="center"><b>P / O &nbsp;&nbsp;&nbsp;Q'ty</b></td>
+		<td cellpadding=2 width="150" class=back align="center"><b>Receiving Q'ty</b></td>
+<!--
+		<td cellpadding=2 width="100" class=back align="center"><b>RCVD. &nbsp;&nbsp;&nbsp;Q'ty</b></td>		
+		<td cellpadding=2 width="100" class=back align="center"><b>UN-Rcvd. Q'ty</b></td>
+-->		
+		
+	</tr>
+{section name=CHK_D loop=$rcv_det} 
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" bgColor='#ffffff'>
+		<td  align="center" nowrap>
+ 	  	{section name=AP loop=$rcv_det[CHK_D].ord_num}
+ 	  	<a href="javascript:po_bom_view('{$rcv_det[CHK_D].ord_num[AP]}','x')" style='cursor:pointer'>{$rcv_det[CHK_D].ord_num[AP]}</a>&nbsp;<br>
+ 	  		
+ 	  	{/section}
+		</td>
+		<td align="center">			
+			<a href="javascript:{if $rcv_det[CHK_D].po.mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$rcv_det[CHK_D].mat_code}')" value='ord_out' style='cursor:pointer'>{$rcv_det[CHK_D].mat_code}</a>
+		</td>
+		<td align="left">{$rcv_det[CHK_D].color}</td>
+
+<!--		<td cellpadding=2 align="center">{$rcv_det[CHK_D].po.po_num}</td> -->
+		<td cellpadding=2 align="right">{$rcv_det[CHK_D].po.po_qty|number_format:"2f"} {$rcv_det[CHK_D].unit}</td>
+<!--		<td cellpadding=2 align="right">{$rcv_det[CHK_D].po.currency} @$ {$rcv_det[CHK_D].price|number_format:"2f"} </td> -->
+		<td cellpadding=2 align="right">{$rcv_det[CHK_D].qty|number_format:"2f"} {$rcv_det[CHK_D].unit}</td>
+
+<!--
+		<td cellpadding=2 align="right">{$rcv_det[CHK_D].po.rcv_qty} {$rcv_det[CHK_D].unit}</td>
+		<td cellpadding=2 align="right">{$rcv_det[CHK_D].po.un_qty} {$rcv_det[CHK_D].unit}</td>
+-->
+	</tr>
+{/section}
+</table>
+<br>
+
+{if $mark[0].r_mk}
+<table border=1 cellspacing=0 cellpadding=2 width="900">
+	<tr>
+		<td  width="900" align="center" bgcolor="#B49FBE" colspan=2>備註</td>
+	</tr>
+{section name=MARK loop=$mark}
+{if $mark[MARK].r_mk}
+	<tr height=30>		
+		<td  bgcolor="#E0E0E0" width="10">{$mark[MARK].i}</td>
+		<td  bgcolor="#E0E0E0" width="450">{$mark[MARK].r_mk}</td>							             
+	</tr>
+	<input type="hidden" name="PHP_r_mk_i" value={$mark[MARK].i}>
+{/if}
+{/section}
+</table>
+{/if}
+<input type="hidden" name="PHP_chkacc_user" value={$user}>
+<input type="hidden" name="PHP_chkacc_date" value={$dates}>
+<br>
+<table border=0 cellspacing=0 cellpadding=2 width=900>
+<tr>
+<td WIDTH=360 align=right><font size=1 >Submit : </font> </td>
+<td WIDTH=120 align=left><font size=1 >{if $rcv.rcv_sub_user}{$rcv.rcv_sub_user} / {$rcv.rcv_sub_date}{/if}&nbsp;</font></td>
+<td WIDTH=100 align=right><font size=1 >Receive : </font></td>
+<td WIDTH=120 align=left><font size=1 >{$rcv.rcv_user} / {$rcv.rcv_date}&nbsp;</font></td>
+</tr>
+</table>
+<br>
+
+</form>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

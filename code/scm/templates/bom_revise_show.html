@@ -1,0 +1,265 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 製造令 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript">
+
+
+ 
+function cfm_revise(ord_num,id) {
+//	var T = '';
+//		T = window.document.forms['add'].elements['qty_'+pd_id].value;
+	if ( confirm("are you sure to REVISE order :#[ "+ord_num+" ] ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the Order procedure from beginning Again !\r\rBe sure this is OK for you!")) {
+		location.href="index2.php?PHP_action=revise_bom&PHP_id="+id+"{/literal}{$back_str2}{literal}";
+	} 
+}
+
+function Show_ord(id,ord_num) {
+	 var url ='index2.php?PHP_action=order_fa_view&PHP_id='+id+'&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=&cgi_6=&cgi_7=&PHP_etdstr=&PHP_etdfsh=&PHP_ord_num='+ord_num; 	
+	 var nm = 'Order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+</script>
+<script language="javascript">
+window.open2=window.open; //在此把window.open()函數複製一份給window.open2，未來若要開新視窗則執行window.open2()即可
+window.open=function(){return (new Object())}; //把window.open()函數變成空白函數，令提供者的跳窗無法顯示
+</script> 
+{/literal}
+</head>
+
+<body bgcolor="#003C77" background="images/vline-515.jpg">
+<form method=POST name=view>
+<br>
+<table cellspacing=1 cellpadding=4 cols=2 width=700 bgcolor=#2E5E73>
+	<tr><td class="des" align=center height=28 >[ <b><span class=ylw10> REVISE SHOW </span>BOM FOR Order</b> - <b>{$wi.wi_num}</b> ] </td>
+	<td class="ylw10" align=center height=28 >{if $wi.status == 2}<b>[ {literal}SUBMIT{/literal} ]{elseif $wi.status == 1}[{literal}UN SUBMIT{/literal} ]{/if}</span></b></td>
+	<td class="des" align=center height=28 >Version :<span class=ylw10><b>{$wi.bom_rev}</span></b></td>
+	
+  <td class="des" align=center>
+   {if $wi.status > 1}
+		<a href="javascript:cfm_revise('{$wi.wi_num}','{$wi.id}')" value='revise' style='cursor:pointer'>
+		<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER"></a>
+   {else}
+	&nbsp;
+   {/if}
+  </td>
+</tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=1 width=700 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>Customer :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.cust_iname}</b></td>
+    <td class=snvy align=right nowrap>Department :</td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.dept}</b></td>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+    <td class=bgdy align=left><b>&nbsp;{$wi.etd}</b></td>
+    
+	<td nowrap width=10 align=center class=back><a href="index2.php?PHP_action=bom_print&PHP_id={$wi.wi_num}" target="_blank">
+	{if $wi.status > 1}
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+	 {else}
+	&nbsp;
+   {/if}
+	</td>
+  </tr>
+  <tr>
+    <td colspan=9 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+<table border cellspacing=0 cellpadding=3 width=700 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=100 align=center class=back><b>Picture</b></td>
+	<td nowrap width=100 align=center class=back><b>Order #</b></td>
+	<td nowrap width=100 align=center class=back><b>style</b></td>
+	<td nowrap width=150 align=center class=back><b>SIZE RANGE</b></td>
+	<td nowrap width=200 align=center class=back><b>Q'ty / Unit</b></td>
+  </tr>
+  <tr bgcolor=#DDDDDD height=28>
+	<td class=g10 align=center rowspan=2>&nbsp;
+		<input type="image" src="{$wi.pic_url}" name="pic" width=100 border="0" onclick='window.open2("{$wi.pic_url}","","height=640,width=480")'>
+	</td>
+	<td class=grn9 align=center>
+	  <a href="javascript:Show_ord('{$wi.smpl_id}','{$wi.style_code}')" value='ord_out' style='cursor:pointer'>
+	<b>&nbsp;{$smpl.order_num}</b></a></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.style}</b></td>
+    <td class=grn9 align=center><b>&nbsp;{$smpl.size_scale}</b></td>
+    <td class=grn9 align=center><b><span class=bgdy9><b>{$total}</b></span>&nbsp;pc</b></td>
+  </tr>
+  <tr>
+	<td colspan=5 >
+		<table border cellspacing=0 cellpadding=2 width=470 bgcolor=#ffffff align=center>
+			{section name=USE loop=$show_breakdown}
+				{$show_breakdown[USE]}
+			{/section}
+			{if $size_ttl}
+			<TR>
+				<td class=grn9 align=center bgcolor=#DDDDDD colspan=2><b>&nbsp;G-TTL</b></td>
+			{section name=USE loop=$size_ttl}
+				<td class=b9 align=center bgcolor=#DDDDDD>&nbsp;<b><i>{$size_ttl[USE]|NUMBER_FORMAT}</b></td>
+			{/section}
+			  <td class=b9 align=right bgcolor=#DDDDDD>&nbsp;<b><i>{$g_ttl|NUMBER_FORMAT}</b></td>
+			<TR>
+			{/if}
+		</table>
+	</td>
+  </tr>
+</table>
+<!-------------  BOM table ------------->
+<!-------------  主料 bom ------------->
+<hr size=2 width=700 align=center>
+<table width=700 border=1 cellspacing=1 cellpadding=1>
+   <tr><td>
+	<table width=700 border=1 cellspacing=0 cellpadding=1>
+	<!------- 主料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td width=90 class=b9 rowspan=3 align=center><b>Fabirc #</b></td>
+	    <td width=80 class=b9 rowspan=3 align=center><b>Fabric Name</b></td>
+	    <td width=80 class=b9 rowspan=3 align=center><b>Placement</b></td>
+	    <td width=90 class=b9 rowspan=3 align=center><b>Consump.</b></td>
+		<td class=b9 align=center rowspan=3 width=70><b>Color/cat.</b></td>
+		<td class=b9 align=center rowspan=3 width=0 bgcolor=#666666></td>
+	{if $colors_NONE}
+		<td class=bgdy9 align=center >NO Colorway data</td>
+	  <tr><td class=bgdy9 align=center >NO Q'ty</td>
+	{else}
+	{section name=NAME loop=$partial} 
+		<td class=grn9 align=center colspan={$partial[NAME].size}>ETD : <b>&nbsp;{$partial[NAME].etd}</b></td>
+	{/section} 
+		<td class=b9 align=center rowspan=3 width=0 bgcolor=#666666></td>
+		<td class=b9 align=center rowspan=3 width=60><b>Total</b></td>
+	</tr>		
+  <tr bgcolor=#D5D5BE>
+	{section name=NAME loop=$color} 
+		<td class=grn9 align=center><b>&nbsp;{$color[NAME].name}</b></td>
+	{/section} 
+
+	 <tr bgcolor=#E4E4D8>
+	{section name=QTY loop=$color} 
+		<td class=b9 align=center><b>{$color[QTY].qty}</b>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9> ??</span>{/if}</b></td>
+	{/section} 
+	{/if}
+
+	 </tr>
+	<!-------  end  Title --------- -->
+
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=3>
+	 </tr>
+	<!-------  BOM 主料記錄 --------- -->
+		{if $lots_NONE}
+		<tr><td class=bgdy9 align=center colspan={$total_fields} height=30>This wi hasn't any Fabric data!</td></tr>
+
+		{else}
+	{section name=BOM loop=$bom_lots_list} 
+	<tr onmouseover="bgColor='#F9E2BB'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 bgColor='#D4E0F7' align=left nowrap>&nbsp;{$bom_lots_list[BOM].lots_code}</td>
+		<td class=b9 bgColor='#D4E0F7' align=left>&nbsp;{$bom_lots_list[BOM].lots_name}</td>
+		<td class=b9 bgColor='#D4E0F7' align=left>&nbsp;{$bom_lots_list[BOM].use_for}</td>
+		<td class=b9 bgColor='#D4E0F7' align=right>{$bom_lots_list[BOM].est_1}&nbsp;{$bom_lots_list[BOM].unit}</td>
+		<td class=b9 bgColor='#D4E0F7' align=left>&nbsp;{$bom_lots_list[BOM].color}</td>
+		<td class=b9 bgColor='#D4E0F7' align=center width=0 bgcolor=#666666></td>
+		{$bom_lots_list[BOM].list}
+
+		<td class=b9 align=center width=0 bgcolor=#666666></td>
+		<td class=b9 align=center width=60 bgcolor=#F8F6BE><b>{$bom_lots_list[BOM].total}</b><span class=b7>&nbsp;{$bom_lots_list[BOM].unit}</span></td>
+
+	</tr>
+	{/section}
+		{/if}
+<!--	</table>	-->
+	 <tr>
+		<td width=100% colspan={$total_fields} style="background-image: url('images/2line.gif'); background-repeat: repeat-x" height=5>
+	 </tr>
+
+<!-------------  副料 ------------->
+<!--	<table width=700 border=0 cellspacing=1 cellpadding=1>	-->
+
+	<!------- 副料 bom  Title --------- -->
+	 <tr bgcolor=#D5D5BE>
+	    <td class=b9 align=center rowspan=3><b>Accessory #</b></td>
+	    <td class=b9 align=center rowspan=3><b>ACC. Name</b></td>
+	    <td class=b9 align=center rowspan=3><b>Placement</b></td>
+	    <td class=b9 align=center rowspan=3><b>Consump.</b></td>
+		<td class=b9 align=center rowspan=3 width=100><b>Color/cat.</b></td>
+		<td class=b9 align=center rowspan=3 width=0 bgcolor=#666666></td>
+	{if $colors_NONE}
+		<td class=bgdy9 align=center >NO Colorway</td>
+	  <tr><td class=bgdy9 align=center >NO Q'ty</td>
+	{else}
+	{section name=NAME loop=$partial} 
+		<td class=grn9 align=center colspan={$partial[NAME].size}>ETD : <b>&nbsp;{$partial[NAME].etd}</b></td>
+	{/section} 
+		<td class=b9 align=center rowspan=3 width=0 bgcolor=#666666></td>
+		<td class=b9 align=center rowspan=3 width=60><b>Total</b></td>
+	</tr>		
+  <tr bgcolor=#D5D5BE>
+	{section name=NAME loop=$color} 
+		<td class=grn9 align=center><b>&nbsp;{$color[NAME].name}</b></td>
+	{/section} 
+
+	 <tr bgcolor=#E4E4D8>
+	{section name=QTY loop=$color} 
+		<td class=b9 align=center><b>{$color[QTY].qty}</b>&nbsp;{if $wi.unit}{$wi.unit}{else}<span class=bgdy9> ??</span>{/if}</b></td>
+	{/section} 
+
+	{/if}
+
+	 </tr>
+	<!-------  end  Title --------- -->
+
+	<!-------  BOM 副料記錄 --------- -->
+		{if $acc_NONE}
+		<tr><td class=bgdy9 align=center colspan={$total_fields} height=30>This wi hasn't any accessory data!</td></tr>
+
+		{else}
+	{section name=BOM loop=$bom_acc_list} 
+	<tr onmouseover="bgColor='#D4E0F7'" onmouseout="bgColor='#ffffff'">
+		<td class=b9 bgColor='#D4E0F7' align=left nowrap>&nbsp;{$bom_acc_list[BOM].acc_code}</td>
+		<td class=b7 bgColor='#D4E0F7' align=left>&nbsp;{$bom_acc_list[BOM].acc_name}</td>
+		<td class=b7 bgColor='#D4E0F7' align=left>&nbsp;{$bom_acc_list[BOM].acc_use}</td>
+		<td class=b7 bgColor='#D4E0F7' align=right>{$bom_acc_list[BOM].est_1}&nbsp;{$bom_acc_list[BOM].unit}</td>
+		<td class=b9 bgColor='#D4E0F7' align=left>&nbsp;{$bom_acc_list[BOM].color}</td>
+		<td class=b9 bgColor='#D4E0F7' align=center width=0 bgcolor=#666666></td>
+		{$bom_acc_list[BOM].list}
+
+		<td class=b9 align=center width=0 bgcolor=#666666></td>
+		<td class=b9 align=center width=60 bgcolor=#F8F6BE><b>{$bom_acc_list[BOM].total}</b><span class=b7>&nbsp;{$bom_acc_list[BOM].unit}</span></td>
+
+	</tr>
+	{/section}
+		{/if}
+<!--	</table>	-->
+
+
+
+
+	</table>
+
+
+
+
+   </td></tr>
+</table>
+
+    <table width=700 border=0 cellspacing=1 cellpadding=2>    
+	 <tr>
+	  <td class=gry9 align=right>{literal}Submit: {/literal}</td>
+	  <td class=gry7 align=left>{if $wi.bcfm_user}<a href="javascript:message_out('{$wi.bcfm_user_id}')" style="cursor:pointer"><u>{$wi.bcfm_user}</u></a>{else}[ None ]{/if}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	  <td class=gry7 align=left><U>{$wi.bcfm_date}</U>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+     </tr>
+    </table>
+<!--------- footer ---------->
+{include file="footer.html"}

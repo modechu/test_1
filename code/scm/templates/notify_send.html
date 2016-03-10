@@ -1,0 +1,183 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  樣本款式 列表 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+        
+<Script language="javascript">
+var transaction;
+var sUrl;	
+function list(){
+	var gofile ='index2.php?PHP_action=user_search';	
+	style=window.open(gofile,'style','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=500, top=100, left=150');
+ 	style.focus();
+ }
+function writeTo(logid){
+	window.document.forms['cfm'].elements['PHP_tuser'].value = logid;
+}
+
+function get_dept(r){
+	var dept = r.value;
+	sUrl="notify.php?PHP_action=get_user_ajx&SCH_dept="+dept;
+	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, userback, null);
+	
+}
+
+function get_user(r){
+	var tuser_id = window.document.forms['cfm'].elements['PHP_tuser'].value;
+	if(tuser_id)
+	{
+		window.document.forms['cfm'].elements['PHP_tuser'].value = tuser_id+';'+r.value;
+	}else{
+	  window.document.forms['cfm'].elements['PHP_tuser'].value = r.value;
+	}
+	
+}
+
+function get_admin(){
+	window.document.forms['cfm'].elements['PHP_tuser'].value = 'system_admin';
+	
+}
+var userback = {
+	success: function(o) {
+		var response = o.responseText;    	
+		user_area.innerHTML = " User Name：&nbsp;"+response; 
+		
+
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+</script>
+<!-- TinyMCE -->
+<script language='javascript' type='text/javascript' src='js/tiny_mce/tiny_mce.js'></script>
+<script language='javascript' type='text/javascript'>
+tinyMCE.init({
+	mode : 'textareas',
+	theme : 'advanced',
+	plugins : 'table,advhr,advimage,advlink,emotions,preview,contextmenu,paste',
+	//,directionality,fullscreen,media,searchreplace,save,print,zoom,insertdatetime,iespell	theme_advanced_buttons1_add_before : 'save,newdocument,separator',
+	theme_advanced_buttons1_add : 'fontselect,fontsizeselect',
+	theme_advanced_buttons2_add : 'insertdate,inserttime,preview,zoom,separator,forecolor,backcolor',
+	theme_advanced_buttons2_add_before: 'cut,copy,paste,pastetext,pasteword,search,replace,separator',
+	theme_advanced_buttons3_add_before : 'tablecontrols,separator',
+	theme_advanced_buttons3_add : 'emotions,iespell,media,advhr',
+	theme_advanced_toolbar_location : 'top',
+	theme_advanced_toolbar_align : 'left',
+	theme_advanced_statusbar_location : 'bottom',
+	content_css : 'example_word.css',
+	plugi2n_insertdate_dateFormat : '%Y-%m-%d',
+	plugi2n_insertdate_timeFormat : '%H:%M:%S',
+	external_link_list_url : 'example_link_list.js',
+	external_image_list_url : 'example_image_list.js',
+	media_external_list_url : 'example_media_list.js',
+	file_browser_callback : 'fileBrowserCallBack',
+	paste_use_dialog : false,
+	theme_advanced_resizing : true,
+	theme_advanced_resize_horizontal : false,
+	theme_advanced_link_targets : '_something=My somthing;_something2=My somthing2;_something3=My somthing3;',
+	paste_auto_cleanup_on_paste : true,
+	paste_convert_headers_to_strong : false,
+	paste_strip_class_attributes : 'all',
+	paste_remove_spans : false,
+	paste_remove_styles : false		
+});
+
+function checkdata(){
+	s = document.cfm.PHP_tuser.value;
+	if (s == "") {
+		alert("pls. Select user id!");
+		return false;
+	}	
+	s = document.cfm.PHP_title.value;
+	if (s == "") {
+		alert("pls. input title!");
+		return false;
+	}	
+}
+</script>
+<!-- /TinyMCE -->
+{/literal}
+
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=650 bgcolor=#cccccc  align=center>
+ <tr>
+    <td align=center colspan=2>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=650 bgcolor=#534A67>
+		 <tr ><td class=des align=center>.....  <b> <span class=ylw10> MESSAGE </span> </b> .......</td></tr>
+     </table></td></tr>
+{if $msg_YES}<tr><td colspan=2>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=650 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+</td></tr>
+{/if}
+<tr>
+<form METHOD="POST" name="msge_send">  
+	<td align=center valign="center">
+		<input type="hidden" name="PHP_action" value="notify">
+		<input type="hidden" name="msgr" value="read">
+		<input type="hidden" name="PHP_sr_startno" value="0">
+		<input type=submit value="[ Read Message ]" class=select_e style="cursor:pointer; width=78%" onClick=this.width=0;>
+		{if $nty.tuser == ''}
+    <input name="button" type=button class=select_e style="cursor:pointer; width=20%" onClick=get_admin(); value="To system admin.">
+{/if}	</td>
+</form>
+<!---
+<form METHOD="POST" name="msge_print"> 
+	<td align=center> 
+		<input type="hidden" name="PHP_action" value="do_message_print">
+		<input type=submit value="[ Print Message ]" class=select_e style="cursor:pointer; width=80%" onClick=this.width=0;>
+	</td>
+</form>
+--->
+</tr>
+</table>
+<form method=POST name=cfm onSubmit="return checkdata()" action="notify.php?PHP_action=do_message_send&PHP_sr_startno=0">
+<table border cellspacing=0 cellpadding=2 width=650 bgcolor=#ffffff align=center>
+  <tr bgcolor="#003333" height=28>
+    <td nowrap colspan=4 align=center class=back><table width="100%" border="0" cellspacing="0" cellpadding="0" class=back>
+        <tr>
+          <td width="70%" align="center"><b>Send message</b></td>
+          <td align="center"><input type="checkbox" name="PHP_pop" value="y" ><b>強制讀取</b></td>
+          <td align="right" nowrap><input type="checkbox" name="PHP_backup" value="1" ><b>BackUP</b></td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+  <td align=right><b>TO : </b></td>
+	{if $nty.tuser == '' || $nty.tuser == 'all_users'}<td nowrap><div>DEPT : {$dept_select}</div> </td>{/if}
+	{if $nty.tuser == ''}<td nowrap><div id='user_area'>USER Name:  {$user_select}</div></td>{/if}
+
+	<td nowrap><!-- <img src="./images/icoSearch.gif" alt="User" onClick="list();" style="cursor:pointer"> --></td>
+  </tr>
+	<td align=right nowrap><b>USER ID : </b></td>
+    <td colspan=3> <input name="PHP_tuser" type="text"  value="{$nty.tuser}" {if $nty.tuser == ''}size=105{elseif $nty.tuser == 'all_users'}size=69{else}size=95{/if} class=select></td>
+	</tr>
+  <td align=right><b>Title : </b></td>
+  <td colspan=3><input name="PHP_title" type="text"  value="{$nty.title}" size=105 class=select></td>
+  </tr>
+
+  <td align=right><b>Context : </b></td>
+  <td  colspan=3> <textarea name="PHP_msg" rows=10 cols=105 class=select>{$nty.msg}</textarea>
+  		<br><b><input type="checkbox" name="PHP_mail" value="1" ><b><font color=navy>Send with E-mail</font></b>  </td>
+  </tr>
+  <tr>
+  	<td colspan=4 align=center> 
+		<input type="hidden" name="msgr" value="read">
+		<input type="hidden" name="PHP_sr_startno" value="0">
+		<input type=submit value="[ SEND ]" class=select_e style="cursor:pointer; width=80%" onClick=this.width=0;>
+		<input type="hidden" name="PHP_action" value="do_message_send"></td>
+  </tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

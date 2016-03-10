@@ -1,0 +1,120 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 主料 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body >
+<br>
+
+{if $max_notify > 0 }		
+	<table width=620 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}	
+
+<table border=0 cellspacing=0 cellpadding=2 cols=1 width=620   align=center>
+ <tr><form METHOD="POST" name="add_lots">
+		<input type="hidden" name="PHP_action" value="lots_add">   
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=620 bgcolor=#235869>
+      <tr><td width=80% class=des align=center>..... <b> Fabric List </b>.......</td>
+    {if $add_flag}
+	<td class=w9 align=center class=w10>	
+ <input type="submit" value="Append" class=select style="width:70;cursor:pointer">  
+	</td>
+	  {/if}
+	  </tr></form>
+     </table>
+</table>
+<br><form METHOD="POST" name="search_lots">
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=620>
+      <tr bgcolor=#ffffff>
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+
+<br>
+<br>
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=620 bgcolor=#003300 align=center>
+	<tr><input type="hidden" name="PHP_action" value="do_lots_search">
+		<td class="des" align=center height=28> [ Search / List &nbsp;Fabric Record ] </td>
+	</tr>
+</table>
+
+
+<table border=1 cellspacing=0 cellpadding=1 width=620 bgcolor=#A0A09F align=center>
+<tr><td>
+<table border=0 cellspacing=0 cellpadding=1 width=610 bgcolor=#A0A09F>
+ <tr>
+    <td colspan=7 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+  <td colspan=7 class=snvy align=left>&nbsp;&nbsp;<b>FABRIC Category :</b></td>
+  </tr>     
+   <tr>
+   	<td class=snvy align=right><b>Fabric kind : </b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="W" name="SCH_cat1">&nbsp;<b>Woven</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="K" name="SCH_cat1">&nbsp;<b>Knit</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="H" name="SCH_cat1">&nbsp;<b>Others</b></td>
+  </tr>
+   <tr>
+   	<td class=snvy align=right><b>Content : </b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="C" name="SCH_cat2">&nbsp;<b>100%Cotton</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="W" name="SCH_cat2">&nbsp;<b>100%Wool</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="P" name="SCH_cat2">&nbsp;<b>100%Poly</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="N" name="SCH_cat2">&nbsp;<b>100%Nylon</b></td>
+    <td class=snvy align=left>&nbsp<input type="radio" value="H" name="SCH_cat2">&nbsp;<b>Others</b></td>
+  </tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=1 width=610 bgcolor=#A0A09F>
+  
+ <tr>
+    <td colspan=4 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right><b>Fab. # : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="SCH_lots_code" size=20 class=select value="{$lots.lots_code}"></td>
+    <td class=snvy align=right><b>Fab. Name : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="SCH_lots_name" size=20 class=select value="{$lots.lots_name}"></td>
+  </tr>
+  <tr>
+  <tr>
+    <td class=snvy align=right><b>Content : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="SCH_comp" size=20 class=select value="{$lots.comp}"></td>
+    <td class=snvy align=right><b>Construction : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="SCH_cons" size=20 class=select value="{$lots.comp}"></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right><b>Supplier's code : </b></td>
+    <td class=frnt align=left>&nbsp;<input type=text name="SCH_mile" size=20 class=select value="{$lots.comp}"></td>
+  </tr>
+</table>
+</td></tr>
+
+</table>
+		<hr SIZE=2 WIDTH=620>
+          <table border=0 cellspacing=0 cellpadding=0 cols=2 width=620 align=center>
+             <tr> 
+              <td align=left class=grn9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				※ 1: search / listing fabric record ; please use combo selection or/and key field.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				※ 2: if entire listing ; keep fields in blank and just click [ SEARCH/LIST FABRIC RECORDS ] button.
+              </td>
+			</tr>
+           <tr> 
+              <td align=center>
+                <input type="hidden" name="PHP_action" value="do_lots_search">
+				<input type=submit value="[ EARCH/LIST FABRIC RECORDS ]" class=select_e style="cursor:pointer; width:100%"></form>
+              </td>
+			</tr>
+          </table>
+<!--------- footer ---------->
+{include file="footer.html"}

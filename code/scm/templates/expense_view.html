@@ -1,0 +1,299 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ customer data ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<Script language="javascript"> 
+	function cunt(names,mm)
+	{
+	 {/literal}
+	 	var exp_ttl = 0;
+	 	var vls = 0;
+
+	 {section name=SEC loop=$txt}
+			vls = window.document.forms['cust_add'].elements['PHP_e_{$txt[SEC]}'].value;		
+			if(vls == '') vls = 0;
+			exp_ttl += parseInt(vls);					
+			
+		{/section}		
+		window.document.forms['cust_add'].elements['PHP_e_ttl'].value = exp_ttl;
+
+		
+		{literal}
+	}
+</Script>
+{/literal}	
+</head>
+<body ><form METHOD="POST" name="cust_add" action="{$PHP_SELF}">
+<br>
+<table border=0 cellspacing=0 cellpadding=1 width=700 >
+	<tr bgcolor=#003300 height=40 >
+		<td class="des" align=right width=100><B> DEPT : {$f.dept}</B></td>
+		<td class="des" align=CENTER width=500 ><B>[ &nbsp;EXPENSE  record ] </B></td>
+		<td class="des" align=right width=100><B> FY : {$f.yy}-{$f.mm}&nbsp;</B></td>
+	</tr>
+	<tr>	
+		<td colspan=3  bgcolor=#FFFFFF>	
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=690>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=right><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		</td>
+	</tr>
+	<tr>
+		<td colspan=3 bgcolor=#FFFFFF>
+<table border=0 cellspacing=2 cellpadding=1 width=240 bgcolor=#FFFFFF>
+  <tr>
+    <td class=frnt align=right><B>&nbsp;</b></td>
+    <td class=frnt align=right><B>FORECAST</b></td>
+    <td class=frnt align=right><B>EXPENSE</b></td>
+  </tr>
+	<tr>     
+    <td class=snvy align=right ><B>合計: </B></td>
+    <td class=frnt align=right  bgcolor=#EEEEEE ><B>{$f.ttl}</B></td>
+    <td class=frnt align=right  bgcolor=#EEEEEE ><B>{$e.ttl}</B></td>
+  </tr>  
+  <tr>
+    <td class=snvy align=right width=90>薪資支出: </td>
+    <td class=frnt align=right  width=70 bgcolor=#EEEEEE >{if $f.salary <> 0}{$f.salary|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right  width=70 bgcolor=#EEEEEE >{if $e.salary <> 0}{$e.salary|number_format}{/if}&nbsp;</td>
+  </tr>    
+  
+	<tr>
+    <td class=snvy align=right>租金支出: </td>
+    <td class=frnt align=right bgcolor=#EEEEEE >{if $f.rent <> 0}{$f.rent|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right bgcolor=#EEEEEE >{if $e.rent <> 0}{$e.rent|number_format}{/if}&nbsp;</td>
+  </tr>
+  <tr> 
+    <td class=snvy align=right>文具用品: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.stationery <> 0}{$f.stationery|number_format}{/if}&nbsp;</td>    
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.stationery <> 0}{$e.stationery|number_format}{/if}&nbsp;</td>   
+  </tr>
+  <tr>      
+    <td class=snvy align=right >旅費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.travel <> 0}{$f.travel|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.travel <> 0}{$e.travel|number_format}{/if}&nbsp;</td>     
+  </tr>   
+  <tr>
+    <td class=snvy align=right >運費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.freight <> 0}{$f.freight|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.freight <> 0}{$e.freight|number_format}{/if}&nbsp;</td>  
+  </tr>
+  <tr> 
+    <td class=snvy align=right >郵電費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.postal <> 0}{$f.postal|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.postal <> 0}{$e.postal|number_format}{/if}&nbsp;</td>  
+  </tr>
+  <tr> 
+    <td class=snvy align=right >修繕費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.fix <> 0}{$f.fix|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.fix <> 0}{$e.fix|number_format}{/if}&nbsp;</td> 
+  </tr>
+  <tr>    
+    <td class=snvy align=right >廣告費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.ad <> 0}{$f.ad|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.ad <> 0}{$e.ad|number_format}{/if}&nbsp;</td> 
+  </tr>
+  
+  <tr>
+    <td class=snvy align=right >水電瓦斯: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.water <> 0}{$f.water|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.water <> 0}{$e.water|number_format}{/if}&nbsp;</td> 
+  </tr>
+  <tr>  
+    <td class=snvy align=right >保險費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.insurance <> 0}{$f.insurance|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.insurance <> 0}{$e.insurance|number_format}{/if}&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right >交際費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.communicat <> 0}{$f.communicat|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.communicat <> 0}{$e.communicat|number_format}{/if}&nbsp;</td>  
+  </tr>
+  <tr>
+    <td class=snvy align=right >捐贈: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.donate <> 0}{$f.donate|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.donate <> 0}{$e.donate|number_format}{/if}&nbsp;</td> 
+  </tr>   
+  <tr>
+    <td class=snvy align=right >稅捐: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.taxes <> 0}{$f.taxes|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.taxes <> 0}{$e.taxes|number_format}{/if}&nbsp;</td>  
+  </tr>    
+	<tr>
+    <td class=snvy align=right >呆帳損失: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.bed_dabt <> 0}{$f.bed_dabt|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.bed_dabt <> 0}{$e.bed_dabt|number_format}{/if}&nbsp;</td>
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >折舊: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.depreciation <> 0}{$f.depreciation|number_format}{/if}&nbsp;</td>  
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.depreciation <> 0}{$e.depreciation|number_format}{/if}&nbsp;</td>    
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >各項攤提: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.other_1 <> 0}{$f.other_1|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.other_1 <> 0}{$e.other_1|number_format}{/if}&nbsp;</td>       	  
+  </tr>   
+  <tr>
+    <td class=snvy align=right >圖書什誌: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.book <> 0}{$f.book|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.book <> 0}{$e.book|number_format}{/if}&nbsp;</td>
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >伙食費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.food <> 0}{$f.food|number_format}{/if}&nbsp;</td>  
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.food <> 0}{$e.food|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >職工福利金: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.welfare <> 0}{$f.welfare|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.welfare <> 0}{$e.welfare|number_format}{/if}&nbsp;</td>
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >研究發展費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.rd <> 0}{$f.rd|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.rd <> 0}{$e.rd|number_format}{/if}&nbsp;</td>
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >訓練費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.teach <> 0}{$f.teach|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.teach <> 0}{$e.teach|number_format}{/if}&nbsp;</td>
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >醫藥費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.medicine <> 0}{$f.medicine|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.medicine <> 0}{$e.medicine|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >佣金: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.commission <> 0}{$f.commission|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.commission <> 0}{$e.commission|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >勞務費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.labor_1 <> 0}{$f.labor_1|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.labor_1 <> 0}{$e.labor_1|number_format}{/if}&nbsp;</td>
+  </tr> 
+  
+  <tr>
+    <td class=snvy align=right >什費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.other_2 <> 0}{$f.other_2|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.other_2 <> 0}{$e.other_2|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >什項購置: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.other_3 <> 0}{$f.other_3|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.other_3 <> 0}{$e.other_3|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >報關費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.customs <> 0}{$f.customs|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.customs <> 0}{$e.customs|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >樣品費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.sample <> 0}{$f.sample|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.sample <> 0}{$e.sample|number_format}{/if}&nbsp;</td> 
+  </tr>     
+  <tr>
+    <td class=snvy align=right >銀行手續費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.bank <> 0}{$f.bank|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.bank <> 0}{$e.bank|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >包裝費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.pack <> 0}{$f.pack|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.pack <> 0}{$e.pack|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >勞保費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.labor_2 <> 0}{$f.labor_2|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.labor_2 <> 0}{$e.labor_2|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>       
+    <td class=snvy align=right >健保費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.health <> 0}{$f.health|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.health <> 0}{$e.health|number_format}{/if}&nbsp;</td> 
+  </tr>    
+  <tr>
+    <td class=snvy align=right >耗用物料: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.material <> 0}{$f.material|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.material <> 0}{$e.material|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >費用分攤: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.share >0}{$f.share|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.share >0}{$e.share|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>    
+    <td class=snvy align=right >年獎提存: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.prize <> 0}{$f.prize|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.prize <> 0}{$e.prize|number_format}{/if}&nbsp;</td>
+  </tr>    
+	<tr>       
+    <td class=snvy align=right >退休金準備: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.retire_1 <> 0}{$f.retire_1|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.retire_1 <> 0}{$e.retire_1|number_format}{/if}&nbsp;</td> 
+  </tr>    
+  <tr>
+    <td class=snvy align=right >外銷拓展費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.reach_cost <> 0}{$f.reach_cost|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.reach_cost <> 0}{$e.reach_cost|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >商港建設費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.build <> 0}{$f.build|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.build <> 0}{$e.build|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>      
+    <td class=snvy align=right >退休金費用: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.retire_2 <> 0}{$f.retire_2|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.retire_2 <> 0}{$e.retire_2|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>        
+    <td class=snvy align=right >衣服修改費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.cloth_fix <> 0}{$f.cloth_fix|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.cloth_fix <> 0}{$e.cloth_fix|number_format}{/if}&nbsp;</td> 
+  </tr>  
+  
+  <tr>
+    <td class=snvy align=right >員工制服費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.work_cloth <> 0}{$f.work_cloth|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.work_cloth <> 0}{$e.work_cloth|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >管理費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.manage <> 0}{$f.manage|number_format}{/if}&nbsp;</td> 
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.manage <> 0}{$e.manage|number_format}{/if}&nbsp;</td> 
+  </tr>    
+	<tr>     
+    <td class=snvy align=right >保全費: </td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $f.safety <> 0}{$f.safety|number_format}{/if}&nbsp;</td>
+    <td class=frnt align=right  bgcolor=#EEEEEE >{if $e.safety <> 0}{$e.safety|number_format}{/if}&nbsp;</td> 
+  </tr>   
+</table>
+</td>
+</tr>
+</table>
+<BR>
+			
+			
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+  <tr> 
+    <td align=center>
+    <form METHOD="POST" name="ex_back" action="{$PHP_SELF}">		
+        <input type="hidden" name="PHP_action" value="expense">
+				<input type=submit value="<< GO BACK" class=select_e style="cursor:pointer; width=90%">
+		</form>			
+    </td> 
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

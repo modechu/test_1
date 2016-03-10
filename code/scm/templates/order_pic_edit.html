@@ -1,0 +1,343 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+<script language="javascript" src="./js/col.js"></script>
+
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+
+<Script language="javascript">
+var $old ="";
+var ecount = {$ttl_pic};
+var transaction;
+var sUrl;
+var del_id;
+{literal}
+function cfm_img() {
+		var $old ="";
+		$old = document.pic.src;
+		document.pic.src = document.do_edit.PHP_pic.value;
+	if ( !confirm ("confirm if the picture is correct?")){
+		document.pic.src = $old;
+	} else {
+		document.do_edit.PHP_pic_upload.value ="1";
+	}
+}
+function cfm_img_2(img) {
+	var old ="";
+	old = document.getElementById("oth_pic["+img+"]").src;
+	document.getElementById("oth_pic["+img+"]").src =  window.document.forms['do_edit'].elements['PHP_oth_pic['+img+']'].value ;
+
+	if ( !confirm ("confirm if the picture is correct?") ){
+		document.getElementById("oth_pic["+img+"]").src = old;
+	} else {
+		window.document.forms['do_edit'].elements['PHP_oth_pic_upload['+img+']'].value = '1';
+		
+	}
+}
+
+function upphoto(x){
+
+		r=pic_table.insertRow();
+		for( i=0; i<5; i++)
+		{
+			ecount = ecount + 1;
+			r.insertCell().innerHTML= '<img src="./images/graydot.gif" name="oth_pic['+ecount+']" width="120" /><br><input name="PHP_oth_pic['+ecount+']" type="file" size=10 onchange="cfm_img_2('+ecount+')" /><input name="PHP_oth_pic_upload['+ecount+']" type="hidden" value="" />';
+		}
+
+}
+
+function wait(){
+	alert ("如果您有傳圖上主機時時，將會花上一段時間!!\r\r請在等待[視窗自動更新]前,不要再按任何按扭。 \r最佳的方法，請將您的圖檔盡可能設定與系統要求相同大小    \r\r因為系統接受圖檔後，會自動將圖再format成固定大小 !  ");
+}
+
+
+function delphoto(img,order)
+{
+	del_id = img;
+//	var del_url =  window.document.forms['do_edit'].elements['PHP_oth_pic['+img+']'].value ;
+//		alert(del_url);
+  sUrl = "index2.php?PHP_action=order_pic_del&PHP_img="+img+"&PHP_order="+order;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	
+}
+
+  var delback = {
+    success: function(o) {
+    	document.getElementById("oth_pic["+del_id+"]").src = "./images/graydot.gif";
+    	window.document.forms['do_edit'].elements['PHP_oth_pic_upload['+del_id+']'].value = '';
+   	var response = o.responseText;    	
+	 		document.getElementById("tbl_msg").style.display='block';
+			msg1.innerText  = response[0];
+
+
+
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+  
+function refreshIt()  {
+	if (!document.images) return;
+	{/literal}
+	document.images['pic'].src='{$main_pic}?'+ Math.random();
+	{section name=SEC loop=$oth_pic}
+//	var pic_name = "oth_pics[{$oth_num[SEC]}]";
+//	alert(document.images["oth_pic[{$oth_num[SEC]}]"]);	
+	document.images["oth_pic[{$oth_num[SEC]}]"].src = '{$oth_pic[SEC]}?'+ Math.random();	
+	{/section}
+	
+	{literal}
+}
+
+
+</script>
+{/literal}
+</head>
+{if $re_adding}
+<body onLoad="refreshIt();">
+{else}
+<body onLoad="refreshIt();">
+{/if}
+
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=700 bgcolor=#333333>
+	<tr>
+	  <td class="des" align=center height=28 width=450><b>EDIT  </b> [ <span class=ylw10><b>ORDER</b></span> record ] -- <b>{$order.order_num}</b> </td>
+	  <td class="sign" align=center width=150>
+	   {if $order.revise > 0 }
+			[ <b>REVISE</b> ] : <b><i><span class=ylw10>{$order.revise}</span></i></b>
+	   {else}
+			&nbsp;
+	   {/if}
+	  </td>
+	</tr>
+</table>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+<table border=0 cellspacing=1 cellpadding=1 width=700 bgcolor=#FFFFFF>
+   <tr>
+    <td colspan=8 class=frnt align=right><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+  </tr>
+   <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr><form method=POST name=do_edit enctype="multipart/form-data">
+    <td class=snvy align=right nowrap><b>Order # :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.order_num}</b></td>
+    <td class=snvy align=right nowrap><b>Customer :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.cust}</b></td>
+    <td class=snvy align=right nowrap><b>Team :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.dept}</b></td>
+    <td class=snvy align=right nowrap><b>cust. PO# :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;{$order.cust_po}</td>
+
+ </tr>
+
+ <tr>
+
+    <td class=snvy align=right nowrap><b>factory :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.factory}</b></td>  
+    <td class=snvy align=right nowrap><b>customer ref. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;{$order.ref}</td>
+
+    <td class=snvy align=right nowrap><b>Q'ty :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;<b>{$order.qty}</b></td>
+    <td class=snvy align=right nowrap><b>unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;<b>{$order.unit}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>FOB @:</td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;$ {$order.uprice}</b></td>
+
+    <td class=snvy align=right nowrap><b>Quota Cat. :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.quota}</b></td>
+    <td class=snvy align=right nowrap><b>smpl ord #:</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.smpl_ord}</b></td>    
+    <td class=snvy align=right nowrap><b>pattern # :</b></td>
+	<td class=b9 align=left  bgcolor=#dddddd><b>&nbsp;{$order.patt_num}</b></td>
+    
+  </tr>
+ <tr>
+	  <td class=snvy align=right nowrap><b>Style : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;<b>{$order.style}</b></td>
+	  <td class=snvy align=right nowrap><b>Agent : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd>&nbsp;<b>{$order.agent}</b></td>
+  	<td class=snvy align=right nowrap colspan=3><b>Production Line : </b></td>
+		<td class=b9 align=left bgcolor=#dddddd>&nbsp;{if $order.line_sex == 'F'}Woman{else}Man{/if}</td>    
+  </tr>  
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap><b>ETD :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd colspan=3><b>&nbsp;{$order.etd}</b></td>
+	<td class=snvy align=right nowrap><b>ETP. :</b></td>
+	<td class=b10 align=left nowrap bgcolor=#dddddd colspan=3><b>&nbsp;{$order.etp}</b></td>
+  </tr>
+  <tr>
+	
+	<td><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>picture</b></i></td>
+	<td><hr size=2 width=96%></td>
+	<td colspan=2><hr size=2 width=96%></td>
+	<td class=bgdy align=center><i><b>unit cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+
+ <tr>
+
+        <td align=center class=head valign=top rowspan=12 colspan=3>
+			<table width=190 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><img src="{$main_pic}" name="pic" width=190></td></tr>
+			</table>
+		</td>
+	
+    <td class=snvy align=right nowrap colspan=3><b>main fabric volume required per unit : </b></td>
+    <td class=bgdy align=left bgcolor=#dddddd colspan=2><b>&nbsp;&nbsp;{$order.mat_useage} {$order.lots_unit}</b></td>
+  </tr>
+  <tr>
+	<td class=snvy align=right nowrap colspan=4><b>main fabric unit price :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.mat_u_cost}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>Fusible unit price :</b></td>
+	<td class=bgdy align=left bgcolor=#dddddd>$ {$order.fusible|number_format:"2f"}</td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>InterLining unit price :</b></td>
+	<td class=bgdy align=left bgcolor=#dddddd>$ {$order.interline|number_format:"2f"}</td>
+ </tr>
+
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>accessory cost per unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.acc_u_cost}</b></td>
+ </tr>
+ </tr>
+    <td class=snvy align=right nowrap colspan=4><b>quota charge per unit [if any] :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.quota_fee}</b></td>
+  </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>commission per unit [if any] :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.comm_fee}</b></td>
+ </tr>
+ <tr>
+    <td class=snvy align=right nowrap colspan=4><b>C.M. estimate per unit :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>$&nbsp;{$order.cm}</b></td>
+  </tr>
+
+  <tr>
+	<td><hr size=2 width=96%></td>
+	<td colspan=2 class=bgdy align=center><i><b>special treatment cost :</b></i></td>
+	<td colspan=2 ><hr size=2 width=96%></td>
+  </tr>
+  <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>embroidery :</b></td>
+	<td colspan=3 class=b9 align=left bgcolor=#dddddd>$ {$order.emb}</td>
+ </tr>
+  <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>garment wash :</b></td>
+	<td colspan=3 class=b9 align=left bgcolor=#dddddd>$ {$order.wash}</td>
+  </tr>
+ <tr>
+	<td>&nbsp;</td>
+    <td class=snvy align=right nowrap><b>other treatment :</b></td>
+	<td class=b9 align=left bgcolor=#dddddd>$ {$order.oth}</td>
+    <td colspan=2 class=snvy align=left nowrap bgcolor=#dddddd>{$order.oth_treat}</td>
+  </tr>
+
+  <tr>
+    <td colspan=5 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+<tr>
+    <td class=snvy align=right nowrap colspan=2><b>sample cost :</b></td>
+    <td class=grn10 align=left bgcolor=#dddddd><b>$&nbsp;{$order.smpl_fee}</b></td>
+    <td class=snvy align=right nowrap><b>G.M.% :</b></td>
+    <td class=bgdy align=left bgcolor=#dddddd><b>&nbsp;{$order.gmr} %</b></td>
+</tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=1 width=700>
+	<tr>
+    <td >OTHER Picutre </td>
+    <td  align=right valign=bottom>
+				ADD ROW  ( <img src="images/add4.gif" width="11" height="11" onclick="upphoto('add')" style="cursor:hand" /> )
+	  </td>
+	</tr>
+	<tr>
+		<td colspan=2>
+			<table border=1 cellspacing=0 cellpadding=1  id='pic_table'>
+				<tr>
+				{section name=SEC loop=$oth_pic}
+	 			<td align=right width=135>
+					<img src={$oth_pic[SEC]} name="oth_pic[{$oth_num[SEC]}]" width=120>
+					<br>
+					<input name="PHP_oth_pic[{$oth_num[SEC]}]" type="file" onChange="cfm_img_2({$oth_num[SEC]})" value="{$oth_pic[SEC]}" size=10>
+					<input type="hidden" name="PHP_oth_pic_upload[{$oth_num[SEC]}]" value="">
+					{if $oth_pic[SEC] <> './images/graydot.gif'}
+						<img id="delmore" src="images/del.gif" onClick="delphoto('{$oth_num[SEC]}','{$order.order_num}')" alt="DELETE" style="cursor:hand;">	
+					{/if}
+	  		</td>			
+	  		{if $oth_ll[SEC] == 1}</tr><tr>{/if}
+  			{/section}
+  			<input type="hidden" name="PHP_oth_pic_num" value="{$order.pic_num}">
+				</tr>
+			</table>
+		</td>
+		
+	</tr>
+</table>	
+
+
+<table border=0 cellspacing=0 cellpadding=2 width=590 bgcolor=#ffffff align=center>
+  <tr>
+	<td colspan=2>
+		<input type=button onClick="window.location.href='index2.php?PHP_action=order_search'" value="<< go back " class=select_e style="cursor:pointer; width=98%">&nbsp;
+	</td>
+	<td colspan=4>
+  {if $from_ADD}
+		<input type="hidden" name="from_ADD" value="1">
+		<input type="hidden" name="cgiget" value="">
+		<input type="hidden" name="cgino" value="">
+		<input type="hidden" name="cgi_1" value="">
+		<input type="hidden" name="cgi_2" value="">
+		<input type="hidden" name="cgi_3" value="">
+		<input type="hidden" name="cgi_4" value="">
+		<input type="hidden" name="cgi_5" value="">
+		<input type="hidden" name="cgi_6" value="">
+		<input type="hidden" name="cgi_7" value="">
+  {else}
+		<input type="hidden" name="from_ADD" value="">
+  {/if}
+		<input type="hidden" name="PHP_action" value="do_order_pic_edit">
+		<input type="hidden" name="PHP_id" value="{$order.id}">
+		<input type="hidden" name="PHP_order_num" value="{$order.order_num}">
+		<input type="hidden" name="PHP_dept" value="{$order.dept}">
+		<input type="hidden" name="PHP_ie1" value="{$order.ie1}">
+		<input type="hidden" name="PHP_cust" value="{$order.cust}">
+		<input type="hidden" name="PHP_back_str" value="{$back_str}">
+		<input type=submit value="[ EDIT as above ]" class=select_e style="cursor:pointer; width=98%" onClick=this.width=0;>
+	</td>
+  </tr>
+
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

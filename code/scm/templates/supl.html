@@ -1,0 +1,147 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  Tai YUNE .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id,vndr_no) {
+	if ( confirm("Deleting record will permanent deteleted；Can't reversion anymore !\r\rPlease check again \r\rAre you sure delete this record :["+ref+"]??")) {
+	location.href="primary.php?PHP_action=supl_del&PHP_id="+id+"&PHP_vndr_no="+vndr_no;
+	} 
+ }
+
+function tp(url) { parent.top.location.href=url }
+
+function input(form)
+{
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (val ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+
+function check() {
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (field.value ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+ <tr>
+		<input type="hidden" name="SRH_supl_cat" value="{$cgi.supl_cat}">
+		<input type="hidden" name="SRH_cgistr" value="{$cgistr_get}">
+		<input type="hidden" name="SRH_country" value="{$cgi.country}">
+		<input type="hidden" name="SRH_supl_s_name" value="{$cgi.supl_s_name}">
+		<input type="hidden" name="SRH_supl_f_name" value="{$cgi.supl_f_name}">
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=700 bgcolor=#534A67>
+      <tr><td width=50% class=des align=center>.....  <b>Supplier List</b> .......</td></tr>
+     </table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=700>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=97%>
+
+<table border cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center>
+
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=50 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=supl_cat"><font color='#FFFFFF'>Category</font></a></b></td>
+	<td nowrap width=80 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=vndr_no"><font color='#FFFFFF'>supplier #</font></a></b></td>
+	<td nowrap width=80 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=supl_s_name"><font color='#FFFFFF'>Initial name</font></a></b></td>
+	<td nowrap width=200 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=supl_f_name"><font color='#FFFFFF'>Full name</font></a></b></td>
+	<td nowrap width=70 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=cntc_person1"><font color='#FFFFFF'>Cont. person</font></a></b></td>
+	{if $manager_flag == 1}<td nowrap width=70 align=center class=back><b><a href="primary.php?PHP_action=supl_search&SCH_sort=id"><font color='#FFFFFF'>uni_no</font></a></b></td>{/if}
+	<td nowrap align=center class=back>Remark</td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=6 align=center class=ssign><br>No records!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$supl} 
+  <tr><form>
+	<td class=g10 align=left>{$supl[SEC].supl_cat}</a></td>      		
+	<td class=g10>
+      <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}">{$supl[SEC].vndr_no}</a></td>
+	<td class=g10>
+      <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}">{$supl[SEC].supl_s_name}</a></td>			
+  <td class=g10>{$supl[SEC].supl_f_name}&nbsp;</td>
+  <td align=center class=grn9><b>{$supl[SEC].cntc_person1}</b>&nbsp;</td>
+  {if $manager_flag == 1}<td align=center class=grn9><b>{$supl[SEC].uni_no}</b>&nbsp;</td>{/if}
+			
+  <td align=left nowrap class=b10>&nbsp;
+<!--*****      增加回上一頁時需要記錄的變數 start-->
+		{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+		{/if}
+		{if $edit_flag}
+		<a href="{$PHP_SELF}?PHP_action=supl_edit&PHP_id={$supl[SEC].id}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+		{/if}
+<!--*****      增加回上一頁時需要記錄的變數 end-->		
+		{if $manager_flag}
+	    <a href="javascript:cfm('{$supl[SEC].supl_s_name}','{$supl[SEC].id}','{$supl[SEC].vndr_no}')" value="刪除" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+		{/if}
+
+		</td>
+		
+  </tr>
+			{/section} 
+</table>
+<hr size=1 width=97%>
+<table border=0 cols=4 width=700 align=center>
+  <tr>
+    <td align=center width=300>
+    {if $pages[0] > 1}
+   <a href="primary.php?PHP_action=supl_search&PHP_sr_startno=p{$pages[1]}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+   {/if}
+   {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="primary.php?PHP_action=supl_search&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    {if $lastpage < $maxpage}
+    <a href="primary.php?PHP_action=supl_search&PHP_sr_startno=n{$lastpage}" style="cursor:pointer">&nbsp;<img src="images/right2.gif" alt="後12筆資料" border=0></a>
+    {/if}
+ 
+    </td>
+  </tr>
+</table>
+<hr size=1 width=97%>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

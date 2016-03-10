@@ -1,0 +1,317 @@
+{literal}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="refresh" content="59" />
+<title>目視管理看版</title>
+<link rel="stylesheet" type="text/css" href="css/scm.css" />
+<style type="text/css">
+<!--
+* {
+	margin:0px ;
+	padding:0px;
+}
+
+.line{ font-family:"Verdana" , sans-serif; font-weight:bold; line-height:66pt; color:#000; font-size:66px; padding-left:9px; padding-right:9px; }
+.title_bg{ background:#FFFFFF; }
+.title_m_style td{ 
+	font-family:"Verdana" , sans-serif;
+	font-weight:bold;
+	font-size:15pt;
+
+	line-height:26pt;
+	text-align:center;
+	vertical-align:middle;
+
+	padding:6px;
+
+	padding-top:1px;
+	padding-bottom:1px;
+	background-color:#EEE;
+    BORDER-RIGHT: #CCC 1px solid;
+    BORDER-TOP: #CCC 3px solid;
+    BORDER-BOTTOM: #CCC 3px solid;
+}
+.title_m_style2 td{ 
+	font-family:"Verdana" , sans-serif;
+	font-weight:bold;
+	font-size:12pt;
+
+	line-height:26pt;
+	text-align:center;
+	vertical-align:middle;
+
+	padding:6px;
+
+	padding-top:1px;
+	padding-bottom:1px;
+	background-color:#EEE;
+    BORDER-RIGHT: #CCC 1px solid;
+    BORDER-TOP: #CCC 3px solid;
+    BORDER-BOTTOM: #CCC 3px solid;
+}
+.title_v_style{ font-family:"Verdana" , sans-serif; background:#FFFFFF; color:#000; font-size:28px; padding:3px; text-align:center; }
+.title_t_style td{
+	font-family:"Verdana" , sans-serif;
+
+	font-size:20pt;
+
+	line-height:30pt;
+	text-align:center;
+	vertical-align:middle;
+	padding-right:6px;
+	padding-left:6px;
+    BORDER-RIGHT: #CCC 1px solid;
+    BORDER-BOTTOM: #CCC 1px solid;
+	white-space:nowrap;
+}
+.title_t_style2 td{
+	font-family:"Verdana" , sans-serif;
+
+	font-size:18pt;
+
+	line-height:14pt;
+	text-align:center;
+	vertical-align:middle;
+	padding-right:6px;
+	padding-left:6px;
+    BORDER-RIGHT: #CCC 1px solid;
+    BORDER-BOTTOM: #CCC 1px solid;
+	white-space:nowrap;
+}
+.style1 {
+	font-size: 36px;
+	font-weight: bold;
+}
+-->
+</style>
+
+</head>
+{/literal}
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="title_bg"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <td class="line">LINE : {$line}</td>
+        <td align="right">( {$dates} ) </td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr style="height:1px;">
+        <td></td>
+        <td></td>
+        {section name=SEC loop=$W_DAILY_SUM}
+        <td></td>
+        {/section}
+        <td></td>
+        <td></td>
+      </tr>
+      <tr class="title_m_style">
+        <td title="Style No."nowrap="nowrap">mã đơn hàng</td>
+        <td title="Target." style="BORDER-RIGHT: #CCC 3px solid;" nowrap="nowrap">mục tiêu<br>sản lượng<br>(su.)</td>
+        {section name=TM loop=$TT_A1}
+        <td>{$TT_A1[TM]}<br>{$TT_A2[TM]}</td>
+        {/section}
+        <td title="TTL(pcs)" style="BORDER-LEFT: #CCC 3px solid;" >tổng số<br>(cái)</td>
+        <td title="SU.">tổng số<br>(su.)</td>
+        <td title="EFF.(%)">năng suất<br>(%)</td>
+      </tr>
+      <tr style="height:1px;">
+        <td></td>
+        <td></td>
+        {section name=SEC loop=$W_DAILY_SUM}
+        <td></td>
+        {/section}
+        <td></td>
+        <td></td>
+      </tr>
+	  {section name=SEC loop=$W_DAILY}
+      <tr class="title_t_style">
+        <td nowrap="nowrap">{$W_DAILY[SEC].order}</td>
+        <td nowrap="nowrap" style="BORDER-RIGHT: #CCC 3px solid;" title="{$W_DAILY[SEC].target_str}">{$W_DAILY[SEC].target}</td>
+        <td>{if $W_DAILY[SEC].T1}{$W_DAILY[SEC].T1}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T2}{$W_DAILY[SEC].T2}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T3}{$W_DAILY[SEC].T3}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T4}{$W_DAILY[SEC].T4}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T5}{$W_DAILY[SEC].T5}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T6}{$W_DAILY[SEC].T6}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T7}{$W_DAILY[SEC].T7}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T8}{$W_DAILY[SEC].T8}{else}&nbsp;{/if}</td>
+        <td>{if $W_DAILY[SEC].T9}{$W_DAILY[SEC].T9}{else}&nbsp;{/if}</td>
+        <td style="BORDER-LEFT: #CCC 3px solid;">{if $W_DAILY[SEC].ttl}{$W_DAILY[SEC].ttl}{else}&nbsp;{/if}</td>
+        <td>{$W_DAILY[SEC].su}</td>
+        <td>{$W_DAILY[SEC].eff} %</td>
+      </tr>
+	  {/section}
+      <tr class="title_t_style" style="height:1px;">
+        <td></td>
+        <td></td>
+        {section name=SEC loop=$W_DAILY_SUM}
+        <td></td>
+        {/section}
+        <td></td>
+        <td></td>
+      </tr>      
+      <tr class="title_t_style">
+        <td title="Total" style="BORDER-TOP: #CCC 3px solid;">tổng cộng</td>
+        <td style="BORDER-TOP: #CCC 3px solid;BORDER-RIGHT: #CCC 3px solid;">{$target_sum}</td>
+        {section name=SEC loop=$W_DAILY_SUM}
+        <td style="BORDER-TOP: #CCC 3px solid;">{if $W_DAILY_SUM[SEC]}{$W_DAILY_SUM[SEC]}{else}&nbsp;{/if}</td>
+        {/section}
+        <td style="BORDER-TOP: #CCC 3px solid;BORDER-LEFT: #CCC 3px solid;">{$ttl}</td>
+        <td style="BORDER-TOP: #CCC 3px solid;">{$ttl_su}</td>
+        <td style="BORDER-TOP: #CCC 3px solid;">{$eff} %</td>
+      </tr>
+      <tr class="title_t_style" style="height:1px;">
+        <td></td>
+        <td></td>
+        {section name=SEC loop=$W_DAILY_SUM}
+        <td></td>
+        {/section}
+        <td></td>
+        <td></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+
+
+<table width="100%" border="0" cellspacing="1" cellspacing="0">
+    <tr class="title_m_style2">
+        <td title="車位">vị trí ngồi</td>
+        <td title="SU.">SU.</td>
+        <!-- <td title="件數">số cái</td> -->
+        <td title="工段" style="BORDER-RIGHT: #CCC 3px solid;">công đoạn</td>
+		
+        <td title="車位">vị trí ngồi</td>
+        <td title="SU.">SU.</td>
+        <!-- <td title="件數">số cái</td> -->
+        <td title="工段" style="BORDER-RIGHT: #CCC 3px solid;">công đoạn</td>
+		
+        <td title="車位">vị trí ngồi</td>
+        <td title="SU.">SU.</td>
+        <!-- <td title="件數">số cái</td> -->
+        <td title="工段" style="BORDER-RIGHT: #CCC 3px solid;">công đoạn</td>
+
+    </tr>
+    <tr class="title_t_style2">
+{section name=SEC loop=$READER_ID}
+        <td style="background-color:#EEE;color:#0000FF;">{$READER_ID[SEC].ReaderName}</td>
+        <td>{$READER_ID[SEC].Sum_su}</td>
+       <!--  <td style="background-color:#EEE;color:#0000FF;">{section name=SECS loop=$READER_ID[SEC].WorkerId}{$READER[SEC].WorkerId[SECS].WorkerId}<br>{/section}</td> -->
+        <!-- <td style="{if $READER_ID[SEC].Sas<$W_DAILY[SEC].ttl}color:#FF0000;{else}{/if}">{$READER_ID[SEC].Sas}</td> -->
+        <!-- <td>{$READER[SEC].val[SECS].Sas}</td> -->
+		<td style="BORDER-RIGHT: #CCC 3px solid;font-size:12pt;text-align:left;font-size:8pt;" title="{section name=SECS loop=$READER_ID[SEC].val}{$READER_ID[SEC].val[SECS].SONumber}&#13;{$READER_ID[SEC].val[SECS].WorkerId}&#13;件數：{$READER_ID[SEC].val[SECS].WK_PackedQty}&#13;秒數：{$READER_ID[SEC].val[SECS].WK_Sas}&#13;&#13;{/section}">
+        {section name=SECS loop=$READER_ID[SEC].val}{$READER_ID[SEC].val[SECS].SONumber}：{$READER_ID[SEC].val[SECS].WorkerId}|{$READER_ID[SEC].val[SECS].performance}%|{$READER_ID[SEC].val[SECS].StepId}<br>{/section}
+        </td>
+{if ($smarty.section.SEC.index + 1) % 3 == 0}
+    </tr>
+    <tr class="title_t_style2">    
+{/if}
+{/section}
+    </tr>
+</table>
+
+
+<!--
+    {section name=SEC1 loop=$READER[SEC].val}
+        {$READER.val[SEC1].SONumber}
+    {/section}
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="title_bg"><table width="100%" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <td class="line">( 8月 11日) 產出 / 排行榜</td>
+        <td align="right"></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="221"><table width="100%" border="0" cellpadding="0" cellspacing="0" id="32">
+      <tr>
+        <td class="title_m_style" nowrap="nowrap">Line</td>
+        <td class="title_m_style" nowrap="nowrap">Style No.</td>
+        <td>&nbsp;</td>
+        <td class="title_m_style">07:30<br />
+          08:30</td>
+        <td class="title_m_style">08:30<br />
+          09:30</td>
+        <td class="title_m_style">09:30<br />
+          10:30</td>
+        <td class="title_m_style">10:30<br />
+          11:30</td>
+        <td class="title_m_style">12:30<br />
+          13:30</td>
+        <td class="title_m_style">13:30<br />
+          14:30</td>
+        <td class="title_m_style">14:30<br />
+          15:30</td>
+        <td class="title_m_style">15:30<br />
+          16:30</td>
+        <td class="title_m_style">17:00<br />
+          20:30</td>
+        <td>&nbsp;</td>
+        <td class="title_m_style">TTL<br />
+          (pcs)</td>
+        <td class="title_m_style">TTL<br />
+          (SU)</td>
+        <td class="title_m_style">效率<br />
+          (%)</td>
+        <td class="title_m_style" nowrap="nowrap">名次</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>ARE14-0455</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+-->
+</body>
+</html>

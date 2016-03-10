@@ -1,0 +1,74 @@
+﻿{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle"><span class="factory_title">{$fty}</span> Storage : Search </td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+    <tr>
+        <td class="ord_number">
+            <table  border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td><img height="90" src="picture/{$ord_num}.jpg"></td>
+                    <td>
+                        <table  border="0" cellspacing="0" cellpadding="0" cols="1">
+                            <tr>
+                                <td class="ord_number" align="right">Order :</td>
+                                <td class="ord_number">{$ord_num}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Line :</td>
+                                <td class="ord_number">{$line}</td>
+                            </tr>
+                            <tr>
+                                <td class="ord_number" align="right">Zone :</td>
+                                <td class="ord_number">{$zone}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+</table>
+<br>
+<table border="0" cellpadding="0" cellspacing="0" cols="0">
+	<tr class="storage_log_tr">
+		<td class="storage_log_td" colspan="8" align="center">
+			<b>History records ( {$today} )</b>
+		</td>
+	</tr>
+	<tr class="storage_log_tr">
+		<td class="storage_log_td">ID</td>
+		<td class="storage_log_td">Partial</td>
+		<td class="storage_log_td">Zone</td>
+		<td class="storage_log_td">Input Date</td>
+		<td class="storage_log_td">Color</td>
+		<td class="storage_log_td">Size</td>
+		<td class="storage_log_td">Qty</td>
+		<td class="storage_log_td">&nbsp;</td>
+	</tr>
+	{if $storage_det[0].qty}
+	{section name=LOG loop=$storage_det}
+	<tr id="List_TR_{$storage_det[LOG].id}">
+		<td class="storage_log_text" align="center">{$storage_det[LOG].id}</td>
+		<td class="storage_log_text" align="center">{$storage_det[LOG].partial}</td>
+		<td class="storage_log_text">{$storage_det[LOG].zone}</td>
+		<td class="storage_log_text">{$storage_det[LOG].input_date}</td>
+		<td class="storage_log_text">{$storage_det[LOG].color}</td>
+		<td class="storage_log_text" align="center">{$storage_det[LOG].size}</td>
+		<td class="storage_log_text" align="center">{$storage_det[LOG].qty}</td>
+		<td class="storage_log_text" align="center"><img src="./images/del.gif" style="cursor:pointer" onclick="del_storage_qty('{$storage_det[LOG].id}','{$ord_num}','{$fty}','{$line}','{$zone}','{$today}','record')"></img></td>
+	</tr>
+	{/section}
+	{else}
+	<tr>
+		<td class="storage_log_text" colspan="8" align="center">NO records!</td>
+	</tr>
+	{/if}
+</table>
+{include file="footer.html"}

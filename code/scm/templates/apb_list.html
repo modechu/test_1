@@ -1,0 +1,181 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=660>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}	
+{if $trans.0.id}
+<table border cellspacing=0 cellpadding=2 width=700 bgcolor=#ffffff align=center id=po_table>
+	<tr>
+		<td colspan=10 align=center class=gry height=30><b>Accounts Payable List</b> -- for Transportation</td></tr>
+		<tr bgcolor="#003333" height=25> 
+		<td class=w9 width=90 align=center><b>APB. #</b></td>
+		<td class=w9 width=80 align=center><b>Consignee</b></td>
+		<td class=w9 width=160 align=center><b>Sourcing</b></td>
+		<td class=w9 width=70 align=center><b>APB. date</b></td>
+		<td class=w9 width=90 align=center><b>ORDER #</b></td>
+		<td class=w9 width=150 align=center><b>status</b></td>
+	</tr>
+	{if $record_NONE}
+  <tr>
+		<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	<form method=POST name=cfm>
+	{section name=SEC loop=$trans} 
+ 	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td class=gry9 align=center nowrap>
+			<a href="trans_rcvd.php?PHP_action=rcvd_view&PHP_trn_num={$trans[SEC].trn_num}&PHP_id={$trans[SEC].id}{$back_str}&PHP_sr_no={$t_now_pp}">{$trans[SEC].rcv_num}</a>
+	  </td>
+		<td class=gry9 align=center>{$trans[SEC].new_fty}</td>
+		<td class=gry9 align=center>{$trans[SEC].org_fty}&nbsp;</td>
+		<td class=gry9 align=center>{$trans[SEC].rcv_date}&nbsp;</td>
+		<td class=gry9 align=center>{$trans[SEC].ord_num}&nbsp;</td>
+	 <td class=gry9 align=center><small>{if $trans[SEC].status == 4}waitt'g for APB. submit									
+									{elseif $trans[SEC].status == 6}<span class=bgdy9>APB. submitted</span>
+									{else}&nbsp;{/if}
+									</small></td>
+	</tr>
+	{/section}
+	</form>
+</table>
+<table border=0 cols=4 width=700 align=center>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list &nbsp;Transport Accounts Payable record!&nbsp;&nbsp;<span class=bgdy>[ total {$t_max_no} entries ]</font>
+	</tr>
+  <tr>
+		<td align=center width=100>
+		{if $t_pages[0] > 1}
+		<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno=p{$t_pages[1]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前15筆資料"></a>
+		{/if}
+		</td>
+		<td width=300 align=center>
+		{section name=PGE loop=$t_pages}
+		{if $t_pages[PGE] <= $t_maxpage }
+			{if $t_pages[PGE] == $t_now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$t_pages[PGE]}</b></i></font>
+			{else}
+				<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno={$t_pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$t_pages[PGE]}</a>
+			{/if}
+		{/if}   
+		{/section}
+		</td>
+		<td width=100 align=center>
+		{if $t_lastpage < $t_maxpage}
+			<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno=n{$t_maxpage}{$back_str}">&nbsp;<img src="images/right2.gif" border=0 alt="後15筆資料"></a>
+		{/if} 
+		</td>
+  </tr>
+</table>
+<br>
+{/if}
+
+
+<table width=750 border=1 cellspacing=0 cellpadding=2>
+	<tr>
+		<td colspan=10 align=center class=gry height=30><b>Accounts Payable List</b> -- for Purchase Order</td></tr>
+	<tr bgcolor="#003333" height=25> 
+		<td class=w9 width=90 align=center><b>APB. #</b></td>
+		<td class=w9 width=80 align=center><b>Consignee</b></td>
+		<td class=w9 width=160 align=center><b>Supplier</b></td>
+		<td class=w9 width=110 align=center><b>Invoice</b></td>
+		<td class=w9 width=70 align=center><b>APB. date</b></td>
+		<td class=w9 width=120 align=center><b>Payment</b></td>
+		<td class=w9 width=120 align=center><b>status</b></td>
+	</tr>
+	{section name=SEC loop=$rcvd}
+	{if $rcvd[SEC].status is even}
+	<tr bgColor='#dddddd'>
+	{else}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+	{/if}
+		<td class=gry9 align=center nowrap><small>
+			{if $rcvd[SEC].status == 1 OR $rcvd[SEC].status == 2}
+				<!-- 請款單 -->
+				<a href="apb.php?PHP_action=po_before_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 3 OR $rcvd[SEC].status == 4}
+				<!-- 驗收付款單 PO 驗收 -->
+				<a href="apb.php?PHP_action=po_rcv_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 5 OR $rcvd[SEC].status == 6}
+				<!-- 驗收付款單 T/T after -->
+				<a href="apb.php?PHP_action=apb_after_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 7 OR $rcvd[SEC].status == 8}
+				<!-- 驗收付款單 L/C at sight -->
+				<a href="apb.php?PHP_action=apb_lc_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 9 OR $rcvd[SEC].status == 10}
+				<!-- 驗收付款單 L/C at sight -->
+				<a href="apb.php?PHP_action=apb_month_fty_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 11 OR $rcvd[SEC].status == 12}
+				<!-- 驗收付款單 L/C at sight -->
+				<a href="apb.php?PHP_action=apb_month_tw_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 13 OR $rcvd[SEC].status == 14}
+				<!-- 請款單 貨前貨後 的 貨前 -->
+				<a href="apb.php?PHP_action=apb_before_after_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status == 15 OR $rcvd[SEC].status == 16}
+				<!-- 請款單 貨前貨後 的 貨前 -->
+				<a href="apb.php?PHP_action=apb_after_rcv_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{elseif $rcvd[SEC].status >= 200}
+				<!-- ??? -->
+				<a href="apb.php?PHP_action=po_before_apb_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{else}
+				<!-- 驗收付款單 -->
+				<a href="apb.php?PHP_action=rcvd_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a>
+			{/if}</small>
+		</td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].rcv_dept}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].s_name}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].inv_num}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].rcv_date}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].payment}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{if $rcvd[SEC].status is even}<span class=bgdy9>APB. submitted</span>
+									{else}waitt'g for APB. submit{/if}
+									</small></td>
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

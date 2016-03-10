@@ -1,0 +1,351 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./css/bom.css">
+<link type="text/css" href="css/scm.css" rel="stylesheet" />
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script language="javascript">
+
+function order_su(fty,year,mon) {
+	// alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="order_breakdown.php?PHP_action=est_order_su&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function est_un_apv_su(fty,year,mon) {
+	// alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="order_breakdown.php?PHP_action=est_un_apv_su&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function order_su_sum(fty,year,mon) {
+	// alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="order_breakdown.php?PHP_action=est_order_su_sum&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_un_apv_su(fty,year,mon) {
+	// alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	var gofile ="order_breakdown.php?PHP_action=est_fty_un_apv_su&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon;
+	var nm = fty+year+mon+"monout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shipping_ord_det(fty,year,mon) {
+	var gofile ="order_breakdown.php?PHP_action=shipping_ord_det&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon;
+	var nm = fty+year+mon+"etpout";
+	window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+
+(function($){
+
+	$(document).ready(function(){
+    
+		// 新增開起畫面
+        $("td[id='OrderSuAction']").bind("click", function () {
+            if( $("tr[id^=OrderSu]").is(':visible') ) {
+                $("tr[id^=OrderSu]").attr({'style':'display:none;'});
+            } else {
+                $("tr[id^=OrderSu]").attr({'style':'display:;'});
+            }
+        });
+		// 新增開起畫面
+        $("td[id='InComeAction']").bind("click", function () {
+            if( $("tr[id^=InCome]").is(':visible') ) {
+                $("tr[id^=InCome]").attr({'style':'display:none;'});
+            } else {
+                $("tr[id^=InCome]").attr({'style':'display:;'});
+            }
+        });
+		// <TR> MOUSEOVER
+        var x = '';
+        var y = '';
+		$('td[id^=x]').hover(function(){
+            x = $(this).attr("id");
+            y = $(this).attr("name");
+			$("td[id^="+x+"]").addClass("ms_hover");
+			$("td[name^="+y+"]").addClass("ms_hover");
+		},function(){
+			$("td[id^="+x+"]").removeClass("ms_hover");
+			$("td[name^="+y+"]").removeClass("ms_hover");
+		});
+
+	});
+})(jQuery);
+</script>
+{/literal}
+</head>
+<body>
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">Estimate Cost BreakDown ( by ETD base )</td>
+	</tr>
+    <tr>
+		<td class="subInputName">
+            <table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td class="item_title">Factory：{$fty}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table border="1" cellspacing="0" cellpadding="3" >
+    <tr bgcolor="#ffffff">
+        <td align="center" class=bgdy9><b>{$fty}</b></td>
+        <td colspan="12" align="center" class=gry height="30"><b> +++++++++ Carnival (Taipei) +++++++++</b></td>
+        <td align="center" class=bgdy9><b>S.U.</b></td>
+    </tr>
+    {if $msg_YES}
+    <tr>
+        <td colspan="14">
+            <table border="0" cellpadding="2" cellspacing="0" width="800" align="center">
+                <tr bgcolor=#ffffff> 
+                    <td width=90 class=gry10 align="center"><img src="images/alert.gif" border="0"></td>
+                    <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    {/if}
+    <tr bgcolor="#225176"> 
+        <td class="b9" width="100" align="center" bgcolor=#ffffff height="26"><b>FY-{$year}&nbsp;</b></td>
+        {section name=SEC loop=$mm_name}
+        <td class="{if $mm_name[SEC].key == $month}ylw10{else}w9{/if}" width="60" align="center" ><b>{$mm_name[SEC].val}</b></td>
+        {/section}
+        <td width="80" align="center" bgcolor="#999999"><b>Total</b></td>
+    </tr>
+    <tr bgcolor="#CCCCCC"> 
+        <td width="100" align="center" nowrap height="20"><b>&nbsp;CAPACITY</b></td>
+        {section name=SEC loop=$capacity}
+        <td width="60" align="right" id="x2x" name="y{$smarty.section.SEC.index}y"><b>{$capacity[SEC]|number_format}&nbsp;</b></td>
+        {/section}
+        <td width="80" align="right"><b>{$capacity_sum|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20">&nbsp;Order</td>
+        {section name=SEC loop=$order_su}
+        <td width="60" align="right" nowrap id="x3x" name="y{$smarty.section.SEC.index}y"><a href="javascript:order_su('{$fty}','{$mm_yaer[SEC]}','{$mm_month[SEC]}')" value='etp_out' style='cursor:pointer'>{$order_su[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$order_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20" title="還不會有IE所以求不出SU">&nbsp;Un-APV</td>
+        {section name=SEC loop=$est_un_apv_su}
+        <td width="60" align="right" nowrap id="x4x" name="y{$smarty.section.SEC.index}y"><a href="javascript:est_un_apv_su('{$fty}','{$mm_yaer[SEC]}','{$mm_month[SEC]}')" value='etp_out' style='cursor:pointer'>{$est_un_apv_su[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$est_un_apv_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20" title="不會有FOB">&nbsp;Pre-Order</td>
+        {section name=SEC loop=$forecast_su}
+        <td width="60" align="right" nowrap id="x5x" name="y{$smarty.section.SEC.index}y">{$forecast_su[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$forecast_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20" title="所有物料、加工、手續費、預估工繳加總*數量，不包含傭金">&nbsp;Cost($)</td>
+        {section name=SEC loop=$est_cost_sum}
+        <td width="60" align="right" nowrap id="x6x" name="y{$smarty.section.SEC.index}y">{$est_cost_sum[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$est_cost_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" nowrap height="20" title="FOB*QTY-COST">G.M.($)</td>
+		{section name=SEC loop=$est_gm_sum}    
+        <td width="60" align="right" id="x7x" name="y{$smarty.section.SEC.index}y"><span value='mon_out' >{$est_gm_sum[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td width="80" align="right"><b>{$est_gm_ttl|number_format}&nbsp;</b></td>
+    </tr>  
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" nowrap height="20" title="GM/(FOB*QTY)*100">G.M. rate (%)</td>
+		{section name=SEC loop=$est_gm_rate_sum} 
+        <td width="60" align="right" id="x8x" name="y{$smarty.section.SEC.index}y"><span value='mon_sub_out' >{$est_gm_rate_sum[SEC].sum|number_format:2} %</span>&nbsp;</td>
+ 		{/section}
+        <td width="80" align="right"><b>{$est_gm_rate_ttl|number_format:2} %&nbsp;</b></td>
+    </tr>
+<!--     <tr bgcolor="#ffffff"> 
+        <td class=grn9 width="100" align="center" bgcolor="#dddddd">Expense($)</td>
+		{section name=SEC loop=$expense}    
+        <td class=grn9 width="60" align="right"><span value='mon_out' >{$expense[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$expense_ttl|number_format}&nbsp;</b></td>
+    </tr>   -->
+    <tr><td colspan="14" style="height:0.1px;"></td></tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20" title="IE*CM*QTY">&nbsp;C.M.($)</td>
+        {section name=SEC loop=$est_cm_sum}
+        <td width="60" align="right" id="x9x" name="y{$smarty.section.SEC.index}y">{$est_cm_sum[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$est_cm_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    
+    
+<!--     
+    <tr bgcolor="#FBF6A7"> 
+        <td class=snvy width="100" align="center" bgcolor="#dddddd">&nbsp;Sales</td>
+        {section name=SEC loop=$est_sales_sum}
+        <td class=snvy width="60" align="right"><a href="javascript:est_ord_det('{$fty}','{$mm_yaer[SEC]}','{$mm_month[SEC]}')" value='etp_out' style='cursor:pointer'>{$est_sales_sum[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td class=bgdy9 width="80" align="right"><b>{$est_sales_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#FBF6A7"> 
+        <td class=snvy width="100" align="center" bgcolor="#dddddd">&nbsp;Other</td>
+        {section name=SEC loop=$est_other_sum}
+        <td class=snvy width="60" align="right">{$est_other_sum[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td class=bgdy9 width="80" align="right"><b>{$est_other_ttl|number_format}&nbsp;</b></td>
+    </tr> -->
+    <tr bgcolor="#ffffff">
+        <td colspan=14 height="20"></td>
+    </tr>
+    <tr bgcolor="#ffffff">
+        <td align="center" class=bgdy9><b>{$fty}</b></td>
+        <td colspan=12 align="center" class=gry height="30"><b> +++++++++ Factory +++++++++</b></td>
+        <td align="center" class=bgdy9><b>S.U.</b></td>
+    </tr>
+    <tr bgcolor="#225176"> 
+        <td class="b9" width="100" align="center" bgcolor=#ffffff height="26"><b>FY-{$year}&nbsp;</b></td>
+        {section name=SEC loop=$mm_name}
+        <td {if $mm_name[SEC].key == $month}class="ylw10" {else} class="w9" {/if} width="60" align="center"><b>{$mm_name[SEC].val}</b></td>
+        {/section}
+        <td width="80" align="center" bgcolor="#999999"><b>Total</b></td>
+    </tr>
+    <tr bgcolor="#CCCCCC"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20"><b>&nbsp;CAPACITY</b></td>
+        {section name=SEC loop=$capacity}
+        <td width="60" align="right" id="x10x" name="y2{$smarty.section.SEC.index}y"><b>{$capacity[SEC]|number_format}&nbsp;</b></td>
+        {/section}
+        <td width="80" align="right"><b>{$capacity_sum|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" id="OrderSuAction" height="20">&nbsp;Order</td>
+        {section name=SEC loop=$order_su_sum}
+        <td width="60" align="right" id="x11x" name="y2{$smarty.section.SEC.index}y"><a href="javascript:order_su_sum('{$fty}','{$mm_yaer[SEC]}','{$mm_month[SEC]}')" value='etp_out' style='cursor:pointer'>{$order_su_sum[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$order_su_sum_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff" id="OrderSu" style="display:none;"> 
+        <td width="100" align="center" bgcolor=#DFFBBA height="20">&nbsp;TPE</td>
+        {section name=SEC loop=$order_su}
+        <td width="60" align="right" id="x12x" name="y2{$smarty.section.SEC.index}y">{$order_su[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$order_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff" id="OrderSu" style="display:none;"> 
+        <td width="100" align="center" bgcolor=#DFFBBA height="20">&nbsp;Local</td>
+        {section name=SEC loop=$fty_order_su}
+        <td width="60" align="right" id="x13x" name="y2{$smarty.section.SEC.index}y">{$fty_order_su[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$fty_order_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20">&nbsp;Un-APV</td>
+        {section name=SEC loop=$fty_un_apv_su}
+        <td width="60" align="right" id="x14x" name="y2{$smarty.section.SEC.index}y"><a href="javascript:fty_un_apv_su('{$fty}','{$mm_yaer[SEC]}','{$mm_month[SEC]}')" value='etp_out' style='cursor:pointer'>{$fty_un_apv_su[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$fty_un_apv_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20">&nbsp;Pre-Order</td>
+        {section name=SEC loop=$forecast_su}
+        <td width="60" align="right" id="x15x" name="y2{$smarty.section.SEC.index}y">{$forecast_su[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$forecast_su_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" id="InComeAction" height="20">&nbsp;InCome($)</td>
+        {section name=SEC loop=$fty_in_come}
+        <td width="60" align="right" id="x16x" name="y2{$smarty.section.SEC.index}y">{$fty_in_come[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$fty_in_come_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff" id="InCome" style="display:none;"> 
+        <td width="100" align="center" bgcolor=#DFFBBA height="20">&nbsp;TPE($)</td>
+        {section name=SEC loop=$est_cm_sum}
+        <td width="60" align="right" id="x17x" name="y2{$smarty.section.SEC.index}y">{$est_cm_sum[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$est_cm_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff" id="InCome" style="display:none;"> 
+        <td width="100" align="center" bgcolor=#DFFBBA height="20">&nbsp;Local($)</td>
+        {section name=SEC loop=$est_local_sum}
+        <td width="60" align="right" id="x18x" name="y2{$smarty.section.SEC.index}y">{$est_local_sum[SEC].sum|number_format}&nbsp;</td>
+        {/section}
+        <td width="80" align="right"><b>{$est_local_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20">Expense($)</td>
+		{section name=SEC loop=$fty_expense}    
+        <td width="60" align="right" id="x19x" name="y2{$smarty.section.SEC.index}y"><span value='mon_out' >{$fty_expense[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td width="80" align="right"><b>{$fty_expense_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr><td colspan="14" style="height:0.1px;"></td></tr>
+    <tr bgcolor="#ffffff"> 
+        <td width="100" align="center" bgcolor="#dddddd" height="20">P / L($)</td>
+		{section name=SEC loop=$fty_pl_sum} 
+        <td width="60" align="right" id="x20x" name="y2{$smarty.section.SEC.index}y"><span value='mon_sub_out'  style="{if $fty_pl_sum[SEC].sum < 0}color:#FF0000;{/if}" value='mon_out' >{if $fty_pl_sum[SEC].sum < 0}{assign var=pl value=$fty_pl_sum[SEC].sum-$fty_pl_sum[SEC].sum)}({$pl-$fty_pl_sum[SEC].sum|number_format}){else}{$fty_pl_sum[SEC].sum|number_format}{/if}</span>&nbsp;</td>
+ 		{/section}
+        <td width="80" align="right" style="background-color:#EEEEEE;{if $fty_pl_sum_ttl < 0}color:#FF0000;{/if}"><b>{if $fty_pl_sum_ttl < 0}{assign var=pl_ttl value=$fty_pl_sum_ttl[SEC].sum-$fty_pl_sum_ttl[SEC].sum)}({$pl_ttl-$fty_pl_sum_ttl|number_format}){else}{$fty_pl_sum_ttl|number_format}{/if}</b>&nbsp;</td>
+    </tr>
+
+    
+    <!--
+    <tr bgcolor="#ffffff">
+        <td colspan=14 align="center" class=gry><b> +++++++++ ORDER COST ANALYSIS ( by Shipping ) +++++++++</b></td>
+    </tr>    
+    <tr><td colspan="14" style="height:0.1px;"></td></tr>
+    <tr bgcolor="#FBF6A7"> 
+        <td class=snvy width="100" align="center" bgcolor="#dddddd">&nbsp;ORDER</td>
+        {section name=SEC loop=$order_ship_sum}
+        <td class=snvy width="60" align="right"><a href="javascript:shipping_ord_det('{$fty}','2013','{$mm_name[SEC].key}')" value='etp_out' style='cursor:pointer'>{$order_ship_sum[SEC].sum|number_format}</a>&nbsp;</td>
+        {/section}
+        <td class=bgdy9 width="80" align="right"><b>{$order_ship_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#eeeeee"> 
+        <td class="b9" width="100" align="center" bgcolor="#dddddd">&nbsp;Purchase</td>
+		{section name=SEC loop=$purchase_sum}
+        <td class="b9" width="60" align="right"><span value='fty_schedule' >{$purchase_sum[SEC].sum|number_format}&nbsp;</span></td>
+		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$purchase_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#eeeeee"> 
+        <td class="b9" width="100" align="center" bgcolor="#dddddd">&nbsp;C.M.</td>
+		{section name=SEC loop=$cm_sum}    
+        <td class=grn9 width="60" align="right"><span value='mon_out' >{$cm_sum[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$cm_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td class=grn9 width="100" align="center" bgcolor="#dddddd">&nbsp;Shipping</td>
+		{section name=SEC loop=$shipping_sum}    
+        <td class=grn9 width="60" align="right"><span value='mon_out' >{$shipping_sum[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$shipping_ttl|number_format}&nbsp;</b></td>
+    </tr>
+    <tr bgcolor="#ffffff"> 
+        <td class=grn9 width="100" align="center" bgcolor="#dddddd">G.M.</td>
+		{section name=SEC loop=$gm_sum}    
+        <td class=grn9 width="60" align="right"><span value='mon_out' >{$gm_sum[SEC].sum|number_format}</span>&nbsp;</td>
+ 		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$gm_ttl|number_format}&nbsp;</b></td>
+    </tr>  
+    <tr><td colspan="14" style="height:0.1px;"></td></tr>
+    <tr bgcolor="#ffffff"> 
+        <td class=snvy width="100" align="center" bgcolor=#DFFBBA>G.M. rate (%)</td>
+		{section name=SEC loop=$gm_rate_sum} 
+        <td class=grn9 width="60" align="right"><span value='mon_sub_out' >{$gm_rate_sum[SEC].sum|number_format:2} %</span>&nbsp;</td>
+ 		{/section}
+        <td class=bgdy9 width="80" align="right"><b>{$gm_rate_ttl|number_format:2} %&nbsp;</b></td>
+    </tr>
+-->
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

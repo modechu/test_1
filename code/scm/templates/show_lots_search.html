@@ -1,0 +1,131 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  主料 列表 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+function tp(url) { parent.top.location.href=url }
+
+function input(form)
+{
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (val ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+
+function check() {
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (field.value ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  }
+ else
+ {
+//    alert(newval);
+  return true;
+ }
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#cccccc  align=center>
+ <tr>
+		<input type="hidden" name="SRH_supl_cat" value="{$cgi.supl_cat}">
+		<input type="hidden" name="SRH_cgistr" value="{$cgistr_get}">
+		<input type="hidden" name="SRH_country" value="{$cgi.country}">
+		<input type="hidden" name="SRH_supl_s_name" value="{$cgi.supl_s_name}">
+		<input type="hidden" name="SRH_supl_f_name" value="{$cgi.supl_f_name}">
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=600 bgcolor=#534A67>
+      <tr><td width=50% class=des align=center>.....  主料 列表 .......</td></tr>
+     </table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+		<hr size=1 width=97%>
+
+<table border cellspacing=0 cellpadding=2 width=600 bgcolor=#ffffff align=center>
+
+  <tr bgcolor="#003333" height=28> 
+	<td nowrap width=80 align=center class=back>編號</td>
+	<td nowrap width=100 align=center class=back>主料名稱</td>
+	<td nowrap width=150 align=center class=back>主料成份</td>
+	<td nowrap width=150 align=center class=back>規格</td>
+	<td nowrap align=center class=back>備註</td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=6 align=center class=ssign><br>資料庫無法找到指定的記錄!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$supl} 
+  <tr><form>
+	<td class=g10 align=center>
+      		{$supl[SEC].supl_cat}</a></td>
+	<td class=g10>
+      <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}">
+			{$supl[SEC].supl_s_name}</a></td>
+    <td class=g10>
+      <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}">
+			{$supl[SEC].supl_f_name}&nbsp;</td>
+    <td align=center class=grn9>
+			<b>{$supl[SEC].cntc_person1}</b>&nbsp;</td>
+    <td align=center nowrap class=b10>&nbsp;
+		{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=supl_view&PHP_id={$supl[SEC].id}&PHP_supl_s_name={$supl[SEC].supl_s_name}&PHP_cgistr={$cgistr_get}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+		{/if}
+		{if $edit_flag}
+		<a href="{$PHP_SELF}?PHP_action=supl_edit&PHP_id={$supl[SEC].id}&PHP_supl_s_name={$supl[SEC].supl_s_name}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+		{/if}
+		{if $manager_flag}
+	    <a href="javascript:cfm('{$supl[SEC].supl_s_name}','{$supl[SEC].id}')" value="刪除" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+		{/if}
+
+		</td>
+		</form>
+  </tr>
+			{/section} 
+</table>
+<hr size=1 width=97%>
+<table border=0 cols=4 width=600 align=center>
+  <tr>
+    <td align=center width=300>
+	{if  $PREV_page}
+	  <a href="{$cgistr_get}&PHP_sr_startno={$prev_no}&PHP_supl_cat={$cgi.supl_cat}&PHP_country={$cgi.country}&PHP_supl_s_name={$cgi.supl_s_name}&PHP_supl_f_name={$cgi.supl_f_name}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+	{/if}
+    </td>
+    <td align=center width=300>
+	{if $NEXT_page}
+	  <a href="{$cgistr_get}&PHP_sr_startno={$next_no}&PHP_supl_cat={$cgi.supl_cat}&PHP_country={$cgi.country}&PHP_supl_s_name={$cgi.supl_s_name}&PHP_supl_f_name={$cgi.supl_f_name}" style="cursor:pointer">&nbsp;<img src="images/right2.gif" alt="後12筆資料" border=0></a>
+	{/if}
+    </td>
+  </tr>
+</table>
+<hr size=1 width=97%>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

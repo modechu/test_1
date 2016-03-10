@@ -1,0 +1,81 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function prd_out(ord_num) {
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function ord_out(id) {
+	 var url ="index2.php?PHP_action=order_view&PHP_id="+id+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77">
+<br><br>
+
+
+ <table width=600 border=0 cellspacing=0 cellpadding=2>
+  <tr class="top16bg">  
+    <td width=90>&nbsp;</td>  
+	<td    align=center class="top16bg"> <font color=yellow><b><u>Out-Put</u></b></font> Analysis by Style -- In House</td>
+	<td width=90 align=right class="txt_B_y_16t"><b>FTY : {$fty} &nbsp;&nbsp;</b></td>
+  </tr>
+  <tr class="top16bg">  
+	<td  colspan=3 align=center class="top16bg"> From : {$start}&nbsp;&nbsp;&nbsp;&nbsp; To : {$finish}</td>
+  </tr>
+
+{if $msg}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=550 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+ </table>
+ <table width=600 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=w9 width=150 align=center><b>Style</b></td> 
+    <td class=w9 width=80 align=center><b>ORDERS</b></td>   
+    <td class=w9 width=110 bgcolor=#412E00 align=center>Average Out-Put<br>per day(Q'ty)</td> 
+    <td class=w9 width=80 bgcolor=#412E0  align=center><b>SUM Q'ty</b><br>total</td>
+    <td class=w9 width=110 align=center>Average Out-Put<br>per day(SU)</td>  
+    <td class=w9 width=80 align=center><b>SUM SU</b><br>total</td>  
+  </tr>
+    {section name=SEC loop=$ord} 
+    <tr {if $ord[SEC].order_str <>''} bgcolor="#F8E3C5"{/if}>        
+    <td class=b10 align=left><b>&nbsp;{$ord[SEC].style}</b></td>
+    <td class=b9 align=right>{$ord[SEC].order_count|number_format}</td>
+    <td class=b9 align=right bgcolor=#FFE6ED>{$ord[SEC].avg_qty|number_format}</td>
+    <td class=b9 align=right bgcolor=#FFE6ED>{$ord[SEC].sum_qty|number_format}</td>
+    <td class=b9 align=right bgcolor=#E6EFFF>{$ord[SEC].avg_su|number_format}</td>
+    <td class=b9 align=right bgcolor=#E6EFFF>{$ord[SEC].sum_su|number_format}</td>
+    </tr>
+    {/section}   
+    <tr><td colspan=6 bgcolor=#000000 height=5></td></tr>
+    <tr {if $ord[SEC].order_str <>''} bgcolor="#F8E3C5"{/if}>        
+    <td class=b10 align=left><b>&nbsp;Total</b></td>
+    <td class=b9 align=right>{$ord_total|number_format}</td>
+    <td class=b9 align=right bgcolor=#FFE6ED>&nbsp;</td>
+    <td class=b9 align=right bgcolor=#FFE6ED>{$qty_total|number_format}</td>
+    <td class=b9 align=right bgcolor=#E6EFFF>&nbsp;</td>
+    <td class=b9 align=right bgcolor=#E6EFFF>{$su_total|number_format}</td>
+    </tr>
+
+</table>
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

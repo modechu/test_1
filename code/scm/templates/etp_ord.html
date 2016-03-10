@@ -1,0 +1,106 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ sales ESP distribution ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript">
+function ord_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	 var nm = 'order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function tblresize() {
+	var dh = 110;
+	var dw = 60;
+	var hh = tblShow.offsetHeight + dh;
+	if ( hh > screen.height - dh )
+	hh = screen.height - dh ;
+  if (tblShow.offsetWidth) window.resizeTo( tblShow.offsetWidth + dw , hh );
+  self.focus();
+}
+
+</script>
+{/literal}
+
+<body topmargin="10" onLoad="tblresize();" />
+<table border="0" cellspacing="0" cellpadding="0" id="tblShow" />
+  <tr>
+    <td>
+ <table width=660 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#C2C2C1"><td colspan=9 align=center class=gry height=35><b>{if $un_sch == 1} Monthly Un Schedule Order List{else}Monthly Order Summary List{/if}  {$title_mk}</b></td></tr>
+  <tr  bgcolor="#C2C2C1" height=25><td colspan=9 align=center class=gry><b>FACTORY : <span class=sign><b>{$fty}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YEAR : <span class=sign><b>{$year}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MONTH : <span class=sign><b>{$month}</b></td></tr>
+  <tr bgcolor="#0D4368" height=25> 
+    <td class=w9 width=80 align=center bgcolor=#122B3F>ORDER#</td>
+    <td class=w9 width=50 align=center bgcolor=#122B3F>Style</td>
+    <td class=w9 width=80 align=center bgcolor=#122B3F>Q'TY</td>
+    <td class=w9 width=80 align=center bgcolor=#122B3F>S.U.</td>
+    <td class=w9 width=100 align=center bgcolor=#122B3F>ETP</td>
+    <td class=w9 width=100 align=center bgcolor=#122B3F>ETD</td>
+    <td class=w9 width=0 align=center bgcolor=#ffffff></td> 
+    <td class=w9 align=center bgcolor=#666666 colspan=2><b>Sataus</b></td>
+  </tr>
+{if $record_NONE}
+  <tr><td colspan=14 align=center class=bgdy height=35><b>No Records !</b></td></tr>
+{else}
+{section name=SEC loop=$ord}
+  <tr {if $ord[SEC].status == '== SHIPPED ==' || $ord[SEC].status == '= FINISHED ='}bgcolor="#F3F2F2"{else}bgcolor="#ffffff"{/if}> 
+    <td class=snvy align=left nowrap><b><a href="javascript:ord_out('{$ord[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$ord[SEC].ord_num}{if $ord[SEC].partial_num > 1} ({$ord[SEC].mks}){/if}</b>
+    <td class=bgdy9 align=center><b>{$ord[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$ord[SEC].qty|number_format}</b></td>
+    <td class=grn9 align=right><b>{$ord[SEC].su|number_format}</b></td>
+    <td class=gry7 align=center><b>{$ord[SEC].etp}</b></td>
+    <td class=gry7 align=center><b>{$ord[SEC].etd}</b></td>
+    <td class=w9 width=0 align=center bgcolor=#ffffff></td> 
+    <td class=grn9 align=left width=130 nowrap><b>{$ord[SEC].status}</b></td>
+     <td class=grn9 align=left width=100><a href="javascript:po_bom_view('{$ord[SEC].ord_num}','x')"><span class='F3'><small>material status</small></a></td>
+  </tr>
+{/section}
+    <tr bgcolor="#D1D1D0"> 
+    <td class=snvy align=left><b>Total</b></td>
+    <td class=bgdy9 align=right><b>&nbsp;</b></td>
+    <td class=bgdy9 align=right><b>{$ttl_qty|number_format}</b></td>
+    <td class=grn9 align=right><b>{$ttl_su|number_format}</b></td>
+    <td class=gry7 colspan=5 align=center>&nbsp;</td>
+  </tr>
+  <tr bgcolor="#C2C2C1" height=25>          
+    <td class=b9 align=center colspan=14><b>Total {if $un_sch == 1} UN-Schedule {else} Order{/if} in month <span class=sign><b>&nbsp;{$month}&nbsp;</b></span>  for volume <span class=bgdy>: {$ttl_su|number_format} su&nbsp;&nbsp;({$ttl_qty|number_format} pcs)</b>&nbsp;&nbsp;</span></td>
+  </tr>
+ {/if}
+</table>
+		</td>
+  </tr>
+</table>
+
+<BR>
+ <table width=340 border=1 cellspacing=0 cellpadding=2>
+   <tr bgcolor="#0D4368" height=25> 
+    <td class=w9 width=100 align=center bgcolor=#122B3F>QTY</td>
+    <td class=w9 width=60 align=center bgcolor=#122B3F>Sales</td>
+    <td class=w9 width=60 align=center bgcolor=#122B3F>Factory</td>
+    <td class=w9 align=center bgcolor=#122B3F colspan=2>TOTAL</td>
+  </tr>
+{section name=SEC loop=$sales_qty}
+  <tr bgcolor="#ffffff"> 
+  	<td class=bgdy9 align=right><b>{$dist[SEC]} :</b></td>
+    <td class=bgdy9 align=right><b>{$sales_qty[SEC]}</b></td>
+    <td class=bgdy9 align=right><b>{$fty_qty[SEC]}</b></td>
+    <td class=bgdy9 align=right width=60><b>{$ord_qty[SEC]}</b></td>
+    <td class=bgdy9 align=right width=60><b>({$ord_qty_prc[SEC]|NUMBER_FORMAT:"2f"}%)</b></td>
+  </tr>
+{/section}
+  <tr bgcolor="#ffffff"> 
+  	<td class=bgdy9 align=center colspan=4><b></b></td>
+  </tr>
+  <tr bgcolor="#ffffff"> 
+  	<td class=bgdy9 align=right><b>Total :</b></td>
+    <td class=bgdy9 align=right><b>{$sales_qty_ttl}</b></td>
+    <td class=bgdy9 align=right><b>{$fty_qty_ttl}</b></td>
+    <td class=bgdy9 align=center colspan=2><b>{$ord_qty_ttl}</b></td>
+  </tr>  
+<!--------- footer ---------->
+{include file="footer.html"}

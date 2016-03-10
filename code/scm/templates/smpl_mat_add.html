@@ -1,0 +1,177 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 樣本 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="JavaScript"><!--
+function refreshIt()  {
+	if (!document.images) return;
+	document.images['pic1'].src='{/literal}{$main_pic}{literal}?'+ Math.random();
+	document.images['pic2'].src='{/literal}{$A_pic}{literal}?'+ Math.random();
+	document.images['pic3'].src='{/literal}{$B_pic}{literal}?'+ Math.random();
+}
+
+function cfm(ref,id,style_id) {
+	if ( confirm("確定要刪除[ "+ref+" ] ??")) {
+	location.href="index2.php?PHP_action=do_smpl_lots_del&id="+id+"&style_code="+style_id+"&lots_code="+ref;
+	} 
+ }
+function tp(url) { parent.top.location.href=url }
+function mat_list()  {
+	var gofile ='index2.php?PHP_action=show_lots_search'; 	lots=window.open(gofile,'lots','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=700,height=400, top=100, left=100');
+ 	lots.focus();
+ }
+function writeToParentList(source) {
+	window.document.forms['smpl_lots_add'].elements['PHP_lots_code'].value = source;
+}
+-->
+</script>
+{/literal}
+</head>
+<body onLoad="refreshIt();">
+<form method=POST name=smpl_lots_add>
+<input type="hidden" name="PHP_action" value="do_smpl_lots_add">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [  樣本基本記錄 ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>sample # :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.style_code}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>部門 :</td>
+    <td class=bgdy align=left><b>&nbsp;{$smpl.dept}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>客戶 : </td>
+    <td class=grn10 align=left><b>&nbsp;{$smpl.cust}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>客戶款號 : </td>
+    <td class=bgdy align=left>&nbsp;<b>{$smpl.cust_ref}</b></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>年份 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.year}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>季節別 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.season}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>款式類別 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.style_type}</b></td>
+     <td class=snvy align=right nowrap bgcolor=#F5F4AC>相關款式 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.style_relate}</b></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>尺碼類別 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.size_type}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>尺碼段 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.size_scale}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>配額類別 : </td>
+    <td class=grn10 align=left>&nbsp;<b>{$smpl.quota}</b></td>
+     <td>&nbsp;</td>
+     <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>主料成份 : </td>
+    <td class=grn10 align=left colspan=3>&nbsp;<b>{$smpl.chief_val}</b></td>
+    <td class=snvy align=right nowrap bgcolor=#F5F4AC>內裡成份 : </td>
+    <td class=grn10 align=left colspan=3>&nbsp;<b>{$smpl.ling_val}</b></td>
+  </tr>
+  <tr>
+    <td colspan=8 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+</table>
+<!-------------  material range ------------->
+    <table width=600 border=0 cellspacing=1 cellpadding=2>
+     <tr bgcolor=#333333 height=28>
+	  <td width=100 class=ylw9 align=center>主料代號</td>
+	  <td width=180 class=ylw9 align=center>主料名稱</td>
+	  <td width=220 class=ylw9 align=center>用途及位置</td>
+	  <td width=80 class=ylw9 align=center>備註</td>
+	  <td width=20 class=ylw9 align=center>del</td>
+     </tr>
+
+	{if $lots_NONE}  
+	  <tr>
+		<td colspan=4 align=center class=ssign><br>資料庫目前沒有 主料記錄!<br><br>
+	  </tr>
+	{/if}
+
+	{section name=USE loop=$lots_use} 
+     <tr bgcolor=#eeeeee height=28>
+	  <td class=snvy align=center>{$lots_use[USE].lots_code}</td>
+	  <td class=snvy >{$lots_use[USE].lots_name}</td>
+	  <td class=snvy >{$lots_use[USE].use_for}</td>
+	  <td class=snvy >{$lots_use[USE].use_method}</td>
+	  <td class=snvy >&nbsp;{if $del_flag}
+<a href="javascript:cfm('{$lots_use[USE].lots_code}','{$lots_use[USE].id}','{$smpl.style_code}')" value="刪除" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+{/if}</td>
+	 </tr>
+	{/section} 
+	 
+	{if $add_flag}
+	 <tr bgcolor=#999999 height=28 >
+	  <td align=center class=w10>主料代號:<br>
+	  <input type=text name="PHP_lots_code" size=10 value="{$lots_use.lots_code}" class=select> </td>
+
+	  <td align=center class=b9 bgcolor="#eeeeee" onmouseover="bgColor='#66ffff'" onmouseout="bgColor='#eeeeee'"><input type=button onClick="mat_list();" value="主料列表查尋" class=select></td>
+
+	  <td align=center >
+	   <textarea name="PHP_lots_use_use_for" rows=3 cols=36 class=select>{$lots_use.use_for}</textarea></td>
+	  <td align=center colspan=2>{$usage_select}</td>
+
+     </tr>
+	 <tr>
+	  <td class=grn9 colspan=7 >
+	  ※ 請直接輸入主料代號，或利用[主料列表查尋]選擇主料後，再輸入[用途及位置]，必要時再選擇備註內容。</td></tr>
+	  <tr><td class=head colspan=7 align=center>
+		<input type="hidden" name="PHP_smpl_id" value="{$smpl.id}">
+		<input type="hidden" name="PHP_style_code" value="{$smpl.style_code}">
+		<input type=submit value="確定 加入上列 主料記錄" class=select_e style="width:580;cursor:pointer"></td>
+	 </tr>
+	{/if}
+    </table>
+<!------------------------------------------------>
+<!-- picture -->
+		<hr SIZE=2 WIDTH=590>
+	<table border=0 cellspacing=0 cellpadding=5 width=600>
+      <tr bgcolor=#333333 height=30>
+        <td align=center class=ylw10 width=290>款式主要圖相 </td>
+        <td align=center class=ylw10 width=240>款式其它圖相</td>
+      </tr>
+      <tr>
+        <td align=center class=head valign=top>
+			<table width=300 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center><img src="{$main_pic}" name="pic1" width=300><td></tr>
+			</table>
+		</td>
+        <td align=center valign=top class=head>
+		 <table width=250 border=1 cellspacing=0 cellpadding=1>
+            <tr>
+              <td align=center><img src="{$A_pic}" name="pic2" width=125></td>
+              <td align=center><img src="{$B_pic}" name="pic3" width=125></td>
+            </tr>
+         </table>
+<!-- picture --><br>
+<!-- comments -->
+			<table width="250" border=1 cellspacing=0 cellpadding=1>
+				<tr>
+				  <td width=100% height=22 bgcolor=#333333 align=center class=ylw10>特殊說明 / 款式重點...</td>
+				</tr>
+				<tr>
+					<td class=ylw10 align=center>
+						<textarea name="PHP_comments" rows=7 cols=42 class=select disabled>{$smpl.memo}</textarea></td>
+				</tr>
+			</table>
+<!-- comments -->
+		</td>		
+	</table>
+<!--------- footer ---------->
+{include file="footer.html"}

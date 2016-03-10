@@ -1,0 +1,126 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  CAPACITY SEARCH .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+<script language="JavaScript"><!--
+function search() {
+	var fty = ''; var year1 = ''; var year2 = ''; var year3 = '';
+	fty = window.document.forms['capacity'].elements['PHP_fty'].value;
+	year1 = window.document.forms['capacity'].elements['PHP_year1'].value;
+	year2 = window.document.forms['capacity'].elements['PHP_year2'].value;
+	year3 = window.document.forms['capacity'].elements['PHP_year3'].value;
+	month1 = window.document.forms['capacity'].elements['PHP_month1'].value;
+	month2 = window.document.forms['capacity'].elements['PHP_month2'].value;
+	
+	location.href="bom_po_apb.php?PHP_action=do_bom_apb_search&PHP_fty="+fty+"&PHP_year1="+year1+"&PHP_year2="+year2+"&PHP_year3="+year3+"&PHP_month1="+month1+"&PHP_month2="+month2;
+}
+
+function add() {
+	var fty = ''; var year1 = ''; var year2 = ''; var year3 = '';
+	fty = window.document.forms['capacity'].elements['PHP_fty'].value;
+	year1 = window.document.forms['capacity'].elements['PHP_year1'].value;
+	year2 = window.document.forms['capacity'].elements['PHP_year2'].value;
+	year3 = window.document.forms['capacity'].elements['PHP_year3'].value;
+
+	location.href="index2.php?PHP_action=capacity_add&PHP_fty="+fty+"&PHP_year1="+year1+"&PHP_year2="+year2+"&PHP_year3="+year3;
+ }
+
+function edit() {
+	var fty = ''; var year1 = ''; var year2 = ''; var year3 = '';
+	fty = window.document.forms['capacity'].elements['PHP_fty'].value;
+	year1 = window.document.forms['capacity'].elements['PHP_year1'].value;
+	year2 = window.document.forms['capacity'].elements['PHP_year2'].value;
+	year3 = window.document.forms['capacity'].elements['PHP_year3'].value;
+
+	location.href="index2.php?PHP_action=capacity_update&PHP_fty="+fty+"&PHP_year1="+year1+"&PHP_year2="+year2+"&PHP_year3="+year3;
+ }
+
+function mask(){
+	$.blockUI({ message: '<div><h3>Loading...</h3></div>'});
+	
+}
+-->
+</script>
+{/literal}
+
+</head>
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+
+{if $max_notify > 0 }		
+	<table width=620 border=0 cellpadding=3 cellspacing=1>
+	<tr height=30 bgcolor=#C0CECF>
+		<td align="center" >
+			<a href="notify.php?PHP_action=notify"> <span class=sign align=center ><b> You have {$max_notify} message un-read</b></span></a></td>
+	</tr>
+</table>
+<br>
+{/if}	
+
+<br><form METHOD="POST" name="capacity">
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+
+<tr><td>
+<table cellspacing=1 cellpadding=1 cols=1 width=100% bgcolor=#003333 align=center>
+	<tr>
+		<td class="des" align=center height=28>[ SEARCH TARGET FACTORY'S CAPACITY]</td>
+	</tr>
+</table>
+</td></tr>
+
+{if $msg_YES}
+ <tr><td>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+
+<tr><td>
+<table border=0 cellspacing=6 cellpadding=1 width=600>
+  <tr>
+    <td class=snvy align=right><b>factory ID : </b><td>
+	<td target=left>&nbsp;{$factory}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right width=150><b>Target Year : </b><td>
+	<td align=left width=450>&nbsp;{$year_1}&nbsp;&nbsp;&nbsp;&nbsp;<span style="display:none">2 :{$year_2}&nbsp;&nbsp;&nbsp;&nbsp;3 :{$year_3}</span></td>
+  </tr>
+  <tr>
+    <td class=snvy align=right width=150><b>Target Month : </b><td>
+	<td align=left width=450>&nbsp;{$month_1}&nbsp;&nbsp; ~ &nbsp;&nbsp;{$month_2}</td>
+  </tr>
+</table>
+</td></tr>
+</table>
+
+<table border=0 cellspacing=0 cellpadding=0 width=600 align=center>
+	<tr> 
+	  <td align=left class=gry9 height=80>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		# select target factory  !<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		# select target year, or leave without selection for THIS year only !<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		# maximum layout for 3 years together !<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+	  </td>
+	</tr>
+</table>
+<table border=0 cellspacing=0 cellpadding=0 width=600 align=center>
+	<tr> 
+	<tr> 
+	  <td align=center width=50%>
+		<input type=button value=" SEARCH / LIST ORDER RECORDS " class=select_e style="cursor:pointer; width=99%" onClick="mask();search(); this.width=0;">
+	  </td>
+	</tr>
+</table>
+
+
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,77 @@
+{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">ColorWay</td>
+	</tr>
+    <tr>
+        <td class="space"></td>
+    </tr>
+    <tr>
+        <td class="subInputName">
+            <form METHOD="POST" id="search_colorway" action="{$PHP_SELF}?PHP_action=search_colorway">
+            <table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td class="item_title"> 
+                        <table cellspacing="0" cellpadding="0" cols="0">
+                            <tr>
+                                <td class="bar_t_l"></td>
+                                <td class="bar_t_m"></td>
+                                <td class="bar_t_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_m_l"></td>
+                                <td class="bar_m_m"> SEARCH / VIEW </td>
+                                <td class="bar_m_r"></td>
+                            </tr>
+                            <tr>
+                                <td class="bar_b_l"></td>
+                                <td class="bar_b_m"></td>
+                                <td class="bar_b_r"></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <table id="Search" cellpadding="0" cellspacing="0" cols="0" >
+                            <tr>
+                                <td class="title_txt_r">Factory : </td>
+                                <td class="subInputValue">{$fty_select}</td>
+                                <td class="title_txt_r">Order # : </td>
+                                <td class="subInputValue"><input type="text" class="styled-input" name="PHP_ord_num"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="space"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <input id="search_colorway" class="submit_ajax" type="submit" style="width:150px;" name="Submit" value="Search">
+                                </td>
+                            </tr>	
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+                <tr>
+                    <td class="note_msg">
+                        ¡° 1: search / view colorway; please use combo selection or/and key field.<br>
+                        ¡° 2: if entire Search ; keep fields in blank and just click [ Search ] button.
+                    </td>
+                </tr>
+                <tr>
+                    <td class="space"></td>
+                </tr>
+            </table>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="space_9"></td>
+    </tr>    
+</table>
+{include file="footer.html"}

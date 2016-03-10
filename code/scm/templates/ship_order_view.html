@@ -1,0 +1,419 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>=== ...... SCM SYSTEM [ SHIPPING DOCUMENT LIST ] ...... ===</title>
+<link type="text/css" rel="stylesheet" href="./css/shipping.css">
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/jquery.blockUI.js"></script>
+{literal}
+<script language="javascript">
+function addDate(dy,dmomth,dd,dh,dm,dadd){
+	var a = new Date(dy,dmomth,dd,dh,dm)
+	a = a.valueOf()
+	a = a + dadd * 1 * 60 * 60 * 1000
+	a = new Date(a)
+	return a;
+}
+
+$(document).ready(function(){
+
+	$('.mail_msg').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("mail_txt");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("mail_txt");  
+	});
+	
+	$('.title_submit').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+	
+	$('.title_submit').click(function(){
+        $.blockUI({ message: ' Loding ...'});
+		if( $(this).attr('id') == 'revise' ) {
+			if ( confirm("Are you shure to revise this file  ??")) {
+				if( $("#ckdate").html() == 0 ){
+					alert('超過關帳日期，請聯絡會計擔當人員開啟！');
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		$("form[id="+$(this).attr('id')+"]").submit();
+        $.unblockUI();
+	});
+    
+    $('#bermk').click(function(){
+        $('#remark').show();
+        $('#burmk').show();
+        $('#bermk').hide();
+        $('#vrmk').hide();
+    });
+	
+    $('#burmk').click(function(){
+        $.blockUI({ message: ' Loding ...'});
+        $("form[id=rmk]").submit();
+    });
+	
+	$('.title_submit2').hover(function(){
+		$(this).animate({ fontSize: '+=5' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ fontSize: '-=5' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});	
+    
+	$('.title_submit3').hover(function(){
+		$(this).animate({ paddingLeft: '+=10' }, 200);
+		$(this).addClass("title_submit_over");
+	},function(){
+		$(this).animate({ paddingLeft: '-=10' }, 200);
+		$(this).removeClass("title_submit_over");  
+	});
+		
+	$('.list_invoice , .list_invoice_0 ').hover(function(){
+		$(this).addClass("list_txt_bg");
+	},function(){
+		$(this).removeClass("list_txt_bg");  
+	});
+	
+		
+	$('.list_invoice_5').hover(function(){
+		$(this).addClass("list_txt_bg_d");
+	},function(){
+		$(this).removeClass("list_txt_bg_d");  
+	});
+	
+	$('tr[name^=cust_po]').live('click',function(e) { 
+	
+		var po = $(this).attr('cust_po');
+		var mk = $('tr[id^='+po+']').is(":hidden");
+		$('tr[id^=]').hide();
+		if ( mk == true ) {
+			$('tr[id^='+po+']').show();
+		} else {
+			$('tr[id^='+po+']').hide();
+		}
+
+	});
+	
+	$('#msg').click(function(){
+		$('#msg').hide();
+	});
+	
+});
+
+</script>
+{/literal}
+</head>
+<body>
+{if $max_notify > 0 }
+<table width="100%" border="0" cellpadding="3" cellspacing="1">
+	<a href="notify.php?PHP_action=notify">
+	<tr height="30" >
+		<td align="center" class="mail_msg" bgcolor="#EEEEEE">
+			<span class="sign" align="center"><b> You have {$max_notify} message un-read</b></span>
+		</td>
+	</tr>
+	</a>
+</table>
+<br>
+{/if}	
+
+<table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+	{if $msg_YES}
+	<tr id="msg">
+		<td>
+			<table border="0" cellspacing="3" cellpadding="3" width="100%" align="center">
+				<tr bgcolor="#ffffff">
+					<td class="msg_atc_pic"><img src="images/alert.gif" border="0"></td>
+					<td width="1"></td>
+					<td class="msg_atc_txt">{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	<tr>
+		<td class="line_t"></td>
+	</tr>
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%" align="center">
+				<tr>
+					<td width="20%" class="title_status">{$status}</td>
+					<td width="60%" class="title_main">[ SHIPPING INVOICE ]</td>
+					<td width="20%" class="title_main"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_b">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr>
+					<td class="title_txt_l" width="180">INVOICE NO.：</td>
+					<td class="title_txt_1" width="16%">{$invoice.inv_num}</td>
+					<td class="title_txt_l" width="16%"></td>
+					<td class="title_txt_l" width="16%"></td>
+					<td class="title_txt_l" width="80">DATE：</td>
+					<td class="title_txt_1" width="16%"><input type="hidden" id="ckdate" value="{$ckdate}">{$invoice.ship_date}</td>	
+				</tr>
+				<tr>
+					<td class="title_txt_l">Consignee / Ship to：</td>
+					<td class="title_txt_1" colspan="5">{$invoice.f_name}</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<table border="0" cellspacing="0" cellpadding="0" width="100%">
+				<tr class="list_title_1">
+					<td>P.O. NO.</td>
+					<td>COLOR</td>
+					<td colspan="2">Quantity</td>
+					<td colspan="2">Unit Price</td>	
+					<td colspan="2">AMOUNT</td>
+				</tr>
+				{if !$row}
+				<tr>
+					<td colspan="8" align="center" class="ssign"><br>No Records!<br></td>
+				</tr>
+				{/if}
+				{section name=SEC loop=$row}
+				<tr name="cust_po" cust_po="{$row[SEC].mk}" class="{if $row[SEC].mo == 0}list_invoice_0{else}list_invoice{/if}">
+					<td class="{if $row[SEC].mo == 0}list_invoice{else}list_invoice_n{/if}">{if $row[SEC].mo == 0}{$row[SEC].cust_po.cust_po}{else}&nbsp;{/if}</td>
+					<td class="list_invoice_1">{$row[SEC].cust_po.colorway}</td>
+					<td class="list_invoice_2">{$row[SEC].cust_po.ttl_qty|number_format:""}</td>
+					<td class="list_invoice_3">PCS</td>
+					<td class="list_invoice_2">US$</td>
+					<td class="list_invoice_4">{$row[SEC].cust_po.ship_fob|number_format:"2"}</td>
+					<td class="list_invoice_2">US$</td>
+					<td class="list_invoice_4">{$row[SEC].cust_po.amount|number_format:"2"}</td>
+				</tr>
+				<!-- 是否為最後一筆 -->
+				{if $row[SEC].mo == $row[SEC].count}
+				<tr id="{$row[SEC].mk}" style="display:none;">
+					<td class="list_invoice_5" colspan="8">
+						<table border="0" cellspacing="0" cellpadding="0" width="90%">
+							{section name=SECS loop=$row}
+							<!-- 判斷是否同 PO -->
+							{if $row[SEC].cust_po.cust_po == $row[SECS].cust_po.cust_po}
+							<!-- 是否為第一筆 -->
+							{if $row[SECS].mo == 0}
+							<tr class="list_title_2">
+								<td>COLOR</td>
+								{section name=SECSS loop=$row[SECS].size}
+								<td>{$row[SECS].size[SECSS]}</td>
+								{/section}
+								<td>TOTAL QTY.</td>
+							</tr>
+							<tr class="list_invoice_5">
+								<td class="list_invoice_l">{$row[SECS].cust_po.colorway}</td>
+								{section name=SECSS loop=$row[SECS].qty}
+								<td>{$row[SECS].qty[SECSS]|number_format:""}</td>
+								{/section}
+								<td class="list_invoice_r">{$row[SECS].t_ttl|number_format:""}</td>
+							</tr>
+							<!-- 是否為最後一筆 -->
+							{if $row[SECS].mo == $row[SECS].count}
+							<tr>
+								<td class="list_invoice_7">SUB Total：</td>
+								{section name=SECSS loop=$row[SECS].sub_ttl}
+								<td class="list_invoice_6">{$row[SECS].sub_ttl[SECSS]|number_format:""}</td>
+								{/section}
+								<td class="list_invoice_8">{$row[SECS].s_ttl|number_format:""}</td>
+							</tr>
+							{/if}
+							{else}
+							{if $row[SECS].mo != $row[SECS].count}
+							<tr class="list_invoice_5">
+								<td class="list_invoice_l">{$row[SECS].cust_po.colorway}</td>
+								{section name=SECSS loop=$row[SECS].qty}
+								<td>{$row[SECS].qty[SECSS]|number_format:""}</td>
+								{/section}
+								<td class="list_invoice_r">{$row[SECS].t_ttl|number_format:""}</td>
+							</tr>
+							{else}
+							<tr class="list_invoice_5">
+								<td class="list_invoice_l">{$row[SECS].cust_po.colorway}</td>
+								{section name=SECSS loop=$row[SECS].qty}
+								<td>{$row[SECS].qty[SECSS]|number_format:""}</td>
+								{/section}
+								<td class="list_invoice_r">{$row[SECS].t_ttl|number_format:""}</td>
+							</tr>
+							<tr>
+								<td class="list_invoice_7">SUB Total：</td>
+								{section name=SECSS loop=$row[SECS].sub_ttl}
+								<td class="list_invoice_6">{$row[SECS].sub_ttl[SECSS]|number_format:""}</td>
+								{/section}
+								<td class="list_invoice_8">{$row[SECS].s_ttl|number_format:""}</td>
+							</tr>
+							{/if}
+							{/if}
+							{/if}
+							{/section}
+						</table>
+					</td>
+				</tr>
+				{/if}
+				{/section}
+				<tr class="list_invoice_0">
+					<td class="list_invoice">&nbsp;</td>
+					<td class="list_invoice_1">Grand Total：</td>
+					<td class="list_invoice_2"><span class="txt_dub">{$t_qty|number_format:""}</span></td>
+					<td class="list_invoice_3">PCS</td>
+					<td class="list_invoice_2">&nbsp;</td>
+					<td class="list_invoice_4">&nbsp;</td>
+					<td class="list_invoice_2">US$</td>
+					<td class="list_invoice_4"><span class="txt_dub">{$t_amt|number_format:"2"}</span></td>
+				</tr>				
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_b">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	{if $charge}
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="0" width="100%" id="momo">
+				<tr>
+					<td valign="top" style="width:160;"><span class="charge_title" style="width:160;">OTHER CHARGE</span><span id="note_charge" class="note" style="width:150;"></span></td>
+					<td valign="top" align="left">
+						<table id="charge" border="0" cellspacing="3" cellpadding="3">
+							<tr style="{if !$charge}display:none{/if}">
+								<td id="charge_h" class="charge_menu">Charge(US$)</td>
+								<td id="charge_h" class="charge_menu">Description</td>
+							</tr>
+							{section name=CRG loop=$charge}
+							<tr>
+								<td class="file">{$charge[CRG].charge}</td>
+								<td class="file">{$charge[CRG].des}</td>
+								</td>
+							</tr>
+							{/section}
+						</table>
+					</td>
+                    <td valign="top" style="width:80;"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	{/if}
+	{if $charge && $file}
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	{/if}
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="0" width="100%">
+				<tr>
+					<td valign="top" style="width:160;" nowrap><span class="charge_title" style="width:160;">ATTACHMENT FILE</span><span id="note_file" class="note" style="width:150;"></span></td>
+					<td valign="top" align="left">
+						<table id="file" border="0" cellspacing="3" cellpadding="3">
+							<tr style="{if !$file}display:none{/if}">
+								<td id="file_h" class="charge_menu">File Name</td>
+								<td id="file_h" class="charge_menu">Description</td>
+							</tr>
+							{section name=FL loop=$file}
+							<tr>
+								<td class="file"><a href="download.php?fname={$file[FL].file_name|escape:'url'}&fdir=shipping_file" title="{$order.cust_po[SEC].file}">{$file[FL].file_name}</a><input type="hidden" name="PHP_file_id[]" value="{$file[FL].id}"></td>
+								<td class="file">{$file[FL].file_des}</td>
+							</tr>
+							{/section}							
+						</table>
+					</td>
+                    <td valign="top" style="width:80;"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_c">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td>
+			<table border="0" cellspacing="3" cellpadding="0" width="100%">
+				<tr>
+                    <form method="POST" id="rmk">
+                    <input type="hidden" name="PHP_action" value="ship_rmk">
+                    <input type="hidden" name="PHP_id" value="{$PHP_id}">
+					<td valign="top" style="width:160;" nowrap><span class="charge_title" style="width:160;">REMARK</span><span id="note_file" class="note" style="width:150;"></span></td>
+					<td valign="top" align="left" class="file">
+                        <textarea style="display:none;" id="remark" name="PHP_remark" cols="66" rows="6" id="textfield">{$invoice.remark}</textarea>
+						<div id="vrmk">{$invoice.remark|nl2br}</div>
+					</td>
+                    <td valign="top" style="width:80;" >
+
+                    </td>
+                    <td valign="top" style="width:80;display:none;" class="title_submit3" id="burmk">
+                        <div id="burmk" title="UPDATE">UPDATE</div>
+                    </td>
+                    </form>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+	<tr>
+		<td class="line_b">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>
+			<table border="0" cellspacing="9" cellpadding="0" width="100%">
+				<tr class="status">
+					<!-- <td width="25%">{if $invoice.apv_user}APPROVED：{$invoice.apv_user}{/if}</td> -->
+					<td width="25%">{if $invoice.cfm_user}CONFIRM：{$invoice.cfm_user}{/if}</td>
+					<td width="25%">{if $invoice.submit_user}SUBMIT：{$invoice.submit_user}{/if}</td>
+					<!-- <td width="25%">{if $invoice.open_user}CREATE：{$invoice.open_user}{/if}</td> -->
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<form method="POST" id="attach"><input type="hidden" name="PHP_action" value="ship_invoice_attach"></form>
+	<form method="POST" id="edit"><input type="hidden" name="PHP_action" value="ship_invoice_edit"></form>
+	<form method="POST" id="submit"><input type="hidden" name="PHP_id" value="{$PHP_id}"><input type="hidden" name="PHP_invoice" value="{$invoice.inv_num}"><input type="hidden" name="PHP_action" value="ship_invoice_submit"></form>
+	<form method="POST" id="list"><input type="hidden" name="PHP_action" value="ship_sch"></form>
+	<form method="POST" id="revise"><input type="hidden" name="PHP_id" value="{$PHP_id}"><input type="hidden" name="PHP_invoice" value="{$invoice.inv_num}"><input type="hidden" name="PHP_action" value="ship_invoice_revise"></form>
+
+	
+	<tr>
+		<td class="line_black"></td>
+	</tr>
+ 	
+</table>

@@ -1,0 +1,106 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset=big5">
+	<title>==== :::::::::: ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+	{literal}
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript">
+	function order_show(num) {
+	 var url ="index2.php?PHP_action=ord_schedule_view&PHP_order_num="+num+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'ordershow';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+	} 
+</script>
+	{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+ <table width=770 border=1 cellspacing=0 cellpadding=2>
+  <tr height=30>
+  	<td colspan=11 align=center class=gry><b><font color=red>{$fty}</font>&nbsp;&nbsp; Summary Monthly Report for the Month of <font color=red>{$sch_date}</font></b>
+  	<td align=center class=gry>
+  	 {if $status == 4 }
+    	<a href="ship.php?PHP_action=ship_print&PHP_fty={$fty}&PHP_sch_date={$sch_date}&PHP_cust={$cust}">
+			<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+			{else}&nbsp;{/if}
+  	</td>
+  </tr>
+<!---
+{if $msg_YES}
+ <TR><TD colspan=10>
+     <table border=0 cellpadding=3 cellspacing=0 cols=1 width=690>
+      <tr bgcolor=#ffffff>
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </TD></TR>
+{/if}
+--->
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=70 align=center rowspan=2><b>Invoice <br> Date</b></td>
+    <td class=w9 width=70 align=center rowspan=2><b>Invoice #</b></td>
+		<td class=w9 width=60 align=center rowspan=2><small>Commodity</small></td>
+    <td class=w9 width=80 align=center rowspan=2><b>order#</b></td>
+    <td class=w9 width=100 align=center rowspan=2><b>Style#</b></td>
+    <td class=w9 width=100 align=center rowspan=2><b>cust. ref.</b></td>
+    <td class=w9 align=center colspan=2><b>SHPed Q'ty</b></td>
+    <td class=w9 align=center colspan=2><b>FOB</b></td>
+    <td class=w9 align=center colspan=2><b>CMT</b></td>
+  </tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=50 align=center><b>Est.</b></td>
+    <td class=w9 width=50 align=center><b>Act.</b></td>
+    <td class=w9 width=50 align=center><b>Price</b></td>
+    <td class=w9 width=60 align=center><b>Amount</b></td>
+    <td class=w9 width=50 align=center><b>Price</b></td>
+    <td class=w9 width=60 align=center><b>Amount</b></td>
+
+  </tr>  
+  <form METHOD="POST" name="do_add">
+{section name=SEC loop=$ship} 
+   <tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+   <td class=gry9 align=center nowrap>{if $ship[SEC].inv_date <> '0000-00-00'}<small>{$ship[SEC].inv_date}</small>{/if}&nbsp;</td>
+   <td class=gry9 align=center><small>{$ship[SEC].inv_num}</small>&nbsp;</td>
+		<td class=gry9 align=center>{$ship[SEC].style}&nbsp;</td>
+   <td class=gry9 align=center nowrap><small><a href="javascript:order_show('{$ship[SEC].ord_num}')">
+	{$ship[SEC].ord_num}</a></small></td>
+   <td class=gry7 align=center><small>{$ship[SEC].style_num}&nbsp;</small></td>
+   <td class=b7 align=center><small>{$ship[SEC].ref}&nbsp;</small></td>
+ {if $ship[SEC].qty != $ship[SEC].t_qty}
+   <td class=gry9 align=right>{$ship[SEC].qty|number_format}&nbsp;</td>
+   <td class=gry9 align=right><font color=red>{$ship[SEC].t_qty|number_format}</font>&nbsp;</td>
+ {else}
+ 	 <td class=gry9 align=right colspan=2>{$ship[SEC].t_qty|number_format}</td>
+ {/if}
+	 <td class=gry9 align=right><small>{$ship[SEC].uprice|number_format:'2f'}</small>&nbsp;</td>
+	 <td class=gry9 align=right><small>{$ship[SEC].fob_amt|number_format:'2f'}</small>&nbsp;</td>
+	 <td class=gry9 align=right><small>{$ship[SEC].cm|number_format:'2f'}</small>&nbsp;</td>
+	 <td class=gry9 align=right><small>{$ship[SEC].cm_amt|number_format:'2f'}</small>&nbsp;</td>
+  </tr>
+  <input type="hidden" name="PHP_id[{$ship[SEC].i}]" value="{$ship[SEC].id}">
+  <input type="hidden" name="PHP_o_qty[{$ship[SEC].i}]" value="{$ship[SEC].qty}">
+  <input type="hidden" name="PHP_t_qty[{$ship[SEC].i}]" value="{$ship[SEC].t_qty}">
+  {/section}
+
+</table>
+<br>
+ 
+<table width=690 border=0 cellspacing=0 cellpadding=1>
+		<td align=center width=690>
+		<input type="hidden" name="PHP_action" value="do_inv_submit">
+		<input type="hidden" name="PHP_sch_date" value="{$sch_date}">
+		<input type="hidden" name="PHP_fty" value="{$fty}">
+		<input type="hidden" name="PHP_cust" value="{$cust}">
+		{if $status < 2 && $chk_submit == 1}
+		<input type=submit value="[ Submit above Records ]" class=select_e style="cursor:pointer; width=95%" onClick=this.width=0;>
+		{/if}
+		</td>
+	</tr>
+</table>
+</form>
+
+
+<!----------------------------------------------------------->
+<!--------- footer ---------->
+{include file="footer.html"}

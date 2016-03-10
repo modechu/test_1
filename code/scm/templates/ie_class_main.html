@@ -1,0 +1,194 @@
+{include file="header_utf8.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">Industrial Engineering Data</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+    <tr>
+		<td>
+			<table cellpadding="0" cellspacing="0" cols="0" >
+				<tr>
+					<td valign="top" align="middle">Category</td>
+					<td valign="top" align="middle"></td>
+					<td valign="top" align="middle"></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+	<tr>
+		<td>
+			<table cellpadding="0" cellspacing="0" cols="0" >
+				<tr>
+					<td valign="top" align="middle">大類</td>
+					<td valign="top" align="middle">中類</td>
+					<td valign="top" align="middle">小類</td>
+				</tr>
+				<tr>
+					<td valign="top" align="middle">Major</td>
+					<td valign="top" align="middle">Middle</td>
+					<td valign="top" align="middle">Small</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td class="space"></td>
+	</tr>
+	<tr>
+		<td>
+			<form METHOD="POST" id="submit_collar_qty" name="submit_collar_qty" action="{$PHP_SELF}?PHP_action=append_collar_qty" onSubmit="return append_collar_qty(this);">
+			<input type="hidden" id="PHP_action" name="PHP_action" value="append_collar_qty">
+			<input type="hidden" id="ver" name="ver" value="{$ver}">
+			<input type="hidden" id="fty" name="fty" value="{$factory}">
+			<input type="hidden" id="order_num" name="order_num" value="{$order_num}">
+			<table cellpadding="0" cellspacing="0" cols="0" >
+				<tr>
+					<td class="TopCtrlValueLeft" colspan="7">
+						<table border="0" cellspacing="3" cellpadding="3">
+							<tr>
+								<td class="SubTitleLine" style="background-color:#FFCDFE;">Receiving Qty &gt; 0 AND Stock Qty = 0</td>
+								<td class="SubTitleLine" style="background-color:#FEFFCD;">Receiving Qty &gt; Stock Qty</td>
+							</tr>
+						</table>
+					</td>
+					<td class="TopCtrlValueRight" colspan="6">
+						<input class="submit_ajax" type="Submit" id="append_collar_qty" style="width:90px;" name="Submit" value="Submit">
+					</td>
+				</tr>			
+				<tr>
+					<td class="TopCtrlValueLeft" colspan="7">
+						{if $lots}
+							Fabric
+						{else}
+							Accessory
+						{/if}
+					</td>
+					<td class="TopCtrlValueRight" colspan="6">
+						<input name="radio" type="radio" value="" OnClick="select_checkbox('Clear');"/> Clear All Receiving Qty 
+						<input name="radio" type="radio" value="" OnClick="select_checkbox('Reply');"/> Reply All Receiving Qty 
+					</td>
+				</tr>
+
+				{section name=DET loop=$lots}
+				{if $smarty.section.DET.index % 16 == 0}
+				<tr>
+					<td class="ListName" title="物料名稱&#13;Name">Name</td>
+					<td class="ListName" title="說明&#13;Material Detail">Material Detail</td>
+					<td class="ListName" title="內容&#13;Content">Content</td>
+					<td class="ListName" title="幅寬&#13;Cuttable Width">Cuttable<br>Width</td>
+					<td class="ListName" title="顏色&#13;Color">Color</td>
+					<td class="ListName" title="尺寸&#13;Size">Size</td>
+<!-- 					<td class="ListName" title="訂單數量&#13;Order (pic)">Order<br>(pic)</td>
+					<td class="ListName" title="用量&#13;Consumption">Consumption</td> -->
+					<td class="ListName" title="需求用量&#13;Demand Qty">Demand</td>
+					<td class="ListName" title="已領數量&#13;Received Qty">Received</td>
+					<td class="ListName" title="未領數量&#13;Unclaimed Qty">Unclaimed</td>
+					<td class="ListName" title="領用數量&#13;Receiving Qty">Receiving Qty</td>
+					<td class="ListName" title="庫存數量&#13;Stock Qty">Stock Qty</td>
+				</tr>
+				{/if}
+				<tr id="List_TR" name="List_TRs" mid="{$lots[DET].id}"><!-- fty carrier_num   unit ord_num  ship_link_id  po_num  mat_cat  mat_code  bom_id  remark  -->
+					<input type="hidden" size="9" id="MK_po_ship_link_qty_{$lots[DET].id}" value="{$lots[DET].unclaimed_qty|number_format:2:'':''}">
+					<input type="hidden" size="9" id="stock_qty{$lots[DET].id}" value="{$lots[DET].stock_qty|number_format:2:'':''}">
+					<input type="hidden" size="9" id="bom_qty{$lots[DET].id}" value="{$lots[DET].bom_qty}">
+					<input type="hidden" size="9" id="est_1{$lots[DET].id}" value="{$lots[DET].est_1}">
+					
+					<input type="hidden" size="9" name="unit[{$lots[DET].id}]" value="{$lots[DET].unit}">
+					<input type="hidden" size="9" name="ord_num[{$lots[DET].id}]" value="{$order_num}">
+					<input type="hidden" size="9" name="mat_cat[{$lots[DET].id}]" value="l">
+					<input type="hidden" size="9" name="mat_id[{$lots[DET].id}]" value="{$lots[DET].mat_id}">
+					<input type="hidden" size="9" name="bom_id[{$lots[DET].id}]" value="{$lots[DET].bom_id}">
+					<input type="hidden" size="9" name="color[{$lots[DET].id}]" value="{$lots[DET].color}">
+					<input type="hidden" size="9" name="size[{$lots[DET].id}]" value="{$lots[DET].size}">
+					
+					<td class="ListValueLeft" nowrap>{if $lots[DET].lots_name}<span title="{$lots[DET].lots_name}">{$lots[DET].lots_name|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft">{if $lots[DET].use_for}<span title="{$lots[DET].use_for}">{$lots[DET].use_for|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft" nowrap>{if $lots[DET].comp}<span title="{$lots[DET].comp}">{$lots[DET].comp|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft" nowrap>{if $lots[DET].width}{$lots[DET].width}{else}&nbsp;{/if}</td>	
+					<td class="ListValueLeft" nowrap>{if $lots[DET].color}<span title="{$lots[DET].color}">{$lots[DET].color|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft" nowrap>{if $lots[DET].size}{$lots[DET].size}{else}&nbsp;{/if}</td>	
+<!-- 					<td class="ListValueRight" nowrap>{if $lots[DET].bom_qty}{$lots[DET].bom_qty|round|number_format}{else}&nbsp;{/if}</td>
+					<td class="ListValueRight">{if $lots[DET].est_1}{$lots[DET].est_1}&nbsp;{$lots[DET].unit}{else}&nbsp;{/if}</td>
+ -->					<td class="ListValueRight" nowrap>{if $lots[DET].demand_qty}{$lots[DET].demand_qty|round|number_format}{else}&nbsp;{/if}</td>
+					<td class="ListValueRight">{$lots[DET].receive_qty|round|number_format}&nbsp;{$lots[DET].unit}</td>
+					<td class="ListValueRight" style="background-color:#AFD6FF;" nowrap>{$lots[DET].unclaimed_qty|round|number_format}&nbsp;{$lots[DET].unit}</td>
+					<td class="ListValueRight" nowrap>
+						<img src="images/copy.jpg" style="cursor:e-resize;" onclick="qPass('{$lots[DET].id}');">
+						<input type="text" id="po_ship_link_qty_{$lots[DET].id}" name="collar_qty[{$lots[DET].id}]" value="{$lots[DET].unclaimed_qty|number_format:2:'':''}" size="8" class="input_right"> 
+						<img src="images/del.png" style="cursor:help;" onclick="qClear('{$lots[DET].id}');">
+					</td>
+					<td class="ListValueRight" style="background-color:#CDE5FF;" nowrap>{$lots[DET].stock_qty|round|number_format}&nbsp;{$lots[DET].unit}</td>
+				</tr>
+				{/section}
+				
+				{section name=DET loop=$acc}
+				{if $smarty.section.DET.index % 16 == 0}
+				<tr>
+					<td class="ListName" title="物料名稱&#13;Name">Name</td>
+					<td class="ListName" title="說明&#13;Material Detail">Material Detail</td>
+					<td class="ListName" title="顏色&#13;Color">Color</td>
+					<td class="ListName" title="尺寸&#13;Size">Size</td>
+					<td class="ListName" title="訂單數量&#13;Order (pic">Order<br>(pic)</td>
+					<td class="ListName" title="用量&#13;Consumption">Consumption</td>
+					<td class="ListName" title="需求用量&#13;Demand Qty">Demand</td>
+					<td class="ListName" title="已領數量&#13;Received Qty">Received</td>
+					<td class="ListName" title="未領數量&#13;Unclaimed Qty">Unclaimed</td>
+					<td class="ListName" title="領用數量&#13;Receiving Qty">Receiving Qty</td>
+					<td class="ListName" title="庫存數量&#13;Stock Qty">Stock Qty</td>
+				</tr>
+				{/if}
+				<tr id="List_TR" name="List_TRs" mid="{$acc[DET].id}">
+					<input type="hidden" id="MK_po_ship_link_qty_{$acc[DET].id}" value="{$acc[DET].unclaimed_qty|number_format:2:'':''}">
+					<input type="hidden" id="stock_qty{$acc[DET].id}" value="{$acc[DET].stock_qty|number_format:2:'':''}">
+					<input type="hidden" id="bom_qty{$acc[DET].id}" value="{$acc[DET].bom_qty}">
+					<input type="hidden" id="est_1{$acc[DET].id}" value="{$acc[DET].est_1}">
+					
+					<input type="hidden" size="9" name="unit[{$acc[DET].id}]" value="{$acc[DET].unit}">
+					<input type="hidden" size="9" name="ord_num[{$acc[DET].id}]" value="{$order_num}">
+					<input type="hidden" size="9" name="mat_cat[{$acc[DET].id}]" value="a">
+					<input type="hidden" size="9" name="mat_id[{$acc[DET].id}]" value="{$acc[DET].mat_id}">
+					<input type="hidden" size="9" name="bom_id[{$acc[DET].id}]" value="{$acc[DET].bom_id}">
+					<input type="hidden" size="9" name="color[{$acc[DET].id}]" value="{$acc[DET].color}">
+					<input type="hidden" size="9" name="size[{$acc[DET].id}]" value="{$acc[DET].size}">
+					
+					<td class="ListValueLeft" nowrap>{if $acc[DET].acc_name}{$acc[DET].acc_name}{else}&nbsp;{/if}({$acc[DET].bom_id})</td>
+					<td class="ListValueLeft">{if $acc[DET].use_for}<span title="{$acc[DET].use_for}">{$acc[DET].use_for|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft" nowrap>{if $acc[DET].color}<span title="{$acc[DET].color}">{$acc[DET].color|truncate:20:' ... ':true}</span>{else}&nbsp;{/if}</td>
+					<td class="ListValueLeft" nowrap>{if $acc[DET].size}{$acc[DET].size}{else}&nbsp;{/if}</td>	
+					<td class="ListValueRight" nowrap>{if $acc[DET].bom_qty}{$acc[DET].bom_qty|round|number_format}{else}&nbsp;{/if}</td>
+					<td class="ListValueRight">{if $acc[DET].est_1}{$acc[DET].est_1}&nbsp;{$acc[DET].unit}{else}&nbsp;{/if}</td>
+					<td class="ListValueRight">{$acc[DET].demand_qty|round|number_format}&nbsp;{$acc[DET].unit}</td>
+					<td class="ListValueRight">{$acc[DET].receive_qty|round|number_format}&nbsp;{$acc[DET].unit}</td>
+					<td class="ListValueRight" style="background-color:#AFD6FF;" nowrap>{$acc[DET].unclaimed_qty|round|number_format}&nbsp;{$acc[DET].unit}</td>
+					<td class="ListValueRight" nowrap>
+						<img src="images/copy.jpg" style="cursor:e-resize;" onclick="qPass('{$acc[DET].id}');">
+						<input type="text" id="po_ship_link_qty_{$acc[DET].id}" name="collar_qty[{$acc[DET].id}]" value="{$acc[DET].unclaimed_qty|number_format:2:'':''}" size="8" class="input_right"> 
+						<img src="images/del.png" style="cursor:help;" onclick="qClear('{$acc[DET].id}');">
+					</td>
+					<td class="ListValueRight" style="background-color:#CDE5FF;" nowrap>{$acc[DET].stock_qty|round|number_format}&nbsp;{$acc[DET].unit}</td>
+				</tr>
+				{/section}
+				<tr>
+					<td class="BottomCtrlRight" colspan="7">
+						<table border="0" cellspacing="3" cellpadding="3">
+							<tr>
+								<td class="SubTitleLine" style="background-color:#FFCDFE;">Receiving Qty &gt; 0 AND Stock Qty = 0</td>
+								<td class="SubTitleLine" style="background-color:#FEFFCD;">Receiving Qty &gt; Stock Qty</td>
+							</tr>
+						</table>
+					</td>
+					<td class="BottomCtrlValueRight" colspan="6">
+						<input class="submit_ajax" type="Submit" id="append_collar_qty" style="width:90px;" name="Submit" value="Submit">
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+</table>
+{include file="footer_utf8.html"}

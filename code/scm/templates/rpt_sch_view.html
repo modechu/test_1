@@ -1,0 +1,1042 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css"><style type="text/css">
+
+</style>
+{literal}
+<script language="javascript">
+
+function prd_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function mat_out(id) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=mat_schedule_view&PHP_id="+id+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function ord_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=schedule_view&PHP_id="+ord_num+"&cgiget=&cgino=&cgi_1=&cgi_2=&cgi_3=&cgi_4=&cgi_5=";
+	 var nm = 'order';
+	window.open(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function DoHide()
+{
+
+	if(document.getElementById("r1").style.display=='block') 
+	{
+
+		document.getElementById("r1").style.display='none'; 
+		document.getElementById("r2").style.display='block';	
+	}
+	else
+	{
+		document.getElementById("r1").style.display='block';
+		document.getElementById("r2").style.display='none'; 
+	}
+}
+
+function DoHide2()
+{
+
+	if(document.getElementById("r3").style.display=='block') 
+	{
+
+		document.getElementById("r3").style.display='none'; 
+		document.getElementById("r4").style.display='block';	
+	}
+	else
+	{
+		document.getElementById("r3").style.display='block';
+		document.getElementById("r4").style.display='none'; 
+	}
+}
+
+function DoHide3()
+{
+
+	if(document.getElementById("r5").style.display=='block') 
+	{
+
+		document.getElementById("r5").style.display='none'; 
+		document.getElementById("r6").style.display='block';	
+	}
+	else
+	{
+		document.getElementById("r5").style.display='block';
+		document.getElementById("r6").style.display='none'; 
+	}
+}
+
+function DoHide4()
+{
+
+	if(document.getElementById("r7").style.display=='block') 
+	{
+
+		document.getElementById("r7").style.display='none'; 
+		document.getElementById("r8").style.display='block';	
+	}
+	else
+	{
+		document.getElementById("r7").style.display='block';
+		document.getElementById("r8").style.display='none'; 
+	}
+}
+</script>
+<!--
+a:link {
+	text-decoration: none;
+}
+a:visited {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+-->
+{/literal}
+
+<body  topmargin=10><form>
+<center>
+ <table width=770 border=1 cellspacing=0 cellpadding=2>
+ <tr align="right"><td colspan=14 >
+			<div align="right"><a href="{$PHP_SELF}?PHP_action=rep_sch_list&PHP_year1={$year}&PHP_month1={$mm}&PHP_excel=1&PHP_fty={$fty}" style="cursor:pointer">
+			  <img src="./images/excel_icon.gif" alt="轉 windows [Excel]檔案" border=0 class="txt_right"></a> </div></td>
+ </tr>
+
+ <tr class="top16bg">
+   <td colspan=13  align=center class="top16bg"><table width="100%">
+     <tr>
+       <td colspan=3 class="txt_B_y_16t">&nbsp;&nbsp;Factory：{$fty}</td>
+       <td colspan=7 align="center" class="top16bg">Production <font color=yellow><b>SUPPORTING STATUS</b></font> analysis</td>
+       <td colspan=3 align="right" class="txt_B_y_16t"><font color=#ffffff><b>Scheduled</b></font>&nbsp;({$title})&nbsp;&nbsp;</td>
+     </tr>
+   </table>
+    </td>
+ </tr>
+ 	<tr class="item1" >
+		<td colspan=2 width=150>&nbsp;</td>
+		<td colspan=2 class="item1" width=60 align=center >Allot Q'TY</td>
+		<td colspan=2  class="item1" width=65 align=center>%(Allot Q'TY)</td>
+		<td colspan=2 class="item1" width=60 align=right>Allot SU</td>
+		<td colspan=2 class="item1" width=65 align=center>%(Allot SU)</td>
+		<td colspan=3 class="item1" width=240 align=center>REMARK</td>    
+  </tr>
+  <tr class=txt9> 
+    <td colspan=2 class=txt_B_b10 width=150 align=right>UnAvailable production&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rpt_qty_un|number_format}&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rptun_qty_pec|number_format}%&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rpt_su_un|number_format}&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rptun_su_pec|number_format}%&nbsp;</td>
+    <td colspan=3>&nbsp;</td>    
+ </tr>
+
+  <tr class=txt9> 
+    <td  colspan=2 class=txt_B_b10 width=150 align=right>Available production&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rpt_qty_do|number_format}&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rptdo_qty_pec|number_format}%&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rpt_su_do|number_format}&nbsp;</td>
+    <td colspan=2 class=txt9 align=right>{$rptdo_su_pec|number_format}%&nbsp;</td>
+    <td colspan=3 >&nbsp;</td>    
+ </tr>
+   <tr class="total" > 
+    <td colspan=2 class="total" align=right>-- Total --&nbsp;</td>
+    <td colspan=2 class="total" align=right>{$rpt_qty_tal|number_format}&nbsp;</td>
+    <td colspan=2 class="total" align=right>100%&nbsp;</td>
+    <td colspan=2 class="total" align=right>{$rpt_su_tal|number_format}&nbsp;</td>
+    <td colspan=2 class="total" align=right>100%&nbsp;</td>
+    <td colspan=3 >&nbsp;</td>    
+ </tr>
+</table>
+<br>
+{if !$unavi_no_msg}
+<table width=780 border=1 cellspacing=0 cellpadding=2 id='r1' style="display : block"; >
+ <a href="javascript:DoHide()" value='Hide' style='cursor:pointer'>
+ <tr class="txt9" >
+  <td  colspan=15 align=center  class="txt9" ><font color=red>* to extend detail order info.  by clicking title of the table bellow  *</font></td>
+  </tr>
+  <tr class="top16r" style="cursor:hand">
+  <td  colspan=15 align=center  class="top16r" bgcolor=#513333>Scheduled but unavailable production</td>
+  </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" width=70 align=center rowspan="2">Order #</td>
+		<td class="item1" width=90 align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" align=center rowspan="2">ETS</td>
+		<td class="item1" align=center rowspan="2">ETF</td>
+		<td class="item1" align=center rowspan="2">Pd</td>
+	</tr>
+	<tr class="item1" style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $unavi_no_msg}<tr><td colspan=15 class='txt_B_r14' align=center>{$unavi_no_msg}</td></tr>{/if}    
+  {section name=SEC loop=$rptun}
+  {if $rptun[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptun[SEC].sub_mm}] Sub(S)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_su|number_format}</td>
+  <td colspan=10 class=txt_B_blue_12><font color=#959595>Sub-con. Production&nbsp;</font></td>
+  </tr>
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptun[SEC].sub_mm}] Sub(I)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_su|number_format}</td>
+  <td colspan=10 class=txt_B_blue_12><font color=#959595>In House Production&nbsp;</font></td>
+  </tr>
+
+  <tr>
+  <td  class=txt_B_blue_11 colspan=2 align=center><font color=black>ETD[{$rptun[SEC].sub_mm}] SubTotal</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tqty|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tsu|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_su|number_format}</font></td>
+  <td colspan=10 class=txt_B_blue_12>&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total" > 
+    <td class=txt_B_blue_12 align=right colspan=2>Grand Total (S)&nbsp;</td>
+    <td class=txt_B_blue_12 width=60  align=right>{if $rptun_s_tqty_tal == 0}&nbsp;{else}{$rptun_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 width=55  align=right>{if $rptun_s_tsu_tal == 0}&nbsp;{else}{$rptun_s_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 width=55  align=right>{if $rptun_s_su_tal == 0}&nbsp;{else}{$rptun_s_su_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 colspan=10 align=left><font color=#434341>Sub-con. Production&nbsp;</font></td>   
+ </tr>
+  <tr class="total" > 
+    <td class=txt_B_blue_12 align=right colspan=2 >Grand Total (I)&nbsp;</td>
+    <td class=txt_B_blue_12 width=60  align=right>{if $rptun_i_tqty_tal == 0}&nbsp;{else}{$rptun_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 width=55  align=right >{if $rptun_i_tsu_tal == 0}&nbsp;{else}{$rptun_i_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 width=55  align=right>{if $rptun_i_su_tal == 0}&nbsp;{else}{$rptun_i_su_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 colspan=10 align=left><font color=#434341>In House Production&nbsp;</font></td>   
+ </tr>
+  <tr class="total" > 
+    <td align=right colspan=2>Grand Total&nbsp;</td>
+    <td class="total" width=60  align=right>{if $rptun_tqty_tal == 0}&nbsp;{else}{$rptun_tqty_tal|number_format}{/if}</td>
+    <td class="total" width=55  align=right>{if $rptun_tsu_tal == 0}&nbsp;{else}{$rptun_tsu_tal|number_format}{/if}</td>
+    <td class="total" width=55  align=right>{if $rptun_su_tal == 0}&nbsp;{else}{$rptun_su_tal|number_format}{/if}</td>
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>        
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>
+    <td class="total" width=10  align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+
+
+<table width=780 border=1 cellspacing=0 cellpadding=2 id='r2' style="display : none"; >
+<a href="javascript:DoHide()" value='Hide' style='cursor:pointer'>
+  <tr class="top16r" style="cursor:hand">
+  <td  colspan=15 align=center  class="top16r" bgcolor=#513333>Scheduled but unavailable production</td>
+  </tr>
+ 	<tr style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" align=center rowspan="2">ETS</td>
+		<td class="item1" align=center rowspan="2">ETF</td>
+		<td class="item1" align=center rowspan="2">Pd</td>
+	</tr>
+	<tr class="item1" style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $unavi_no_msg}<tr onClick="DoHide();"><td colspan=13 class='txt_B_r14' align=center>{$unavi_no_msg}</td></tr>{/if}    
+  {section name=SEC loop=$rptun}
+  {if $rptun[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptun[SEC].sub_mm}] Sub(S)</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tsu|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_su|number_format}</td>
+  <td colspan=10 class=txt_B_blue_12><font color=#959595>Sub-con. Production&nbsp;</font></td>
+  </tr>
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptun[SEC].sub_mm}] Sub(I)</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tsu|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_su|number_format}</td>
+  <td colspan=10 class=txt_B_blue_12><font color=#959595>In House Production&nbsp;</font></td>
+  </tr>
+
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center><font color=black>ETD[{$rptun[SEC].sub_mm}] SubTotal</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tqty|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tsu|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_su|number_format}</font></td>
+  <td colspan=10 class=txt_B_blue_12>&nbsp;</td>
+  </tr>
+  {/if}
+  {if $rptun[SEC].order_num}
+  <tr {if $rptun[SEC].sub_con == 1}bgcolor=#E8E8E7{/if} > 
+    <td class=txt9 align=right><a href="javascript:mat_out('{$rptun[SEC].sid}')" value='ord_out' style='cursor:pointer'>{$rptun[SEC].order_num}{if $rptun[SEC].partial_num > 1}{$rptun[SEC].mks}{/if}</a>&nbsp;</td>
+    <td class=txt9 {if $today > $rptun[SEC].etd} bgcolor=#FFB0B6 {elseif $rptun[SEC].etf > $rptun[SEC].etd}bgcolor="#F5FB94"{/if}  align=center>{$rptun[SEC].etd}&nbsp;</td>
+    <td class=txt9 align=right>{$rptun[SEC].qty|number_format}&nbsp;</td>
+    <td class=txt9 align=right>{$rptun[SEC].su|number_format}</td>
+    <td class=txt9 align=right>{if $rptun[SEC].fty_su == 0}&nbsp;{else}{$rptun[SEC].fty_su|number_format}{/if}</td>
+    <td class=txt9 {if $today > $rptun[SEC].mat_etd && ($rptun[SEC].mat_shp == '' || $rptun[SEC].mat_shp == '0000-00-00') }bgcolor=#FFB0B6{/if} align=center>{$rptun[SEC].mat_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rptun[SEC].mat_eta && ($rptun[SEC].mat_shp == '' || $rptun[SEC].mat_shp == '0000-00-00') }bgcolor=#FFB0B6{/if} align=center>{$rptun[SEC].mat_eta}&nbsp;</td>
+    <td class="txt_B_gy9" align=center>{$rptun[SEC].mat_shp}&nbsp;</td>        
+    <td class=txt9 {if $today > $rptun[SEC].m_acc_etd && ($rptun[SEC].m_acc_shp == '' || $rptun[SEC].m_acc_shp == '0000-00-00')}bgcolor=#FFB0B6{/if} align=center>{$rptun[SEC].m_acc_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rptun[SEC].m_acc_eta && ($rptun[SEC].m_acc_shp == '' || $rptun[SEC].m_acc_shp == '0000-00-00')}bgcolor=#FFB0B6{/if} align=center>{$rptun[SEC].m_acc_eta}&nbsp;</td>
+    <td class="txt_B_gy9" align=center>{$rptun[SEC].m_acc_shp}&nbsp;</td>
+    <td class=txt9 {if $rptun[SEC].smpl_apv == '0000-00-00' || $rptun[SEC].smpl_apv == ''}  bgcolor=#FFB0B6{/if} align=center>{if $rptun[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$rptun[SEC].smpl_apv}{/if}</td>
+    <td class=txt9 align=left>{$rptun[SEC].ets}&nbsp;</td>
+    <td class=txt9 align=left>{$rptun[SEC].etf}&nbsp;</td>
+    <td class=txt9 align=center>{if $rptun[SEC].sub_con == 1}S{else}I{/if}</td>
+ </tr>
+ {/if}
+  {/section}
+  <tr class="total" > 
+    <td class=txt_B_blue_12 align=right colspan=2 >Grand Total (S)&nbsp;</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_tqty_tal == 0}&nbsp;{else}{$rptun_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_tsu_tal == 0}&nbsp;{else}{$rptun_s_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_su_tal == 0}&nbsp;{else}{$rptun_s_su_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 colspan=10 align=left><font color=#434341>Sub-con. Production&nbsp;</font></td>   
+ </tr>
+  <tr class="total"> 
+    <td class=txt_B_blue_12 align=right colspan=2 >Grand Total (I)&nbsp;</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_i_tqty_tal == 0}&nbsp;{else}{$rptun_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_i_tsu_tal == 0}&nbsp;{else}{$rptun_i_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_i_su_tal == 0}&nbsp;{else}{$rptun_i_su_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 colspan=10 align=left	><font color=#434341>In House Production&nbsp;</font></td>   
+ </tr>
+  <tr class="total"> 
+    <td align=right colspan=2 >Grand Total&nbsp;</td>
+    <td class="total" align=right>{if $rptun_tqty_tal == 0}&nbsp;{else}{$rptun_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptun_tsu_tal == 0}&nbsp;{else}{$rptun_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptun_su_tal == 0}&nbsp;{else}{$rptun_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>        
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+{/if}
+{if !$req_no_msg}
+
+<table width=780 border=1 cellspacing=0 cellpadding=2 id=r3 style="display : block">
+<a href="javascript:DoHide2()" value='Hide' style='cursor:pointer'>
+  <tr style="cursor:hand">
+  <td  colspan=15 align=center class="top16o" bgcolor=#3D2C1E> Schedule Required</td>
+  </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center colspan="2" rowspan="2">SMPL APV</td>
+		<td class="item1" align=center colspan="2" rowspan="2">REMARK</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $req_no_msg}<tr><td colspan=15 class='txt_B_r14' align=center>{$req_no_msg}</td></tr>{/if} 
+  {section name=SEC loop=$rptnt}
+  {if $rptnt[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptnt[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_su|number_format}</td>
+  <td colspan=10 >&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" width=70 align=right>total&nbsp;</td>
+    <td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=55  align=right>{if $rptnt_tqty_tal == 0}&nbsp;{else}{$rptnt_tqty_tal|number_format}{/if}</td>
+    <td class="total" width=55  align=right>{if $rptnt_tsu_tal == 0}&nbsp;{else}{$rptnt_tsu_tal|number_format}{/if}</td>
+    <td class="total" width=60  align=right>{if $rptnt_su_tal == 0}&nbsp;{else}{$rptnt_su_tal|number_format}{/if}</td>
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>        
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70 align=right>&nbsp;</td>
+    <td class="total" width=70 align=right>&nbsp;</td>
+    <td class="total" colspan="3" width=150  align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+<table width=780 border=1 cellspacing=0 cellpadding=2 id=r4 style="display : none">
+<a href="javascript:DoHide2()" value='Hide' style='cursor:pointer'>
+  <tr style="cursor:hand">
+  <td  colspan=15 align=center class="top16o" bgcolor=#3D2C1E> Schedule Required</td>
+  </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center colspan="3" rowspan="2">SMPL APV</td>
+		<td class="item1" align=center rowspan="2">REMARK</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>		
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+
+  {if $req_no_msg}<tr><td colspan=15 class='txt_B_r14' align=center>{$req_no_msg}</td></tr>{/if} 
+  {section name=SEC loop=$rptnt}
+  {if $rptnt[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptnt[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_su|number_format}</td>
+  <td colspan=10 >&nbsp;</td>
+  </tr>
+  {/if}
+  {if $rptnt[SEC].order_num}
+  <tr class=txt9> 
+    <td class=txt9 align=right><a href="javascript:ord_out('{$rptnt[SEC].sid}')" value='ord_out' style='cursor:pointer'>{$rptnt[SEC].order_num}{if $rptnt[SEC].partial_num > 1}{$rptnt[SEC].mks}{/if}&nbsp;</td></a>
+    <td class=txt9 {if $today > $rptnt[SEC].etd} bgcolor=#FFB0B6{/if} align=center>{$rptnt[SEC].etd}&nbsp;</td>
+    <td class=txt9 align=right>{$rptnt[SEC].qty|number_format}&nbsp;</td>
+    <td class=txt9 align=right>{if $rptnt[SEC].su == 0}&nbsp;{else}{$rptnt[SEC].su|number_format}{/if}</td>
+    <td class=txt9 align=right>{if $rptnt[SEC].etp_su == 0}&nbsp;{else}{$rptnt[SEC].etp_su|number_format}{/if}</td>
+    <td class=txt9 {if $today > $rptnt[SEC].mat_etd && ($rptnt[SEC].mat_shp == '' || $rptnt[SEC].mat_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>1DD{$rptnt[SEC].mat_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rptnt[SEC].mat_eta && ($rptnt[SEC].mat_shp == '' || $rptnt[SEC].mat_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>1DD{$rptnt[SEC].mat_eta}&nbsp;</td>
+    <td class=txt9 align=center>{$rptnt[SEC].mat_shp}&nbsp;</td>        
+    <td class=txt9 {if $today > $rptnt[SEC].m_acc_etd && ($rptnt[SEC].m_acc_shp == '' || $rptnt[SEC].m_acc_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>2DD{$rptnt[SEC].m_acc_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rptnt[SEC].m_acc_eta && ($rptnt[SEC].m_acc_shp == '' || $rptnt[SEC].m_acc_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>2DD{$rptnt[SEC].m_acc_eta}&nbsp;</td>
+    <td class=txt9 align=center>{$rptnt[SEC].m_acc_shp}&nbsp;</td>
+    <td class=txt9 {if $rptnt[SEC].smpl_apv == '0000-00-00' || $rptnt[SEC].smpl_apv == ''} bgcolor=#FFB0B6{/if} align=center>{if $rptnt[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$rptnt[SEC].smpl_apv}{/if}</td>
+    <td class=txt9 colspan="3" align=left>{$rptnt[SEC].remark}&nbsp;</td>
+ </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" align=right>total&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>{if $rptnt_tqty_tal == 0}&nbsp;{else}{$rptnt_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptnt_tsu_tal == 0}&nbsp;{else}{$rptnt_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptnt_su_tal == 0}&nbsp;{else}{$rptnt_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>       
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" colspan="3" align=right>&nbsp;</td>
+ </tr>
+</table>
+
+<br>
+{/if}
+{if !$req_una_msg}
+<table width=780 border=1 cellspacing=0 cellpadding=2 id=r7 style="display : block">
+<a href="javascript:DoHide4()" value='ord_out' style='cursor:pointer'>
+  <tr style="cursor:hand">
+  <td  colspan=15 align=center class="top16o" bgcolor=#3D2C1E> Unavailable Schedule </td>
+  </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" colspan=3 align=center rowspan="2">REMARK</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $req_una_msg}<tr><td colspan=13 class='txt_B_r14' align=center>{$req_no_msg}</td></tr>{/if} 
+  {section name=SEC loop=$rpt_una}
+  {if $rpt_una[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rpt_una[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_su|number_format}</td>
+  <td colspan=10 >&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" width=70 align=right>total&nbsp;</td>
+    <td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=55  align=right>{if $rpt_una_tqty_tal == 0}&nbsp;{else}{$rpt_una_tqty_tal|number_format}{/if}</td>
+    <td class="total" width=55  align=right>{if $rpt_una_tsu_tal == 0}&nbsp;{else}{$rpt_una_tsu_tal|number_format}{/if}</td>
+    <td class="total" width=60  align=right>{if $rpt_una_su_tal == 0}&nbsp;{else}{$rpt_una_su_tal|number_format}{/if}</td>
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70  align=right>&nbsp;</td>        
+    <td class="total" width=90  align=right>&nbsp;</td>
+		<td class="total" width=90  align=right>&nbsp;</td>
+    <td class="total" width=70 align=right>&nbsp;</td>
+    <td class="total" width=70 align=right>&nbsp;</td>
+    <td class="total" width=150  colspan=3 align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+<table width=780 border=1 cellspacing=0 cellpadding=2 id=r8 style="display : none">
+<a href="javascript:DoHide4()" value='Hide' style='cursor:pointer'>  
+  <tr style="cursor:hand">
+  <td  colspan=15 align=center class="top16o" bgcolor=#3D2C1E> Unavailable Schedule</td>
+  </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> SU</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" align=center colspan="3" rowspan="2">REMARK</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $req_una_msg}<tr><td colspan=13 class='txt_B_r14' align=center>{$req_no_msg}</td></tr>{/if} 
+  {section name=SEC loop=$rpt_una}
+  {if $rpt_una[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rpt_una[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_su|number_format}</td>
+  <td colspan=8 >&nbsp;</td>
+  </tr>
+  {/if}
+  {if $rpt_una[SEC].order_num}
+  <tr > 
+    <td class=txt9 align=right><a href="javascript:ord_out('{$rpt_una[SEC].sid}')" value='ord_out' style='cursor:pointer'>{$rpt_una[SEC].order_num}{if $rpt_una[SEC].partial_num > 1}{$rpt_una[SEC].mks}{/if}&nbsp;</a></td>
+    <td class=txt9 {if $today > $rpt_una[SEC].etd} bgcolor=#FFB0B6{/if} align=center>{$rpt_una[SEC].etd}&nbsp;</td>
+    <td class=txt9 align=right>{$rpt_una[SEC].qty|number_format}&nbsp;</td>
+    <td class=txt9 align=right>{if $rpt_una[SEC].su == 0}&nbsp;{else}{$rpt_una[SEC].su|number_format}{/if}</td>
+    <td class=txt9 align=right>{if $rpt_una[SEC].etp_su == 0}&nbsp;{else}{$rpt_una[SEC].etp_su|number_format}{/if}</td>
+    <td class=txt9 {if $today > $rpt_una[SEC].mat_etd && ($rpt_una[SEC].mat_shp == '' || $rpt_una[SEC].mat_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>{$rpt_una[SEC].mat_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rpt_una[SEC].mat_eta && ($rpt_una[SEC].mat_shp == '' || $rpt_una[SEC].mat_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>{$rpt_una[SEC].mat_eta}&nbsp;</td>
+    <td class=txt9 align=center>{$rpt_una[SEC].mat_shp}&nbsp;</td>        
+    <td class=txt9 {if $today > $rpt_una[SEC].m_acc_etd && ($rpt_una[SEC].m_acc_shp == '' || $rpt_una[SEC].m_acc_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>{$rpt_una[SEC].m_acc_etd}&nbsp;</td>
+		<td class=txt9 {if $today > $rpt_una[SEC].m_acc_eta && ($rpt_una[SEC].m_acc_shp == '' || $rpt_una[SEC].m_acc_shp == '0000-00-00')} bgcolor=#FFB0B6{/if} align=center>{$rpt_una[SEC].m_acc_eta}&nbsp;</td>
+    <td class=txt9 align=center>{$rpt_una[SEC].m_acc_shp}&nbsp;</td>
+    <td class=txt9 {if $rpt_una[SEC].smpl_apv == '0000-00-00' || $rpt_una[SEC].smpl_apv == ''} bgcolor=#FFB0B6{/if} align=center>{if $rpt_una[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$rpt_una[SEC].smpl_apv}{/if}</td>
+    <td class=txt9 colspan="3" align=left>{$rpt_una[SEC].remark}&nbsp;</td>
+ </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" align=right>total&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>{if $rpt_una_tqty_tal == 0}&nbsp;{else}{$rpt_una_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rpt_una_tsu_tal == 0}&nbsp;{else}{$rpt_una_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rpt_una_su_tal == 0}&nbsp;{else}{$rpt_una_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>        
+    <td class="total" align=right>&nbsp;</td>
+		<td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" align=right>&nbsp;</td>
+    <td class="total" colspan="3" align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+{/if}
+
+{if !$avi_no_msg}
+ <table width=780 border=1 cellspacing=0 cellpadding=2 id=r5 style="display : block">
+ <a href="javascript:DoHide3()" value='Hide' style='cursor:pointer'>
+ <tr class="top16g" style="cursor:hand">
+   <td  colspan=15 align=center class="top16g" >Scheduled and available production</td>
+ </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">Allot <br> Q'TY</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" align=center rowspan="2">ETS</td>
+		<td class="item1" align=center rowspan="2">ETF</td>
+		<td class="item1" align=center rowspan="2">Pd</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $avi_no_msg}<tr><td colspan=15 class='txt_B_r14' align=center>{$avi_no_msg}</td></tr>{/if}  
+  {section name=SEC loop=$rptdo}
+  {if $rptdo[SEC].bkln == 1}
+  <tr >
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(S)</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_qty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_su|number_format}</td>
+  <td colspan=10 align=right class=b10><i>ETD[{$rptdo[SEC].sub_mm}] Sub-con. Avaialbe Production : <b>{$rptdo[SEC].tal_s_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo[SEC].tal_s_unsu|number_format}</b>(SU)</i></td>
+  </tr>
+  <tr >
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(I)</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_qty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_su|number_format}</td>
+  <td colspan=10 align=right class=b10><i>ETD[{$rptdo[SEC].sub_mm}] IN House Avaialbe Production : <b>{$rptdo[SEC].tal_i_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo[SEC].tal_i_unsu|number_format}</b>(SU)</i></td>
+  </tr>
+
+  <tr >
+  <td class=txt_B_blue_11 colspan=2 align=center><font color=black>ETD[{$rptdo[SEC].sub_mm}] SubTotal</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_tqty|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_qty|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_su|number_format}</font></td>
+  <td colspan=10 align=right class=bgdy10>ETD[{$rptdo[SEC].sub_mm}] Avaialbe Production : <b>{$rptdo[SEC].tal_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo[SEC].tal_unsu|number_format}</b>(SU)</td>
+  </tr>
+  {/if}
+
+  {/section}
+  <tr class="total"> 
+    <td class=txt_B_blue_11 colspan=2 align=center>Grand Total (S)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_tqty_tal == 0 }&nbsp;{else}{$rptdo_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_qty_tal == 0 }&nbsp;{else}{$rptdo_s_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_su_tal == 0 }&nbsp;{else}{$rptdo_s_su_tal|number_format}{/if}</td>
+    <td class=b10 colspan=10 align=right><i>Total Sub-con. Avaialbe Production : <b>{$rptdo_s_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_s_unsu_tal|number_format}</b>(SU)</i></td>
+    
+ </tr>
+  <tr class="total"> 
+    <td class=txt_B_blue_11 colspan=2 align=center>Grand Total (I)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_tqty_tal == 0 }&nbsp;{else}{$rptdo_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_qty_tal == 0 }&nbsp;{else}{$rptdo_i_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_su_tal == 0 }&nbsp;{else}{$rptdo_i_su_tal|number_format}{/if}</td>
+    <td class=b10 colspan=10 align=right><i>Total In House Avaialbe Production : <b>{$rptdo_i_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_i_unsu_tal|number_format}</b> (SU)</i></td>
+    
+ </tr>
+  <tr class="total"> 
+    <td class="total" colspan=2 align=center>Grand Total&nbsp;</td>    
+    <td class="total" align=right>{if $rptdo_tqty_tal == 0 }&nbsp;{else}{$rptdo_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_qty_tal == 0 }&nbsp;{else}{$rptdo_qty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_su_tal == 0 }&nbsp;{else}{$rptdo_su_tal|number_format}{/if}</td>
+    <td class=bgdy10 colspan=10 align=right>Total Avaialbe Production : <b>{$rptdo_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_unsu_tal|number_format}</b> (SU)</td>
+    
+ </tr>
+
+</table>
+<br>
+ <table border=1 cellspacing=0 cellpadding=2 id=r6 style="display : none">
+ <a href="javascript:DoHide3()" value='Hide' style='cursor:pointer'>
+ <tr class="top16g" style="cursor:hand">
+   <td  colspan=15 align=center class="top16g" >Scheduled and available production</td>
+ </tr>
+ 	<tr class="item1" style="cursor:hand">
+		<td class="item1" align=center rowspan="2">Order #</td>
+		<td class="item1" align=center rowspan="2">ETD</td>
+		<td class="item1" align=center rowspan="2" style="width:40px">ORD. <br> Q'ty</td>
+		<td class="item1" align=center rowspan="2">Allot <br> Q'TY</td>
+		<td class="item1" align=center rowspan="2">Allot <br> SU</td>
+		<td class="item1" align=center colspan="3">FABRIC</td>
+		<td class="item1" align=center colspan="3">ACCESSORY</td>
+		<td class="item1" align=center rowspan="2">SMPL APV</td>
+		<td class="item1" align=center rowspan="2">ETS</td>
+		<td class="item1" align=center rowspan="2">ETF</td>
+		<td class="item1" align=center rowspan="2">Pd</td>
+	</tr>
+	<tr style="cursor:hand">
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+		<td align=center class="item2">ETD</td>
+		<td align=center class="item2">ETA</td>
+		<td align=center class="item2">RECEIVE</td>
+	</tr>
+</a>
+  {if $avi_no_msg}<tr><td colspan=15 class='txt_B_r14' align=center>{$avi_no_msg}</td></tr>{/if}  
+  {section name=SEC loop=$rptdo}
+  {if $rptdo[SEC].bkln == 1}
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(S)</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_qty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_su|number_format}</td>
+  <td colspan=10 align=right class=b9><i>ETD[{$rptdo[SEC].sub_mm}] Sub-con. Avaialbe Production : <b>{$rptdo[SEC].tal_s_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo[SEC].tal_s_unsu|number_format}</b>(SU)</i></td>
+  </tr>
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(I)</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_tqty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_qty|number_format}</td>
+  <td class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_su|number_format}</td>
+  <td colspan=10 align=right class=b9> <i> ETD[{$rptdo[SEC].sub_mm}] IN House Avaialbe Production : <b>{$rptdo[SEC].tal_i_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo[SEC].tal_i_unsu|number_format}</b>(SU)</i></td>
+  </tr>
+
+  <tr>
+  <td class=txt_B_blue_11 colspan=2 align=center><font color=black>ETD[{$rptdo[SEC].sub_mm}] SubTotal</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_tqty|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_qty|number_format}</font></td>
+  <td class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_su|number_format}</font></td>
+  <td colspan=10 align=right class=bgdy10>ETD[{$rptdo[SEC].sub_mm}] Avaialbe Production : <b>{$rptdo[SEC].tal_unqty|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> {$rptdo[SEC].tal_unsu|number_format}</b>(SU)</td>
+  </tr>
+  {/if}
+  {if $rptdo[SEC].order_num}
+  <tr {if $rptdo[SEC].sub_con == 1}bgcolor=#E8E8E7{/if}> 
+    <td class=txt9 align=right><a href="javascript:prd_out('{$rptdo[SEC].order_num}')" value='ord_out' style='cursor:pointer'>{$rptdo[SEC].order_num}{if $rptdo[SEC].partial_num > 1}{$rptdo[SEC].mks}{/if}&nbsp;</a></td>
+    <td class=txt9 {if $rptdo[SEC].etf > $rptdo[SEC].etd}bgcolor="#F5FB94"{/if} align=center>{$rptdo[SEC].etd}&nbsp;</td>
+    <td class=txt9 align=right>{$rptdo[SEC].qty|number_format}&nbsp;</td>
+    <td class=txt9 align=right>{if $rptdo[SEC].fty_qty == 0}&nbsp;{else}{$rptdo[SEC].fty_qty|number_format}{/if}</td>
+    <td class=txt9 align=right>{if $rptdo[SEC].fty_su == 0}&nbsp;{else}{$rptdo[SEC].fty_su|number_format}{/if}</td>
+    <td class="txt_B_gy9" {if $rptdo[SEC].mat_etd == ''} bgcolor=#FFB0B6 {/if} align=center>{$rptdo[SEC].mat_etd}&nbsp;</td>
+		<td class="txt_B_gy9" {if $rptdo[SEC].mat_etd == ''} bgcolor=#FFB0B6 {/if} align=center>{$rptdo[SEC].mat_eta}&nbsp;</td>
+    <td class=txt9 {if $rptdo[SEC].mat_shp == ''} bgcolor=#FFB0B6 {/if} align=right>{$rptdo[SEC].mat_shp}&nbsp;</td>        
+    <td class="txt_B_gy9" {if $rptdo[SEC].m_acc_etd == ''} bgcolor=#FFB0B6 {/if}  align=center>{$rptdo[SEC].m_acc_etd}&nbsp;</td>
+		<td class="txt_B_gy9" {if $rptdo[SEC].m_acc_etd == ''} bgcolor=#FFB0B6 {/if}  align=center>{$rptdo[SEC].m_acc_eta}&nbsp;</td>
+    <td class=txt9 {if $rptdo[SEC].m_acc_shp == ''} bgcolor=#FFB0B6 {/if} align=center>{$rptdo[SEC].m_acc_shp}&nbsp;</td>
+    <td class=txt9 {if $rptdo[SEC].smpl_apv == '0000-00-00' || $rptdo[SEC].smpl_apv == ''} bgcolor=#FFB0B6 {/if} align=center>{if $rptdo[SEC].smpl_apv == '0000-00-00'}&nbsp;{else}{$rptdo[SEC].smpl_apv}&nbsp;{/if}</td>
+    <td class=txt9 align=left>{$rptdo[SEC].ets}&nbsp;</td>
+    <td class=txt9 align=left>{$rptdo[SEC].etf}&nbsp;</td>
+    <td class=txt9 align=center>{if $rptdo[SEC].sub_con == 1}S{else}I{/if}&nbsp;</td>
+ </tr>
+ {/if}
+  {/section}
+  <tr class="total"> 
+    <td class=txt_B_blue_11 colspan=2 align=center>Grand Total (S)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_tqty_tal == 0 }&nbsp;{else}{$rptdo_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_qty_tal == 0 }&nbsp;{else}{$rptdo_s_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_su_tal == 0 }&nbsp;{else}{$rptdo_s_su_tal|number_format}{/if}</td>
+    <td colspan=10 colspan=10 align=right><i>Total Sub-con. Avaialbe Production : <b>{$rptdo_s_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_s_unsu_tal|number_format}</b> (SU)</i></td>
+    
+ </tr>
+  <tr class="total"> 
+    <td class=txt_B_blue_11 colspan=2 align=center>Grand Total (I)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_tqty_tal == 0 }&nbsp;{else}{$rptdo_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_qty_tal == 0 }&nbsp;{else}{$rptdo_i_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_su_tal == 0 }&nbsp;{else}{$rptdo_i_su_tal|number_format}{/if}</td>
+    <td class=b10 colspan=10 align=right><i>Total In House Avaialbe Production : <b>{$rptdo_i_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_i_unsu_tal|number_format}</b> (SU)</i></td>
+    
+ </tr>
+  <tr class="total"> 
+    <td class="total" colspan=2 align=center>Grand Total&nbsp;</td>    
+    <td class="total" align=right>{if $rptdo_tqty_tal == 0 }&nbsp;{else}{$rptdo_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_qty_tal == 0 }&nbsp;{else}{$rptdo_qty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_su_tal == 0 }&nbsp;{else}{$rptdo_su_tal|number_format}{/if}</td>
+    <td class=bgdy10 colspan=10 align=right>Total Avaialbe Production : <b>{$rptdo_unqty_tal|number_format}</b> (PCS) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>{$rptdo_unsu_tal|number_format}</b> (SU)</td>
+    
+ </tr>
+
+</table>
+{/if}
+
+<hr size=2 width=98%>
+<br>
+{if !$unavi_no_msg}
+<table width=780 border=1 cellspacing=0 cellpadding=2>
+
+  <tr class="top16r" >
+  <td  colspan=13 align=center  class="top16r" bgcolor=#513333>{literal}己排程但無法生產{/literal}</td>
+  </tr>
+ 	<tr class="item1">
+		<td class="item1" width=120 align=center>出口日</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(pc.)</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(su.)</td>
+		<td class="item1" align=center width=50 >分配數量<br>(su.)</td>
+		<td class="item1" align=center>備註</td>
+	</tr>
+  {section name=SEC loop=$rptun}
+  {if $rptun[SEC].bkln == 1}
+  <tr>
+  <td  class=txt_B_blue_11 align=right>ETD[{$rptun[SEC].sub_mm}] Sub(S)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_s_su|number_format}</td>
+  <td  class=b10><font color=#959595>外發生產&nbsp;</font></td>
+  </tr>
+  <tr>
+  <td  class=txt_B_blue_11 align=right>ETD[{$rptun[SEC].sub_mm}] Sub(I)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptun[SEC].mm_i_su|number_format}</td>
+  <td  class=b10><font color=#959595>工廠生產&nbsp;</font></td>
+  </tr>
+
+  <tr>
+  <td  class=txt_B_blue_11 align=right><font color=black>ETD[{$rptun[SEC].sub_mm}] SubTotal</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tqty|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_tsu|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptun[SEC].mm_su|number_format}</font></td>
+  <td  class=txt_B_blue_12>&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total" > 
+    <td class=txt_B_blue_12 align=right>Grand Total (S)&nbsp;</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_tqty_tal == 0}&nbsp;{else}{$rptun_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_tsu_tal == 0}&nbsp;{else}{$rptun_s_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_s_su_tal == 0}&nbsp;{else}{$rptun_s_su_tal|number_format}{/if}</td>
+    <td class=b10 align=left><font color=#434341>外發生產&nbsp;</font></td>   
+ </tr>
+  <tr class="total" > 
+    <td class=txt_B_blue_12 align=right>Grand Total (I)&nbsp;</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_i_tqty_tal == 0}&nbsp;{else}{$rptun_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right >{if $rptun_i_tsu_tal == 0}&nbsp;{else}{$rptun_i_tsu_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptun_i_su_tal == 0}&nbsp;{else}{$rptun_i_su_tal|number_format}{/if}</td>
+    <td class=b10 colspan=8 align=left><font color=#434341>工廠生產&nbsp;</font></td>   
+ </tr>
+  <tr class="total" > 
+    <td align=right>Grand Total&nbsp;</td>
+    <td class="total" align=right>{if $rptun_tqty_tal == 0}&nbsp;{else}{$rptun_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptun_tsu_tal == 0}&nbsp;{else}{$rptun_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptun_su_tal == 0}&nbsp;{else}{$rptun_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+
+ </tr>
+</table>
+<br>
+{/if}
+{if !$req_no_msg}
+<table width=780 border=1 cellspacing=0 cellpadding=2>
+  <tr >
+  <td  colspan=13 align=center class="top16o" bgcolor=#3D2C1E>{literal}待排產{/literal}</td>
+  </tr>
+ 	<tr class="item1">
+		<td class="item1" width=120 align=center>出口日</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(pc.)</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(su.)</td>
+		<td class="item1" align=center width=50 >分配數量<br>(su.)</td>
+		<td class="item1" align=center>備註</td>
+	</tr>
+  {section name=SEC loop=$rptnt}
+  {if $rptnt[SEC].bkln == 1}
+  <tr>
+  <td  class=txt_B_blue_11 align=center>ETD[{$rptnt[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptnt[SEC].mm_su|number_format}</td>
+  <td >&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" align=right>total&nbsp;</td>
+    <td class="total" align=right>{if $rptnt_tqty_tal == 0}&nbsp;{else}{$rptnt_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptnt_tsu_tal == 0}&nbsp;{else}{$rptnt_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptnt_su_tal == 0}&nbsp;{else}{$rptnt_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+{/if}
+{if !$req_una_msg}
+<table width=780 border=1 cellspacing=0 cellpadding=2>
+  <tr >
+  <td  colspan=13 align=center class="top16o" bgcolor=#3D2C1E>{literal} 無法排程 {/literal}</td>
+  </tr>
+ 	<tr class="item1">
+		<td class="item1" width=120 align=center>出口日</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(pc.)</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(su.)</td>
+		<td class="item1" align=center width=50 >分配數量<br>(su.)</td>
+		<td class="item1" align=center>備註</td>
+	</tr>
+  {section name=SEC loop=$rpt_una}
+  {if $rpt_una[SEC].bkln == 1}
+  <tr>
+  <td  class=txt_B_blue_11 align=center>ETD[{$rpt_una[SEC].sub_mm}] SubTotal</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_tsu|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rpt_una[SEC].mm_su|number_format}</td>
+  <td>&nbsp;</td>
+  </tr>
+  {/if}
+  {/section}
+  <tr class="total"> 
+    <td class="total" align=right>total&nbsp;</td>
+    <td class="total" align=right>{if $rpt_una_tqty_tal == 0}&nbsp;{else}{$rpt_una_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rpt_una_tsu_tal == 0}&nbsp;{else}{$rpt_una_tsu_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rpt_una_su_tal == 0}&nbsp;{else}{$rpt_una_su_tal|number_format}{/if}</td>
+    <td class="total" align=right>&nbsp;</td>
+ </tr>
+</table>
+<br>
+{/if}	
+{if !$avi_no_msg}	
+<table width=780 border=1 cellspacing=0 cellpadding=2>
+ <tr class="top16g">
+   <td  colspan=13 align=center class="top16g" >{literal}己排程且可生產{/literal}</td>
+ </tr>
+ <tr class="item1">
+		<td class="item1" width=120 align=center>出口日</td>
+		<td class="item1" align=center width=50 >訂單數量<br>(pc.)</td>
+		<td class="item1" align=center width=50 >分配數量<br>(pc.)</td>
+		<td class="item1" align=center width=50 >分配數量<br>(su.)</td>
+		<td class="item1" align=center >備註</td>
+ </tr>
+  {section name=SEC loop=$rptdo}
+  {if $rptdo[SEC].bkln == 1}
+  <tr >
+  <td  class=txt_B_blue_11 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(S)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_qty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_s_su|number_format}</td>
+  <td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+ 		 <td  align=right class=b10>ETD[{$rptdo[SEC].sub_mm}] 外發可生產量 :</td>
+ 		 <!-- <td  align=right width=80 class=b10 nowrap><i><b>{$rptdo[SEC].tal_s_unqty|number_format}</b>(PCS)</i></td> -->
+		 <td  align=right width=80 class=b10 nowrap><i><b>{$rptdo[SEC].tal_s_unsu|number_format}</b>(SU)</i></td>
+  </tr></table></td>
+  </tr>
+  <tr >
+  <td  class=txt_B_blue_11 align=center>ETD[{$rptdo[SEC].sub_mm}] Sub(I)</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_tqty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_qty|number_format}</td>
+  <td  class=txt_B_blue_12 align=right>{$rptdo[SEC].mm_i_su|number_format}</td>
+  <td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+ 		 <td  align=right class=b10>ETD[{$rptdo[SEC].sub_mm}] 工廠可生產量 : </td>
+ 		 <!-- <td  align=right width=80 class=b10 nowrap><i><b>{$rptdo[SEC].tal_i_unqty|number_format}</b>(PCS) </i></td> -->
+ 		 <td  align=right width=80 class=b10 nowrap><i><b>{$rptdo[SEC].tal_i_unsu|number_format}</b>(SU)</i></td>
+  </tr></table></td>
+
+  </tr>
+
+  <tr >
+  <td  class=txt_B_blue_11 align=center><font color=black>ETD[{$rptdo[SEC].sub_mm}] SubTotal</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_tqty|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_qty|number_format}</font></td>
+  <td  class=txt_B_blue_12 align=right><font color=black>{$rptdo[SEC].mm_su|number_format}</font></td>
+  <td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+		  <td  align=right class=bgdy10>ETD[{$rptdo[SEC].sub_mm}] 可生產量 : </td>
+		  <!-- <td  align=right width=80 class=bgdy10 nowrap><b>{$rptdo[SEC].tal_unqty|number_format}</b> (PCS)</td> -->
+		  <td  align=right width=80 class=bgdy10 nowrap><b>{$rptdo[SEC].tal_unsu|number_format}</b>(SU)</td>
+  </tr></table></td>
+
+  </tr>
+  {/if}
+
+  {/section}
+  <tr class="total"> 
+    <td class=txt_B_blue_11 align=center>Grand Total (S)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_tqty_tal == 0 }&nbsp;{else}{$rptdo_s_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_qty_tal == 0 }&nbsp;{else}{$rptdo_s_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_s_su_tal == 0 }&nbsp;{else}{$rptdo_s_su_tal|number_format}{/if}</td>
+  	<td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+   		 <td class=b10 align=right>外發可生產量總計 : </td>
+  		 <!-- <td class=b10 width=80 align=right nowrap><i><b>{$rptdo_s_unqty_tal|number_format}</b> (PCS) </i></td> -->
+   		 <td class=b10 width=80 align=right nowrap><i><b>{$rptdo_s_unsu_tal|number_format}</b> (SU)</i></td>
+    </tr></table></td>
+ </tr>
+  <tr class="total"> 
+    <td class=txt_B_blue_11 align=center>Grand Total (I)&nbsp;</td>    
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_tqty_tal == 0 }&nbsp;{else}{$rptdo_i_tqty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_qty_tal == 0 }&nbsp;{else}{$rptdo_i_qty_tal|number_format}{/if}</td>
+    <td class=txt_B_blue_12 align=right>{if $rptdo_i_su_tal == 0 }&nbsp;{else}{$rptdo_i_su_tal|number_format}{/if}</td>
+  	<td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+	    <td class=b10 align=right>工廠可生產量總計 : </td>
+    	<!-- <td class=b10 width=80 align=right nowrap><i><b>{$rptdo_i_unqty_tal|number_format}</b> (PCS)</i></td> -->
+   		<td class=b10 width=80 align=right nowrap><i><b>{$rptdo_i_unsu_tal|number_format}</b> (SU)</i></td>
+    </tr></table></td>
+ </tr>
+  <tr class="total"> 
+    <td class="total" align=center>Grand Total&nbsp;</td>    
+    <td class="total" align=right>{if $rptdo_tqty_tal == 0 }&nbsp;{else}{$rptdo_tqty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_qty_tal == 0 }&nbsp;{else}{$rptdo_qty_tal|number_format}{/if}</td>
+    <td class="total" align=right>{if $rptdo_su_tal == 0 }&nbsp;{else}{$rptdo_su_tal|number_format}{/if}</td>
+  	<td><table width=480 border=0 cellspacing=0 cellpadding=2><tr>
+    	<td class=bgdy10  align=right>可生產量總計 : </td>
+    	<!-- <td class=bgdy10  width=80 align=right nowrap><b>{$rptdo_unqty_tal|number_format}</b> (PCS)</td> -->
+    	<td class=bgdy10  width=80 align=right nowrap><b>{$rptdo_unsu_tal|number_format}</b> (SU)</td>
+    </tr></table></td>
+    
+ </tr>
+
+</table>
+<br>
+{/if}
+	
+	
+	
+	
+	
+	
+	
+	
+</center>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

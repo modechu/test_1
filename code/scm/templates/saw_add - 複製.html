@@ -1,0 +1,716 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: Tai Yuen ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<Script language="javascript">
+
+function OrdBox(fm_name){
+	var style = window.document.forms[fm_name].elements['PHP_style'].value;
+	var p_qty = window.document.forms[fm_name].elements['PHP_p_qty'].value;
+	var p_date = window.document.forms[fm_name].elements['PHP_p_date'].value;
+	var style = unescape(style);
+	fab_placement.innerHTML = style;
+	fab_placement2.innerHTML = p_date;
+	fab_placement3.innerHTML = p_qty;
+}
+
+function overTip(boxObj) { 
+	boxObj.style.visibility = "visible";
+	boxObj.style.left = event.clientX + document.body.scrollLeft + 26 + 'px';
+	boxObj.style.top = event.clientY + document.body.scrollTop + 20 + 'px';
+}
+
+function outTip(boxObj) { 
+	boxObj.style.visibility = "hidden"; 
+}
+
+var ln_id;
+var transaction;
+var sUrl;	
+var delback = {
+	success: function(o) { 
+	document.getElementById("tbl_msg").style.display='block';  
+	document.getElementById("ord_view"+ln_id).style.display='none';    
+	document.getElementById("ord_add"+ln_id).style.display='block';   
+
+	document.getElementById("ord_saw_qty_view"+ln_id).style.display='none';    
+	document.getElementById("ord_saw_qty_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("ord_qty_view"+ln_id).style.display='none';    
+	document.getElementById("ord_qty_add"+ln_id).style.display='block';
+
+	document.getElementById("cut_qty_view"+ln_id).style.display='none';    
+	document.getElementById("cut_qty_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("qty_view"+ln_id).style.display='none';    
+	document.getElementById("qty_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("hdy_view"+ln_id).style.display='none';    
+	document.getElementById("hdy_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("line_view"+ln_id).style.display='none';    
+	document.getElementById("line_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("wk_view"+ln_id).style.display='none';    
+	document.getElementById("wk_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("twk_view"+ln_id).style.display='none';    
+	document.getElementById("twk_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("ttlqty_view"+ln_id).style.display='none';    
+	document.getElementById("ttlqty_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("overtime_view"+ln_id).style.display='none';    
+	document.getElementById("overtime_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("otw_view"+ln_id).style.display='none';    
+	document.getElementById("otw_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("oth_view"+ln_id).style.display='none';    
+	document.getElementById("oth_add"+ln_id).style.display='block';    	 
+
+	document.getElementById("add"+ln_id).style.display='block';  
+	document.getElementById("edit"+ln_id).style.display='none';    
+
+	var response = o.responseText.split("|");    	
+	msg1.innerText  = response[0]; 
+	
+	var p_qty = window.document.forms['mon_add_'+ln_id].elements['PHP_p_qty'].value;
+	
+	window.document.forms['mon_add_'+ln_id].elements['PHP_ord_saw_qty'].value = response[8];
+	//window.document.forms['mon_add_'+ln_id].elements['PHP_sch_out_qty'].value = response[8];
+	window.document.forms['mon_ttl'].elements['total'].value = response[10];
+
+	qty_total.innerHTML  = "<b>"+response[9]+"</b>";
+
+	var sid = '';
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sid'].value = sid;
+
+	{/literal}
+	{section name=SEC loop=$mon_det} {literal}
+		if (window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_order'].value == response[1])
+		{
+				window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_ord_saw_qty'].value = response[8];
+				window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_sch_out_qty'].value = response[11];
+
+				window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_sch_out_qty'].style.color = ( response[11] > p_qty ) ? 'FF0000' : '660066' ;
+				document.getElementById("ord_saw_qty_view{/literal}{$mon_det[SEC].i}{literal}").innerHTML   = "<b>"+response[7]+"</b>";
+		}
+	{/literal}{/section}{literal}			
+
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+var addback = {
+	success: function(o) {    	
+	document.getElementById("tbl_msg").style.display='block';  
+
+	document.getElementById("ord_view"+ln_id).style.display='block';    
+	document.getElementById("ord_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("ord_qty_view"+ln_id).style.display='block';    
+	document.getElementById("ord_qty_add"+ln_id).style.display='none';  
+
+	document.getElementById("cut_qty_view"+ln_id).style.display='block';    
+	document.getElementById("cut_qty_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("ord_saw_qty_view"+ln_id).style.display='block';    
+	document.getElementById("ord_saw_qty_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("qty_view"+ln_id).style.display='block';    
+	document.getElementById("qty_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("hdy_view"+ln_id).style.display='block';    
+	document.getElementById("hdy_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("line_view"+ln_id).style.display='block';    
+	document.getElementById("line_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("wk_view"+ln_id).style.display='block';    
+	document.getElementById("wk_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("twk_view"+ln_id).style.display='block';    
+	document.getElementById("twk_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("overtime_view"+ln_id).style.display='block';    
+	document.getElementById("overtime_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("ttlqty_view"+ln_id).style.display='block';    
+	document.getElementById("ttlqty_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("otw_view"+ln_id).style.display='block';    
+	document.getElementById("otw_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("oth_view"+ln_id).style.display='block';    
+	document.getElementById("oth_add"+ln_id).style.display='none';    	 
+
+	document.getElementById("edit"+ln_id).style.display='block';    
+	document.getElementById("add"+ln_id).style.display='none';  
+
+	var response = o.responseText.split("|");    	
+
+	msg1.innerText  = response[0]; 
+	document.getElementById("ord_view"+ln_id).innerHTML   = "<b>"+response[1]+"</b>";
+	document.getElementById("qty_view"+ln_id).innerHTML   = "<b>"+response[3]+"</b>";
+	document.getElementById("hdy_view"+ln_id).innerHTML   = "<b>"+response[4]+"</b>";
+	document.getElementById("ord_qty_view"+ln_id).innerHTML   = "<b>"+response[6]+"</b>";
+	document.getElementById("ord_saw_qty_view"+ln_id).innerHTML   = "<b>"+response[7]+"</b>";
+
+	document.getElementById("wk_view"+ln_id).innerHTML   = "<b>"+response[11]+"</b>";
+	document.getElementById("twk_view"+ln_id).innerHTML   = "<b>"+response[12]+"</b>";
+	document.getElementById("overtime_view"+ln_id).innerHTML   = "<b>"+response[13]+"</b>";
+	document.getElementById("ttlqty_view"+ln_id).innerHTML   = "<b>"+response[14]+"</b>";
+
+	document.getElementById("otw_view"+ln_id).innerHTML   = "<b>"+response[15]+"</b>";
+	document.getElementById("oth_view"+ln_id).innerHTML   = "<b>"+response[16]+"</b>";
+
+	window.document.forms['mon_add_'+ln_id].elements['PHP_ord_saw_qty'].value = response[8];
+	window.document.forms['mon_ttl'].elements['total'].value = response[10];
+	qty_total.innerHTML  = "<b>"+response[9]+"</b>";
+	var sid = response[5];
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sid'].value = sid;
+			
+	{/literal}
+	{section name=SEC loop=$mon_det} {literal}
+		if (window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_order'].value == response[1])
+		{
+				window.document.forms['mon_add_{/literal}{$mon_det[SEC].i}{literal}'].elements['PHP_ord_saw_qty'].value = response[8];
+				document.getElementById("ord_saw_qty_view{/literal}{$mon_det[SEC].i}{literal}").innerHTML   = "<b>"+response[7]+"</b>";
+		}
+	{/literal}{/section}{literal}			
+			
+	},
+	failure: function(o) {
+		alert("Error：Can't get data");
+	}
+};
+
+function search_ord(i,fty,id){
+	ln_id = i;
+	var gofile ='monitor.php?PHP_action=order_search&PHP_fty='+fty+"&PHP_ln_id="+id;
+	style=window.open(gofile,'styleord','toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=820,height=650, top=100, left=150');
+}
+
+function writeToOrdList(order,style,ie,qty,saw_qty,p_id,qty_cut,sd_id,p_qty,sch_out_qty,mks,o_num) {
+	window.document.forms['mon_add_'+ln_id].elements['PHP_order'].value = order;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_style'].value = style;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_ie'].value = ie;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_ord_qty'].value = qty;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_ord_saw_qty'].value = saw_qty;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_p_id'].value = p_id;
+  window.document.forms['mon_add_'+ln_id].elements['PHP_cutting_qty'].value = qty_cut;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sd_id'].value = sd_id;
+  window.document.forms['mon_add_'+ln_id].elements['PHP_p_qty'].value = p_qty;
+  window.document.forms['mon_add_'+ln_id].elements['PHP_sch_out_qty'].value = sch_out_qty;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sch_out_qty'].style.color = ( sch_out_qty > p_qty ) ? 'FF0000' : '660066' ;
+	var mkss = ( o_num > 1 ) ? '('+mks+')' : '';
+	window.document.forms['mon_add_'+ln_id].elements['PHP_mks'].value = mkss;
+}
+
+function add_qty(i,id,date,line,worker,fty) {
+	ln_id = i;
+	var hdy =	window.document.forms['mon_add_'+i].elements['PHP_hdy'].checked;
+	var ord =	window.document.forms['mon_add_'+i].elements['PHP_order'].value;
+	var p_id =	window.document.forms['mon_add_'+i].elements['PHP_p_id'].value;
+	var qty =	window.document.forms['mon_add_'+i].elements['PHP_qty'].value;
+	var ie  =	window.document.forms['mon_add_'+i].elements['PHP_ie'].value;
+	var style =	window.document.forms['mon_add_'+i].elements['PHP_style'].value;
+	var cutting_qty =	window.document.forms['mon_add_'+i].elements['PHP_cutting_qty'].value;
+	var ord_qty =	window.document.forms['mon_add_'+i].elements['PHP_ord_qty'].value;
+	var ord_saw_qty =	window.document.forms['mon_add_'+i].elements['PHP_ord_saw_qty'].value;
+	var p_qty =	window.document.forms['mon_add_'+i].elements['PHP_p_qty'].value;
+	var sch_out_qty =	window.document.forms['mon_add_'+i].elements['PHP_sch_out_qty'].value;
+	
+	var total_qty = window.document.forms['mon_ttl'].elements['total'].value;
+	var t_worker = window.document.forms['mon_add_'+i].elements['PHP_worker'].value;
+	var overtime = window.document.forms['mon_add_'+i].elements['PHP_overtime'].value;
+	
+	var sd_id = window.document.forms['mon_add_'+i].elements['PHP_sd_id'].value;
+
+	var otw = window.document.forms['mon_add_'+i].elements['PHP_ot_wk'].value;
+	var oth = window.document.forms['mon_add_'+i].elements['PHP_ot_hr'].value;
+
+	var m_qty = parseInt(cutting_qty) + parseInt((cutting_qty*20/100));
+	var done = parseInt(ord_saw_qty)+parseInt(qty);
+	var m_qty =	window.document.forms['mon_add_'+i].elements['PHP_ttl_qty'].value;
+	var mp_qty = parseInt(sch_out_qty)+parseInt(m_qty);
+	
+	if ( !p_qty || !sch_out_qty ) {
+		alert("Please input Schedule Q\'ty or Output Q\'ty");
+		return;
+	}
+		
+	if(cutting_qty < done)
+	{
+		alert("Cannot Accept Your Input Q'ty. \rTotal finish q'ty over then original Cutting Q'ty. \rPlease Contaet Sales division if needed.");
+   	document.getElementById("tbl_msg").style.display='block';    
+		msg1.innerHTML  = "<b>Cannot Accept Your Input Q'ty. <br>  Total finish q'ty over then original Cutting Q'ty. <br> Please Contaet Sales division if needed. </b>"; 
+
+		return;
+	}
+
+	if(otw &&( !oth || !overtime))
+	{
+		alert("Please input overtime hour or qty");
+		return;
+	}
+
+	if(oth &&( !otw || !overtime))
+	{
+		alert("Please input overtime worker or qty");
+		return;
+	}
+
+	if(overtime &&( !otw || !oth || otw == 0 || oth == 0))
+	{
+		alert("Please input overtime worker or hour");
+		return;
+	}
+
+	if (hdy){hdy=3;}else{hdy=0;}
+		if (qty == '' && hdy == 0)
+	{
+		alert("please input qty.");
+		return;
+	}
+	
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sch_out_qty'].value = mp_qty;
+	window.document.forms['mon_add_'+ln_id].elements['PHP_sch_out_qty'].style.color = ( mp_qty > p_qty ) ? 'FF0000' : '660066' ;	
+	
+  sUrl = "monitor.php?PHP_action=do_dm_add&PHP_line_id="+id+"&PHP_ord_num="+ord+"&PHP_out_date="+date+"&PHP_qty="+qty+"&PHP_holiday="+hdy+"&PHP_ie="+ie+"&PHP_line="+line+"&PHP_style="+style+"&PHP_worker="+worker+"&PHP_fty="+fty+"&PHP_ord_qty="+ord_qty+"&PHP_cutting_qty="+cutting_qty+"&PHP_ord_saw_qty="+ord_saw_qty+"&PHP_total_qty="+total_qty+"&PHP_t_worker="+t_worker+"&PHP_overtime="+overtime+"&PHP_ot_wk="+otw+"&PHP_ot_hr="+oth+"&PHP_i="+i+"&PHP_p_id="+p_id+"&PHP_sd_id="+sd_id;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, addback, null);
+}
+
+function finish_qty(i,id,date,line,worker,fty) {
+	ln_id = i;
+	var hdy =	window.document.forms['mon_add_'+i].elements['PHP_hdy'].checked;
+	var ord =	window.document.forms['mon_add_'+i].elements['PHP_order'].value;
+	var p_id =	window.document.forms['mon_add_'+i].elements['PHP_p_id'].value;
+	var qty =	window.document.forms['mon_add_'+i].elements['PHP_qty'].value;
+	if(qty == '') qty = 0;
+	var ie  =	window.document.forms['mon_add_'+i].elements['PHP_ie'].value;
+	var style =	window.document.forms['mon_add_'+i].elements['PHP_style'].value;
+	var cutting_qty =	window.document.forms['mon_add_'+i].elements['PHP_cutting_qty'].value;
+	var ord_saw_qty =	window.document.forms['mon_add_'+i].elements['PHP_ord_saw_qty'].value;
+	var total_qty = window.document.forms['mon_ttl'].elements['total'].value;
+	var t_worker = window.document.forms['mon_add_'+i].elements['PHP_worker'].value;
+	var overtime = window.document.forms['mon_add_'+i].elements['PHP_overtime'].value;
+	var otw = window.document.forms['mon_add_'+i].elements['PHP_ot_wk'].value;
+	var oth = window.document.forms['mon_add_'+i].elements['PHP_ot_hr'].value;
+	var m_qty = parseInt(cutting_qty) + parseInt((cutting_qty*20/100));
+	var done = parseInt(ord_saw_qty)+parseInt(qty);
+
+	if(m_qty < done)
+	{
+		alert("Cannot Accept Your Input Q'ty. \rTotal finish q'ty exceed 20% then original Cutting Q'ty. \rPlease Contaet Sales division if needed.");
+   	document.getElementById("tbl_msg").style.display='block';    
+    msg1.innerHTML  = "<b>Cannot Accept Your Input Q'ty. <br>  Total finish q'ty exceed 20% then original Cutting Q'ty. <br> Please Contaet Sales division if needed. </b>"; 
+
+		return;
+	}
+
+	var f_rate = ((parseInt(ord_saw_qty)+parseInt(qty)) / parseInt(cutting_qty))*100;
+	
+	if(f_rate < 80)
+	{
+		alert("Cannot Accept Your Finish \rTotal finish q'ty less 80% then original Cutting Q'ty. \rPlease Contaet Sales division if needed.");
+   	document.getElementById("tbl_msg").style.display='block';    
+    msg1.innerHTML  = "<b>Cannot Accept Your Finish. <br>  Total finish q'ty less 80% then original Cutting Q'ty. <br> Please Contaet Sales division if needed. </b>"; 
+		return;
+	}
+
+	if(otw &&( !oth || !overtime))
+	{
+		alert("Please input overtime hour or qty");
+		return;
+	}
+
+	if(oth &&( !otw || !overtime))
+	{
+		alert("Please input overtime worker or qty");
+		return;
+	}
+
+	if(overtime &&( !otw || !oth))
+	{
+		alert("Please input overtime worker or hour");
+		return;
+	}
+
+	if (hdy){hdy=3;}else{hdy=0;}
+	if (qty == '' && hdy == 0)
+	{
+		qty=0;
+	}
+	
+  sUrl = "monitor.php?PHP_action=do_saw_finish&PHP_line_id="+id+"&PHP_ord_num="+ord+"&PHP_out_date="+date+"&PHP_qty="+qty+"&PHP_holiday="+hdy+"&PHP_ie="+ie+"&PHP_line="+line+"&PHP_style="+style+"&PHP_worker="+worker+"&PHP_fty="+fty+"&PHP_cutting_qty="+cutting_qty+"&PHP_ord_saw_qty="+ord_saw_qty+"&PHP_total_qty="+total_qty+"&PHP_t_worker="+t_worker+"&PHP_overtime="+overtime+"&PHP_ot_wk="+otw+"&PHP_ot_hr="+oth+"&PHP_i="+i+"&PHP_p_id="+p_id;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, addback, null);
+}
+
+function del_qty(i,id,date,line,worker,fty) {
+
+	ln_id = i;
+
+	var hdy =	window.document.forms['mon_add_'+i].elements['PHP_hdy'].checked;
+	var ord =	window.document.forms['mon_add_'+i].elements['PHP_order'].value;
+	var p_id = window.document.forms['mon_add_'+i].elements['PHP_p_id'].value;
+	var qty =	window.document.forms['mon_add_'+i].elements['PHP_ttl_qty'].value;
+	var ie  =	window.document.forms['mon_add_'+i].elements['PHP_ie'].value;
+	var style =	window.document.forms['mon_add_'+i].elements['PHP_style'].value;
+	var sid =	window.document.forms['mon_add_'+ln_id].elements['PHP_sid'].value;
+	var total_qty = window.document.forms['mon_ttl'].elements['total'].value;
+	var sch_out_qty =	window.document.forms['mon_add_'+i].elements['PHP_sch_out_qty'].value;
+	
+	if (hdy){hdy=3;}else{hdy=0;}
+	if (qty == '' && hdy == 0)
+	{
+		qty=0;
+	}
+	
+  sUrl = "monitor.php?PHP_action=do_saw_del&PHP_line_id="+id+"&PHP_ord_num="+ord+"&PHP_out_date="+date+"&PHP_qty="+qty+"&PHP_holiday="+hdy+"&PHP_ie="+ie+"&PHP_line="+line+"&PHP_style="+style+"&PHP_worker="+worker+"&PHP_fty="+fty+"&PHP_sid="+sid+"&PHP_total_qty="+total_qty+"&PHP_p_id="+p_id+"&PHP_sch_out_qty="+sch_out_qty;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, delback, null);
+	
+}
+
+
+
+function qty_count(i)
+{
+	var work_qty = eval(window.document.forms['mon_add_'+i].elements['PHP_qty'].value);
+	var over_qty = eval(window.document.forms['mon_add_'+i].elements['PHP_overtime'].value);
+	if(!work_qty) work_qty = 0;
+	if(!over_qty) over_qty = 0;
+	var qty = parseInt(work_qty) + parseInt(over_qty);
+	window.document.forms['mon_add_'+i].elements['PHP_ttl_qty'].value = parseInt(qty);
+}
+
+</script>
+{/literal}
+</head>
+{if $back_none == 1}
+<body background="images/vline-516.jpg">
+{else}
+<body>
+{/if}
+<br>
+<div id="preview1" style="position:absolute; z-index:1;width:10; filter:revealTrans(duration=0.3); visibility:hidden;"> 
+<table border="0" cellspacing="0" cellpadding="0" align="center">
+  <tr>
+    <td width="9" height="9"><img src="images/t_l.png" width="9" height="9"></td>
+    <td width="5" height="9" align="left" background="images/t_m.png"><img src="images/t_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/t_m.png"></td>
+    <td width="5" height="9" align="right" background="images/t_m.png"><img src="images/t_mr.png" width="5" height="9"></td>
+    <td><img src="images/t_r.png" width="9" height="9"></td>
+  </tr>
+  <tr>
+    <td width="9" valign="top" background="images/m_l.png"><img src="images/m_lt.png" width="9" height="5"></td>
+    <td colspan="3" rowspan="3" bgcolor="#FFFFFF"><table border="0" cellpadding="3" cellspacing="1">
+      <tr>
+        <td>
+					<table width="100%" border="0" cellpadding="1" cellspacing="1">
+            <tr>
+              <td align="right" class="B" nowrap>STYLE：</td>
+              <td nowrap>&nbsp;<span id="fab_placement" ></span></td>
+            </tr>
+						<tr>
+              <td align="right" class="B" nowrap>ETS~ETF：</td>
+              <td nowrap>&nbsp;<span id="fab_placement2" ></span></td>
+            </tr>
+						<tr>
+              <td align="right" class="B" nowrap>QTY：</td>
+              <td nowrap>&nbsp;<span id="fab_placement3" ></span></td>
+            </tr>
+					</table>
+				</td>
+      </tr>
+    </table></td>
+    <td width="9" valign="top" background="images/m_r.png"><img src="images/m_rt.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td height="99%" background="images/m_l.png"></td>
+    <td height="99%" background="images/m_r.png"></td>
+  </tr>
+  <tr>
+    <td width="9" height="5" valign="bottom" background="images/m_l.png"><img src="images/m_lb.png" width="9" height="5"></td>
+    <td width="9" valign="bottom" background="images/m_r.png"><img src="images/m_rb.png" width="9" height="5"></td>
+  </tr>
+  <tr>
+    <td width="9" height="9"><img src="images/b_l.png" width="9" height="9"></td>
+    <td height="9" align="left" background="images/b_m.png"><img src="images/b_ml.png" width="5" height="9"></td>
+    <td width="99%" align="right" background="images/b_m.png"></td>
+    <td height="9" align="right" background="images/b_m.png"><img src="images/b_mr.png" width="5" height="9"></td>
+    <td width="9" height="9"><img src="images/b_r.png" width="9" height="9"></td>
+  </tr>
+</table>
+</div>
+<div style="text-align:center">
+<table cellspacing="0" cellpadding="0" cols="1">
+	<tr>
+		<td>
+			<table cellspacing="1" cellpadding="4" cols="1" width="100%" bgcolor="#003300">
+				<tr>
+					<td class="des" align="center" height="28" width="150">&nbsp;&nbsp;<b><font color="yellow">FTY : {$mon.fty}</font></td>
+					<td class="des" align="center" height="28">[ <b>&nbsp;MONITOR DAILY OUT-PUT RECORD</b> -- ADD]</td>
+					<td class="des" align="center" height="28" width="200"><b><font color="yellow">Date : {$mon.date}</font></b>&nbsp;&nbsp;</td>
+				</tr>
+			</table>
+
+			<table border="1" cellpadding="4" cellspacing="0" cols="1" width="100%" id='tbl_msg' style="display : none">
+				<tr bgcolor="#ffffff"> 
+					<td width="90" class="gry10" align="center"><img src="images/alert.gif" border="0"></td>
+					<td class="bgdy"><div id='msg1'></div></td>
+				</tr>
+			</table>
+
+			<hr size="2" width="98%">
+
+			<table border="0" cellspacing="1" cellpadding="1" width="100%" bgcolor="#CCCCCC">
+				<tr>
+					<td width="60" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>Line</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;Worker</td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;today <BR> Worker</td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;OT. <BR> Worker</td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;OT. <BR> Hours</td>
+					<td width="90" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2" colspan="2">&nbsp;<b>Order<br>Partial</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#FAE0E1" rowspan="2">&nbsp;<b>Schedule<br>Q'ty</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#FAE0E1" rowspan="2">&nbsp;<b>Output<br>Q'ty</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>Cutting<br>Q'ty</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>Order<br>Q'ty</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>Finish<br>Q'ty</b></td>
+					<td class="frnt" align="center" bgcolor="#CEE4E3" colspan="4">&nbsp;<b> Today Out-put Q'ty</b></td>
+					<td width="60" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>&nbsp;</b></td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3" rowspan="2">&nbsp;<b>day<br>off</b></td>
+				</tr>
+				<tr>
+					<td class="frnt" align="center" bgcolor="#CEE4E3">Reg.</td>
+					<td class="frnt" align="center" bgcolor="#CEE4E3">OT.</td>
+					<td width="50" class="frnt" align="center" bgcolor="#CEE4E3">Total</td>
+					<td class="frnt" align="center" bgcolor="#CEE4E3">&nbsp;</td>
+				</tr>
+				{section name=SEC loop=$mon_det} 
+				<form METHOD="POST" name="mon_add_{$mon_det[SEC].i}" action="{$PHP_SELF}">
+				<tr>
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="line_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;padding:3px;"{/if}>
+						&nbsp;<b>{$mon_det[SEC].line}</b>
+						</div>
+						<div id="line_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} background-color: #E5F3D2; padding:3px; ">
+							&nbsp;<b>{$mon_det[SEC].line}</b>
+						</div>
+					</td>
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="wk_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;padding:3px;"{/if}>
+						&nbsp;<b>{$mon_det[SEC].worker}</b>
+						</div>
+						<div id="wk_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} background-color: #E5F3D2; padding:3px; ">
+							&nbsp;<b>{$mon_det[SEC].worker}</b>
+						</div>
+					</td>
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="twk_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;"{/if}>
+						<input type="text" name="PHP_worker" size="3" class="select" value="{if $mon_det[SEC].workers}{$mon_det[SEC].workers}{else}{$mon_det[SEC].worker}{/if}">	  	
+						</div>
+						<div id="twk_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid  == ''}display : none;{/if} background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].workers}</b>
+						</div>
+					</td> 		  	
+				
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="otw_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;"{/if}>
+						<input type="text" name="PHP_ot_wk" size="3" class="select" value="{$mon_det[SEC].ot_wk}">	  	
+						</div>
+						<div id="otw_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid  == ''}display : none;{/if} background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].ot_wk}&nbsp</b>
+						</div>
+					</td>
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="oth_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;"{/if}>
+						<input type="text" name="PHP_ot_hr" size="3" class="select" value="{$mon_det[SEC].ot_hr}">	  	
+						</div>
+						<div id="oth_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid  == ''}display : none;{/if} background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].ot_hr}&nbsp</b>
+						</div>
+					</td> 	  	
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF" nowrap>
+						<div id="ord_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;"{/if}>
+						<input type="text" name="PHP_order" size="7" class="select" value="{$mon_det[SEC].ord_num}" onMouseOver="overTip(preview1); OrdBox('mon_add_{$mon_det[SEC].i}')" onMouseOut="outTip (preview1)" onClick="search_ord('{$mon_det[SEC].i}','{$mon.fty}','{$mon_det[SEC].id}');" style="cursor:pointer" readonly >	  	
+						{if $mon_det[SEC].ord_num == ''}<img src="./images/icoSearch.gif" alt="Order" onClick="search_ord('{$mon_det[SEC].i}','{$mon.fty}','{$mon_det[SEC].id}');" style="cursor:pointer" width=15  >{/if}
+						<input type="hidden" name="PHP_p_id" value="{$mon_det[SEC].p_id}">	
+						<input type="hidden" name="PHP_style" value="{$mon_det[SEC].style}">    
+						<input type="hidden" name="PHP_sd_id" value="{$mon_det[SEC].s_id}">
+						<!-- <input type="hidden" name="PHP_p_qty" value="{$mon_det[SEC].p_qty}"> -->    
+						<input type="hidden" name="PHP_p_date" value="{$mon_det[SEC].p_date}">    
+						<input type="hidden" value="{$mon_det[SEC].ie}" name="PHP_ie">
+						<input type="hidden" value="{$mon_det[SEC].sid}" name="PHP_sid">
+						</div>
+						<div id="ord_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid  == ''}display : none;{/if} background-color: #E5F3D2;padding:3px;">
+							<a href="javascript://" onMouseOver="overTip(preview1); OrdBox('mon_add_{$mon_det[SEC].i}')" onMouseOut="outTip (preview1)">
+								<b>{$mon_det[SEC].ord_num}</b>
+							</a>
+						</div>
+					</td>
+					
+					<!-- Partial -->
+					<td class="frnt" align="center" bgcolor="#FFFFFF" nowrap>
+						<div id="ord_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+							<input type="text" id="PHP_mks" name="PHP_mks" size="1" class="input_pop" value="{$mon_det[SEC].mks}" readonly>
+						</div>
+						<div id="ord_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} background-color: #E5F3D2;padding:3px;">
+							{$mon_det[SEC].mks}&nbsp;
+						</div>
+					</td>
+					
+					<!-- Schedule -->
+					<td class="frnt" align="center" bgcolor="#FEEFF0">
+						<div id="p_qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+						<input type="text" name="PHP_p_qty" size="3" class="input_pop_s" value="{$mon_det[SEC].s_qty}" readonly>    
+						</div>
+						<div id="p_qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].s_qty|number_format}</b>
+						</div>
+					</td>
+
+					<!-- Output -->
+					<td class="frnt" align="center" bgcolor="#FEEFF0">
+						<div id="sch_out_qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+						<input type="text" name="PHP_sch_out_qty" size="3" class="{if $mon_det[SEC].sch_out_qty > $mon_det[SEC].s_qty}input_pop_r{else}input_pop_s{/if}" value="{$mon_det[SEC].sch_out_qty}" readonly>    
+						</div>
+						<div id="sch_out_qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;">
+							<b><font color="{if $mon_det[SEC].sch_out_qty > $mon_det[SEC].s_qty}FF0000{else}000000{/if}">{$mon_det[SEC].sch_out_qty|number_format}</font></b>
+						</div>
+					</td>
+					
+					<!-- Cutting -->
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="cut_qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+						<input type="text" name="PHP_cutting_qty" size="3" class="select_line" value="{$mon_det[SEC].cut_qty}" readonly>    
+						</div>
+						<div id="cut_qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].cut_qty|number_format}</b>
+						</div>
+					</td>
+
+					<!-- Order -->
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="ord_qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+						<input type="text" name="PHP_ord_qty" size="3" class="select_line" value="{$mon_det[SEC].ord_qty}" readonly>    
+						</div>
+						<div id="ord_qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;">
+							<b>{$mon_det[SEC].ord_qty|number_format}</b>
+						</div>
+					</td>
+					
+					<!-- Finish -->
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="ord_saw_qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>
+						<input type="text" name="PHP_ord_saw_qty" size="3" class="select_line" value="{$mon_det[SEC].saw_qty}" readonly>    
+						</div>
+						<div id="ord_saw_qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color:#E5F3D2; padding:3px; color:'#750303';">
+							<b>{$mon_det[SEC].saw_qty|number_format}</b>
+						</div>
+					</td>
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="qty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>    	
+						<input type="text" name="PHP_qty" size=1 class="select" value="{$mon_det[SEC].work_qty}" style=text-align:center onchange=qty_count('{$mon_det[SEC].i}')> 
+						</div>	  	
+						<div id="qty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;  color:'navy';">
+							<b>{$mon_det[SEC].work_qty|number_format}</b>
+						</div>
+					</td>
+					
+					<td align="center" bgcolor="#FFFFFF">
+						<div id="overtime_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>    	
+						<input type="text" name="PHP_overtime" size=1 class="select" value="{$mon_det[SEC].over_qty}" style=text-align:center onchange=qty_count('{$mon_det[SEC].i}')> 
+						</div>	  	
+						<div id="overtime_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;  color:'navy';">
+							<b>{$mon_det[SEC].over_qty|number_format}</b>
+						</div>
+					</td>    
+
+					<td align="center" bgcolor="#FFFFFF">
+						<div id="ttlqty_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if}>    	
+						<input type="text" name="PHP_ttl_qty" size="3" class="select_line" value="{$mon_det[SEC].qty}" style=text-align:center readonly > 
+						</div>	  	
+						<div id="ttlqty_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} text-align:right; background-color: #E5F3D2;padding:3px;  color:'navy';">
+							<b>{$mon_det[SEC].qty|number_format}</b>
+						</div>
+					</td>    
+
+					<td class="frnt" align=center nowrap bgcolor="#FFFFFF">
+						<div id="add{$mon_det[SEC].i}" {if $mon_det[SEC].sid}style="display : none;"{/if} >&nbsp;
+							<a href="javascript:add_qty('{$mon_det[SEC].i}','{$mon_det[SEC].id}','{$mon.date}','{$mon_det[SEC].line}','{$mon_det[SEC].worker}','{$mon.fty}')" value='add' style='cursor:pointer'>
+							<img src="./images/done.jpg" border="0" ALT="produced Today" width=50></a>
+							<a href="javascript:finish_qty('{$mon_det[SEC].i}','{$mon_det[SEC].id}','{$mon.date}','{$mon_det[SEC].line}','{$mon_det[SEC].worker}','{$mon.fty}')" value='finish' style='cursor:pointer'>
+							<img src="./images/finish.jpg" border="0" ALT="finish Today"></a>
+						</div>
+						<div id=edit{$mon_det[SEC].i} style="{if $mon_det[SEC].sid == ''}display : none;{/if}background-color: #E5F3D2;" >&nbsp;
+							<a href="javascript:del_qty('{$mon_det[SEC].i}','{$mon_det[SEC].id}','{$mon.date}','{$mon_det[SEC].line}','{$mon_det[SEC].worker}','{$mon.fty}')" value='del' style='cursor:pointer'>
+							<img src="./images/del.gif" border="0" ALT="cancel output"></a>
+						</div>
+					</td>
+
+					<td class="frnt" align=center nowrap bgcolor="#FFFFFF" {if $mon_det[SEC].sid}style="background-color: #E5F3D2;"{/if}>&nbsp;
+						<a href="monitor.php?PHP_action=saw_other_style&PHP_FTY={$mon.fty}&PHP_date={$mon.date}&PHP_id={$mon_det[SEC].id}&PHP_line={$mon_det[SEC].line}" style="cursor:pointer">
+						<img src="images/other_style.gif" alt="other style" border="0" valign=bottom>
+						</a>
+					</td>
+					
+					<td class="frnt" align="center" bgcolor="#FFFFFF">
+						<div id="hdy_add{$mon_det[SEC].i}" {if $mon_det[SEC].sid }style="display : none;"{/if} {if $mon_det[SEC].new_mk == 1}style="background-color: #DCCDE2;"{/if}>    	
+						<input type="checkbox" name="PHP_hdy" value="1" {if $mon_det[SEC].holiday == 1}checked{/if}>
+						</div>
+						<div id="hdy_view{$mon_det[SEC].i}" style="{if $mon_det[SEC].sid == ''}display : none;{/if} background-color: #E5F3D2;height=20;">
+							{if $mon_det[SEC].holiday == 1}<b>Holiday</b>{else}&nbsp;{/if}
+						</div>
+					</td>
+					
+				</tr>	
+				</form>
+			{/section}
+			<form METHOD="POST" name="mon_ttl" action="{$PHP_SELF}">
+			<tr>	
+				<input type="hidden" value="{$mon.total}" name="total">
+				<td colspan="14" align="right">&nbsp; <b>Today Q'ty (Total) : </b></td>
+				<td align="right">
+					<div id=qty_total><b>{$mon.total|number_format}</b></div>
+				</td>
+			</tr>
+			</form>
+			</table>
+			<form METHOD="POST" name="mon_back" action="{$PHP_SELF}">
+			<hr SIZE=2 WIDTH="98%">
+			<table border="0" cellspacing="0" cellpadding="0" cols="2" width="100%">
+				<tr> 
+					<td align="center" width="100">		
+										
+						<input type="button" onClick="window.location.href='/mode/monitor.php?PHP_action=monitor_daily'" value=" << back " class="select_e" style="cursor:pointer; width=99%">							
+							</td>
+					<td align="center">
+						<input type="hidden" name="PHP_action" value="dm_daily_viewe" >
+						<input type="hidden" name="PHP_fty" value="{$mon.fty}" >
+						<input type="hidden" name="PHP_date" value="{$mon.date}" >
+						<input type="hidden" name="PHP_back_str" value="{$back_str}" >
+						<input type="submit" value="Daily Records view" class="select_e" style="cursor:pointer; width=95%">
+					</td>
+				</tr>
+			</table>
+			</form>
+		</td>
+	</tr>
+</table>
+</div>
+<!--------- footer ---------->
+{include file="footer.html"}

@@ -1,0 +1,148 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: 積物料輔助系統 [ 驗收 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+
+
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+  
+function   roundAmount(n)   {   
+      var   s   =   ""   +   Math.round(n   *   100)   /   100   
+      var   i   =   s.indexOf('.')   
+      if   (i   <   0)   return   s   +   ".00"   
+      var   t   =   s.substring(0,   i   +   1)   +     
+              s.substring(i   +   1,   i   +   3)   
+      if   (i   +   2   ==   s.length)   t   +=   "0"   
+        
+      return   t   
+  }    
+  
+function check(r,trs_qty,i)
+{
+	var rcv = r.value;
+	rcv = parseFloat(rcv)
+	if (rcv > trs_qty)
+	{		
+		if ( confirm ("Receive is illegial\r\r Are you sure continue?")){
+			r.value =rcv;
+		} else {
+			r.value =trs_qty;
+		}
+	}
+}
+function show_rcvd_qty(qty,id,unit,table)
+{
+	 var url ="receive.php?PHP_action=recv_qty_show&PHP_qty="+qty+"&PHP_id="+id+"&PHP_unit="+unit+"&PHP_table="+table;
+	 var nm = 'rcvd';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=500,height=500 top=50, left=100');
+
+}
+</script>
+{/literal}
+
+
+
+
+
+</head>
+<body >
+	
+	
+	
+	
+	
+	<form METHOD="POST" name="rcvd_add" action="{$PHP_SELF}">
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=650 bgcolor=#003300>
+	<tr><td class="des" align=center height=28>[<b> Receiving&nbsp; <span class=ylw10>Append&nbsp;</span>Record </b> ] </td></tr>
+</table>
+
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=650>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=2 cellpadding=2 width=650 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=10 class=frnt align=center><hr size=2 width=98%></td>
+    
+  </tr>
+  <tr>
+		<td width=100 class=snvy align=right bgcolor=#E9F7E8><b>Receiving # : </b> &nbsp;</td>
+		<td width=120 align=left>&nbsp;	<b>{$rcv_num}</b></td>
+		<td width=100 class=snvy align=right bgcolor=#E9F7E8><b>ORDER # : </b> &nbsp;</td>
+		<td width=100 align=left>&nbsp;	<b>{$trans.ord_num}</b></td>
+		<td width=120 class=snvy align=right bgcolor=#E9F7E8><b>Source FTY : </b> &nbsp;</td>
+		<td width=60 align=left>&nbsp; <b>{$trans.org_fty}　</b></td>
+		<td width=120 class=snvy align=right bgcolor=#E9F7E8><b>Receiver : </b> &nbsp;</td>
+		<td width=60 align=left>&nbsp;	<b>{$trans.new_fty}</b></td>
+	</tr>
+
+  <tr>
+    <td colspan=10 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  
+</table>
+<table border="2" width="650" cellspacing=0 cellpadding=5 id="table1">	
+	<tr bgcolor="#584E5C" height=30>
+		<td width="100" class=back align="center"><b>Material #</b></td>
+		<td width="140" class=back align="center"><b>Material Name</b></td>		
+		<td width="180" class=back align="center"><b>color/cat</b></td>		
+		<td width="90"  class=back align="center"><b>Trans. Q'ty</b></td>				
+		<td width="90" class=back align="center"><b>Receive</b></td>
+	</tr>
+{section name=SEC loop=$trans_det} 
+	<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'" height=15>
+		<td align="center" nowrap>
+			  <a href="javascript:{if $trans_det[SEC].mat_cat == 'l'}Show_fab{else}Show_acc{/if}('{$trans_det[SEC].mat_code}')" value='ord_out' style='cursor:pointer'>{$trans_det[SEC].mat_code}</a>
+		</td>
+		<td align="left">{$trans_det[SEC].mat_name}&nbsp;</td>
+		<td align="left">{$trans_det[SEC].color}&nbsp;</td>			
+		<td align="right">{$trans_det[SEC].qty|number_format:"2f"} {$trans_det[SEC].unit}</td>
+		<td align="center">	
+		<input type=text name="PHP_rcv[{$trans_det[SEC].id}]" size=10 class=select value="" 	onkeyup="check(this,'{$trans_det[SEC].qty}','{$trans_det[SEC].id}')" style=text-align:center>		
+		</td>		
+	</tr>
+{/section}
+</table>
+	
+<table border="0" width="650" cellspacing=0 cellpadding=5>	
+	<tr height=30>
+		<td align="right">
+		Receiving Date:<b>{$date}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; user:<font color="#0000FF"><b>{$user}</b></font>
+		</td>
+	</tr>
+</table>
+
+
+<table border=0 cellspacing=0 cellpadding=0 cols=2 width=650>
+ <tr> 
+ 	<td>
+	{if $back_str}
+		<input type=button onClick="window.location.href='trans_rcvd.php?PHP_action=trans_add_search{$back_str}'" value=" << go back " class=select_e style="cursor:pointer; width=99%">
+	{else}&nbsp;
+	{/if}
+	</td>
+  <td align=center>
+  	<input type="hidden" name="PHP_back_str" value="{$back_str}">
+    <input type="hidden" name="PHP_rcv_num" value="{$rcv_num}">
+    <input type="hidden" name="PHP_id" value="{$trans.id}">
+    <input type="hidden" name="PHP_num" value="{$trans.trn_num}">
+    <input type="hidden" name="PHP_action" value="do_rcv_add">
+    	
+		<input type=submit value="[ Append above record ]" class=select_e style="cursor:pointer; width=95%">
+
+   </td>
+ </tr>
+</table>
+</form>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

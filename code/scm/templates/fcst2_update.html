@@ -1,0 +1,180 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+<br><br><form METHOD="POST" name="capacity">
+
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor=#EFD8AB>
+	<td colspan=13 align=center class=gry><b> ==== UPDATE SALES FORECAST ====&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=bgdy9>for customer :<i> {$cust}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;factory :<i> {$fty}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year :<i> {$year}</i></span>&nbsp;&nbsp;&nbsp;unit: (US$)</b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=13>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#0D4368"> 
+    <td class=b9 width=100 align=center bgcolor=#ffffff><b>{$cust} ( {$fty} )&nbsp;<br>FY:{$year}</b></td>
+    <td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+  </tr>
+  <!--
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>TOP</b></td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[1]" size=4 value="{$top.0}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[2]" size=4 value="{$top.1}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[3]" size=4 value="{$top.2}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[4]" size=4 value="{$top.3}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[5]" size=4 value="{$top.4}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[6]" size=4 value="{$top.5}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[7]" size=4 value="{$top.6}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[8]" size=4 value="{$top.7}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[9]" size=3 value="{$top.8}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[10]" size=3 value="{$top.9}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[11]" size=3 value="{$top.10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_top[12]" size=3 value="{$top.11}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+  -->
+   <tr bgcolor="#CCCCCC">
+   	<td class=b9 width=100 align=center bgcolor=#dddddd><b>QTY</b></td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[1]" size=4 value="{$qty.0}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[2]" size=4 value="{$qty.1}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[3]" size=4 value="{$qty.2}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[4]" size=4 value="{$qty.3}" class=select style='text-align:center'>&nbsp;</td>
+
+     <td class=b9 align=right>
+		<input type='text' name="PHP_qty[5]" size=4 value="{$qty.4}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[6]" size=4 value="{$qty.5}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[7]" size=4 value="{$qty.6}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[8]" size=4 value="{$qty.7}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[9]" size=3 value="{$qty.8}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[10]" size=3 value="{$qty.9}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[11]" size=3 value="{$qty.10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_qty[12]" size=3 value="{$qty.11}" class=select style='text-align:center'>&nbsp;</td>
+  </tr> 
+  
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>FOB @</b></td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[1]" size=4 value="{$prc.0}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[2]" size=4 value="{$prc.1}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[3]" size=4 value="{$prc.2}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[4]" size=4 value="{$prc.3}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[5]" size=4 value="{$prc.4}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[6]" size=4 value="{$prc.5}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[7]" size=4 value="{$prc.6}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[8]" size=4 value="{$prc.7}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[9]" size=3 value="{$prc.8}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[10]" size=3 value="{$prc.9}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[11]" size=3 value="{$prc.10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_prc[12]" size=3 value="{$prc.11}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+
+  <tr bgcolor="#CCCCCC"> 
+    <td class=b9 width=100 align=center bgcolor=#dddddd><b>C.M. @(%)</b></td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[1]" size=4 value="{$cm.0}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[2]" size=4 value="{$cm.1}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[3]" size=4 value="{$cm.2}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[4]" size=4 value="{$cm.3}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[5]" size=4 value="{$cm.4}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[6]" size=4 value="{$cm.5}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[7]" size=4 value="{$cm.6}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[8]" size=4 value="{$cm.7}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[9]" size=3 value="{$cm.8}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[10]" size=3 value="{$cm.9}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[11]" size=3 value="{$cm.10}" class=select style='text-align:center'>&nbsp;</td>
+    <td class=b9 align=right>
+		<input type='text' name="PHP_cm[12]" size=3 value="{$cm.11}" class=select style='text-align:center'>&nbsp;</td>
+  </tr>
+</table>
+<br><br><br>
+
+    <table border=0 cellspacing=0 cellpadding=0 cols=2 width=700>
+      <tr> 
+        <td class=bgdy9>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			# NOTICE : please be sure all the data been key-in to the above form are in numeric style only !
+        </td>
+      <tr> 
+        <td align=center>
+			<input type="hidden" name="PHP_action" value="do_forecast_update">
+			<input type="hidden" name="PHP_fty" value="{$fty}">
+			<input type="hidden" name="PHP_cust" value="{$cust}">
+			<input type="hidden" name="PHP_year" value="{$year}">
+			<input type="hidden" name="PHP_id" value="{$id}">
+			<input type=submit value="[ UPDATE FORECAST record as above ]" class=select_e style="cursor:pointer; width=100%"></form>
+        </td>
+	  </tr>
+    </table>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

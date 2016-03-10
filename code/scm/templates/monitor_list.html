@@ -1,0 +1,133 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  ORDER LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+
+<script language="javascript">
+var transaction;
+var sUrl;
+
+function send_labor(id,ord_num,qty)
+{
+	var date = window.document.forms['mon'].elements['date_'+id].value;
+	var labor = window.document.forms['mon'].elements['labor_'+id].value;
+//	alert(date+"--->"+labor);
+ 	  sUrl = "monitor.php?PHP_action=labor_ajax&PHP_id="+id+"&PHP_qty="+qty+"&PHP_ord_num="+ord_num+"&PHP_date="+date+"&PHP_labor="+labor;
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+  var callback = {
+    success: function(o) {
+    	var response = o.responseText.split("|");
+    	var rsp= response[0];
+    	var id = "avg_"+response[1];
+			document.getElementById("tbl_msg").style.display='block';
+			msg1.innerText  = rsp;
+			document.getElementById(id).innerText  = response[2];
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+  };
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form METHOD="POST" name="mon" action="{$PHP_SELF}">
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=750 id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+        
+      </tr>
+     </table>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr><td colspan=14 align=center class=gry><b>MONITOR OUT-PUT LIST</b></td></tr>
+  <tr bgcolor="#0D4368"> 
+    <td class=w9 width=50 align=center>Order#</td>
+    <td class=w9 width=20 align=center><small>Pdt.<br> Line</small></td>
+     <td class=w9 width=40 align=center><small>Workers</small></td>
+    <td class=w9 width=130 align=center>Style#</td>
+    <td class=w9 width=30 align=center>IE</td>
+    <td class=w9 width=60 align=center><font color=yellow>Q'ty</font></td> 
+    <td class=w9 width=50 align=center><font color=yellow>SU</font></td>
+    <td class=w9 width=50 align=center><font color=yellow>FTY<br>SU</font></td>   
+    <td class=w9 width=180 align=center><font color=yellow>Labor</font></td>
+    <td class=w9 width=50 align=center><small>@ Labor <BR> Per PC</small></td>   
+    <td class=w9 width=70 align=center><small>Open Date</small></td>
+  </tr>
+{section name=SEC loop=$monitor}
+<tr onmouseover="bgColor='#FCF4A4'" onmouseout="bgColor='#ffffff'">
+<!--*****--2006.11.16頁碼新增 start	  -->
+   <td class=gry9 align=center nowrap><small><a href="monitor.php?PHP_action=monitor_view&PHP_id={$monitor[SEC].id}{$back_str}&PHP_sr_startno={$now_pp}">{$monitor[SEC].ord_num}</a></small></td>
+<!--*****--2006.11.16頁碼新增 end	  -->   
+   <td class=gry9 align=center><b>{$monitor[SEC].line}&nbsp;</b></td>
+   <td class=gry9 align=center><b>{$monitor[SEC].worker}&nbsp;</b></td>
+   <td class=gry9 align=left><small>&nbsp;{$monitor[SEC].style}&nbsp;</small></td>
+   <td class=gry9 align=right><small>{$monitor[SEC].ie}&nbsp;</small></td>
+   <td class=snvy align=right><b><i>{$monitor[SEC].sum_qty|number_format}&nbsp;</i></b></td> 
+   <td class=snvy align=right><b><i>{$monitor[SEC].su|number_format}&nbsp;</i></b></td>  
+   <td class=snvy align=right><b><i>{$monitor[SEC].fty_su|number_format}&nbsp;</i></b></td>  
+   
+   <td class=snvy align=right><b><i>
+   {if $del_flag}
+      <input type='text' name="labor_{$monitor[SEC].id}" size=3 class=select value="{if $monitor[SEC].labor > 0}{$monitor[SEC].labor}{/if}">
+  		<input type='text' name="date_{$monitor[SEC].id}" size=6 class=select value="{if $monitor[SEC].labor > 0}{$monitor[SEC].labor_date}{/if}">
+			<img align='top' onmousedown="javascript:Cal(document.mon.date_{$monitor[SEC].id},1,100,50,999,0,'')" src='images/cal2.jpg' width="18" height="18"  align='top' style='cursor:hand' >
+			<img align='top' onclick="javascript:send_labor('{$monitor[SEC].id}','{$monitor[SEC].ord_num}','{$monitor[SEC].sum_qty}')" src='images/ok01.gif' width="18" height="18" style='cursor:hand' >
+   {else}
+   		{if $monitor[SEC].labor > 0}{$monitor[SEC].labor}&nbsp;({$monitor[SEC].labor_date|date_format:"%m/%d"}){/if}&nbsp;
+   {/if}   
+   </i></b></td>
+   <td class=gry9 align=right><b><div id=avg_{$monitor[SEC].id}>{if $monitor[SEC].per_lb > 0}{$monitor[SEC].per_lb|number_format:"2f"}{/if}&nbsp;</div></b></td>  
+   <td class=gry9 align=center><small>{$monitor[SEC].open_date}</small></td>
+  </tr>
+  {/section}
+</table>
+<br>
+<table width=660 border=0 cellspacing=0 cellpadding=1>
+  <tr>
+    </td>
+    <td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+    </td>
+  </tr>
+  <tr>
+    <td align=center width=180><form name="form5" method="post">
+<!--*****--2006.11.16頁碼新增 start	  -->  
+{if $pages[0] > 1}
+          <input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='monitor.php?PHP_action=monitor_search{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+{/if}
+    &nbsp;
+	</td>
+	<td align=center width=260>
+    
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+    {if $pages[PGE] == $now_pp}
+    <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+    {else}
+    <a href="monitor.php?PHP_action=monitor_search{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+    {/if}
+    {/if}   
+    {/section}
+    &nbsp;</td>
+    <td  align=center width=180>
+{if $lastpage < $maxpage}
+          <input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='monitor.php?PHP_action=monitor_search{$back_str}&PHP_sr_startno=n{$lastpage}'">
+{else}&nbsp;
+{/if}
+<!--*****--2006.11.16頁碼新增 end	  -->
+    </td></form>
+
+  </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

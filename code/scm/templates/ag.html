@@ -1,0 +1,133 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  打樣進度 列表 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+ function cfm(ref,id) {
+	if ( confirm("記錄刪除 將會永久刪除；無法再回覆 !\r\r請再確定 是否\r\r確認永久刪除 製造令記錄:["+ref+"]??")) {
+	location.href="index2.php?PHP_action=wi_del&PHP_id="+id;
+	} 
+ }
+
+function tp(url) { parent.top.location.href=url }
+function refreshIt()  {
+	if (!document.images) return;{/literal}
+	{section name=SEC loop=$wi} 
+	{literal}document.images['pic_{/literal}{$wi[SEC].smpl_id}{literal}'].src='./pics/s{/literal}{$wi[SEC].smpl_id}.jpg{literal}?'+ Math.random();{/literal}
+	{/section}{literal}
+}
+
+function input(form){
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (val ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  } else {
+//    alert(newval);
+  return true;
+  }
+}
+
+function check() {
+ var field = form.PHP_dept_code;
+ var val = field.value;
+ var newval = ""+val;  
+  if (field.value ="") {
+    alert("請先選擇 部門別 !");
+    return false;
+  } else {
+//    alert(newval);
+  return true;
+  }
+}
+</script>
+{/literal}
+</head>
+<body  bgcolor="ffffff" background=" " onLoad="refreshIt();">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=650 bgcolor=#cccccc  align=center>
+ <tr><form METHOD="POST" name="ag_list">  
+    <td align=center>
+     <table border=1 cellspacing=0 cellpadding=4 cols=1 width=650 bgcolor=#534A67>
+		 <tr><td class=des align=center><B>.......  SAMPLING SCHEDULE LIST  .......</B></td></tr>
+     </table></td></tr>
+{if $msg_YES}<tr><td>
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=640 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+</td></tr>
+{/if}
+</table></form>
+<table border cellspacing=0 cellpadding=2 width=650 bgcolor=#ffffff align=center>
+  <tr height=28> 
+	<td nowrap bgcolor="#003333" width=70 align=center class=back><b>AGS#<b></td>
+	<td nowrap bgcolor="#003333" width=70 align=center class=back><b>cust.</b></td>
+	<td nowrap bgcolor="#003333" width=70 align=center class=back><b>Order #</b></td>
+	<td nowrap bgcolor="#246979" width=60 align=center class=back><b>mat.<b></td>
+	<td nowrap bgcolor="#246979" width=60 align=center class=back><b>acc.</b></td>
+	<td nowrap bgcolor="#681E5F" width=60 align=center class=back><b>patt</b></td>
+	<td nowrap bgcolor="#681E5F" width=60 align=center class=back><b>cutting<b></td>
+	<td nowrap bgcolor="#681E5F" width=60 align=center class=back><b>sewing</b></td>
+	<td nowrap bgcolor="#681E5F" width=60 align=center class=back><b>Q.C.</b></td>
+	<td nowrap bgcolor="#00525F" width=60 align=center class=back><b>Finish</b></td>
+  </tr>
+	{if $record_NONE}
+  <tr>
+	<td colspan=10 align=center class=ssign><br>資料庫無法找到指定的記錄!<br><br>
+  </tr>
+	{/if}
+	{section name=SEC loop=$wi} 
+  <tr><form>
+	<td class=g10 align=center><img src="./pics/s{$wi[SEC].smpl_id}.jpg" name="pic_{$wi[SEC].smpl_id}">
+		</td>
+	<td class=g10 align=center>
+      <a href="{$PHP_SELF}?PHP_action=wi_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}">
+      		<b>{$wi[SEC].wi_num}&nbsp;</b></a></td>
+    <td class=gry9 align=center>{$wi[SEC].cust}&nbsp;</td>
+    <td align=center class=grn9><b>{$wi[SEC].style_code}</b>&nbsp;</td>
+    <td align=center class=gry9>{$wi[SEC].smpl_type}&nbsp;</td>
+    <td align=center class=gry9>{$wi[SEC].cfm_date}&nbsp;</td>
+    <td align=center class=gry9>{$wi[SEC].etd}&nbsp;</td>
+    <td align=center nowrap class=gry9>&nbsp;
+		{if $view_flag}
+	    <a href="{$PHP_SELF}?PHP_action=wi_view&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}"  style="cursor:pointer"><img src="images/search.gif" alt="瀏覽資料" border=0 valign=bottom></a>
+		{/if}
+		{if $edit_flag}
+		<a href="{$PHP_SELF}?PHP_action=wi_edit&PHP_id={$wi[SEC].id}&PHP_style_code={$wi[SEC].style_code}"  style="cursor:pointer"><img src="images/edit.gif" alt="更新資料" border=0 valign=bottom></a>
+		{/if}
+		{if $manager_flag}
+	    <a href="javascript:cfm('{$wi[SEC].wi_num}','{$wi[SEC].id}')" value="刪除" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0 valign=bottom></a>
+		{/if}
+		<br><b><span class=bgdy>{$smpl[SEC].marked}</span></b>
+		</td>
+  </tr>
+			{/section} 
+</table>
+<table border=0 cols=4 width=600 align=center>
+  <tr>
+	<td align=center width=300>
+	{if $PREV_page}
+	  <a href="{$cgistr_get}&PHP_sr_startno={$prev_no}&PHP_dept_code={$cgi.dept_code}&PHP_cust={$cgi.cust}&PHP_wi_num={$cgi.wi_num}&PHP_smpl_type={$cgi.smpl_type}&PHP_style_code={$cgi.style_code}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前12筆資料"></a>
+	{/if}
+    </td>
+    <td align=center width=300>
+	{if $NEXT_page}
+	  <a href="{$cgistr_get}&PHP_sr_startno={$next_no}&PHP_dept_code={$cgi.dept_code}&PHP_cust={$cgi.cust}&PHP_wi_num={$cgi.wi_num}&PHP_smpl_type={$cgi.smpl_type}&PHP_style_code={$cgi.style_code}">&nbsp;<img src="images/right2.gif" border=0 alt="後12筆資料"></a>
+	{/if}
+    </td>
+  </tr>
+</table>
+
+	</td>
+</tr>
+</table>
+</form>
+<!--------- footer ---------->
+{include file="footer.html"}

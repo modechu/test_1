@@ -1,0 +1,1269 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===:::::::::: SCM -B [ ORDER RECORD ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<style type="text/css">
+
+<!--
+#ord_del {
+	background: #eeeeee;
+	opacity:0.8;
+	filter: alpha(opacity=90);
+	position:absolute;
+	left:0;
+
+	height:expression(window.document.body.clientHeight);
+	width:expression(window.document.body.clientWidth);
+	z-index: 1000;
+}
+-->
+
+</style>
+<script language="javascript" src="./js/col.js"></script>
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript" src="./js/build/connection/connection-min.js"></script>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/mode.js"></script>
+<Script language="javascript">
+
+var transaction;
+var sUrl;
+
+function xxx(){alert('Sorry ! please update your unreasonable ETP ( before today at least) or ETD (20 days before today at least)');}
+
+function smpl_out2(smpl_num) {
+	var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num;
+	var nm = 'sample';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function output(smpl_num) {
+	var url ="schedule.php?PHP_action=sch_ord_view&PHP_ord_num="+smpl_num;
+	var nm = 'output';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function ord_cost_view(id) {
+	var url ="cost_analysis.php?PHP_action=ord_cost_show&PHP_id="+id;
+	var nm = 'sample';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function cfm_revise(ord_num,status) {
+	var notes = "";
+	if ( status >= 7 ) notes = "\rAnd restart the production schedule! \r"
+	if ( confirm("are you sure to REVISE order :#[ "+ord_num+" ]"+status+" ?\r\rEvery Revise event will cancel entire process had done !\rAnd restart the Order procedure "+notes+"from beginning Again !\r\rBe sure this is OK for you!")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.style}{literal}&cgi_del={/literal}{$cgi.del}{literal}";
+		location.href="order.php?PHP_action=revise_order&PHP_ord_num="+ord_num+"&PHP_status="+status;
+	} 
+}
+ 
+function cfm_shift(ord_num,status) {
+	if ( confirm("are you sure to SHIFT order :#[ "+ord_num+" ] ?\r\rTo other factory ?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.style}{literal}&cgi_del={/literal}{$cgi.del}{literal}";
+		location.href="index2.php?PHP_action=shift_order&PHP_ord_num="+ord_num+"&PHP_status="+status;
+	} 
+}
+
+//訂單LOG刪除
+function del_order_log(id,ord_id) {
+	location.href="order.php?PHP_action=order_log_del&PHP_id="+id+"&PHP_ord_id="+ord_id;
+}
+
+function openRemote(file) {
+	var gofile = 'index2.php?PHP_action=revise_order_view&PHP_id='+ file ;
+	window.open2(gofile,'_new','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=740,height=600 top=30, left=100');
+}
+
+
+function change_picture(pic_src) {
+	pics.src = pic_src+'?'+ Math.random();	
+}
+
+function refreshIt() {
+	if (!document.images) return;
+	{/literal}
+	pics.src = '{$main_pic}?'+ Math.random();	
+
+	{section name=SEC loop=$oth_pic}
+	{if $oth_pic[SEC]}
+	oth_pics_{$oth_num[SEC]}.src = '{$oth_pic[SEC]}?'+ Math.random();	
+	{/if}
+	{/section}
+	{literal}
+}
+
+function smpl_appval(id, num, smpl,back_str2) {
+	if ( confirm("are you sure this SAMPLE APPROVAL OK?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.style}{literal}&cgi_del={/literal}{$cgi.del}{literal}";
+		location.href="order.php?PHP_action=order_apvl&PHP_id="+id+"&PHP_smpl_num="+smpl+"&PHP_num="+num+"&cgiget="+cgiget+back_str2;
+	} 
+}
+
+function order_del(id, num, back_str2, status) {
+	if ( confirm("are you sure this SAMPLE APPROVAL OK?")) {
+		cgiget="{/literal} {$cgistr_get}{literal}&cgino={/literal}{$start_no}{literal}&cgi_1={/literal}{$cgi.dept}{literal}&cgi_2={/literal}{$cgi.order_num}{literal}&cgi_3={/literal}{$cgi.cust}{literal}&cgi_4={/literal}{$cgi.ref}{literal}&cgi_5={/literal}{$cgi.factory}{literal}&cgi_6={/literal}{$cgi.style}{literal}&cgi_del={/literal}{$cgi.del}{literal}";
+		location.href="index2.php?PHP_action=order_del&PHP_id="+id+"&PHP_status="+status+"&PHP_num="+num+"&cgiget="+cgiget+back_str2+"&PHP_bk=1";
+	} 
+}
+
+function _display_obj(obj, status) {
+	if(obj.style.display!=status)
+		obj.style.display=status;
+}
+
+function Switch(obj) {
+	_display_obj(obj, obj.style.display=="none"?"":"none");
+}
+
+function Show_ord_wi(id) {
+	var url ='index2.php?PHP_action=wi_view&PHP_ex_order=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_num=&PHP_cust=&PHP_etdstr=&PHP_etdfsh=&PHP_sch_fty=&PHP_un_fhs='; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function Show_ord_ti(id) {
+	var url ='index2.php?PHP_action=wi_view&PHP_ex_order=1&PHP_ti=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_num=&PHP_cust=&PHP_etdstr=&PHP_etdfsh=&PHP_sch_fty=&PHP_un_fhs='; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function Show_ord_bom(id) {
+	var url ='bom.php?PHP_action=bom_view&PHP_ex_order=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_etdfsh=&PHP_cust=&PHP_wi_num=&PHP_etdstr=&PHP_fty_sch=;'; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+//function Show_assort(id) {
+//	var url ='fty_bom.php?PHP_action=bom_view&PHP_id='+id; 	
+//	var nm = 'Sworking';
+//	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+//}
+
+function Show_batch_cost(id) {
+	var url ='index2.php?PHP_action=ord_batch_cost&PHP_id='+id; 	
+	var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function show_del(status) {	
+	if (status < 2) {
+		document.ord_delete.submit();
+	} else {
+		//document.getElementById("ord_del").style.display='block';
+		document.ord_delete.submit();
+	}
+}
+
+function open_picture() {
+	var ord_pic = pics.src;
+	var ww = (pics.offsetWidth) ;
+	var hh = (pics.offsetHeight);   
+	if(ww >= hh) {
+		ww += 350;
+		hh += 280;
+	} else {
+		ww += 180;
+		hh += 250;
+	}
+	window.open2(ord_pic,'ppic','resizable=yes,height='+hh+',width='+ww)
+}
+
+/*
+function cust_po_edit(id,num)
+{
+	var cust_po0 = window.document.forms['do_edit'].elements['PHP_cust_po0'].value;
+	var cust_po1 = window.document.forms['do_edit'].elements['PHP_cust_po1'].value;
+	var cust_po2 = window.document.forms['do_edit'].elements['PHP_cust_po2'].value;
+	var cust_po3 = window.document.forms['do_edit'].elements['PHP_cust_po3'].value;
+	var cust_po4 = window.document.forms['do_edit'].elements['PHP_cust_po4'].value;
+	var cust_po5 = window.document.forms['do_edit'].elements['PHP_cust_po5'].value;
+
+  sUrl = "index2.php?PHP_action=ord_custpo_edit&PHP_ord_num="+num+"&PHP_id="+id+"&PHP_cust_po[0]="+cust_po0+"&PHP_cust_po[1]="+cust_po1+"&PHP_cust_po[2]="+cust_po2+"&PHP_cust_po[3]="+cust_po3+"&PHP_cust_po[4]="+cust_po4+"&PHP_cust_po[5]="+cust_po5;
+  transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+var callback = {
+    success: function(o) {
+    	var response = o.responseText.split("|");    	
+			document.getElementById("tbl_msg").style.display='block';
+			msg1.innerText  = response[1];
+			document.getElementById("cust_po").style.display='none';
+			document.getElementById("cust_po_view").style.display='block';
+			cust_po_view.innerHTML = response[0];
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+	}
+};
+*/ 
+
+var ship_det;
+function add_ship_way(id) {
+	ship_dist = window.document.forms['order_ship'].elements['PHP_ship_dist'].value;
+	ship_way = window.document.forms['order_ship'].elements['PHP_ship_way'].value;
+	ship_day = window.document.forms['order_ship'].elements['PHP_ship_day'].value;
+	ship_det = ship_day+' to '+ship_dist+' by '+ship_way+'/ ';
+	sUrl = "order.php?PHP_action=ord_ship_edit&PHP_id="+id+"&PHP_ship_way="+ship_way+"&PHP_ship_dist="+ship_dist+"&PHP_ship_day="+ship_day;
+	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, shipaddback, null);
+}
+
+var shipaddback = {
+	success: function(o) {
+		ship_method = window.document.forms['order_ship'].elements['PHP_ship_method'].value;
+		ship_method = ship_method+ship_det;
+		window.document.forms['order_ship'].elements['PHP_ship_method'].value = ship_method;
+	},
+	failure: function(o) {
+	  alert("Error：Can't get data");
+	}
+};
+
+function del_ship_way(id) {
+	sUrl = "order.php?PHP_action=ord_ship_del&PHP_id="+id;
+	transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, shipdelback, null);
+}
+
+var shipdelback = {
+	success: function(o) {
+	var response = o.responseText;
+
+		window.document.forms['order_ship'].elements['PHP_ship_method'].value = '';
+	},
+	failure: function(o) {
+	  alert("Error：Can't get data");
+	}
+};
+  
+function check(obj) {
+	var obj;
+	var max=126;
+	obj.value=obj.value.substring(0,max);
+} 
+
+function down_pttn(id, num) {
+	if ( confirm("download this style pattern file?")) {
+		//location.href="./order_pttn/"+num+".mdl";
+		location.href="./order_pttn/"+num;
+	} 
+}
+
+</script>
+
+{/literal}
+</head>
+
+{if $order.del_mk == 0}
+<body onLoad="refreshIt();{if $resize}tblresize();{/if}" >
+{else}
+<BODY onLoad="refreshIt();{if $resize}tblresize();{/if}" background="images/vline-516.jpg">
+{/if}
+<table border=0 cellspacing=1 cellpadding=4 cols=1 width=770 id="tblShow" align="center">
+	<tr>
+		<td>
+			{if $add_flag && $order.status >= 0}
+			<!---------- sample logs form   -->
+			<div id=ord_del style="background : 'eeeeee'; display : none">
+			<form method="POST" name=ord_delete action=order.php>
+				<table width="100%" height="100%" bordercolor="#eeeeee" id="L_TB" >
+					<tr>
+						<td align="center" valign="middle">
+							<table border=1 cellspacing=0 cellpadding=2 width="100%" align="center" valign="middle">
+								<tr bgcolor=#333333 >
+									<td class=ylw10 align="center" colspan="2"><b>&nbsp;The REASON For DELETE&nbsp;</b></td>
+								</tr>
+								<tr bgcolor=#333333 >
+									<td class=gry9 align="left"><textarea name="PHP_des" rows=3 cols=100 class="select"></textarea></td>
+									<td class=ylw9 align="center" valign="center">
+										<input type=submit value="Delete" class="select_e" style="cursor:pointer; width=55; " onClick=this.width=0;>
+									</td>
+									<input type="hidden" name="PHP_action" value="order_del_bysales">
+									<input type="hidden" name="PHP_dept_code" value="{$cgi.dept}">
+									<input type="hidden" name="PHP_cust" value="{$cgi.cust}">
+									<input type="hidden" name="PHP_factory" value="{$cgi.factory}">
+									<input type="hidden" name="PHP_order_num" value="{$cgi.order_num}">
+									<input type="hidden" name="PHP_ref" value="{$cgi.ref}">
+									<input type="hidden" name="SCH_style" value="{$cgi.style}">
+									<input type="hidden" name="SCH_po" value="{$cgi.po}">
+									<input type="hidden" name="PHP_sr_startno" value="{$start_no}">
+									<input type="hidden" name="PHP_name" value="{$order.creator}">	
+									<input type="hidden" name="PHP_status" value="{$order.status}">
+									<input type="hidden" name="PHP_id" value="{$order.id}">
+									<input type="hidden" name="PHP_num" value="{$order.order_num}">
+									<!-- <input type="hidden" name="PHP_back_str" value="{$back_str2}"> -->
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+			</div>
+			{/if}
+
+			<br>
+			<table cellspacing=1 cellpadding=4 cols=1 width="100%" {if $order.del_mk == 0}bgcolor="#333333"{else}bgcolor="#360303"{/if} >
+				<tr>
+					{if $order.status < 7 && $add_flag}
+					<td class="des" align="center" width=40>
+						<a href="javascript:show_del({$order.status})" value="smpl" style="cursor:pointer">
+							<img src='./images/del.jpg' border=0 ALT="Cancellation Order">
+						</a>
+					</td>
+					{/if}
+					<td class="ylw10" align="center" height=28 width=180 > 
+					{if $order.status > 7}<a href="javascript:show_output('{$order.order_num}')" TITLE='pdt. status' style='cursor:pointer'>{/if}
+					{if $order.status == -2}<span class=ssign><b>DELETED</b></span>
+					{elseif $order.del_mk == 1}Waiting for Exceptional DEL Submit
+					{elseif $order.del_mk == 2}<span class=ssign>Waiting for Exceptional DEL APV</span>
+					{elseif $order.status == 0}Waiting for IE
+					{elseif $order.status == 1}<span class=ssign>Waiting for Submit</span>
+					{elseif $order.status == 2}<span class=ssign>Waiting for Confirm</span>
+					{elseif $order.status == 13}<span class=ssign>Waiting for Review</span>
+					{elseif $order.status == 3}<span class=ssign>Waiting for Approval</span>
+					{elseif $order.status == 4}<span class=ssign><b>APPROVAL</b></span>
+					{elseif $order.status == 5}<span class=ssign><b>REJECT</b></span>
+					{elseif $order.status == 6}<span class=lgrn><b>SCHDLing</b></span>
+					{elseif $order.status == 7}<span class=des><b>SCHDL. CFMed.</b></span>
+					{elseif $order.status == 8}<span class=des><b>PRODUCING</b></span>
+					{elseif $order.status == 10}<span class=ssign><b>=finished=</b></span>
+					{elseif $order.status == 12 && $order.close_status == 0 }<span class=ssign><b>==shipped==</b></span>
+					{elseif $order.status == 12 && $order.close_status == 4 }<span class=ssign><b>==CLOSED==</b></span>
+					{elseif $order.status == 14}<span class=ssign><b>==未出貨，異常！==</b></span>
+					{else}&nbsp;{/if}
+					
+					{if $order.del_mk > 2} <br> ( 
+					{if $order.del_mk == 3}Waiting for Exceptional DEL Confirm
+					{elseif $order.del_mk == 10}Waiting for Exceptional DEL Review
+					{elseif $order.del_mk == 4}Waiting for Exceptional DEL Approval
+					{elseif $order.del_mk == 5}Approved
+					{elseif $order.del_mk == 6}REJECT
+					{elseif $order.del_mk == 7}SCHDLing.
+					{elseif $order.del_mk == 8}SCHDL. CFMed.
+					{elseif $order.del_mk == 9}PRODUCING										
+					{else}&nbsp;{/if}
+					)
+					{/if}
+
+					{if $order.status > 7}</a>{/if}
+					</td>
+					
+					<td class="des" align="center" width=310>[ <span class=ylw10><b>ORDER</b></span> # ] --- <b>{$order.order_num}</b></td>
+					<td class="sign" align="center" width=90>
+						{if $order.revise > 0 }
+							[ <b>REVISE</b> ] : <b><i><span class=ylw10>{$order.revise}</span></i></b>
+						{else}
+							&nbsp;
+						{/if}
+					</td>
+
+					{if $edit_flag && $dept_edit && $order.status >= 0 && $order.del_mk == 0 && $order.smpl_apv == '0000-00-00' && $smpl_flag}
+					<td class="des" align="center" width=50><a href="javascript:smpl_appval({$order.id},'{$order.order_num}','{$order.smpl_ord}','{$back_str2}')" value='smpl' style='cursor:pointer'>
+						<img src='./images/approval06.gif' border=0 ALT="SMPLE APV">
+					</td>
+					{/if}
+					<td class="des" align="center" width=50>
+						{if $order.status >= 2 && $order.status < 8  &&  $order.status <> 5  && $dept_edit && $order.del_mk == 0}
+						<a href="javascript:cfm_shift('{$order.order_num}',{$order.status})" value='revise' style='cursor:pointer'>
+							<img src='./images/shift09.jpg' border=0 ALT="SHIFT ORDER">
+						</a>
+						{else}
+						&nbsp;
+						{/if}
+					</td>
+					
+					<td class="des" align="center" width=50>
+						{if $order.status > 1 && $order.status < 8  &&  $order.status <> 5  && $dept_edit && $order.del_mk == 0 && $order.output == ''}
+						<a href="javascript:cfm_revise('{$order.order_num}',{$order.status})" value='revise' style='cursor:pointer'>
+							<img src='./images/revise21.jpg' border=0 ALT="REVISE ORDER">
+						</a>
+						{else}
+						&nbsp;
+						{/if}
+					</td>
+				</tr>
+			</table>
+
+			<table border=1 cellpadding=4 cellspacing=0 cols=1 width="100%" id='tbl_msg' {if $msg_YES} style="display : block" {else}style="display : none"{/if}>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align="center"><img src="images/alert.gif" border=0></td>
+					<td class="bgdy"><div id='msg1'>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</div></td>
+				</tr>
+			</table>
+
+			<table border=0 cellspacing=1 cellpadding=3 width="100%" {if $order.del_mk == 0}bgcolor=#FFFFFF{else}bgcolor=#FEFFD6{/if}>
+				<tr>      	
+					{if $order.fellow_ord}    
+					<td colspan=3 class=sign align="left" bgcolor="#FFFFE6">
+						Fellow up ORD#:
+						<b>
+						{section name=SEC loop=$order.fellow_ord}
+							<a href="javascript:show_order_rec('','{$order.fellow_ord[SEC].ord_new}')" >
+								{$order.fellow_ord[SEC].ord_new}
+							</a>
+						&nbsp;
+						{/section}
+						</b>    	   
+					{elseif $order.carry_ord}
+					<td colspan=3 class=sign align="left" bgcolor="#FFFFE6">
+						Carry ORD#:
+						<b>
+						{section name=SEC loop=$order.carry_ord}
+							<a href="javascript:show_order_rec('','{$order.carry_ord[SEC].ord_org}')" >
+								{$order.carry_ord[SEC].ord_org}
+							</a>
+						&nbsp;
+						{/section}
+						</b>    	       
+					{else}
+					<td colspan=3 class=sign align="left">
+					&nbsp;
+					{/if}
+					</td>
+					<td colspan=3 class="frnt" align="right"><b>currency : US$&nbsp;&nbsp;&nbsp;</b></td>
+					<td nowrap width=10 align="center" class=back>
+						{if $order.status > 4 && $order.status <> 5 && $non_cost <> 1}
+							<a href="index2.php?PHP_action=order_pdf&PHP_id={$order.id}" >
+							<img src="./images/print9.gif" border=0 alt="PDF: SAVE/PRINT"></a>
+						{else}
+							&nbsp;
+						{/if}
+					</td>
+				</tr>
+				
+				<form method="POST" name=customer_po enctype="multipart/form-data" action="order.php">
+				<tr>
+					<td class="snvy" valign="top" align="right" nowrap><b>Customer PO# :</b></td>
+					<td colspan="7" valign="top" align="left" class="gry10"> Filename Extension ( *.pdf or *.rar or *.xls )
+						<div id="cust_po_view" style="display:block;">
+							<b>&nbsp;
+							{section name=SEC loop=$order.cust_po}
+								{if $order.cust_po[SEC].file}
+								{if $order.cust_po[SEC].id != '0'} / {/if}<a href="download.php?fname={$order.cust_po[SEC].file|escape:'url'}&fdir=ord_cust_po" title="{$order.cust_po[SEC].file|escape:'url'}">{$order.cust_po[SEC].po}</a>
+								{else}
+								{if $order.cust_po[SEC].id != '0'} / {/if}{$order.cust_po[SEC].po}
+								{/if}
+							{/section}
+							</b>
+
+							{if $edit_flag && $dept_edit}
+								<span style="cursor:hand" onClick="cust_po.style.display='block';cust_po_view.style.display='none'">&nbsp;&nbsp;<img src="images/button_edit.png" alt="Edit Customer PO#" border=0 valign="bottom"> </span>
+							{/if}
+						</div>
+						<span id="note" class="sign"></span>			
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td colspan="7" >
+						<div id="cust_po" style="display:none;" >
+							<table id="cust_file" border="0" cellspacing="1" cellpadding="3">
+								<tr>
+									<td align="center" class="snvy" bgcolor="#FFFFFF">
+										<span style="cursor:hand" id="close"><img src="images/close05.gif" alt="Close" border=0 valign="bottom"></span>
+									</td>					
+									<td class="snvy" bgcolor="#FFFFFF">
+										<span id="append_file" style="cursor:hand"><img src="images/add4.gif" alt="Append" border=0 valign="bottom"></span>
+									</td>
+								</tr>
+								<span id="cust_po_{$order.cust_po[SEC].id}" style="display:block;">
+								{section name=SEC loop=$order.cust_po}
+								<tr>
+									<td align="center" style="width:120px;" class="snvy" bgcolor="#dddddd">
+										{if $order.cust_po[SEC].file}
+											<a href="download.php?fname={$order.cust_po[SEC].file|escape:'url'}&fdir=ord_cust_po" title="{$order.cust_po[SEC].file|escape:'url'}">{$order.cust_po[SEC].po}</a>
+										{else}
+											{$order.cust_po[SEC].po}
+										{/if}
+									</td>
+									<td class="snvy" bgcolor="#FFFFFF">
+										<img style="cursor:hand" onClick="drop_cust_po(this,'{$order.cust_po[SEC].po}','{$order.cust_po[SEC].file|escape:'url'}','{$order.id}');" src="images/button_drop.png" alt="Drop" border=0 valign="bottom">
+									</td>
+								</tr>
+								{/section}
+								</span>
+							</table>			
+						
+			<!-- 				<input type='text' name="PHP_cust_po[0]" size="8" value="{$order.cust_po.0}" class="select">
+							<input type='text' name="PHP_cust_po[1]" size="8" value="{$order.cust_po.1}" class="select">
+							<input type='text' name="PHP_cust_po[2]" size="8" value="{$order.cust_po.2}" class="select">	
+							<input type='text' name="PHP_cust_po[3]" size="8" value="{$order.cust_po.3}" class="select">	
+							<input type='text' name="PHP_cust_po[4]" size="8" value="{$order.cust_po.4}" class="select">				
+							<input type='text' name="PHP_cust_po[5]" size="8" value="{$order.cust_po.5}" class="select">
+							<BR>
+							<input type='text' name="PHP_cust_po[6]" size="8" value="{$order.cust_po.6}" class="select"> 		
+							<input type='text' name="PHP_cust_po[7]" size="8" value="{$order.cust_po.7}" class="select"> 
+							<input type='text' name="PHP_cust_po[8]" size="8" value="{$order.cust_po.8}" class="select"> 
+							<input type='text' name="PHP_cust_po[9]" size="8" value="{$order.cust_po.9}" class="select"> 	
+							<input type='text' name="PHP_cust_po[10]" size="8" value="{$order.cust_po.10}" class="select"> 
+							<input type='text' name="PHP_cust_po[11]" size="8" value="{$order.cust_po.11}" class="select">  -->
+							<BR>	
+							<!-- <input type='file' name='PHP_file' size=50 class="select">	 -->
+							<input type='hidden' name="PHP_action" value="ord_custpo_edit">
+							<input type='hidden' name="PHP_ord_num" value="{$order.order_num}">	
+							<input type='hidden' name="PHP_po_file" value="{$order.cust_po_file}">
+							<input type='hidden' name="PHP_id" value="{$order.id}">	
+							<input type='hidden' name="PHP_back_str" value="{$order.id}">		
+							<input type=submit  value="UPLOAD " class="select_e" style="cursor:pointer; width=15%">&nbsp;
+						</div> 			
+					</td>
+				</tr>
+				</form>  
+
+				<form method="POST" name=order_ship >
+				<tr>
+					<td class="snvy" align="right"  nowrap><b>Ship Method :</b></td>
+					<td colspan="7" align="left" >    
+						<div id="ord_ship_view" style="display:block;" >
+							<b>&nbsp;
+								{if $order.ship_dist_ary.0}
+									{section name=SEC loop=$order.ship_way_ary}
+									{$order.ship_day_ary[SEC]} to {$order.ship_dist_ary[SEC]} by {$order.ship_way_ary[SEC]}/{/section}
+								{/if}
+							</b>	
+							{if $order.status < 12 && $edit_flag && $dept_edit}
+								<span style="cursor:hand" onClick="ord_ship_edit.style.display='block';ord_ship_view.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit Ship Method" border=0 valign="bottom"> </span>
+							{/if}
+						</div>   
+						<div id="ord_ship_edit" style="display:none;" >
+							<input type="text" name="PHP_ship_day" size="12" class="select" value="" readonly> 
+						<img align='top' onmousedown="javascript:Cal(document.order_ship.PHP_ship_day,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>
+							TO {$ship_dist_select} BY {$ship_way_select} 
+							<input type=button  value="add" class="select_e" style="cursor:pointer; width=15%" onclick=add_ship_way('{$order.id}')>
+							<BR>
+							<input type='text' name="PHP_ship_method" size="8" value="{if $order.ship_dist_ary.0}{section name=SEC loop=$order.ship_way_ary}{$order.ship_day_ary[SEC]} to {$order.ship_dist_ary[SEC]} by {$order.ship_way_ary[SEC]}/{/section}{/if}" class="select_line">	
+							<span style="cursor:hand" onClick="del_ship_way('{$order.id}')">&nbsp;&nbsp;<img src="images/del.gif" alt="Edit Ship Way" border=0 valign="bottom"> </span>
+							<BR>
+							<input type='hidden' name="PHP_action" value="order_view">
+							<input type=submit  value="OK" class="select_e" style="cursor:pointer;" width="90%" >&nbsp;
+
+						</div> 			 
+					</td>
+				</tr>
+				</form> 
+                
+                <form method="POST" name="order_combine" action="order.php">
+				<tr>
+					<td class="snvy" align="right" nowrap><b>Combine Order : </b></td>
+                    <td id="combine_txt">{$order.combine} <img id="combine_add_img" src="images/Add.gif" alt="Edit Combine Code" border=0 valign="bottom" style="cursor:hand"></td>
+                    <td id="combine_add_td" style="display:none;" colspan="5">
+                        <input type="text" name="PHP_combine" size="20" value="{$order.combine}"> 
+                        <input type="submit" value="UPLOAD " class="select_e" style="cursor:pointer;">
+                        <img id="combine_del_img" src="images/close05.gif" alt="Close" border=0 valign="bottom" style="cursor:hand">
+                    </td>
+                    <td id="combine_del_td" style="display:none;"></td>
+				</tr>
+                <tr>
+                    <td></td>
+                    <td colspan="7">{$combine}</td>
+				</tr>
+                <input type='hidden' name="PHP_action" value="order_combine_edit">
+                <input type='hidden' name="PHP_ord_num" value="{$order.order_num}">	
+                <input type='hidden' name="PHP_combine_old" value="{$order.combine}">	
+                <input type='hidden' name="PHP_id" value="{$order.id}">	
+                <input type='hidden' name="PHP_back_str" value="{$order.id}">		
+
+				</form>                 
+
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				
+				<tr>
+					<td class="snvy" align="right" nowrap><b>style No. :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.style_num}</b></td>
+					<td class="snvy" align="right" nowrap><b>Customer :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.cust_iname}</b></td>
+					<td class="snvy" align="right" nowrap><b>customer ref. :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;<small>{$order.ref}</small></b></td>
+					<td class="snvy" align="right"  nowrap><b>Team :</b></td>
+					<td class="bgdy" align="left"  bgcolor="#dddddd"><b>&nbsp;{$order.dept}</b></td>
+				</tr>
+				<tr>
+					<td class="snvy" align="right" nowrap><b>factory :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.factory}</b></td>
+					<td class="snvy" align="right" nowrap><b>style type :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.style}</b></td>
+					<td class="snvy" align="right" nowrap><b>Q'ty :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.qty|number_format}&nbsp;{$order.unit}</b></td>
+					<td class="snvy" align="right" nowrap><b>SU :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.f_su}</b></td>
+				</tr>
+				<tr>
+					<td class="snvy" align="right" nowrap><b>FOB @ :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;$ {$order.uprice|number_format:"2f"}</b></td>  
+					<td class="snvy" align="right" nowrap><b>Quota Cat. :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;{$order.quota}</b></td>
+					<td class="snvy" align="right" nowrap><b>smpl ord No. :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd"><a href="javascript:smpl_out2('{$order.smpl_ord}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order.smpl_ord}</b></a></td>
+					
+					{if $is_factory == 0}
+					<td class="snvy" align="right" nowrap><b>calc. IE :</b></td>
+					<td class="bgdy" align="left" bgcolor="#dddddd">    	
+						{if $order.ie1_check == 0}<b>&nbsp;{$order.ie1}</b>{else}
+							<a href="download.php?fname={$order.ie1_file}&fdir=ord_ie" title="{$order.ie1_file}"><b>&nbsp;{$order.ie1}</b></a>
+						{/if}    
+					</td>
+					{else}
+						{if $order.dept == $user_dept || $order.factory == $user_dept}
+						<td class="snvy" align="right" nowrap><b>calc. IE :</b></td>
+						<td class="bgdy" align="left" bgcolor="#dddddd">    	
+							{if $order.ie1_check == 0}<b>&nbsp;{$order.ie1}</b>{else}
+								<a href="download.php?fname={$order.ie1_file}&fdir=ord_ie" title="{$order.ie1_file}"><b>&nbsp;{$order.ie1}</b></a>
+							{/if}    
+						</td>
+						{else}
+						<td class="snvy" align="right" nowrap><b>calc. IE :</b></td>
+						<td class="bgdy" align="left" bgcolor="#dddddd"><b>&nbsp;</b>
+						</td>
+						{/if}
+					{/if}
+				
+				</tr>
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td class="snvy" align="right" nowrap><b>pattern # :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{$order.patt_num}</b></td>	
+					<td class="snvy" align="right" nowrap>&nbsp;</td>
+					<td class="b10" align="left" nowrap  >&nbsp;</td>	
+					<td class="snvy" align="right" nowrap><b>sample APV. :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{if $order.smpl_apv == '0000-00-00'}not apv{else}{$order.smpl_apv}{/if}</b></td>
+					<td class="snvy" align="right" nowrap><b>final IE :</b></td>
+					<td class="grn10" align="left" nowrap bgcolor="#dddddd">
+                    {if $is_factory == 0}
+                        {if $order.ie2_check == 0}
+                        <b>&nbsp;{$order.ie2}</b>
+                        {else}
+						<a href="download.php?fname={$order.ie2_file}&fdir=ord_ie" title="{$order.ie2_file}"><b>&nbsp;{$order.ie2}</b></a>
+                        {/if}
+                    {else}
+                        {if $order.dept == $user_dept || $order.factory == $user_dept}
+                        {if $order.ie2_check == 0}
+                        <b>&nbsp;{$order.ie2}</b>
+                        {else}
+						<a href="download.php?fname={$order.ie2_file}&fdir=ord_ie" title="{$order.ie2_file}"><b>&nbsp;{$order.ie2}</b></a>
+                        {/if}
+                        {else}
+                        {/if}
+                    {/if}
+                    </td>
+				</tr>
+				<tr>
+					<form method="POST" name=do_season_edit action=order.php>  
+					<td class="snvy" align="right" nowrap><B>season : </B></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" >
+						<div id="ord_season_view" style="display:block;" >
+							<b>{$order.syear}&nbsp;{$order.season}</b>	
+							{if $edit_flag && $dept_edit}
+								<span style="cursor:hand" onClick="ord_season_edit.style.display='block';ord_season_view.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit Season" border=0 valign="bottom"> </span>
+							{/if}
+						</div>   
+						<div id="ord_season_edit" style="display:none;" >
+							{$year_select}{$season_select}
+
+							<input type='hidden' name="PHP_action" value="edit_order_season">
+							<input type='hidden' name="PHP_id" value="{$order.id}">
+							<input type='hidden' name="PHP_ord_num" value="{$order.order_num}">
+							<input type=submit  value="OK" class="select_e" style="cursor:pointer; width=40%" >&nbsp;
+						</div> 			
+					</td>	
+					</form>
+					<td class="snvy" align="right" nowrap>&nbsp;</td>
+					<td class="b10" align="left" nowrap  >&nbsp;</td>	
+					<td class="snvy" align="right" nowrap><b>Production Line :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{if $order.line_sex == 'F'}Woman{elseif $order.line_sex == 'M'}Man{else}Ann{/if}</b></td>
+					<td class="snvy" align="right" nowrap><b>Agnet :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{$order.agent}</b></td>	
+				</tr>
+				<tr>  	
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				
+				{if $order.partial_num == 0}
+				<form method="POST" name=do_edit action=order.php>  
+				<tr>
+					<td class="snvy" align="right" nowrap><b>ETD :</b></td>
+					<td  class="b10" align="left"  bgcolor="#dddddd" nowrap>
+						<div id="etd_view" style="display:block;" >			
+							<b>&nbsp;{$order.etd}</b>
+						</div>	
+						<div id="etd_edit" style="display:none;">	  	  
+							<input type="text" name="PHP_etds" size="8" class="select" value="{$order.etd}" readonly> 
+							<img align='top' onmousedown="javascript:Cal(document.do_edit.PHP_etds,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    
+						</div>
+					</td>	
+					<td class="snvy" align="right" nowrap><b>ETP :</b></td>
+					<td colspan="2" class="b10" align="left" nowrap bgcolor="#dddddd">
+						<div id="etp_view" style="display:block;" >
+							<b>&nbsp;{$order.etp}</b>
+							{if $order.status > 1 && $order.status <> 5 && $order.status < 10 && $edit_flag && $dept_edit}
+								<span style="cursor:hand" onClick="etd_edit.style.display='block';etp_edit.style.display='block';etd_view.style.display='none';etp_view.style.display='none'">&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom"> </span>
+							{/if}
+						</div>
+						<div id="etp_edit" style="display:none;">		  
+							<input type="text" name="PHP_etp" size="8" class="select" value="{$order.etp}" readonly> 
+							<img align='top' onmousedown="javascript:Cal(document.do_edit.PHP_etp,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    
+							<input type=submit value="[ EDIT ]" class="select_e" width=50 >
+							<input type="hidden" name="PHP_action" value="do_etd_edit">
+							<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+							<input type="hidden" name="PHP_cust" value="{$order.cust}">
+							<input type="hidden" name="PHP_status" value="{$order.status}">
+							<input type="hidden" name="PHP_su" value="{$order.su}">	 
+							<input type="hidden" name="PHP_fty" value="{$order.factory}">
+							<input type="hidden" name="PHP_ord_num" value="{$order.order_num}">
+							<input type="hidden" name="PHP_id" value="{$order.id}">	         
+						</div>
+					</td>
+				</tr>
+				</form>
+				{else}
+				<tr>
+					<td colspan="4" class="snvy" align="left" nowrap><b>Partial shipment :</b></td>
+					<td class="snvy" align="right" nowrap><b>OutPut :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{if $order.output >0}<a href="javascript:output('{$order.order_num}')" value="ord_out" style="cursor:pointer">{$order.output}</a>{/if}</b></td>	
+					<td class="snvy" align="right" nowrap><b>Shipping :</b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd" ><b>&nbsp;{$order.shipping}</b></td>	
+				</tr>
+				{section name=SHP loop=$order.ps_qty}	
+				<form method="POST" name=do_edit_{$smarty.section.SHP.index} action=order.php>   		
+				<tr>
+					<td colspan="2" class="snvy" align="right" nowrap>
+						<b>
+						Final Destination ( {$order.mks[SHP]} ) : 
+						<div id="remark_view_{$smarty.section.SHP.index}" style="display:inline;" ><b>&nbsp;{$order.ps_remark[SHP]}</b></div>	                
+						<div id="remark_edit_{$smarty.section.SHP.index}" style="display:none;">	  	  
+							<input type="text" name="PHP_remarks" size="8" class="select" value="{$order.ps_remark[SHP]}">
+						</div>                
+						</b>
+					</td>
+					<td class="snvy" align="right" nowrap><b>ETD : </b></td>
+					<td class="b10" align="left" bgcolor="#dddddd" nowrap>
+						<div id="etd_view_{$smarty.section.SHP.index}" style="display:inline;" ><b>&nbsp;{$order.ps_etd[SHP]}</b></div>	
+						<div id="etd_edit_{$smarty.section.SHP.index}" style="display:none;">	  	  
+							<input type="text" name="PHP_etds" size="8" class="select" value="{$order.ps_etd[SHP]}" readonly> 
+							<img align='top' onmousedown="javascript:Cal(document.do_edit_{$smarty.section.SHP.index}.PHP_etds,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'>    
+						</div>
+					</td>	
+					<td class="snvy" align="right" nowrap><b>ETP : </b></td>
+					<td class="b10" align="left" nowrap bgcolor="#dddddd">
+						<div id="etp_view_{$smarty.section.SHP.index}" style="display:inline;" >
+							<b>&nbsp;{$order.ps_etp[SHP]}</b>
+							{if $order.status > 1 && $order.status <> 5 && $order.status < 10 && $edit_flag && $dept_edit}
+								<span style="cursor:hand" onClick="
+								remark_edit_{$smarty.section.SHP.index}.style.display='inline';  etd_edit_{$smarty.section.SHP.index}.style.display='inline'; etp_edit_{$smarty.section.SHP.index}.style.display='inline';
+								remark_view_{$smarty.section.SHP.index}.style.display='none';   etd_view_{$smarty.section.SHP.index}.style.display='none';  etp_view_{$smarty.section.SHP.index}.style.display='none'
+								">
+								&nbsp;&nbsp;<img src="images/Add.gif" alt="Edit ETD" border=0 valign="bottom">
+								</span>
+							{/if}
+						</div>
+						<div id="etp_edit_{$smarty.section.SHP.index}" style="display:none;">{$order.ps_etp[SHP]}
+							<input type="hidden" name="PHP_etp" size="8" class="select" value="{$order.ps_etp[SHP]}" readonly> 
+							<!-- <img align='top' onmousedown="javascript:Cal(document.do_edit_{$smarty.section.SHP.index}.PHP_etp,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand'> -->    
+							<input type=submit value="[ EDIT ]" class="select_e"  width=50 >
+							<input type="hidden" name="PHP_action" value="do_etd_edit">
+							<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+							<input type="hidden" name="PHP_cust" value="{$order.cust}">
+							<input type="hidden" name="PHP_status" value="{$order.status}">
+							<input type="hidden" name="PHP_su" value="{$order.ps_su[SHP]}">	 
+							<input type="hidden" name="PHP_fty" value="{$order.factory}">
+							<input type="hidden" name="PHP_ord_num" value="{$order.order_num}">
+							<input type="hidden" name="PHP_ps_id" value="{$order.ps_id[SHP]}">	 
+							<input type="hidden" name="PHP_id" value="{$order.id}">	        
+						</div>
+					</td>
+					<td class="snvy" align="right" nowrap><b>QTY : </b></td>
+					<td class="grn10" align="left" nowrap bgcolor="#dddddd"><b>&nbsp;{$order.ps_qty[SHP]|NUMBER_FORMAT} </b></td>			
+				</tr>		
+				</form>	
+				{/section}
+				{/if}
+				<tr>
+					<td colspan="7" class="snvy" align="right" nowrap><b>est. Lead Time :</b></td>
+					<td class="grn10" align="left" nowrap bgcolor="#dddddd"><b>&nbsp;{$lead_time} days</b></td>
+				</tr>
+			</table>
+
+			<table width="100%"  bordercolor="#eeeeee" border=0 cellspacing=1 cellpadding=3 >	
+				<tr>
+					<td valign=top>
+						<table width=190 border=0 cellspacing=0 cellpadding=3>
+							<tr>
+								<td width=50><hr size=2 width=96%></td>
+								<td class="bgdy" align="center"><i><b>picture</b></i></td>
+								<td width=50><hr size=2 width=96%></td>
+							</tr>
+							<tr>
+								<td align="center" colspan=3>
+									<input type="image" src="{$main_pic}" name="pic" id=pics width=190 border="0" onclick='open_picture()'>
+								</td>
+							</tr>
+							<tr>
+								<td align="left" colspan=3>
+									<input type="image" src="{$main_pic}" name="pic_lit" id=pics_lit width=20 border="0"  onclick='change_picture("{$main_pic}")'>						
+									{section name=SEC loop=$oth_pic}
+									{if $oth_pic[SEC]}
+										<input type="image" src="{$oth_pic[SEC]}" name="oth_pic[{$oth_num[SEC]}]" id="oth_pics_{$oth_num[SEC]}" width=20 border="0" onclick='change_picture("{$oth_pic[SEC]}")'>
+									{/if}						
+									{/section}
+								</td>					
+							</tr>
+						</table>
+					</td>
+				
+					<td valign=top>
+						{if $order.dept == $user_dept || $non_cost <> 1 }
+						<table width="100%" border=0 cellspacing=2 cellpadding=3>
+							<tr>
+								<td colspan="2"><hr size=2 width=96%></td>
+								<td class="bgdy" align="center"><i><b>unit cost :</b></i></td>
+								<td colspan="2" ><hr size=2 width=96%></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=3><b>main fabric volume required per unit  :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" colspan="2"><b>&nbsp; {$order.mat_useage|number_format:"2f"} {if $order.lots_unit} {$order.lots_unit}{/if}</b></td>
+							</tr>
+							<tr>	
+								<td class="snvy" align="right" nowrap colspan=4><b>main fabric unit price :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.mat_u_cost|number_format:"2f"}</b></td>
+							</tr>
+							<tr>	
+								<td class="snvy" align="right" nowrap colspan=4><b>Fusible unit price :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.fusible|number_format:"2f"}</b></td>
+							</tr>
+							<tr>	
+								<td class="snvy" align="right" nowrap colspan=4><b>Interlining unit price :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.interline|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>accessory cost per unit :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.acc_u_cost|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>quota charge per unit [if any] :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.quota_fee|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>commission per unit [if any] :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.comm_fee|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>C.M. estimate per unit [by sales] :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.cm|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td colspan=5 class="frnt" align="center"><hr size=2 width=98%></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>C.M. estimate per unit [by IE] :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.cm2|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>FTY-C.M. per unit :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.fty_cm|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>Handling Fee :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.handling_fee|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td><hr size=2 width=96%></td>
+								<td colspan="2" class="bgdy" align="center"><i><b>special treatment cost :</b></i></td>
+								<td colspan="2" ><hr size=2 width=96%></td>
+							</tr>
+							<tr>
+								<td>　</td>
+								<td class="snvy" align="right" nowrap><b>embroidery :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>$&nbsp;{$order.emb|number_format:"2f"}</b></td>
+								<td colspan="2">　</td>
+							</tr>
+							<tr>
+								<td>　</td>
+								<td class="snvy" align="right" nowrap><b>garment wash :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>$&nbsp;{$order.wash|number_format:"2f"}</b></td>
+								<td colspan="2">　</td>
+							</tr>
+							<tr>
+								<td>　</td>
+								<td class="snvy" align="right" nowrap><b>other treatment :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>$&nbsp;{$order.oth|number_format:"2f"}</b></td>
+								{if $order.oth_treat}
+								<td colspan="2" class="snvy" align="left" nowrap colspan=4 bgcolor="#dddddd"><i><b>for</b>:<small>{$order.oth_treat}</small></i></td>
+								{else}
+								<td colspan="2">　</td>
+								{/if}
+							</tr>
+							<tr>
+								<td colspan=5 class="frnt" align="center"><hr size=2 width=98%></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=3><b>estimate Total Sales of this order :</b></td>
+								<td class="bgdy" align="left"><b>&nbsp;</b></td>
+								<td class="grn10" align="right" nowrap><b>$ {$order.sales|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=3><b>estimate Total Cost of good sold :</b></td>
+								<td class="bgdy" align="left"><b>&nbsp;</b></td>
+								<td class="grn10" align="right" nowrap><b>$ {$order.grand_cost|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=3><b>unit cost :</b></td>
+								<td class="grn10" align="right" nowrap><b>@ $ {$order.unit_cost|number_format:"2f"}</b></td>
+								<td class="bgdy" align="left"><b>&nbsp;</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=3><b>sample cost :</b></td>
+								<td class="grn10" align="right" bgcolor="#dddddd" nowrap><b>$ {$order.smpl_fee|number_format:"2f"}</b></td>
+								<td class="bgdy" align="left"><b>&nbsp;</b></td>
+							</tr>
+							<tr>
+								<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>estimate Gross Margin from this order :</b></td>
+								<td class="grn10" align="right" nowrap><b>$ {$order.gm|number_format:"2f"}</b></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>G.M. rate :</b></td>
+								<td class="bgdy" align="right" nowrap><b>{$order.gm_rate|number_format:"2f"} %</b></td>
+							</tr>				
+						</table>
+						{else}
+						<table width="100%" border=0 cellspacing=2 cellpadding=3>
+							<tr>
+								<td colspan="2"><hr size=2 width=96%></td>
+								<td class="bgdy" align="center"><i><b>unit cost :</b></i></td>
+								<td colspan="2" ><hr size=2 width=96%></td>
+							</tr>
+							<tr>
+								<td class="snvy" align="right" nowrap colspan=4><b>FTY-C.M. per unit :</b></td>
+								<td class="bgdy" align="left" bgcolor="#dddddd" nowrap><b>&nbsp;$ {$order.fty_cm|number_format:"2f"}</b></td>
+							</tr>
+						</table>
+						{/if}			
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="8" class="grn10" align="left"><b>&nbsp;&nbsp;{if $order.last_updator}Last update : 		    	
+						<a href="javascript:message_out('{$order.last_updator_id}')" style="cursor:pointer">{$order.last_updator}</a>					
+						<small> [ {$order.last_update} ]</small>{/if}</b>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				
+				{if $order.ptn_upload <> '0000-00-00' and $order.paper_ptn == 0 and $order.old_ptn_upload == 1}
+				<tr>
+					<td class="snvy" align="right"><b>pattern : </b></td>
+					<td class="snvy" align="left" bgcolor=#dddddd colspan="7">
+						&nbsp;<a href="javascript:down_pttn({$order.id},'{$order.order_num}')" value='smpl' style='cursor:pointer'><img src='./images/file2.gif' border=0 ALT="download pattern"></a>
+						on :
+						<b>{$order.ptn_upload}&nbsp;&nbsp;</td>
+				</tr>
+				{elseif $order.ptn_upload <> '0000-00-00' and $order.paper_ptn == 1}
+				<tr>
+					<td class="snvy" align="right"><b>pattern : </b></td>
+					<td class="snvy" align="left" bgcolor=#dddddd colspan="7">
+						<b><span class="bgdy">Paper Pattern&nbsp;&nbsp;&nbsp;&nbsp;</span></b>
+				</tr>
+				{else}
+					{if not $order.pttn.0.id}
+				<tr>
+					<td class="snvy" align="right"><b>pattern : </b></td>
+					<td class="snvy" align="left" bgcolor=#dddddd colspan="7">
+						<b>no pattern upload</b></td>
+				</tr>
+					{/if}
+				{/if}
+					   	
+				
+				{section name=PTN loop=$order.pttn}
+				<tr>
+					<td class="snvy" align="right"><b>pattern : </b></td>
+					<td class="snvy" align="left" bgcolor=#dddddd colspan="7">
+						{if $order.pttn[PTN].download_flag and $order.pttn[PTN].file_name}
+						<a href="javascript:down_pttn({$order.id},'{$order.pttn[PTN].file_name}')" value='smpl' style='cursor:pointer'><img src='./images/file2.gif' border=0 ALT="download pattern"></a>
+						{/if}
+						on :
+						<b>{$order.pttn[PTN].file_date}&nbsp;[{$order.pttn[PTN].file_user}]&nbsp;[{$order.pttn[PTN].file_des}]</b>
+					</td>
+				</tr>
+				{/section}
+			</table>
+
+			<!---REMARK 2010-07--->
+			<form method="POST" name=ord_remark action=order.php>
+			<table border=1 cellspacing=0 cellpadding=3 width="100%" >
+				<tr bgcolor=#bbbbbb height=25>
+					<td colspan="2" align="center" class=nvy9><b>Adding  Remark</b></td>
+				</tr>
+				<tr bgcolor=#eeeeee >		
+					<td class=gry9 align="center">
+						<textarea name="PHP_des" rows=2 cols=115 class="select" onBlur=check(this)></textarea>		
+					</td>
+					<td>
+						<input type=submit value=" ADD " class="select_e" style="cursor:pointer; width=99%">
+					</td>
+					<input type="hidden" name="PHP_action" value="do_order_rmk">
+					<input type="hidden" name="PHP_id" value="{$order.id}">
+					<input type="hidden" name="PHP_order_num" value="{$order.order_num}">
+				</tr>
+			</table>
+			</form>
+
+
+			<table border=0 cellspacing=0 cellpadding=3 width="100%">
+				<tr>
+					<td class="snvy" align="right" width=60><b>BOM : </b></td>
+					{if $order.bom_date == '0000-00-00' ||  $order.bom_date == ''}
+					<td class="snvy" align="left"><b><span class="bgdy">&nbsp; N/A</span></b></td>
+					{else}
+					<td class="snvy" align="left" nowrap>&nbsp;
+						<b>
+						<a href="javascript:Show_ord_bom('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.bom_date}</a>  	 &nbsp;	 
+						<a href="javascript:po_bom_view('{$order.order_num}','x')" value='purchase_out' style='cursor:pointer'>status</a>&nbsp;
+						<a href="javascript:po_bom_views('{$order.order_num}','x')" value='purchase_out' style='cursor:pointer'>New Status</a>
+						</b>
+					</td>
+					{if $non_cost <> 1}
+					<td>
+						<a href="javascript:Show_batch_cost('{$order.wi_id}')" value='ord_out' style='cursor:pointer'><img src='./images/bath_cost.gif' border=0 ALT="Batch Cost"></a>  	 	    
+					</td>
+					{/if}
+					{/if}
+
+					<td class="snvy" align="right" nowrap><b>WorkSheet : </b></td>
+					{if $order.ws_date == '0000-00-00' ||  $order.ws_date == ''}
+					<td class="snvy" align="left" width=80><b><span class="bgdy">&nbsp; N/A</span></b></td>
+					{else}
+					<td class="snvy" align="left" width=80>&nbsp; 
+						<b>
+						<a href="javascript:Show_ord_ti('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.ws_date}</a>  	 	 
+						</b>
+					</td>
+					{/if}
+					<td class="snvy" align="right" nowrap><b>Working Instruction : </b></td>
+					{if $order.wi_date == '0000-00-00' ||  $order.wi_date == ''}
+					<td class="snvy" align="left" width=80><b><span class="bgdy">&nbsp; N/A</span></b></td>
+					{else}
+					<td class="snvy" align="left" width=80>&nbsp; <b>
+					<a href="javascript:Show_ord_wi('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.wi_date}</a>  	 	 
+					</b>
+					</td>
+					{/if}
+				</tr>
+				<tr><td colspan="7"><hr style="border:1px dotted gray" width=97%></td></tr>
+			</table>
+
+			{if $order.status >= 6 && $non_cost <> 1}
+			<table border=0 cellspacing=0 cellpadding=6 width="100%">
+				<tr>
+					<td class="snvy" align="left" width=130><B>C.M. records :</B></td>
+					<td class="snvy" align="left">
+					{section name=DES loop=$order.rem_det}
+					 <B><a href="javascript:open_remun('{$order.rem_det[DES].rem_id}')" style='cursor:pointer' title="{$order.rem_det[DES].rem_qty}">{$order.rem_det[DES].rem_num}</a></B>&nbsp;&nbsp;&nbsp;&nbsp;
+					{/section}
+					</td>
+				</tr>
+				<tr>
+					<td class="snvy" align="left"><B>Shipping Document : </B></td>
+					<td class="snvy" align="left">
+					{section name=DES loop=$order.ship_det}
+					<B><a href="javascript:open_inv('{$order.ship_det[DES].id}')" style='cursor:pointer'>{$order.ship_det[DES].inv_num}</a></B>&nbsp;&nbsp;&nbsp;&nbsp;
+					{/section}
+					</td>
+				</tr>  
+				{if $order.close_status == 4 && $order.m_status == 3}
+				<tr>
+					<td class="snvy" align="left" colspan="2"><B><a href="javascript:open_remnant('{$order.order_num}')" style='cursor:pointer'>REMNANT </B></a></td>
+				</tr>   
+				{/if}
+				<tr><td colspan="7"><hr style="border:1px dotted gray" width=97%></td></tr>
+				{if $order.close_des}
+				<tr>
+					<td class="snvy" align="left"><B>CLOSE REMARK : </B></td>
+					<td class="snvy" align="left">{$order.close_des}</td>
+				</tr>    
+				{/if}  	
+			</table>
+			{/if}
+
+			<table border=1 cellspacing=1 cellpadding=6 width="100%" >
+				<tr bgcolor=#333333 >
+					<td class="w9"><b>&nbsp;OPEN by : </b><a href="javascript:message_out('{$order.creator_id}')" style="cursor:pointer"><span class="ylw10">{$order.creator}</span></a> - [{$order.opendate}]</td>
+					<td class="w9">{if $order.cfmer}&nbsp;<b>CFM by : </b><a href="javascript:message_out('{$order.cfmer_id}')" style="cursor:pointer"><span class="ylw10">{$order.cfmer}</span></a> - [{$order.cfm_date}]{else}&nbsp;{/if}</td>
+					<td class="w9">{if $order.rev_user}&nbsp;<b>REV by : </b><a href="javascript:message_out('{$order.rev_user_id}')" style="cursor:pointer"><span class="ylw10">{$order.rev_user}</span></a> - [{$order.rev_date}]{else}&nbsp;{/if}</td>
+					<td class=w9>{if $order.apver}&nbsp;<b>APV by : </b><a href="javascript:message_out('{$order.apver_id}')" style="cursor:pointer"><span class=ylw10>{$order.apver}</span></a> - [{$order.apv_date}]{else}&nbsp;{/if}</td>
+				</tr>
+				{if $order.del_mk > 0}
+				<tr bgcolor=#333333 >
+					<td class=w9>{if $order.del_date <> '0000-00-00'}&nbsp;<b>DEL-by : </b><a href="javascript:message_out('{$order.del_user_id}')" style="cursor:pointer"><span class="ylw10">{$order.del_user}</span></a> - [{$order.del_date}]{else}&nbsp;{/if}</td>
+					<td class=w9>{if $order.del_cfm_date <> '0000-00-00'}&nbsp;<b>DEL-CFM  : </b><a href="javascript:message_out('{$order.del_cfm_user_id}')" style="cursor:pointer"><span class="ylw10">{$order.del_cfm_user}</span></a> - [{$order.del_cfm_date}]{else}&nbsp;{/if}</td>
+					<td class=w9>{if $order.del_rev_date <> '0000-00-00'}&nbsp;<b>DEL-REV  : </b><a href="javascript:message_out('{$order.del_rev_user_id}')" style="cursor:pointer"><span class="ylw10">{$order.del_rev_user}</span></a> - [{$order.del_rev_date}]{else}&nbsp;{/if}</td>
+					<td class=w9>{if $order.del_apv_date <> '0000-00-00'}&nbsp;<b>DEL-APV  : </b><a href="javascript:message_out('{$order.del_apv_user_id}')" style="cursor:pointer"><span class="ylw10">{$order.del_apv_user}</span></a> - [{$order.del_apv_date}]{else}&nbsp;{/if}</td>
+				</tr>
+				{/if}
+			</table>
+
+
+			<!---------- SHOW 出 一些訂單歷史記錄 -->  
+			{if $log_records}
+			<table border=1 cellspacing=1 cellpadding=6 width="100%">
+				<tr bgcolor=#666666 >
+					<td width=120 class=w10 align="center">DateTime</td>
+					<td width="100%" class=w10 align="center">History records</td>
+					<td width=80 class=w10 align="center">by</td>
+				</tr>
+				{section name=SEC loop=$logs}
+				<tr bgcolor=#eeeeee >
+					<td class=gry9 align="center" nowrap><small>{$logs[SEC].k_time}</small></td>
+					<td class=gry9 align="left">
+						<div id="log_show" style="display:block;" >
+							{if $logs[SEC].status == 1}
+								<img src="images/Add.gif" alt="Edit Log" border=0 valign="bottom" style="cursor:hand" onClick="log_edit.style.display='block';log_show.style.display='none'">
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<img src="images/del.gif" alt="Del Log" border=0 valign="bottom" style="cursor:hand" onClick="del_order_log('{$logs[SEC].id}','{$order.id}')">	
+								<BR>
+							{/if}	   			
+							{$logs[SEC].des}
+						</div>
+						<div id="log_edit" style="display:none;" >	
+							<form method="POST" name=ord_remark_edit action=order.php>
+								<textarea name="PHP_des" rows=4 cols=90 class="select" onBlur=check(this)>{$logs[SEC].des}</textarea>
+								
+								<input type=submit value=" UPDATE above Record " class="select_e" style="cursor:pointer; width=95%">
+								<input type="hidden" name="PHP_action" value="do_order_rmk_edit">
+								<input type="hidden" name="PHP_id" value="{$logs[SEC].id}">
+								<input type="hidden" name="PHP_ord_id" value="{$order.id}">	
+								<input type="hidden" name="PHP_order_num" value="{$order.order_num}">
+							</form>
+						</div>
+				   </td>
+				   <td class=gry9 align="center" nowrap>{$logs[SEC].user}</td>
+				</tr>
+				{/section}
+			</table>
+			{/if}
+
+			<!---------- END SHOW   -->  
+			{if !$resize}
+			{if $order.status < 12}
+			<table border=0 cellspacing=0 cellpadding=2 width="100%" {if $order.del_mk == 0}bgcolor=#FFFFFF{else}bgcolor=#FEFFD6{/if}>
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<form method="POST" name=back>
+						<input type=button onClick="window.location.href='index2.php?PHP_action=order_search'" value=" << go back " class="select_e" style="cursor:pointer; width=99%">
+						</form>
+					</td>
+					<td colspan="2">
+						{if $add_flag && $dept_edit && $order.del_mk == 0 && $main_pic <> './images/graydot.gif'}
+							{if $order.status == 1 || $order.status ==5}
+							<form method="POST" name=cfm action=order.php>
+							<input type="hidden" name="PHP_action" value="send_order_cfm">
+							<input type="hidden" name="PHP_id" value="{$order.id}">
+							<input type="hidden" name="PHP_order_num" value="{$order.order_num}">
+							<input type="hidden" name="PHP_ETP" value="{$order.etp}">
+							<input type="hidden" name="PHP_ETD" value="{$order.etd}">
+							<input type="hidden" name="PHP_back_str" value="{$back_str}">
+							<input type="submit" value="submit Confirmation" class="select_e" style="cursor:pointer; width=99%" {if $order.etp < $check_etp || $order.etd < $check_etd}onClick="xxx();"{/if}>
+							</form>
+							{/if}
+						{else}&nbsp;
+						{/if}
+					</td>
+					<td colspan="2">
+						{if $add_flag && $dept_edit && $order.status >= 0 && $order.del_mk == 0}
+						<form method="POST" name=add_new action='index2.php'>
+						<input type="hidden" name="PHP_action" value="order_add">
+						<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+						<input type="hidden" name="PHP_cust_code" value="{$order.cust}">
+						<input type=submit value=" Append new " class="select_e" style="cursor:pointer; width=99%">
+						</form>
+						{else}&nbsp;
+						{/if}
+					</td>
+					<td colspan="2">
+						{if $edit_flag && $dept_edit && $order.status >= 0}
+							{if ($order.status ==1 || $order.status ==5 || $order.status ==0) }
+								{if $order.del_mk == 0}
+								<form method="POST" name=edit action=order.php>
+									<input type="hidden" name="PHP_action" value="order_edit">
+									<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+									<input type="hidden" name="PHP_cust" value="{$order.cust}">
+									<input type="hidden" name="PHP_id" value="{$order.id}">
+									<input type=submit value="[  Edit  ]" class="select_e" style="cursor:pointer; width=99%">
+								</form>
+								{/if}
+							{else}
+								<form method="POST" name=edit_pic action=order.php>
+									<input type="hidden" name="PHP_action" value="order_pic_edit">
+									<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+									<input type="hidden" name="PHP_cust" value="{$order.cust}">
+									<input type="hidden" name="PHP_id" value="{$order.id}">
+									<input type=submit value="[  EDIT Picture  ]" class="select_e" style="cursor:pointer; width=99%">
+								</form>
+
+							{/if}
+
+						{else}&nbsp;
+						{/if}
+					</td>
+				</tr>
+			</table>
+
+			{elseif $order.status == 12 && $order.close_status < 4}
+			<table border=0 cellspacing=0 cellpadding=2 width="100%" {if $order.del_mk == 0}bgcolor=#FFFFFF{else}bgcolor=#FEFFD6{/if} >
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td width=100>
+						<form method="POST" name=back>
+							<input type=button onClick="window.location.href='index2.php?PHP_action=order_search'" value=" << go back " class="select_e" style="cursor:pointer; width=95%; height=50">
+						</form>
+					</td>
+					<td colspan="2">
+						<!--
+						<form method="POST" name=close_case action="ord_close.php">
+						<textarea name="PHP_close_value" rows=3 cols=75 class="select">{$sub_ti[REC].txt[DES].detail}</textarea>
+						<input type="hidden" name="PHP_action" value="ord_close">
+						<input type="hidden" name="PHP_dept_code" value="{$order.dept}">
+						<input type="hidden" name="PHP_cust" value="{$order.cust}">
+						<input type="hidden" name="PHP_id" value="{$order.id}">
+						<input type="hidden" name="PHP_ord_num" value="{$order.order_num}">
+						<input type=submit value="[  CLOSE  ]" class="select_e" style="cursor:pointer; width=100; height=50"></form>
+						-->
+					</td>
+				</tr>
+			</table>
+			{else}
+			<table border=0 cellspacing=0 cellpadding=2 width="100%" {if $order.del_mk == 0}bgcolor=#FFFFFF{else}bgcolor=#FEFFD6{/if}>
+				<tr>
+					<td colspan="8" class="frnt" align="center"><hr size=2 width=98%></td>
+				</tr>
+				<tr>
+					<td width=100>
+						<form method="POST" name=back>
+							<input type=button onClick="window.location.href='index2.php?PHP_action=order_search'" value=" << go back " class="select_e" style="cursor:pointer; width=95%;">
+						</form>
+					</td>
+				</tr>
+			</table>
+			{/if}
+			{/if}
+		</td>
+	</tr>
+</table>
+
+<!--------- footer ---------->
+{include file="footer.html"}

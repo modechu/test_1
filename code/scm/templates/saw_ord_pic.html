@@ -1,0 +1,66 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM MONITOR [{$order_num}]::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+  <script language="javascript" src="./js/open_detial.js"></script>
+	
+	<script language="javascript">
+  
+function refreshIt()  {
+	if (!document.images) return;
+{/literal}
+{section name=SEC loop=$echart}
+	document.images['pic{$echart[SEC].id}'].src='{$echart[SEC].pic}?'+ Math.random();
+{/section}
+{literal}
+}
+
+	</script>
+	{/literal}
+</head>
+<body onLoad="refreshIt();">
+ <table width=600 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+  	<td align=center class=gry>
+  		
+	   	<a href="javascript:show_output('{$ord_rec.order_num}')" value='ord_out' style='cursor:pointer'>
+	   		<b>{$ord_rec.order_num}</b></a>  		
+  		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;( Q'TY : {$ord_rec.qty|number_format} pcs )  	
+  	</td>
+  </tr>
+</table>	
+{section name=SEC loop=$echart}
+
+<img src="{$echart[SEC].pic}" name="pic{$echart[SEC].id}">
+
+ <table width=600 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+  	<td align=center class=gry>Start date</td>
+  	<td align=center class=gry><small>now / end</small> date</td>
+  	<td align=center class=gry>Q'ty</td>
+  	<td align=center class=gry>SU</td>
+  	<td align=center class=gry>Avg Q'ty</td>
+  	<td align=center class=gry>Avg SU</td>
+  	<td align=center class=gry>days</td>
+  </tr>
+  <tr>
+  	<td align=center class=gry>{$ln_rec[SEC].str_date}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].end_date}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].qty|number_format}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].su|number_format}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].avg_qty|number_format:"2f"}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].avg_su|number_format:"2f"}</td>
+  	<td align=center class=gry>{$ln_rec[SEC].day}</td>
+  </tr>  
+</table>	
+	
+	
+	{if $echart[SEC].id == 0}<hr size=2 width=80%>{/if}
+<br>
+
+{/section}
+
+<!--------- footer ---------->
+{include file="footer.html"}

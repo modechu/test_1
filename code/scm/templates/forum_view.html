@@ -1,0 +1,176 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>{$lang.head}</title>
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<Script language="javascript">
+function rusure() { 
+	if (confirm("請再次確認，將會刪除整各文章主題，包括內文！")) {
+		return true; 
+	} else { 
+		return false; 
+	} 
+}
+function rusure_post() { 
+	if (confirm("請再次確認，將會刪除該內文！")) {
+		return true; 
+	} else { 
+		return false; 
+	} 
+}
+</script>
+{/literal}
+<link rel=stylesheet type="text/css" href="css/mode.css">
+<link rel=stylesheet type="text/css" href="css/style.css">
+</head>
+<body>
+<TABLE width="100%" height="100%" border=0 align=center cellPadding=0 cellSpacing=0 >
+  <TBODY>
+    <TR>
+      <td style="BORDER-TOP: #eeeeee 1px solid; BORDER-LEFT: #eeeeee 1px solid; BORDER-BOTTOM: #eeeeee 1px solid" valign=top width="" height=""><table width="100%" height="100%" border=0 cellpadding=0 cellspacing=0>
+        <tbody>
+          <tr>
+            <td valign=top><table cellspacing=0 cellpadding=0 width="100%" border=0>
+              <tbody>
+                <tr>
+                  <td><table height=23 cellspacing=0 cellpadding=0 width="100%" border=0>
+                    <tbody>
+                      <tr>
+                        <td style="PADDING-LEFT: 10px; FONT-SIZE: 8pt; COLOR: #aaaaaa" bgcolor="#f4f4f4" height="22"><table width="100%" border="0" cellspacing="0" cellpadding="3">
+                          <tr>
+                            <td height="22" nowrap bgcolor="#f4f4f4" style="PADDING-LEFT: 10px; FONT-SIZE: 8pt; COLOR: #aaaaaa"> [ <a title="{$forum_name}" style="COLOR: slategray" href="forum.php"><b> <font color="darkslategray">{$forum_name}</font></b> </a> ] {$pp} </td>
+                            <td width="20%" align="right">{if $msg}{section name=SEC_MSG loop=$msg}{$msg[SEC_MSG]}<br>{/section}{/if}</td>
+                            <td width="60%" align="right"><a href="./doc/forum.doc" target="_blank" >討論版操作手冊</a></td>
+                            <td align="right" nowrap>{if $admin_flag} | <a href="forum.php?Ac=forum_manager">討論版主題維護</a>{/if}</td>
+                          </tr>
+                        </table></td>
+                      </tr>
+                      <tr>
+                        <td bgcolor=#eeeeee height=1></td>
+                      </tr>
+                    </tbody>
+                  </table></td>
+                </tr>
+                <tr>
+                  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" valign="top"><table width="90%" border=0 align="center" cellpadding=0 cellspacing=0 >
+                        <tbody>
+                          <tr>
+                            <td valign="top"></td>
+                          </tr>
+                          <tr>
+                            <td width="" valign="top">
+																				{if !$search_view}
+																				<table width="100%" cellspacing="2" cellpadding="2" border="0">
+																					<tr>
+																						<td align="left" valign="bottom" nowrap="nowrap"><span class="nav"><a href="forum.php?Ac=forum_post&group_id={$group_id}&main_id={$main_id}"><img src="images/post.gif" border="0" alt="發表新主題" align="middle" /></a>&nbsp;&nbsp;&nbsp;<a href="forum.php?Ac=forum_re_post&serial={$post.serial}&group_id={$group_id}&main_id={$main_id}"><img src="images/reply.gif" border="0" alt="回覆主題" align="middle" /></a></span></td>
+																						<td align="left" valign="middle" width="100%"><span class="nav">&nbsp;&nbsp;&nbsp;{$main_title} -> <a href="forum.php?Ac=forum_main&group_id={$group_id}&main_id={$main_id}" class="nav">{$post_title}</a> -> {$re_title}</span></td>
+																					</tr>
+																				</table>
+																				{/if}
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                          <tr>
+                                            <td>{$page_num}</td>
+                                            <td>&nbsp;</td>
+                                            {$select_main}
+                                          </tr>
+                                        </table>
+                              <table class="forumline" width="100%" cellspacing="1" cellpadding="3" border="0">
+                                          <tr align="right">
+                                            <td class="catHead" colspan="2" height="28"><span class="nav"> ::</span></td>
+                                          </tr>
+                                          <tr>
+                                            <th class="thLeft" width="150" height="26" nowrap="nowrap">發表人</th>
+                                            <th class="thRight" nowrap="nowrap">內容</th>
+                                          </tr>
+                                          <tr>
+                                            <td width="150" align="left" valign="top" class="row1"><span class="name"><b>{$post.name}</b></span><br /></td>
+                                            <td width="100%" height="28" valign="top" class="row1"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <tr>
+                                                  <td width="100%"><img src="images/icon_minipost.gif" width="12" height="9" alt="" title="" border="0" /><span class="postdetails">發表主題 : {$post.title}<span class="gen">&nbsp;</span>&nbsp; &nbsp;發表時間 : {$post.time}</span></td>
+                                                  <td valign="top" nowrap="nowrap"><a href="forum.php?Ac=forum_edit&serial={$post.serial}&group_id={$group_id}&main_id={$main_id}"><img src="images/icon_edit.gif" alt="編輯這篇文章" title="編輯這篇文章" border="0" /></a> <a href="forum.php?Ac=forum_del&theme=1&serial={$post.serial}&group_id={$group_id}&main_id={$main_id}"><img src="images/icon_delete.gif" alt="刪除文章" title="刪除文章" border="0" onClick="return rusure();"/></a> <img src="images/icon_ip.gif" alt="{$post.ip}" title="{$post.ip}" border="0" /></td>
+                                                </tr>
+                                                <tr>
+                                                  <td colspan="2"><hr /></td>
+                                                </tr>
+                                                <tr>
+                                                  <td colspan="2">{$post.content}</td>
+                                                </tr>
+                                            </table></td>
+                                          </tr>
+                                          <tr>
+                                            <td class="row1" width="150" align="left" valign="middle"><span class="nav"><!--<a href="#" class="nav">回頂端</a>--></span></td>
+                                            <td class="row1" width="100%" height="28" valign="bottom" nowrap="nowrap"><table cellspacing="0" cellpadding="0" border="0" height="18" width="100%">
+                                                <tr>
+                                                  <td valign="middle">{if $upload}<img src="images/icon_newest_reply.gif">{/if} {section name=SEC loop=$upload} {$upload[SEC]} {/section}</td>
+                                                </tr>
+                                            </table></td>
+                                          </tr>
+                                          <tr>
+                                            <td colspan="2" height="6"></td>
+                                          </tr>
+                                          <tr>
+                                            <td class="spaceRow" colspan="2" height="1"><img src="templates/subSilver/images/spacer.gif" alt="" width="1" height="1" /></td>
+                                          </tr>
+                                {if $pages}
+                                {section name=SEC loop=$pages}
+                                <tr>
+                                  <td width="150" align="left" valign="top" class="row1"><span class="name"><b>{$pages[SEC].re_name}</b></span><br /></td>
+                                  <td width="100%" height="28" valign="top" class="row1"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td width="100%"><img src="images/icon_minipost.gif" width="12" height="9" alt="" title="" border="0" /><span class="postdetails">回覆</span><span class="postdetails">時間 : {$pages[SEC].re_time}</span></td>
+                                      <td valign="top" nowrap="nowrap"><a href="forum.php?Ac=forum_re_edit&theme=2&serial={$post.serial}&re_serial={$pages[SEC].re_serial}&group_id={$group_id}&main_id={$main_id}"><img src="images/icon_edit.gif" alt="編輯這篇文章" title="編輯這篇文章" border="0" /></a> <a href="forum.php?Ac=forum_del&theme=2&serial={$post.serial}&re_serial={$pages[SEC].re_serial}&group_id={$group_id}&main_id={$main_id}"><img src="images/icon_delete.gif" alt="刪除文章" title="刪除文章" border="0" onClick="return rusure_post();"/></a> <img src="images/icon_ip.gif" alt="{$pages[SEC].re_ip}" title="{$pages[SEC].re_ip}" border="0" /></td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2"><hr /></td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2">{$pages[SEC].re_content}</td>
+                                    </tr>
+                                  </table></td>
+                                </tr>
+                                <tr>
+                                  <td class="row1" width="150" align="left" valign="middle"><span class="nav"><!--<a href="#" class="nav">回頂端</a>--></span></td>
+                                  <td class="row1" width="100%" height="28" valign="bottom" nowrap="nowrap"><table cellspacing="0" cellpadding="0" border="0" height="18" width="18">
+                                    <tr>
+                                      <td valign="middle" nowrap="nowrap">&nbsp;</td>
+                                    </tr>
+                                  </table></td>
+                                </tr>
+                                <tr>
+                                  <td class="spaceRow" colspan="2" height="1"><img src="templates/subSilver/images/spacer.gif" alt="" width="1" height="1" /></td>
+                                </tr>
+                                {/section}
+                                {/if}
+                                <tr align="center">
+                                  <td class="catBottom" colspan="2" height="28">&nbsp;</td>
+                                </tr>
+                                        </table>
+                              <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                                          <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td align="right">{$page_num}</td>
+                                          </tr>
+                                      </table></td>
+                          </tr>
+                        </table></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                    </tr>
+                  </table>
+                  <tr>
+                    <TD></TD>
+                  </tr>
+              </table></TD>
+          </TR>
+        </TBODY>
+      </TABLE></TD>
+    </TR>
+  </TBODY>
+</TABLE>
+</body>
+</html>

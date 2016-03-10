@@ -1,0 +1,119 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+function qty_out(year,mm) {
+	 var gofile ="index2.php?PHP_action=un_qty_monthy&PHP_year="+year+"&PHP_mm="+mm;
+	 var nm = year+mm;
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=620 top=30, left=150');
+}
+
+function cust_out(year,cust) {
+	 var gofile ="index2.php?PHP_action=cust_smpl_qty&PHP_year="+year+"&PHP_cust="+cust;
+	 var nm = year+cust;
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=620 top=30, left=150');
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77">
+<br><br>
+
+
+ <table width=750 border=0 cellspacing=0 cellpadding=2>
+  <tr class="top16bg">  
+    <td width=30>&nbsp;</td>  
+	<td  width=690  align=center class="top16bg">Monthly <font color=yellow><b> Sample Progress</b></font> Break-down by Customer LIST<b>&nbsp;</b></td>
+	<td width=50 align=center class="txt_B_y_16t"><b> &nbsp;FY:{$year}&nbsp;&nbsp;</b></td>
+  </tr>
+{if $msg}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+ </table>
+ <table width=750 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=b9 width=50 align=center bgcolor=#ffffff><b>&nbsp;</b></td>
+    <td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+    <td class=ylw9 width=70 align=center bgcolor=#004262><b>Total</b>&nbsp;(pc.)</td>
+  </tr>  
+  <tr> 
+    <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Total</b>&nbsp;(pc.)</td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right>{if $rpt_tal[SEC].smpl_qty > 0}{$rpt_tal[SEC].smpl_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right bgcolor="#dddddd"><b>{$smpl_qty_tal|number_format}</b></td>
+  </tr>
+  <tr> 
+    <td class=b9 width=100 align=center bgcolor="#dddddd" nowrap><b>Un-Finish</b>&nbsp;(pc.)</td>
+    {section name=SEC loop=$rpt_done}    
+    <td class=b9 align=right>{if $rpt_done[SEC].qty_undo > 0}<a href="javascript:qty_out('{$year}','{$rpt_done[SEC].mm}')" value='etp_out' style='cursor:pointer'>{$rpt_done[SEC].qty_undo|number_format}</a>{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right bgcolor="#dddddd"><b>{$done_qty_tal|number_format}</b></td>
+  </tr>
+   <tr><td colspan=14>&nbsp;</td></tr>
+ 
+    <tr bgcolor="#0D4368" height=30> 
+    <td class=b9 align=center bgcolor="#ddddd1"><b>CUST.</b></td>
+    <td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+    <td class=ylw9 width=70 align=center bgcolor=#004262><b>Total</b>&nbsp;(pc.)</td>
+  </tr>  
+  {section name=SEC loop=$rpt}
+  {if $rpt[SEC].smpl_qty_tal > 0}  
+  <tr>
+  <td align=left class=b12 class="txt_B_b10" >
+ 	 <a href="javascript:cust_out('{$year}','{$rpt[SEC].cust}')" value='etp_out' style='cursor:pointer'>
+	  {$rpt[SEC].cust_iname}&nbsp;	
+ 	 </a>
+  </td>
+  {section name=SEC2 loop=$rpt[SEC].smpl_qty}
+   <td align=right class=b9>{if $rpt[SEC].smpl_qty[SEC2] > 0}{$rpt[SEC].smpl_qty[SEC2]|number_format}{else}&nbsp;{/if}</td>
+  {/section}
+   <td bgcolor="#dddddd" class=b9 align=right><b>{$rpt[SEC].smpl_qty_tal|number_format}</b></td>
+  </tr>
+  {/if}
+  {/section}
+    <tr> 
+    <td class=b9 width=100 align=center bgcolor="#dddddd"><b>Total</b>&nbsp;(pc.)</td>
+    {section name=SEC loop=$rpt_tal}    
+    <td class=b9 align=right bgcolor="#dddddd">{if $rpt_tal[SEC].smpl_qty > 0}{$rpt_tal[SEC].smpl_qty|number_format}{else}&nbsp;{/if}</td>
+    {/section}    
+    <td class=b9 width=70 align=right bgcolor="#dddddd"><b>{$smpl_qty_tal|number_format}</b></td>
+  </tr>  
+</table>
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

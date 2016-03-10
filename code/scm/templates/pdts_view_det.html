@@ -1,0 +1,522 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  CAPACITY LISTING :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+
+
+{literal}
+<script language="javascript">
+
+function mon_ord_p(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="pdt_static.php?PHP_action=etp_ord_prc&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"monout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function mon_out(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"monout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function un_out(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unout_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"unout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=950,height=620 top=30, left=150');
+}
+function mon_subout(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=monthy_daily_subouput&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"monsubout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function etp_out(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"etpout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+
+function fty_schedule(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=fty_etp_monthy&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyschld";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule2(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_shp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyshcld2";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fty_schedule3(fty,year,mon,su) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unshp_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su;
+	 var nm = fty+year+mon+"ftyschld3";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function shp(fty,year,mon,qty,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_shp_out&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"shp";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+function un_apv(fty,year,mon,su,mk) {
+
+//alert("factory = "+fty+"\ryear = "+year+"\rmonth = "+mon);
+	 var gofile ="index2.php?PHP_action=etp_unapv_ord_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"unapv";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function mon_sub_out(fty,year,mon,su,mk) {
+
+	 var gofile ="index2.php?PHP_action=etp_out_mm&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_su="+su+"&PHP_subout=1&PHP_mk="+mk;;
+	 var nm = fty+year+mon+"monsubout";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+
+function fcst1_out(fty,year,mon,qty,mk) {
+
+	 var gofile ="index2.php?PHP_action=mm_forcast_show&PHP_fty="+fty+"&PHP_year="+year+"&PHP_month="+mon+"&PHP_qty="+qty+"&PHP_mk="+mk;
+	 var nm = fty+year+mon+"schtout1";
+window.open(gofile,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=760,height=620 top=30, left=150');
+}
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+<br>
+ <table width=800 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor="#FFFFFF">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b>  +++++++++++ 訂單 彙總  ( ETD 月報)++++++++ </b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+{if $msg_YES}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=800 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#225176"> 
+    <td class=b9  width=8% align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr> 
+  <tr bgcolor="#CCCCCC"> 
+    <td class=bgdy9  align=center bgcolor=#dddddd>&nbsp;產能</td>
+    {section name=SEC loop=$c1}
+    <td class=bgdy8  align=right>{$c1[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8  align=center bgcolor=#dddddd rowspan=2 >業務訂單 </td>
+    {section name=SEC loop=$sal_ord}
+    <td class=snvy8  align=right>{$sal_ord[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+    <tr bgcolor="#FFFFFF"> 
+    {section name=SEC loop=$sal_rat}
+    <td class=snvy8  align=right><small>{$sal_rat[SEC]|number_format}%&nbsp;</small></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#000000"></tr>
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8 align=center bgcolor=#dddddd rowspan=2>工廠訂單</td>
+    {section name=SEC loop=$fty_all}
+    <td class=snvy8 align=right>{$fty_all[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+    <tr bgcolor="#FFFFFF"> 
+    {section name=SEC loop=$fty_rat}
+    <td class=snvy8 align=right><small>{$fty_rat[SEC]|number_format}%&nbsp;</small></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd rowspan=2>總計</td>
+    {section name=SEC loop=$ord_qty}
+    <td class=snvy8 align=right>{$ord_qty[SEC]|number_format}&nbsp;</td>
+		{/section}
+  </tr>
+
+
+   <tr bgcolor="#DDDDDD"> 
+    {section name=SEC loop=$ord_rat}
+    <td class=snvy8 align=right><small>{$ord_rat[SEC]|number_format}%&nbsp;</small></td>
+		{/section}
+  </tr>
+</table>
+<br>
+<hr width=95%>
+<br>
+
+ <table width=800 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor="#FFFFFF">
+    <td align=center class=gry ><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ 業務部門訂單  -- 女裝線  ( ETD 月報) +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+  <tr bgcolor="#225176"> 
+    <td class=b9  width=8% align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>&nbsp;接單</td>
+    {section name=SEC loop=$sal_ord}
+    <td class=snvy8 align=right><a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_ord[SEC]},'1')" value='etp_out' style='cursor:pointer'>{$sal_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>產出量</td>
+    {section name=SEC loop=$sal_output}
+    <td class=grn8  align=right><a href="javascript:mon_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_output[SEC]},'1')" value='mon_out' style='cursor:pointer'>{$sal_output[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>接單($)</td>
+    {section name=SEC loop=$sal_ord_p}
+    <td class=grn8  align=right><a href="javascript:mon_ord_p('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_ord_p[SEC]},'1')" value='mon_out' style='cursor:pointer'>{$sal_ord_p[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr> 
+ 
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨量</td>
+    {section name=SEC loop=$sal_ship}
+    <td class=snvy8 align=right><a href="javascript:shp('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_ship[SEC]},'1')" value='shp' style='cursor:pointer'>{$sal_ship[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨($)</td>
+    {section name=SEC loop=$sal_ship_p}
+    <td class=snvy8 align=right><small>{$sal_ship_p[SEC]|number_format}</small>&nbsp;</td>
+    {/section}
+  </tr>  
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8  align=center bgcolor=#DFFBBA>外代工量</td>
+    {section name=SEC loop=$sal_sub_out}
+    <td class=snvy8  align=right><a href="javascript:mon_sub_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_sub_out[SEC]},'1')" value='mon_sub_out' style='cursor:pointer'>{$sal_sub_out[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr><td></td></tr>
+      
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>未完成量</td>
+    {section name=SEC loop=$sal_un_out}
+    <td class=snvy8 align=right><a href="javascript:un_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_un_out[SEC]},'1')" value='un_out' style='cursor:pointer'>{$sal_un_out[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>  
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor="#FBF6A7">未核可量</td>
+    {section name=SEC loop=$sal_un_ord}
+    <td class=snvy8 align=right><a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$sal_un_ord[SEC]},'1')" value='un_apv' style='cursor:pointer'>{$sal_un_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor="#FBF6A7">Pre-Order</td>
+    {section name=SEC loop=$fc1}
+    <td class=grn9 width=60 align=right><a href="javascript:fcst1_out('{$fty}','{$yy[SEC]}','{$i[SEC]}',{$fc1[SEC]},1)" value='fcst1_out' style='cursor:pointer'>{$fc1[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+
+  </tr> 
+  <tr><td></td></tr>  
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>合計</td>
+    {section name=SEC loop=$sal_sumy}
+    <td class=snvy8 align=right>{$sal_sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+  </table>
+
+<br>
+ <table width=800 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor="#FFFFFF">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ 工廠自接訂單   -- 女裝線  ( ETD 月報) +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+  <tr bgcolor="#225176"> 
+    <td class=b9  width=8% align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>&nbsp;接單</td>
+    {section name=SEC loop=$fty_ord}
+    <td class=snvy8 align=right><a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_ord[SEC]},'2')" value='etp_out' style='cursor:pointer'>{$fty_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>&nbsp;產出量</td>
+    {section name=SEC loop=$fty_output}
+    <td class=grn8  align=right><a href="javascript:mon_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_output[SEC]},'2')" value='mon_out' style='cursor:pointer'>{$fty_output[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>接單($)</td>
+    {section name=SEC loop=$fty_ord_p}
+    <td class=grn8  align=right><a href="javascript:mon_ord_p('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_ord_p[SEC]},'2')" value='mon_out' style='cursor:pointer'>{$fty_ord_p[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>   
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨量</td>
+    {section name=SEC loop=$fty_ship}
+    <td class=snvy8 align=right><a href="javascript:shp('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_ship[SEC]},'2')" value='shp' style='cursor:pointer'>{$fty_ship[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨($)</td>
+    {section name=SEC loop=$fty_ship_p}
+    <td class=snvy8 align=right><small>{$fty_ship_p[SEC]|number_format}</small>&nbsp;</td>
+    {/section}
+  </tr>  
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8  align=center bgcolor=#DFFBBA>外代工量</td>
+    {section name=SEC loop=$fty_sub_out}
+    <td class=snvy8  align=right><a href="javascript:mon_sub_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_sub_out[SEC]},'2')" value='mon_sub_out' style='cursor:pointer'>{$fty_sub_out[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr><td></td></tr>
+      
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>未完成量</td>
+    {section name=SEC loop=$fty_un_out}
+    <td class=snvy8 align=right><a href="javascript:un_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_un_out[SEC]},'2')" value='un_out' style='cursor:pointer'>{$fty_un_out[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>  
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor="#FBF6A7">未核可量</td>
+    {section name=SEC loop=$fty_un_ord}
+    <td class=snvy8 align=right><a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$fty_un_ord[SEC]},'2')" value='un_apv' style='cursor:pointer'>{$fty_un_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+
+
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy width=100 align=center bgcolor="#FBF6A7">Pre-Order</td>
+    {section name=SEC loop=$fc2}
+    <td class=grn9 width=60 align=right><a href="javascript:fcst1_out('{$fty}','{$yy[SEC]}','{$i[SEC]}',{$fc2[SEC]},2)" value='fcst1_out' style='cursor:pointer'>{$fc2[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr> 
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>合計</td>
+    {section name=SEC loop=$fty_sumy}
+    <td class=snvy8 align=right>{$fty_sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>
+  </table>
+
+{if $mn_check > 0}
+<br>
+ <table width=800 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor="#FFFFFF">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ 工廠自接訂單  -- 男裝線   ( ETD 月報) +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+  <tr bgcolor="#225176"> 
+    <td class=b9  width=8% align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>&nbsp;接單</td>
+    {section name=SEC loop=$mn_ord}
+    <td class=snvy8 align=right><a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_ord[SEC]},'3')" value='etp_out' style='cursor:pointer'>{$mn_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>&nbsp;產出量</td>
+    {section name=SEC loop=$mn_output}
+    <td class=grn8  align=right><a href="javascript:mon_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_output[SEC]},'3')" value='mon_out' style='cursor:pointer'>{$mn_output[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>接單($)</td>
+    {section name=SEC loop=$mn_ord_p}
+    <td class=grn8  align=right><a href="javascript:mon_ord_p('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_ord_p[SEC]},'3')" value='mon_out' style='cursor:pointer'>{$mn_ord_p[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>    
+  
+  
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨量</td>
+    {section name=SEC loop=$mn_ship}
+    <td class=snvy8 align=right><a href="javascript:shp('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_ship[SEC]},'3')" value='shp' style='cursor:pointer'>{$mn_ship[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨($)</td>
+    {section name=SEC loop=$mn_ship_p}
+    <td class=snvy8 align=right><small>{$mn_ship_p[SEC]|number_format}</small>&nbsp;</td>
+    {/section}
+  </tr>  
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8  align=center bgcolor=#DFFBBA>外代工量</td>
+    {section name=SEC loop=$mn_sub_out}
+    <td class=snvy8  align=right><a href="javascript:mon_sub_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_sub_out[SEC]},'3')" value='mon_sub_out' style='cursor:pointer'>{$mn_sub_out[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr><td></td></tr>
+      
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>未完成量</td>
+    {section name=SEC loop=$mn_un_out}
+    <td class=snvy8 align=right><a href="javascript:un_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_un_out[SEC]},'3')" value='un_out' style='cursor:pointer'>{$mn_un_out[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>  
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor="#FBF6A7">未核可量</td>
+    {section name=SEC loop=$mn_un_ord}
+    <td class=snvy8 align=right><a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$mn_un_ord[SEC]},'3')" value='un_apv' style='cursor:pointer'>{$mn_un_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>合計</td>
+    {section name=SEC loop=$mn_sumy}
+    <td class=snvy8 align=right>{$mn_sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>  
+  </table>
+{/if}
+
+
+{if $ann_check > 0}
+<br>
+ <table width=800 border=1 cellspacing=0 cellpadding=2 bgcolor="#000000">
+  <tr bgcolor="#FFFFFF">
+    <td align=center class=gry><b>{$fty}&nbsp;</b></td>
+	<td colspan=12 align=center class=gry><b> +++++++++ 工廠自接訂單  -- 龍安廠 +++++++++</b></td>
+	<td align=center class=bgdy9><b>S.U.</b></td>
+  </tr>
+  <tr bgcolor="#225176"> 
+    <td class=b9  width=8% align=center bgcolor=#ffffff><b>FY-{$year1}&nbsp;</b></td>
+    {section name=SEC loop=$mm_name}
+    <td {if $mm[SEC] == $this_mm}class=ylw10 {else} class=w9 {/if} width=60 align=center><b>{$mm_name[SEC]}</b></td>
+    {/section}
+  </tr>
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>&nbsp;接單</td>
+    {section name=SEC loop=$ann_ord}
+    <td class=snvy8 align=right><a href="javascript:etp_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_ord[SEC]},'3')" value='etp_out' style='cursor:pointer'>{$ann_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+ 
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>&nbsp;產出量</td>
+    {section name=SEC loop=$ann_output}
+    <td class=grn8  align=right><a href="javascript:mon_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_output[SEC]},'3')" value='mon_out' style='cursor:pointer'>{$ann_output[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr bgcolor="#ffffff"> 
+    <td class=grn8  align=center bgcolor=#dddddd>接單($)</td>
+    {section name=SEC loop=$ann_ord_p}
+    <td class=grn8  align=right><a href="javascript:mon_ord_p('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_ord_p[SEC]},'3')" value='mon_out' style='cursor:pointer'>{$ann_ord_p[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>    
+  
+  
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨量</td>
+    {section name=SEC loop=$ann_ship}
+    <td class=snvy8 align=right><a href="javascript:shp('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_ship[SEC]},'3')" value='shp' style='cursor:pointer'>{$ann_ship[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr bgcolor="#DDDDDD"> 
+    <td class=snvy8 align=center bgcolor=#dddddd>出貨($)</td>
+    {section name=SEC loop=$ann_ship_p}
+    <td class=snvy8 align=right><small>{$ann_ship_p[SEC]|number_format}</small>&nbsp;</td>
+    {/section}
+  </tr>  
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8  align=center bgcolor=#DFFBBA>外代工量</td>
+    {section name=SEC loop=$ann_sub_out}
+    <td class=snvy8  align=right><a href="javascript:mon_sub_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_sub_out[SEC]},'3')" value='mon_sub_out' style='cursor:pointer'>{$ann_sub_out[SEC]|number_format}<a>&nbsp;</td>
+    {/section}
+  </tr>
+  
+  <tr><td></td></tr>
+      
+  <tr bgcolor="#FFFFFF"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>未完成量</td>
+    {section name=SEC loop=$ann_un_out}
+    <td class=snvy8 align=right><a href="javascript:un_out('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_un_out[SEC]},'3')" value='un_out' style='cursor:pointer'>{$ann_un_out[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>  
+  <tr bgcolor="#FBF6A7"> 
+    <td class=snvy8 align=center bgcolor="#FBF6A7">未核可量</td>
+    {section name=SEC loop=$ann_un_ord}
+    <td class=snvy8 align=right><a href="javascript:un_apv('{$fty}','{$yy[SEC]}','{$mm[SEC]}',{$ann_un_ord[SEC]},'3')" value='un_apv' style='cursor:pointer'>{$ann_un_ord[SEC]|number_format}</a>&nbsp;</td>
+    {/section}
+  </tr>
+  <tr><td></td></tr>
+  <tr bgcolor="#ffffff"> 
+    <td class=snvy8 align=center bgcolor=#DFFBBA>合計</td>
+    {section name=SEC loop=$ann_sumy}
+    <td class=snvy8 align=right>{$ann_sumy[SEC]|number_format}&nbsp;</td>
+    {/section}
+  </tr>  
+  </table>
+{/if}
+<table border=0 cellspacing=0 cellpadding=2 width=800 align=center>
+  <tr>
+    <td class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+  <tr>
+	<td><form method=POST name=back>
+		<input type=button onClick="window.location.href='pdt_static.php?PHP_action=pdt_view&&PHP_fty={$fty}&PHP_year1={$year1}&PHP_month={$month}'" value=" << go back " class=select_e style="cursor:pointer; width=99%"></form>
+
+	</td>
+</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

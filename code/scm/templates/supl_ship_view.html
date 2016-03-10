@@ -1,0 +1,353 @@
+{include file="header.html"}
+<script type="text/javascript">
+    var $ppd = '{$select_express}';
+</script>
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">SHIPPING View - FOR SUPPLIER</td>
+	</tr>
+    <tr>
+		<td class="">
+            {section name=SEC loop=$now_po}
+            <span class="po_box">
+                {$now_po[SEC]}
+                <input type="image" onClick="blockUI('search_po_del','{$po_num}','{$ship}','{$finl_dist}','{$now_num}','{$now_po[SEC]}');" border="0" src="images/del.gif" title="DEL">
+            </span>
+            {/section}
+        </td>
+	</tr>
+	<tr>
+		<td></td>
+	</tr>
+	<tr>
+	{if $add_flag && $po_supl_ship.status == 0}
+		<td>
+		<form id="import_csv" method=POST name=pattn enctype="multipart/form-data">    
+			檔案：<input type="hidden" name="PHP_action" value="import_csv_bl">
+				  <input type='file' name='PHP_csv_file' size=20 class=select>&nbsp;&nbsp;
+				  <input type="hidden" name="PHP_ship_id" value="{$po_supl_ship.id}">
+				  <input id="import_csv" class="title_submit" type='submit' value=' upload '>
+		</form>
+		</td>
+	{/if}
+	</tr>
+	<tr>
+		<td class="subInputName">
+            <form method="POST" action="?PHP_action=supl_ship_edit">
+            <table class="tbl_body" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>
+                        <table class="tbl_body" border="0" cellspacing="0" cellpadding="0">
+                        <input type="hidden" id="M_id" name="M_id" value="{$po_supl_ship.id}" />
+                        <tr>
+                            <td id="box_right">SHIPPING #：</td>
+                            <td><span class="code_number">S{$po_supl_ship.id}</span></td>
+                            <td id="box_right">Version：{$po_supl_ship.ver}</td>
+                            <td></td>
+                            <td>{$status_txt} {if $po_supl_ship.status == 1 && !$chk_incoming}<img class="pointer" id="box_form" form_id="form_revise" src="images/box/revise.jpg" title="Revise">{/if}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"><hr></td>
+                        </tr>
+						<tr>
+                          <td id="box_right">B.L. #：</td>
+                          <td>{$po_supl_ship.bl_num}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                          <td id="box_right">Carrier #：</td>
+                          <td>{$po_supl_ship.carrier_num}</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td id="box_right">From：</td>
+                            <td>{$po_supl_ship.org}</td>
+                            <td>&nbsp;</td>
+                            <td id="box_right">To：</td>
+                            <td>{$po_supl_ship.dist}</td>
+                        </tr>
+                        <tr>
+                            <td id="box_right">Shipping Date：</td>
+                            <td>{$po_supl_ship.ship_date}</td>
+                            <td>&nbsp;</td>
+                            <td id="box_right">ETA Date：</td>
+                            <td>{$po_supl_ship.ship_eta_date}</td>
+                        </tr>
+                        <tr>
+                            <td id="box_right">Ship By：</td>
+                            <td id="ship">{$po_supl_ship.ship_way} {$po_supl_ship.ex_cmpy}<span id="way"></span></td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>                        
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td><hr></td>
+                </tr>
+                {section name=SEC loop=$po_supl_ship_det}
+                <tr>
+                    <td>
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td style="background:url(images/box/L_T.png) bottom;background-repeat:no-repeat;height:14px;width:14px;"></td>
+                                <td style="background:url(images/box/M_T.png) bottom;background-repeat:repeat-x;" ></td>
+                                <td style="background:url(images/box/R_T.png) bottom;background-repeat:no-repeat;width:14px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="background:url(images/box/L_M.png) left;background-repeat:repeat-y;"></td>
+                                <td bgcolor="ccccff">
+                                    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                        <tr>
+                                            <td colspan="4">
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    <tr>
+                                                        <td>
+                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                <tr>
+                                                                    <td width="90px" id="box_right">P.O. #：</td>
+                                                                    <td width="120px" id="box_left"><a id="Popup" href="#" www="po.php?PHP_action=po_rcv_view&PHP_aply_num={$po_supl_ship_det[SEC].po_num|replace:'O':'A'}">{$po_supl_ship_det[SEC].po_num}</a></td>
+                                                                    <td width="6px"></td>
+                                                                    <td width="90px">&nbsp;</td>
+                                                                    <td width="120px">&nbsp;</td>
+                                                                    <td>&nbsp;</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td width="90px" id="box_right">Invoice #：</td>
+                                                                    <td width="120px" id="box_left">{$po_supl_ship_det[SEC].invoice_num}</td>
+                                                                    <td width="6px"></td>
+                                                                    <td width="90px" id="box_right">P.I. #：</td>
+                                                                    <td width="120px" id="box_left">{$po_supl_ship_det[SEC].pi_num}</td>
+                                                                    <td>&nbsp;</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td align="right" valign="top">
+                                                            <table border="0" cellspacing="0" cellpadding="0">
+                                                                <tr align="right">
+                                                                    <td><img id="append" po_id="det{$po_supl_ship_det[SEC].id}" src="images/bullet_toggle_plus.png" title="OPEN"></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>                                    
+                                        <tr id="det{$po_supl_ship_det[SEC].id}" style="display:none;">
+                                            <td colspan="4"><hr></td>
+                                        </tr>
+                                        <tr id="det{$po_supl_ship_det[SEC].id}" style="display:none;">
+                                            <td colspan="4">
+                                                <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                                                    {section name=DET loop=$po_supl_ship_det[SEC].po_det}
+                                                    {if $smarty.section.DET.index % 10 == 0}
+                                                    {if $po_supl_ship_det[SEC].po_det[DET].mat_cat == 'l'}
+                                                    <tr>
+                                                        <td id="list_title">Name</td>
+                                                        <td id="list_title">Content</td>
+                                                        <td id="list_title">Construction</td>
+                                                        <td id="list_title">Cuttable<br>Width</td>
+                                                        <td id="list_title">Color</td>
+                                                        <td id="list_title">Po Qty</td>
+                                                        <td id="list_title" title="Quantity Shipped">Quantity<br>Shipped</td>
+                                                        {if $po_supl_ship.status != 1}
+                                                        <td id="list_title" title="Shipped Total Qty">Shipped<br>Total Qty</td>
+                                                        {/if}
+                                                        <td id="list_title" title="Ship Qty">Ship Qty</td>
+                                                        <td id="list_title">Unit</td>
+                                                    </tr>
+                                                    {else}
+                                                    <tr>
+                                                        <td id="list_title">Name</td>
+                                                        <td id="list_title">Construction</td>
+                                                        <td id="list_title" colspan="3">Color</td>
+                                                        <td id="list_title">Po Qty</td>
+                                                        <td id="list_title" title="Quantity Shipped">Quantity<br>Shipped</td>
+                                                        {if $po_supl_ship.status != 1}
+                                                        <td id="list_title" title="Shipped Total Qty">Shipped<br>Total Qty</td>
+                                                        {/if}
+                                                        <td id="list_title" title="Ship Qty">Ship Qty</td>
+                                                        <td id="list_title">Unit</td>
+														<td id="list_title">&nbsp;</td>
+                                                    </tr>
+                                                    {/if}
+                                                    {/if}
+                                                    {if $po_supl_ship_det[SEC].po_det[DET].mat_cat == 'l'}
+                                                    <tr id="box_txt">
+                                                        <td id="list_left" title="{$po_supl_ship_det[SEC].po_det[DET].det_link.lots_code}">{$po_supl_ship_det[SEC].po_det[DET].det_link.lots_name}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].det_link.comp}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].det_link.specify}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].det_link.width}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].color}</td>
+                                                        <td id="list_right">{$po_supl_ship_det[SEC].po_det[DET].po_qtys|number_format:"2f"}</td>
+                                                        <td id="list_right" name="qtty_shipped_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].qtty_shipped_qty|number_format:"2f"}</td>
+                                                        {if $po_supl_ship.status != 1}
+                                                        <td id="list_right" name="ship_total_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].ship_total_qty|number_format:"2f"}</td>
+                                                        {/if}
+                                                        <td id="list_right" class="bsqty_right" name="ship_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].ship_qty|number_format:"2f"}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].po_unit}</td>
+														<td id="list_left"><img id="append" po_id="view_po_{$po_supl_ship_det[SEC].id}_{$po_supl_ship_det[SEC].po_det[DET].i}" src="images/bullet_toggle_plus.png" title="OPEN"></td>
+												   </tr>
+												   <tr id="view_po_{$po_supl_ship_det[SEC].id}_{$po_supl_ship_det[SEC].po_det[DET].i}" style="display:none;">
+														<td class="list_data" colspan="10">
+														<table id="mat_{$po_det[SEC].id}" border="0" cellspacing="0" cellpadding="0" align="left">
+																<tr>
+																	<td id="list_title2" colspan="7" >Packing List</td>
+																	<td id=""></td>
+																</tr>
+																<tr>
+																	<td id="list_title">C/NO</td>
+																	<td id="list_title">L/NO</td>
+																	<td id="list_title">R/NO</td>
+																	<td id="list_title">Q'TY</td>
+																	<td id="list_title">N.W.</td>
+																	<td id="list_title">G.W.</td>
+																	<td id="list_title">C/O</td>
+																</tr>
+																{section name=LINK loop=$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link}
+																<tr id="box_txt">
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].c_no}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].l_no}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].r_no}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].qty}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].nw}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].gw}&nbsp;</td>
+																	<td id="list_title3">&nbsp;{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].c_o}&nbsp;</td>
+																</tr>
+																{/section}
+																<!-- 主料出貨項目 -->
+															</table>
+														</td>
+												   </tr>
+                                                    {else}
+                                                    <tr id="box_txt">
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].det_link.acc_name}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].det_link.specify}</td>
+                                                        <td id="list_left" colspan="3">{$po_supl_ship_det[SEC].po_det[DET].color}</td>
+                                                        <td id="list_right">{$po_supl_ship_det[SEC].po_det[DET].po_qtys|number_format:"2f"}</td>
+                                                        <td id="list_right" name="qtty_shipped_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].qtty_shipped_qty|number_format:"2f"}</td>
+                                                        {if $po_supl_ship.status != 1}
+                                                        <td id="list_right" name="ship_total_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].ship_total_qty|number_format:"2f"}</td>
+                                                        {/if}
+                                                        <td id="list_right" name="ship_qty_{$po_supl_ship_det[SEC].po_det[DET].id}">{$po_supl_ship_det[SEC].po_det[DET].ship_qty|number_format:"2f"}</td>
+                                                        <td id="list_left">{$po_supl_ship_det[SEC].po_det[DET].po_unit}</td>
+														<td id="list_left"><img id="append" po_id="view_po_{$po_supl_ship_det[SEC].id}_{$po_supl_ship_det[SEC].po_det[DET].i}" src="images/bullet_toggle_plus.png" title="OPEN"></td>
+													</tr>
+													<tr id="view_po_{$po_supl_ship_det[SEC].id}_{$po_supl_ship_det[SEC].po_det[DET].i}" style="display:none;">
+														<td class="list_data" colspan="10">
+														<table id="mat_{$po_det[SEC].id}" border="0" cellspacing="0" cellpadding="0" align="left">
+																<tr>
+																	<td id="list_title2" colspan="7" >Packing List</td>
+																	<td id=""></td>
+																</tr>
+																<tr>
+																	<td id="list_title">C/NO</td>
+																	<td id="list_title">L/NO</td>
+																	<td id="list_title">R/NO</td>
+																	<td id="list_title">Q'TY</td>
+																	<td id="list_title">N.W.</td>
+																	<td id="list_title">G.W.</td>
+																	<td id="list_title">C/O</td>
+																</tr>
+																{section name=LINK loop=$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link}
+																<tr id="box_txt">
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].c_no}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].l_no}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].r_no}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].qty}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].nw}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].gw}</td>
+																	<td id="list_title3">{$po_supl_ship_det[SEC].po_det[DET].po_supl_ship_link[LINK].c_o}</td>
+																</tr>
+																{/section}
+																<!-- 主料出貨項目 -->
+															</table>
+														</td>
+												   </tr>
+                                                    {/if}
+                                                    {/section}
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4"><hr></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" colspan="4">
+                                                <table border="0" cellspacing="0" cellpadding="0">
+                                                    <tr>
+                                                        <td id="box_right">Delivery：</td>
+                                                        <td colspan="2" id="box_left">{$po_supl_ship_det[SEC].po_det.0.po_eta}</td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td style="background:url(images/box/R_M.png) left;background-repeat:repeat-y;"></td>
+                            </tr>
+                            <tr>
+                                <td style="background:url(images/box/L_B.png) top;background-repeat:no-repeat;height:14px;"></td>
+                                <td style="background:url(images/box/M_B.png) top;background-repeat:repeat-x;"></td>
+                                <td style="background:url(images/box/R_B.png) top;background-repeat:no-repeat;"></td>
+                            </tr>
+                        </table>                    
+                    </td>
+                </tr>
+                {/section}
+                <tr>
+                    <td><hr></td>
+                </tr>
+                <tr>
+                    <td>
+                        {if $po_supl_ship.submit_user}
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="box_right">Submit：</td>
+                                <td colspan="2" id="box_left" title="{$po_supl_ship.submit_date}">{$po_supl_ship.submit_user.name}</td>
+                            </tr>
+                        </table>
+                        {else}
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="box_right">open user：</td>
+                                <td colspan="2" id="box_left" title="{$po_supl_ship.open_date}">{$po_supl_ship.open_user.name}</td>
+                                <td id="box_right">last up user：</td>
+                                <td colspan="2" id="box_left" title="{$po_supl_ship.last_up_date}">{$po_supl_ship.last_up_user.name}</td>
+                            </tr>
+                        </table>
+                        {/if}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="submit_ajax" type="button" id="goback" go="main" style="height:30px;width:24%;" title="Main">Main</button>
+                        <button class="submit_ajax" type="button" id="goback" go="search_ship" style="height:30px;width:24%;" title="List">List</button>
+                        {if $po_supl_ship.status != 1}
+                        {if $edit_flag}
+                        <button class="submit_ajax" type="button" id="box_form" form_id="form_submit" style="height:30px;width:24%;" title="Submit">Submit</button>
+                        <button class="submit_ajax" type="button" id="box_form" form_id="form_edit" style="height:30px;width:24%;" title="Edit">Edit</button>
+                        {/if}
+                        {/if}
+                    </td>
+                </tr>
+            </table>
+            </form>
+            <form id="form_edit" method="POST" action="?PHP_action=supl_ship_edit">
+                <input type="hidden" id="M_id" name="M_id" value="{$po_supl_ship.id}" />
+            </form>
+            <form id="form_submit" method="POST" action="?PHP_action=supl_ship_submit">
+                <input type="hidden" id="M_id" name="M_id" value="{$po_supl_ship.id}" />
+            </form>
+            <form id="form_revise" method="POST" action="?PHP_action=supl_ship_revise">
+                <input type="hidden" id="M_id" name="M_id" value="{$po_supl_ship.id}" />
+            </form>
+        </td>
+    </tr>
+</table>
+{include file="footer.html"}

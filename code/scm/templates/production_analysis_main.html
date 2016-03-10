@@ -1,0 +1,113 @@
+{include file="header.html"}
+<table cellspacing="0" cellpadding="0" cols="0" width="100%">
+	<tr>
+		<td class="subtitle">PRODUCTION ANALYSIS</td>
+	</tr>
+	<tr>
+		<td class="subInputName">
+            <table class="table_bady" border="0" cellspacing="0" cellpadding="0" cols="1">
+                <tr>
+                    <td class="line_t"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">By Year</td>
+                </tr>
+                <tr>
+                    <td class="line_spc"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="POST" id="year" action="?PHP_action=production_analysis_view_year">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">Factory : </td>
+                                <td class="txt_l">{$factory}</td>
+                                <td class="txt_r">Year : </td>
+                                <td class="txt_l">{$year}</td>
+                            </tr>
+
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title_submit" id="year">Search</td>
+                </tr>
+                <tr>
+                    <td class="line_t"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">By Month</td>
+                </tr>
+                <tr>
+                    <td class="line_spc"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="POST" id="month" action="?PHP_action=production_analysis_view_month">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">Factory : </td>
+                                <td class="txt_l">{$factory}</td>
+                                <td class="txt_r">Year : </td>
+                                <td class="txt_l">{$year}</td>
+                                <td class="txt_r">Month : </td>
+                                <td class="txt_l">{$month}</td>
+                            </tr>
+
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title_submit" id="month">Search</td>
+                </tr>
+                <tr>
+                    <td class="line_t"></td>
+                </tr>
+                <tr>
+                    <td class="item_title">By Week</td>
+                </tr>
+                <tr>
+                    <td class="line_spc"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form method="POST" id="week" action="?PHP_action=production_analysis_view_week">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                            <tr class="title_menu_bg">
+                                <td class="txt_r">Factory : </td>
+                                <td class="txt_l">{$factory}</td>
+                                <td class="txt_r">Date¡G</td>
+                                <td class="txt_l"><input type="text" id="PHP_Date" name="PHP_Date" value="" /></td>
+                            </tr>
+                        </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="title_submit" id="week">Search</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{literal}
+<script>
+
+    Calendar.setup({
+    
+        weekNumbers : false,
+        trigger     : "PHP_Date" , 
+        inputField  : "PHP_Date" , 
+        date        : '{/literal}{$TODAY}{literal}' ,
+        showTime    : false , 
+        onSelect: function(cal) { this.hide() }
+
+    });
+
+
+</script>
+{/literal}
+<!--------- footer ---------->
+{include file="footer.html"}

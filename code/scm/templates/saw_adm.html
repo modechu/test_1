@@ -1,0 +1,77 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  SALES FORECAST .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/col.js"></script>
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+
+<script language="JavaScript">
+
+</script>
+{/literal}
+
+</head>
+<body  bgcolor="#FFFFEA" background="images/vline-516.jpg">&nbsp;
+<!-- ################################################################################# -->
+
+
+
+<br>
+{if $del_flag}
+
+
+
+
+<table border=1 cellspacing=0 cellpadding=2 cols=1 width=620 bgcolor=#DDDDDD  align=center>
+
+<tr><td>
+<table cellspacing=1 cellpadding=1 cols=1 width=100% bgcolor=#003333 align=center>
+	<tr>
+		<td class="des" align=center height=28>[ <b> EDIT Production <font color = yellow>OUT-PUT</font> -- by date </b>]</td>
+	</tr>
+</table>
+</td></tr>
+
+<tr><td>
+<form METHOD="POST" name="mon">
+<table border=0 cellspacing=6 cellpadding=1 width=600>
+ </tr>
+  <td class=snvy  align=right width=100><b>factory ID :</b><td>
+	<td class=snvy	align=left 	width=180>{$FTY_search}</td>
+  <td class=snvy  align=right width=120><b>DATE :</b></td>
+  <td class=snvy  align=left 	width=200>
+  	<input type=text name="PHP_date" size=10 class=select value="">
+  	<img align='top' onmousedown="javascript:Cal(document.mon.PHP_date,1,100,50,999,0,'')" src='images/cal.gif' width="16" height="16"  align='top' style='cursor:hand' >
+  </td>	
+
+ </tr>
+  <tr><td colspan=8><hr SIZE=2 WIDTH=97%></td></tr>
+
+	<tr> 
+	  <td align=center colspan=8>
+		<input type=submit value=" EDIT Production out-put" class=select_e2 style="cursor:pointer; width=100%">
+	  </td>
+	</tr>
+</table>
+<input type=hidden value="saw_adm_add" name="PHP_action">
+</form>
+
+
+</td></tr>
+
+</table>
+
+
+
+
+
+{/if}	
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

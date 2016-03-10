@@ -1,0 +1,206 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>==== ::::::::::  SALES FORECAST :::::::::: ====</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript">
+
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10><form>
+<br><br><form METHOD="POST" name="capacity">
+
+ <table width=800 border=1 cellspacing=0 cellpadding=2>
+  <tr>
+	<td colspan=14 align=center class=gry><b> ==== SALES FORECAST ====&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=bgdy9>for factory :<i> {$fty}</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;year :<i> {$year}</i></span>&nbsp;&nbsp;&nbsp;&nbsp;($US)</b></td>
+  </tr>
+{if $msg}
+ <tr><td colspan=14>
+     <table border=0 cellpadding=2 cellspacing=0 width=600 align=center>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+ </td></tr>
+{/if}
+  <tr bgcolor="#0D4368" height=30> 
+    <td class=b9 width=120 align=center bgcolor=#ffffff><b>FTY :<span class=bgdy> {$fty}</span></b></td>
+	<td class=w9 width=50 align=center>JAN</td>
+    <td class=w9 width=50 align=center>FEB</td>
+    <td class=w9 width=50 align=center>MAR</td>
+    <td class=w9 width=50 align=center>APR</td>
+    <td class=w9 width=50 align=center>MAY</td>
+    <td class=w9 width=50 align=center>JUN</td>
+    <td class=w9 width=50 align=center>JUL</td>
+    <td class=w9 width=50 align=center>AUG</td>
+    <td class=w9 width=50 align=center>SEP</td>
+    <td class=w9 width=50 align=center>OCT</td>
+    <td class=w9 width=50 align=center>NOV</td>
+    <td class=w9 width=50 align=center>DEC</td>
+    <td class=ylw9 width=70 align=center bgcolor=#004262><b>Total</b></td>
+  </tr>
+<!--
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>TOP</b></td>
+  {section name=CM loop=$t}
+    <td {if $t[CM] == $t.12}class=bgdy9{else}class=b9{/if} align=right bgcolor=#DCF2FC>
+    	{if $t[CM] == $t.12}<b>{else}<i>{/if}{if $t[CM] != 0}{$t[CM]|number_format}{/if}{if $t[CM] == $t.12}<b>{else}<i>{/if}&nbsp;
+    </td>
+  {/section}
+  </tr> 
+  
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>BOTTOM</b></td>
+  {section name=CM loop=$b}
+    <td {if $b[CM] == $b.12}class=bgdy9{else}class=b9{/if} align=right bgcolor=#DCF2FC>
+    	{if $b[CM] == $b.12}<b>{else}<i>{/if}{if $b[CM] != 0}{$b[CM]|number_format}{/if}{if $b[CM] == $b.12}<b>{else}<i>{/if}&nbsp;
+    </td>
+  {/section}
+  </tr>   
+-->
+  <tr bgcolor="#dddddd"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>Q'TY</b></td>
+    <td class=gry9 align=right>{if $q.0 != 0}{$q.0|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.1 != 0}{$q.1|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.2 != 0}{$q.2|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.3 != 0}{$q.3|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.4 != 0}{$q.4|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.5 != 0}{$q.5|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.6 != 0}{$q.6|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.7 != 0}{$q.7|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.8 != 0}{$q.8|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.9 != 0}{$q.9|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.10 != 0}{$q.10|number_format}{/if}&nbsp;</td>
+    <td class=gry9 align=right>{if $q.11 != 0}{$q.11|number_format}{/if}&nbsp;</td>
+    <td class=bgdy9 align=right bgcolor=#ffffff><b>{if $q.12 != 0}{$q.12|number_format}{/if}</b>&nbsp;</td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>forecast</b></td>
+    <td class=bgdy9 align=right><i>{if $f.0 != 0}{$f.0|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.1 != 0}{$f.1|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.2 != 0}{$f.2|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.3 != 0}{$f.3|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.4 != 0}{$f.4|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.5 != 0}{$f.5|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.6 != 0}{$f.6|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.7 != 0}{$f.7|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.8 != 0}{$f.8|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.9 != 0}{$f.9|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.10 != 0}{$f.10|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $f.11 != 0}{$f.11|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right bgcolor=#ffffff><i><b>{if $f.12 != 0}{$f.12|number_format}{/if}</b></i>&nbsp;</td>
+  </tr> 
+
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#DCF2FC><b>Comm.</b></td>
+  {section name=CM loop=$c}
+    <td {if $c[CM] == $c.12}class=bgdy9{else}class=b9{/if} align=right bgcolor=#DCF2FC>
+    		<i>{if ($c[CM] != 0)}{$c[CM]|number_format}{/if}</i>&nbsp;
+    		
+    </td>
+  {/section}
+  </tr>  
+  
+  
+  
+  <tr><td colspan=14>&nbsp;</td></tr>
+{section name=FST loop=$fcst}
+  <tr bgcolor="#0D4368" height=25> 
+    <td class=b9 colspan=13 align=center bgcolor=#ffffff><b>DEPT :<span class=bgdy> {$fcst[FST].dept}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cust. :<span class=bgdy> {$fcst[FST].cust_iname}</span></b></td>
+    <td class=ylw9 width=70 align=center bgcolor=#666666><b>Total / avg.</b></td>
+  </tr>
+
+<!--
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>TOP</b></td>
+  {section name=CM loop=$fcst[FST].t}
+    <td {if $fcst[FST].t[CM] == $fcst[FST].t.12}class=bgdy9 {else}class=b9 {/if} align=right bgcolor=#DCF2FC>
+    	<i>{if $fcst[FST].t[CM] == $fcst[FST].t.12}<b>{/if}
+    		{if $fcst[FST].t[CM] != 0}{$fcst[FST].t[CM]|number_format}{/if}
+    	</i>{if $fcst[FST].t[CM] == $fcst[FST].t.12}</b>{/if}&nbsp;
+    </td>
+  {/section}
+  </tr>  
+
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>BOTTOM</b></td>
+  {section name=CM loop=$fcst[FST].b}
+    <td {if $fcst[FST].b[CM] == $fcst[FST].b.12}class=bgdy9 {else}class=b9 {/if} align=right bgcolor=#DCF2FC>
+    	<i>{if $fcst[FST].b[CM] == $fcst[FST].b.12}<b>{/if}
+    		{if $fcst[FST].b[CM] != 0}{$fcst[FST].b[CM]|number_format}{/if}
+    	</i>{if $fcst[FST].b[CM] == $fcst[FST].b.12}</b>{/if}&nbsp;
+    </td>
+  {/section}
+  </tr>
+-->  
+  <tr bgcolor="#dddddd"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>Q'TY</b></td>
+    <td class=gry10 align=right>{if $fcst[FST].q.0 != 0}{$fcst[FST].q.0|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.1 != 0}{$fcst[FST].q.1|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.2 != 0}{$fcst[FST].q.2|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.3 != 0}{$fcst[FST].q.3|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.4 != 0}{$fcst[FST].q.4|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.5 != 0}{$fcst[FST].q.5|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.6 != 0}{$fcst[FST].q.6|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.7 != 0}{$fcst[FST].q.7|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.8 != 0}{$fcst[FST].q.8|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.9 != 0}{$fcst[FST].q.9|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.10 != 0}{$fcst[FST].q.10|number_format}{/if}&nbsp;</td>
+    <td class=gry10 align=right>{if $fcst[FST].q.11 != 0}{$fcst[FST].q.11|number_format}{/if}&nbsp;</td>
+    <td class=bgdy9 align=right bgcolor=#ffffff><b>{if $fcst[FST].q.12 != 0}{$fcst[FST].q.12|number_format}{/if}</b>&nbsp;</td>
+  </tr>
+  <tr bgcolor="#dddddd"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>FOB @</b></td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.0 != 0}{$fcst[FST].p.0|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.1 != 0}{$fcst[FST].p.1|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.2 != 0}{$fcst[FST].p.2|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.3 != 0}{$fcst[FST].p.3|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.4 != 0}{$fcst[FST].p.4|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.5 != 0}{$fcst[FST].p.5|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.6 != 0}{$fcst[FST].p.6|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.7 != 0}{$fcst[FST].p.7|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.8 != 0}{$fcst[FST].p.8|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.9 != 0}{$fcst[FST].p.9|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.10 != 0}{$fcst[FST].p.10|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=snvy align=right><i>{if $fcst[FST].p.11 != 0}{$fcst[FST].p.11|number_format:2}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right bgcolor=#ffffff><i><b>{if $fcst[FST].p.12 != 0}{$fcst[FST].p.12|number_format:2}{/if}</b></i>&nbsp;</td>
+  </tr>
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#dddddd><b>forecast</b></td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.0 != 0}{$fcst[FST].f.0|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.1 != 0}{$fcst[FST].f.1|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.2 != 0}{$fcst[FST].f.2|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.3 != 0}{$fcst[FST].f.3|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.4 != 0}{$fcst[FST].f.4|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.5 != 0}{$fcst[FST].f.5|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.6 != 0}{$fcst[FST].f.6|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.7 != 0}{$fcst[FST].f.7|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.8 != 0}{$fcst[FST].f.8|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.9 != 0}{$fcst[FST].f.9|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.10 != 0}{$fcst[FST].f.10|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right><i>{if $fcst[FST].f.11 != 0}{$fcst[FST].f.11|number_format}{/if}</i>&nbsp;</td>
+    <td class=bgdy9 align=right bgcolor=#ffffff><i><b>{if $fcst[FST].f.12 != 0}{$fcst[FST].f.12|number_format}{/if}</b></i>&nbsp;</td>
+  </tr> 
+
+  <tr bgcolor="#eeeeee"> 
+    <td class=b9 align=center bgcolor=#DCF2FC><b>Comm.</b></td>
+  {section name=CM loop=$fcst[FST].c}
+    <td {if $fcst[FST].c[CM] == $fcst[FST].c.12}class=bgdy9 {else}class=b9 {/if} align=right bgcolor=#DCF2FC>
+    	
+    	{if ($fcst[FST].c[CM] != 0)}{$fcst[FST].c[CM]|number_format}{if $fcst[FST].c[CM] <> $fcst[FST].c.12}%{/if}{/if}&nbsp;
+    	
+    </td>
+  {/section}
+  </tr> 
+
+{/section}
+</table>
+
+
+
+<!--------- footer ---------->
+{include file="footer.html"}

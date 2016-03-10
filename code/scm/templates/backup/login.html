@@ -1,0 +1,59 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<link rel=stylesheet type="text/css" href="./bom.css">
+</head>
+<body bgcolor="#003C77" background="./images/vline-515.jpg">
+&nbsp;
+<center>
+<br>&nbsp;
+        <table width=100% border=0 cellspacing=0 align=center>
+            {section name=SEC_MSG loop=$msg}
+			<tr><td class=ylw10><center>{$msg[SEC_MSG]}</center></td></tr>
+			{/section}
+        </table>
+		<br>
+<table border=0 cellspacing=0 cellpadding=0 width=450 bgcolor="ffffff">
+	<tr><td width=1><img src="./images/frameShad-cnr.gif" height=10 width=10></td>
+		<td><img src="./images/frameShad-top.gif" height=10 width=450></td>
+	</tr>
+	<tr>
+		<td background="./images/frameShad-left.gif" height=100%><img src="./images/frameShad-left.gif" width=10></td>
+	<td align=center>
+<table border cellpadding=4 cols=1 width=360 bgcolor="#003300" >
+<br>
+	<tr><td align=center class=w12>使用者 登入</td></tr>
+</table>
+          <FORM  METHOD="POST"><input type="hidden" name="PHP_action" value="do_login">
+            <table border=0 cellpadding=3 width=360>
+              <tr>
+                <td align=right class=dw1 width=180>使用者代號 :</td>
+				<td background="./images/v-gold.gif"  align=center width=180>
+				<input type=text name="PHP_login_id" size=22></td>
+              </tr>
+              <tr> 
+                <td align=right class=dw1 width=180>使用者密碼 :</td>
+				<td background="./images/v-gold.gif"  width=180><div align=center>
+				<input type=password name="PHP_login_pass" size=22></div></td>
+              </tr>
+              <tr> 
+                <td>&nbsp;</td>
+                <td valign=bottom class=dw1><div align=center>
+                    <input type =submit value="進入系統管理主頁" name="submit"  class=select style="cursor:pointer; width:100%"></div></td>
+              </tr>
+            </table>
+          </form>
+</td></tr>
+</table>
+<p><span class="des">請使用代號及密碼進入系統，結束或離開電腦時請務必 登出系統 !</span>
+
+
+<!--------- footer ---------->
+<table border=0 cellpadding=2 width=600 align=center>
+<tr><td align=center><img src="./images/line6.gif" height=1 width=550></td></tr>
+<tr><td align=center class=w10><small>&copy;&nbsp;CARNIVAL COPY Right and All Right Reserved.</small></td></tr>
+</table>
+
+</center>
+</body>
+</html>

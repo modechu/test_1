@@ -1,0 +1,151 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>==== ::::::::::  SCM SYSTEM :::::::::: ====</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript">
+
+</script>
+{/literal}
+</head>
+<body bgcolor="#003C77" topmargin=10>
+{if $msg_YES}
+<table border=1 cellpadding=4 cellspacing=0 cols=1 width=900>
+	<tr bgcolor=#ffffff> 
+		<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+		<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+	</tr>
+</table>
+{/if}	
+{if $trans.0.id}
+<table border cellspacing=0 cellpadding=2 width=900 bgcolor=#ffffff align=center id=po_table>
+	<tr>
+		<td colspan=10 align=center class=gry height=30><b>Taiwan Receiving List</b> -- for Transportation</td></tr>
+		<tr bgcolor="#003333" height=25> 
+		<td class=w9 width=90 align=center><b>Rcvd. #</b></td>
+		<td class=w9 width=80 align=center><b>Consignee</b></td>
+		<td class=w9 width=160 align=center><b>Sourcing</b></td>
+		<td class=w9 width=70 align=center><b>Rcvd. date</b></td>
+		<td class=w9 width=90 align=center><b>ORDER #</b></td>
+		<td class=w9 width=150 align=center><b>status</b></td>
+	</tr>
+	{if $record_NONE}
+  <tr>
+		<td colspan=8 align=center class=ssign><br>No Records!<br><br>
+  </tr>
+	{/if}
+	<form method=POST name=cfm>
+	{section name=SEC loop=$trans} 
+ 	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+		<td class=gry9 align=center nowrap>
+			<a href="trans_rcvd.php?PHP_action=rcvd_view&PHP_trn_num={$trans[SEC].trn_num}&PHP_id={$trans[SEC].id}{$back_str}&PHP_sr_no={$t_now_pp}">{$trans[SEC].rcv_num}</a>
+	  </td>
+		<td class=gry9 align=center>{$trans[SEC].new_fty}</td>
+		<td class=gry9 align=center>{$trans[SEC].org_fty}&nbsp;</td>
+		<td class=gry9 align=center>{$trans[SEC].rcv_date}&nbsp;</td>
+		<td class=gry9 align=center>{$trans[SEC].ord_num}&nbsp;</td>
+	 <td class=gry9 align=center><small>{if $trans[SEC].status == 4}waitt'g for Rcvd. submit									
+									{elseif $trans[SEC].status == 6}<span class=bgdy9>Rcvd. submitted</span>
+									{else}&nbsp;{/if}
+									</small></td>
+	</tr>
+	{/section}
+	</form>
+</table>
+<table border=0 cols=4 width=900 align=center>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list &nbsp;Transport Taiwan Receiving record!&nbsp;&nbsp;<span class=bgdy>[ total {$t_max_no} entries ]</font>
+	</tr>
+  <tr>
+		<td align=center width=100>
+		{if $t_pages[0] > 1}
+		<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno=p{$t_pages[1]}{$back_str}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0 alt="前15筆資料"></a>
+		{/if}
+		</td>
+		<td width=300 align=center>
+		{section name=PGE loop=$t_pages}
+		{if $t_pages[PGE] <= $t_maxpage }
+			{if $t_pages[PGE] == $t_now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$t_pages[PGE]}</b></i></font>
+			{else}
+				<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno={$t_pages[PGE]}{$back_str}" style="cursor:pointer">&nbsp;{$t_pages[PGE]}</a>
+			{/if}
+		{/if}   
+		{/section}
+		</td>
+		<td width=100 align=center>
+		{if $t_lastpage < $t_maxpage}
+			<a href="trans_rcvd.php?PHP_action=trans_add_search&PHP_sr_startno=n{$t_maxpage}{$back_str}">&nbsp;<img src="images/right2.gif" border=0 alt="後15筆資料"></a>
+		{/if} 
+		</td>
+  </tr>
+</table>
+<br>
+{/if}
+
+
+<table width=900 border=1 cellspacing=0 cellpadding=2>
+	<tr>
+		<td colspan=10 align=center class=gry height=30><b>Taiwan Receiving List</b> -- for Purchase Order</td>
+	</tr>
+	<tr bgcolor="#003333" height=25> 
+		<td class=w9 width=90 align=center><b>Rcvd. #</b></td>
+		<td class=w9 width=80 align=center><b>Consignee</b></td>
+		<td class=w9 width=160 align=center><b>Ship num</b></td>
+		<td class=w9 width=110 align=center><b>Rcvd. date</b></td>
+		<td class=w9 width=70 align=center><b>Rcvd. user</b></td>
+		<td class=w9 width=150 align=center><b>status</b></td>
+	</tr>
+	{section name=SEC loop=$rcvd}
+	{if $rcvd[SEC].status == 4}
+	<tr bgColor='#dddddd'>
+	{else}
+	<tr onMouseOver="bgColor='#FCF4A4'" onMouseOut="bgColor='#ffffff'">
+	{/if}
+		<td class=gry9 align=center nowrap><small><a href="tw_receive.php?PHP_action=rcvd_view&PHP_rcv_num={$rcvd[SEC].rcv_num}{$back_str}&PHP_sr_startno={$now_pp}">{$rcvd[SEC].rcv_num}</a></small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].ship}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].ship_num}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].rcv_date}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{$rcvd[SEC].rcv_user}&nbsp;</small></td>
+		<td class=gry9 align=center><small>{if $rcvd[SEC].status == 0}waitt'g for Rcvd. submit									
+									{elseif $rcvd[SEC].status == 2}<span class=bgdy9>waitt'g for Rcvd. CFM</span>
+									{elseif $rcvd[SEC].status == 4}<span class=bgdy9>Rcvd. CFM</span>
+									{elseif $rcvd[SEC].status == 13}<span class=ssign>Rcvd. Reject</span>
+									{else}&nbsp;{/if}
+									</small></td>
+	</tr>
+	{/section}
+</table>
+<br>
+<table width=900 border=0 cellspacing=0 cellpadding=1>
+	<tr>
+		<td class=w9 colspan=4 align=center><span class=bgdy>※ message </font>:above list {section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]} &nbsp;{/section}&nbsp;order record!&nbsp;&nbsp;<span class=bgdy>[ total {$max_no} entries ]</font>
+	</tr>
+  <tr>
+    <td align=center width=180>&nbsp;
+		{if $pages[0] > 1}
+			<input type="button" name="Submit5" value=" < prev 10-page" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=p{$pages[0]}'">
+		{/if}
+		</td>
+		<td align=center width=260>
+    {section name=PGE loop=$pages}
+    {if $pages[PGE] <= $maxpage }
+			{if $pages[PGE] == $now_pp}
+				<font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+			{else}
+				<a href="{$cgistr_get}{$back_str}&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+			{/if}
+		{/if}   
+    {/section}
+    </td>
+    <td  align=center width=180>
+		{if $lastpage < $maxpage}
+			<input type="button" name="Submit6" value="next 10 -page >" class=select_e style="cursor:pointer; width:90%" onClick="window.location='{$cgistr_get}{$back_str}&PHP_sr_startno=n{$lastpage}'">
+		{/if}
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

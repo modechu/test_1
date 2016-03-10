@@ -1,0 +1,240 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM 樣本輔助系統 [ 庫存布料記錄 資料 ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script type="text/javascript" src="./js/pngfix.js"></script>
+<script language="JavaScript"><!--
+function open_picture()
+{
+	var ord_pic = pics.src;
+	var ww = (pics.offsetWidth) ;
+	var hh = (pics.offsetHeight);   
+	if(ww >= hh)
+	{
+		ww += 350;
+		hh += 280;
+	}else{
+		ww += 280;
+		hh += 350;
+	}
+	window.open(ord_pic,'ppic','resizable=yes,height='+hh+',width='+ww)
+}
+
+function Show_ord_bom(id) {
+	 var url ='index2.php?PHP_action=bom_view&PHP_ex_order=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_etdfsh=&PHP_cust=&PHP_wi_num=&PHP_etdstr=&PHP_fty_sch=;'; 	
+	 var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function Show_ord_ti(id) {
+	 var url ='index2.php?PHP_action=wi_view&PHP_ex_order=1&PHP_ti=1&PHP_id='+id+'&PHP_sr=&PHP_dept_code=&PHP_num=&PHP_cust=&PHP_etdstr=&PHP_etdfsh=&PHP_sch_fty=&PHP_un_fhs='; 	
+	 var nm = 'Sworking';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+
+function smpl_out2(smpl_num) {
+	 var url ="index2.php?PHP_action=show_sample_det&PHP_smpl_num="+smpl_num;
+	 var nm = 'sample';
+	 window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=800,height=600 top=50, left=100');
+}
+//--></script>
+{/literal}
+</head>
+<body>
+<br>
+<table cellspacing=1 cellpadding=4 cols=1 width=600 bgcolor=#003300>
+	<tr><td class="des" align=center height=28> [ 庫存布料記錄 ] </td></tr>
+</table>
+{if $msg_YES}
+     <table border=1 cellpadding=4 cellspacing=0 cols=1 width=600>
+      <tr bgcolor=#ffffff> 
+        <td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+        <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+      </tr>
+     </table>
+{/if}
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>
+  <tr>
+    <td class=snvy align=right nowrap colspan=3>布樣編號 :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;{$fabric.art_code}</b></span></td>
+    <td class=snvy align=right nowrap>顏色 :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;{$fabric.bom_color}</b></span></td>
+  </tr>
+  <tr>
+    <td align=center class=head valign=top rowspan=11 colspan=2>
+			<table width=200 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center>{$main_pic}<td></tr>
+			</table>
+		</td>
+    <td class=snvy align=right nowrap>布樣名稱 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;{$fabric.lots_name}</td>
+  </tr>
+  <tr>	
+    <td class=snvy align=right nowrap>庫存名稱 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;{$fabric.name}</td>
+  </tr>  
+  <tr>	
+  	<td class=snvy align=right>成份 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;{$fabric.comp}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>規格 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;{$fabric.specify}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right>後整 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3 colspan=3>&nbsp;&nbsp;{$fabric.cons}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>&nbsp;&nbsp;庫存地 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$fabric.fty}</td>
+  </tr>   
+  <tr>
+    <td class=snvy align=right>預估 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$fabric.est_qty|NUMBER_FORMAT}&nbsp;&nbsp;{$fabric.po_unit}</td>
+
+    <td class=snvy align=right>數量 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$fabric.qty|NUMBER_FORMAT}&nbsp;&nbsp;{$fabric.unit}</td>
+  </tr>  
+  <tr>
+    <td class=snvy align=right nowrap>供應商 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$fabric.supl}</td>
+    <td class=snvy align=right nowrap>&nbsp;&nbsp;供應商布號 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$fabric.supl_ref}</td>
+  </tr>
+  <tr>
+    <td class=snvy align=right nowrap>分類 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$fabric.cat}</td>
+    <td class=snvy align=right>&nbsp;&nbsp;<b>C/O</b> :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;&nbsp;{$fabric.co}</td>
+  </tr>
+   <tr>
+    <td class=snvy align=right>寬幅 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$fabric.width}&nbsp;</td>
+    <td class=snvy align=right>&nbsp;&nbsp;碼重 :</td>
+    <td class=frnt align=left bgcolor=#CEE4E3>&nbsp;{$fabric.weight}&nbsp;</td>
+  </tr>
+
+  <tr><td class=snvy align=right colspan=4> 
+  
+  			<table width="350" border=1 cellspacing=0 cellpadding=1>
+				<tr>
+				  <td width=100% height=24 bgcolor=#31657B align=center class=ylw10>Remark</td>
+				</tr>
+				<tr>
+					<td class=ylw9 align=center>
+						<textarea name="PHP_remark" rows=4 cols=60 class=select  disabled>{$fabric.remark}</textarea></td>
+				</tr>
+			</table>
+  </td></tr>
+  
+  
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  </tr>
+</table>
+
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr>
+    <td align=center class=head valign=top rowspan=5	 colspan=2>
+			<table width=200 border=1 cellspacing=0 cellpadding=1>
+				<tr><td align=center>
+					<input type="image" src="{$order.main_pic}" name="ord_pic" id=pics width=150 border="0" onclick='open_picture()'>				
+				<td></tr>
+			</table>
+		</td>
+    <td class=snvy align=right nowrap>訂單編號 :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;
+    	<a href="javascript:show_order_rec('{$order.id}','{$order.order_num}')" value='ord_out' style='cursor:pointer'>
+	   		{$order.order_num}</a>
+    	
+    </b></td>
+    <td class=snvy align=right nowrap>CUSTOMER :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;{$order.cust_iname}</b></td>
+  </tr>  
+  <tr>
+    <td class=snvy align=right nowrap>SMPL# :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><a href="javascript:smpl_out2('{$order.smpl_ord}')" value='ord_out' style='cursor:pointer'><b>&nbsp;{$order.smpl_ord}</b></a></td>
+    <td class=snvy align=right nowrap>STYLE :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;{$order.style}</b></td>
+ </tr>
+  <tr>
+    <td class=snvy align=right nowrap>season :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>{$order.syear}&nbsp;{$order.season}</b></td>
+    <td class=snvy align=right nowrap>ETD</td>
+    <td class=snvy align=left bgcolor=#CEE4E3><b>&nbsp;{$order.etd}</b></td>
+ </tr> 
+  <tr>
+    <td class=snvy align=right nowrap>style# :</td>
+    <td class=snvy align=left bgcolor=#CEE4E3 colspan=3><b>{$order.style_num}</b></td>
+ </tr>  
+ <tr>
+
+	     <td class=snvy align=right width=60><b>BOM : </b></td>
+	{if $order.bom_date == '0000-00-00' ||  $order.bom_date == ''}
+	    <td class=snvy align=left><b><span class=bgdy>&nbsp; N/A</span></b></td>
+	{else}
+	 
+    <td class=snvy align=left width=150 nowrap>&nbsp; <b>
+       <a href="javascript:Show_ord_bom('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.bom_date}</a>  	 	 
+    
+       &nbsp;&nbsp;&nbsp; 
+       <a href="javascript:po_bom_view('{$order.order_num}','x')" value='purchase_out' style='cursor:pointer'>status</a>  	 	 
+     
+       </b>
+      </td>
+	{/if}
+
+
+     <td class=snvy align=right width=100><b>WorkSheet : </b></td>
+	{if $order.ws_date == '0000-00-00' ||  $order.ws_date == ''}
+	    <td class=snvy align=left width=80><b><span class=bgdy>&nbsp; N/A</span></b></td>
+	{else}
+  	  <td class=snvy align=left width=80>&nbsp; <b>
+        <a href="javascript:Show_ord_ti('{$order.wi_id}')" value='ord_out' style='cursor:pointer'>{$order.ws_date}</a>  	 	 
+  	  </b></td>
+	{/if}
+  </tr> 
+  <tr>
+    <td colspan=6 class=frnt align=center><hr size=2 width=98%></td>
+  <tr>  
+</table>
+<!--
+<table border=0 cellspacing=1 cellpadding=1 width=600 bgcolor=#FFFFFF>
+  <tr bgcolor=#31657B height=24>
+    <td class=ylw9 align=center colspan=3 nowrap>單價</td>
+    <td class=ylw9 align=center colspan=2 nowrap>供應條件</td>
+    <td class=ylw9 align=center nowrap>Lead Time</td>
+  </tr>
+  <tr bgcolor=#CEE4E3>
+    <td class=b9 align=center colspan=3 nowrap>&nbsp;{if $fabric.price}
+		{$fabric.currency}&nbsp;${$fabric.price}&nbsp;/{$fabric.unit_price}{else}N/A{/if}</td>
+    <td class=b9 align=center colspan=2>{if $fabric.term}&nbsp;{$fabric.term}&nbsp;{$fabric.location}{else}N/A{/if}</td>
+    <td class=b9 align=center>{if $fabric.leadtime}{$fabric.leadtime}&nbsp;&nbsp;days{else}N/A{/if}</td>
+  </tr> 
+</table>
+
+<center><hr size=2 width=600></center>
+	-->
+<form>
+<table border=0 cellspacing=1 cellpadding=1 width=600>
+  <tr >
+    <td class=ylw9 align=center width=150>
+	    <input type=button onClick="window.location.href='fabric.php?&PHP_action=stock_search'" value="<< GO BACK " class=select_e style="width:98%">
+    </td>
+    <td class=ylw9 align=center>
+    	<input type=button onClick="window.location.href='fabric.php?&PHP_action=stock_edit&PHP_id={$fabric.id}'" value=" EDIT " class=select_e style="width:98%">
+    </td>
+
+  </tr>    
+</table>
+</form>
+
+<!--------- footer ---------->
+{include file="footer.html"}

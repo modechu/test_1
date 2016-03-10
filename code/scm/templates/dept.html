@@ -1,0 +1,109 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=big5">
+<title>===...::  部門類別 ::.....===</title>
+<link rel=stylesheet type="text/css" href="./css/bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript">
+function cfm(ref,id) {
+    if ( confirm("記錄刪除後 將會永久無法回覆 !\r\r請再確定是否要刪除:["+ref+"]這個部門??")) {
+        location.href="{/literal}{$PHP_SELF}{literal}?PHP_action=dept_del&PHP_id="+id+"&PHP_del=ok";
+    } 
+}
+
+function tp(url) { parent.top.location.href=url }
+
+function callpic(id) {
+    var gofile ='{/literal}{$PHP_SELF}{literal}?PHP_action=style_pic_show&PHP_style_id='+id; 	window.open2(gofile,id,'toolbar=no,location=no,directories=no,status=yes,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=660,height=600" top=100, left=100')
+}
+
+function openRemote(file,cam) {
+    window.open2(file,cam,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,copyhistory=no,width=360,height=350')
+}
+</script>
+{/literal}
+</head>
+<body topmargin="10">
+<table border cellspacing=0 cellpadding=5 cols=1 width=90% bgcolor=#cccccc  align=center>
+	<tr>
+		<td>
+			<table width=100% border="1" align=center cellpadding=4 cellspacing=0 cols=1 bgcolor=#534A67>
+				<tr>
+					<td class="des" width=100% align=center height=28>......  部門別 ......</td>
+				</tr>
+			</table>
+			{if $msg}
+			<hr size=2 width=100%>
+			<table border=1 cellpadding=4 cellspacing=0 cols=1 width=100%>
+				<tr bgcolor=#ffffff> 
+					<td width=90 class=gry10 align=center><img src="images/alert.gif" border=0></td>
+					<td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+				</tr>
+			</table>
+			{/if}
+			<hr size=2 width=100%>
+			<table border cellspacing=0 cellpadding=2 width=100% bgcolor=#eeeeee align=center>
+				<tr bgcolor="#003333" height=28>
+					<td align=center nowrap class=back><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[2]}={$sort[2]}{$sorting}"><font color="#FFFFFF">部門名稱</font></a></td>
+					<td align=center nowrap class=back><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[3]}={$sort[3]}{$sorting}"><font color="#FFFFFF">部門代碼</font></a></td>
+					<td align=center nowrap class=back><a href="{$PHP_SELF}?PHP_action={$PHP_action}&{$new_sort[4]}={$sort[4]}{$sorting}"><font color="#FFFFFF">管理者</font></a></td>
+					<td nowrap align=center class=back>備註</td>
+				</tr>
+				{if $record_NONE}
+				<tr>
+					<td colspan=5 align=center class=ssign><br>
+					there is no record currently!<br>
+					<br></td>
+				</tr>
+				{/if}
+				{section name=SEC loop=$pages}
+				<tr>
+					<td align=center valign=middle>{$pages[SEC].dept_name}&nbsp;</td>
+					<td align=center class=b10>{$pages[SEC].dept_code}&nbsp;</td>
+					<td class=g10 align=center>{$pages[SEC].chief}&nbsp;</td>
+					<td class=b10 align=center nowrap>&nbsp;
+					{if $del_flag} <a href="javascript:cfm('{$pages[SEC].dept_name}','{$pages[SEC].id}')" style="cursor:pointer"><img src="images/del.gif" alt="刪除" border=0></a>
+					{/if}
+					{if $edit_flag} <a href="{$PHP_SELF}?PHP_action=dept_update&PHP_id={$pages[SEC].id}&PHP_dept_code={$pages[SEC].dept_code}" style="cursor:pointer"><img src="images/edit.gif" alt="修改" border=0></a>
+					{/if}</td>
+				</tr>
+				{/section}
+			</table>
+			<hr size=2 width=100%>
+			<table border=0 cols=4 width=100% align=center>
+				<tr>
+					<td align=center>{$page_num}</td>
+				</tr>
+			</table>
+			<hr size=2 width=100%>
+			<!-- appending -->
+			{if $add_flag}
+			<table border=1 cellspacing=0 cellpadding=4 cols=4 width=100% bgcolor="#534A67" align="center">
+				<tr>
+					<td class="des" width=100% align=center height=28>新增部門</td>
+				</tr>
+			</table>
+			<hr size=2 width=100%>
+			<table border=1 cellspacing=1 cellpadding=2 cols=4 width=100%>
+			<form METHOD="POST" action="{$PHP_SELF}?PHP_action=do_dept_add">
+				<tr align="center" bgcolor="#FFFFCC">
+					<td width=20% height="28" class="gry10">部門名稱</td>
+					<td width="55%" class="gry10">部門代碼</td>
+					<td class="gry10">管理者</td>
+					<td class="gry10">&nbsp;</td>
+				</tr>			
+				<tr align="center" bgcolor="FFCC33">
+					<td class=b9 width=25%><input type=text  size=20 name="PHP_dept_name" class=select></td>
+					<td width=14% class=gry10><input type=text  size=8 name="PHP_dept_code" class=select></td>
+					<td width="28%" class="gry10"><input type=text  size=20 name="PHP_chief" class=select></td>
+					<td width="28%" class="gry10"><input type=submit onClick="window.location.href='{$PHP_SELF}?PHP_action=do_dept_add'" value="添加" class=select_e style="width:150;cursor:pointer"></td>
+				</tr>
+			</form>
+			</table>
+			{/if}			
+		</td>
+	</tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

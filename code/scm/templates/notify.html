@@ -1,0 +1,191 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=big5">
+	<title>===.........  樣本款式 列表 .........===</title>
+	<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript"
+        src="./js/build/yahoo/yahoo-min.js"></script>
+<script type="text/javascript"
+        src="./js/build/connection/connection-min.js"></script>
+<Script language="javascript">
+var transaction;
+var sUrl;
+var callback = {
+    success: function(o) {
+	//var response = o.responseText.split("|");
+	//alert (response[0]);
+    },
+    failure: function(o) {
+      alert("Error：Can't get data");
+    }
+};
+
+function get_change(size,size_id,size_item,id,back_str,base_size) {
+}
+
+function display(id){
+
+	$("#font"+id).css("color","black");
+	if ( document.getElementById("msg"+id).style.display=='none')
+	{
+		document.getElementById("msg"+id).style.display='';	
+	}else{
+		document.getElementById("msg"+id).style.display='none';		
+	}
+	document.getElementById("tit"+id).className ='b10';
+    
+    sUrl = "notify.php?PHP_action=do_notify_mark&PHP_id="+id;	
+    transaction = YAHOO.util.Connect.asyncRequest('GET', sUrl, callback, null);
+}
+
+ function full_check()
+ {
+ 	{/literal}
+ 		{section name=SEC loop=$notify} 
+ 		 window.document.forms['cfm'].elements['PHP_id[{$notify[SEC].id}]'].checked = true
+ 		
+ 		{/section}
+ 	{literal}
+ 	
+ }
+</script>
+{/literal}
+
+<body  bgcolor="ffffff" background=" ">&nbsp;
+<!-- ################################################################################# -->
+<table border cellspacing=0 cellpadding=2 cols=1 width=650 bgcolor=#cccccc  align="center">
+    <tr>
+        <td align="center" colspan=2>
+            <table border=1 cellspacing=0 cellpadding=4 cols=1 width=650 bgcolor=#534A67>
+                <tr><td class=des align="center">.....  <b> <span class=ylw10> MESSAGE </span> </b> .......</td></tr>
+            </table>
+        </td>
+    </tr>
+    {if $msg_YES}
+    <tr>
+        <td colspan=2>
+            <table border=1 cellpadding=4 cellspacing=0 cols=1 width=650 align="center">
+                <tr bgcolor=#ffffff> 
+                    <td width=90 class=gry10 align="center"><img src="images/alert.gif" border=0></td>
+                    <td class=bgdy>{section name=SEC_MSG loop=$msg} {$msg[SEC_MSG]}<br>{/section}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    {/if}
+    <tr>
+        {if $bc_flag}
+        <form METHOD="POST" name="msge_send_full">  
+        <td align="center" valign="center">
+            <input type="hidden" name="PHP_action" value="message_send">
+                <input type="hidden" name="PHP_user_id" value="all_users">
+            <input type=submit value="[ broadcast ]" class=select_e style="cursor:pointer; width=80%" onClick=this.width=0;>
+        </td>
+        </form>
+        {/if}
+
+		<td align="center" valign="center">
+            <table width="100%" border="0" cellspacing="0" cellpadding="3">
+                <tr>
+                    <form METHOD="POST" name="msge_send">  
+                    <input type="hidden" name="PHP_action" value="message_send">
+                    <td width="90%"><input type=submit value="[ Send Message ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;></td>
+                    </form>
+                    <form METHOD="POST" name="msge_send">  
+                    <input type="hidden" name="PHP_action" value="notify_backup">
+                    <input type="hidden" name="msgr" value="backup">
+                    <input type="hidden" name="PHP_sr_startno" value="0">
+                    <td><input type=submit value="[ Backup Message ]" class=select_e style="cursor:pointer; width=100%" onClick=this.width=0;></td>
+                    </form>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+
+<!---
+<form METHOD="POST" name="msge_print"> 
+	<td align="center"> 
+		<input type="hidden" name="PHP_action" value="do_message_print">
+		<input type=submit value="[ Print Message ]" class=select_e style="cursor:pointer; width=80%" onClick=this.width=0;>
+	</td>
+</form>
+--->
+<form method=POST name=cfm>
+<table border cellspacing=0 cellpadding=2 width=650 bgcolor=#ffffff align="center">
+    <tr bgcolor="#003333" height=28> 
+        <td nowrap width=50 align="center" class="back">
+        <input type="hidden" name="PHP_action" value="do_notify_del">
+        <input type="hidden" name="msgr" value="read">
+        <input type="hidden" name="PHP_sr_startno" value="{$now_pp}">
+        <input type="submit" value="[ DEL ]" class="select_e" style="cursor:pointer; width=100%" onClick=this.width=0;>
+        </td>
+        <td nowrap width="50%" align="center" class="back"><b>Title</b></td>
+        <td nowrap width="100" align="center" class="back"><b>From</b></td>
+        <td nowrap width="100" align="center" class="back"><b>Date</b></td>	
+    </tr>
+	{if $record_NONE}
+    <tr>
+        <td colspan=8 align="center" class=ssign><br>No Message!<br><br>
+    </tr>
+	{/if}
+    {section name=SEC loop=$notify} 
+    <tr>
+        <td width="50" align="center" class="g10">
+            <input type="checkbox" name="PHP_id[{$notify[SEC].id}]" value="{$notify[SEC].id}">
+        </td>
+        <td width="50%" align="left" id='tit{$notify[SEC].id}' style="cursor:pointer" onclick="display({$notify[SEC].id})" {if $notify[SEC].read == 0}class="b10_b"{else}class="b10"{/if} >
+            <font id="font{$notify[SEC].id}"  {if $notify[SEC].pop == 'y'}color="red"{else}color="black"{/if}>{if $notify[SEC].pop == 'y'}重要信件！{/if}&nbsp;{$notify[SEC].title}</font>
+        </td>
+        <td width="100" align="center" class="gry9" style="cursor:pointer" onclick="display({$notify[SEC].id})">{$notify[SEC].f_user}&nbsp;</td>
+        <td width="100" align="center" class="gry9" style="cursor:pointer" onclick="display({$notify[SEC].id})">{$notify[SEC].sed_date}&nbsp;</td>    
+
+    </tr>
+    <tr id="msg{$notify[SEC].id}" style="display:none;" >
+        <td class="g10" align="left" colspan="4">
+            {$notify[SEC].msg}&nbsp;
+        </td>
+    </tr>
+    {/section} 
+    <tr>
+        <td class="g10" align="center">
+            <input type="button" name="PHP_full" value='全選' onclick=full_check()> 
+        </td>
+        <td class="g10" align="left" colspan="3">&nbsp;</td>
+    </tr>			
+</table>
+</form>
+
+<table border=0 cols=4 width=600 align="center">
+    <tr>
+        <td class=w9 colspan=4 align="center"><span class=bgdy>  </td>
+    </tr>
+    <tr>
+        <td align="center" width=100>
+        {if $pages[0] > 1}
+        <a href="notify.php?PHP_action=notify&PHP_sr_startno=p{$pages[1]}" style="cursor:pointer">&nbsp;<img src="images/left2.gif" border=0></a>
+        {/if}
+        </td>
+        <td width=300 align="center">
+        {section name=PGE loop=$pages}
+        {if $pages[PGE] <= $maxpage }
+        {if $pages[PGE] == $now_pp}
+        <font color="#FF0000"><i><b>&nbsp;{$pages[PGE]}</b></i></font>
+        {else}
+        <a href="notify.php?PHP_action=notify&PHP_sr_startno={$pages[PGE]}" style="cursor:pointer">&nbsp;{$pages[PGE]}</a>
+        {/if}
+        {/if}   
+        {/section}
+        </td>
+        <td width=100 align="center">
+        {if $lastpage < $maxpage}
+        <a href="notify.php?PHP_action=notify&PHP_sr_startno=n{$lastpage}">&nbsp;<img src="images/right2.gif" border=0></a>
+        {/if} 
+        </td>
+    </tr>
+</table>
+<!--------- footer ---------->
+{include file="footer.html"}

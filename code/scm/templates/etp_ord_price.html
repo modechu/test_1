@@ -1,0 +1,96 @@
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=big5">
+   <title>===:::::::::: SCM -B [ sales ESP distribution ] ::::::::::===</title>
+<link rel=stylesheet type="text/css" href="./bom.css">
+{literal}
+<script language="javascript" src="./js/open_detial.js"></script>
+<script language="javascript">
+function ord_out(ord_num) {
+
+//	alert("order number = "+ord_num);
+	 var url ="index2.php?PHP_action=order_output&PHP_ord_num="+ord_num;
+	 var nm = 'order';
+	window.open2(url,nm,'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,copyhistory=no,width=850,height=600 top=30, left=100');
+}
+
+function tblresize() {
+	var dh = 110;
+	var dw = 60;
+	var hh = tblShow.offsetHeight + dh;
+	if ( hh > screen.height - dh )
+	hh = screen.height - dh ;
+  if (tblShow.offsetWidth) window.resizeTo( tblShow.offsetWidth + dw , hh );
+  self.focus();
+}
+
+</script>
+{/literal}
+
+<body topmargin="10" onLoad="tblresize();" />
+<table border="0" cellspacing="0" cellpadding="0" id="tblShow" />
+  <tr>
+    <td>
+ <table width=700 border=1 cellspacing=0 cellpadding=2>
+  <tr bgcolor="#C2C2C1"><td colspan=9 align=center class=gry height=35><b>{if $un_sch == 1} Monthly Un Schedule Order List{else}Monthly Order Summary List{/if}  {$title_mk}</b></td></tr>
+  <tr  bgcolor="#C2C2C1" height=25><td colspan=9 align=center class=gry><b>FACTORY : <span class=sign><b>{$fty}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;YEAR : <span class=sign><b>{$year}</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MONTH : <span class=sign><b>{$month}</b></td></tr>
+  <tr bgcolor="#0D4368" height=25> 
+    <td class=w9 width=70 align=center bgcolor=#122B3F>ORDER#</td>
+    <td class=w9 width=50 align=center bgcolor=#122B3F>Style</td>
+    <td class=w9 width=60 align=center bgcolor=#122B3F>Q'TY</td>
+    <td class=w9 width=60 align=center bgcolor=#122B3F>S.U.</td>
+    <td class=w9 width=90 align=center bgcolor=#122B3F>ETD</td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F>FOB@</td>
+    <td class=w9 width=45 align=center bgcolor=#122B3F>CM@</td> 
+    <td class=w9 width=90 align=center bgcolor=#122B3F>total sales</td>
+    <td class=w9 align=center bgcolor=#666666><b>Sataus</b></td>
+  </tr>
+{if $record_NONE}
+  <tr><td colspan=14 align=center class=bgdy height=35><b>No Records !</b></td></tr>
+{else}
+{section name=SEC loop=$ord}
+  <tr {if $ord[SEC].status == '== SHIPPED ==' || $ord[SEC].status == '= FINISHED ='}bgcolor="#F3F2F2"{else}bgcolor="#ffffff"{/if}> 
+    <td class=snvy align=left nowrap><b><a href="javascript:ord_out('{$ord[SEC].ord_num}')" value='ord_out' style='cursor:pointer'>{$ord[SEC].ord_num}{if $ord[SEC].partial_num > 1} ({$ord[SEC].mks}){/if}</b>
+    <td class=bgdy9 align=center><b>{$ord[SEC].style}</b></td>
+    <td class=bgdy9 align=right><b>{$ord[SEC].qty|number_format} pc</b></td>
+    <td class=grn9 align=right><b>{$ord[SEC].su|number_format}</b></td>
+    <td class=gry7 align=center><b>{$ord[SEC].etd}</b></td>
+    <td class=gry7 align=right><b>{$ord[SEC].uprice}</b></td>
+    <td class=gry7 align=right>{$ord[SEC].cm}</td> 
+    <td class=grn7 align=right><b>${$ord[SEC].sales|NUMBER_FORMAT:"2f"}</b></td>
+    <td class=gry7 align=left nowrap><b>{$ord[SEC].status}</b></td>
+  </tr>
+  {if  $ord[SEC].sub_mk == 1}
+    <tr bgcolor="#F2FFF0"> 
+   	 <td class=snvy align=left><b>SUB - Total</b></td>
+    	<td class=bgdy9 align=right colspan=2><b>{$ord[SEC].sub_qty|number_format} pc</b></td>
+    	<td class=grn9 align=right><b>{$ord[SEC].sub_su|number_format}</b></td>
+    	<td class=gry7 colspan=2 align=center>&nbsp;</td>
+    	<td class=grn7 colspan=2 align=right><b>${$ord[SEC].sub_sales|number_format:"2f"}</b></td>
+    	<td class=gry7 align=center>&nbsp;</td>
+  	</tr>
+  {/if}
+{/section}
+    <tr bgcolor="#D1D1D0"> 
+    <td class=snvy align=left><b>Total</b></td>
+    <td class=bgdy9 align=right colspan=2><b>{$ttl_qty|number_format} pc</b></td>
+    <td class=grn9 align=right><b>{$ttl_su|number_format}</b></td>
+    <td class=gry7 colspan=2 align=center>&nbsp;</td>
+    <td class=grn7 colspan=2 align=right><b>${$ttl_sales|number_format:"2f"}</b></td>
+    <td class=gry7 align=center>&nbsp;</td>
+  </tr>
+ {/if}
+</table>
+		</td>
+  </tr>
+  <tr>
+	<td align=right>
+		<a href="{$PHP_SELF}?PHP_action=monthly_ord_excel&PHP_fty={$fty}&PHP_year={$year}&PHP_month={$month}&PHP_su={$ttl_su|number_format}" style="cursor:pointer">
+		<img src="./images/excel_icon.gif" border=0 alt="轉 windows [Excel]檔案"></a>
+	</td>
+  </tr>
+</table>
+
+
+<!--------- footer ---------->
+{include file="footer.html"}
